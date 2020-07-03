@@ -250,7 +250,7 @@ if ($result->num_rows > 0)
    {
        
        
-       if(preg_match("/__HEX__/", $valor) ){ $valor = hex2bin ( preg_replace("/__HEX__/", "", $valor)) ; }
+       if(preg_match("/__HEX__/", (string) $valor) ){ $valor = hex2bin ( preg_replace("/__HEX__/", "", $valor)) ; }
 
        $is_requerido= isset($requeridos[$clave]) ?  $requeridos[$clave] : 0   ; // es requerido si tiene condicion de requerido y esta condicion se cumple, Ej. IMPORTE==0
        

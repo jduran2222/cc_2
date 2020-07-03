@@ -5,7 +5,7 @@ $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 //$_m='Inicio' ;
 
-$titulo_pagina=$_SESSION["empresa"]." - ConstruCloud.es2";
+$titulo_pagina=$_SESSION["empresa"]." - ConstruCloud.es3";
 
 
 ?>
