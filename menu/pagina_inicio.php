@@ -5,7 +5,7 @@ $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 //$_m='Inicio' ;
 
-$titulo_pagina=$_SESSION["empresa"]." - ConstruCloud.es";
+$titulo_pagina=$_SESSION["empresa"]." - ConstruCloud.es2";
 
 
 ?>
@@ -334,7 +334,7 @@ $result=$Conn->query($sql);        // ANULACION SISTEMA LICENCIAS
 echo '<br><br><br><br>';
 
 if ($_SESSION["is_desarrollo"])
-{ echo "<br><br><br><br><br><a class='btn btn-xs btn-link noprint'  href='#'  onclick=\"tour()\"  title='Tour pruebas' >Tour (pruebas3)</a>" ;
+{ echo "<br><br><br><br><br><a class='btn btn-xs btn-link noprint'  href='#'  onclick=\"tour()\"  title='Tour pruebas' >Tour (pruebas5)</a>" ;
 }        
         
         
