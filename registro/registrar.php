@@ -75,7 +75,9 @@ if ($error) {
   // echo "<br><br><br><h3>¡ERROR DE ACCESO cod: $error!, <br><br>si no tiene cuenta puede";
   // echo " <a class='btn btn-link btn-lg' href='../registro/empresa_nueva_form.php' >crear una empresa</a> de forma gratuita</h3>";
   // echo  "<br><h1><a class='btn btn-primary btn-lg' href='javascript:history.back(-1);' title='Ir la página anterior'>Volver a intentarlo</a></h1>";
-  header('Location: ../registro/index.php?credenciales=false' );
+  $Conn->close();
+  header('Location: ../registro/index.php?credenciales=false');
+  exit;
 }
 
 $Conn->close();
