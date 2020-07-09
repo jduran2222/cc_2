@@ -15,7 +15,7 @@ error_reporting(E_ALL);
 $_SESSION["adminlte"]=1;
 
 
-require_once("../../conexion.php");
+require_once("../conexion.php");
 require_once("../include/funciones.php");
 
 $_m=  isset($_GET['_m']) ?  $_GET['_m'] : '' ;    // inicializamos la variable migas de pan $_m

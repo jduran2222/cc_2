@@ -58,7 +58,7 @@ $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";   // AND $where_c_cos
 
 
         <?php
-        require_once("../../conexion.php");
+        require_once("../conexion.php");
         require_once("../include/funciones.php");
         require_once("../include/email_function.php");
 

@@ -1,110 +1,105 @@
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" type="text/css">
+<?php
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<title>ConstruCloud 0.90</title>
-</head>
+$titulo = 'Crear nueva empresa';
 
+include_once('../templates/_inc_registro1_header.php');
 
-<body >
-    <style>
-        
-        td {font-size: 30px}
-        
-    </style>
-<?php   
-    ini_set("display_errors", 1);
-    error_reporting(E_ALL); 
+//Comprobaciones de acceso:
+$user     = (isset($_SESSION['user']) ? $_SESSION['user'] : '');
+$empresa  = (isset($_SESSION['empresa']) ? $_SESSION['empresa'] : '');
 
+//Comprobar credenciales.
+$credenciales  = (isset($_GET['credenciales']) ? $_GET['credenciales'] : '');
+$htmlAlert = '';
+if ($credenciales == 'false') {
+  $htmlAlert = '<div class="alert alert-warning small" role="alert">Imposible conectar con estas credenciales.</div>';
+}
 
-    
 ?>
 
-<center>
-<div >
-	<p align=center style='text-align:center'>
-            <img width="400" src="../img/construcloud64.svg"> 
-	</p>
-   
-</div>
-	
-<div >    
-<h1>Crear Nueva Empresa</h1>
-<form action="empresa_nueva.php" method="post" name="form1" enctype="multipart/form-data" >
+  <div class="login-box">
+    <div class="login-logo">
 
-  <table style='width:60%'  align="center"   class="table table-bordered table-hover ">
-	<tr>
-      <td><div ><span class="glyphicon glyphicon-envelope"></span> Email *</div></td>
-      <td><span >
-        <input name="email" size='40' type="email" required style="background-color:#C8C8C8 ">
-      </span></td>
-	<tr>
-    <tr>
-      <td><div ><span class="glyphicon glyphicon-wrench"></span> Password *</div></td>
-      <td><span >
-        <input name="password" type="password" required style="background-color:#C8C8C8 ">
-      </span></td>
-    </tr>
-      
-    <tr>
-        <td><div ><span class="glyphicon glyphicon-home"></span> Empresa<font size='2'> (opcional)</font></div></td>
-      <td>
-        <input name="empresa" type="text" style="background-color:#C8C8C8 ">
-     </td>  
-    </tr>
- 
-    <tr>    
-      <td><div ><i class="far fa-user"></i> Usuario<font size='2'> (opcional)</font></div></td>
-      <td><span >
-        <input name="user" type="text"  style="background-color: #C8C8C8"  > 
-      </span></td>
-    </tr>
-<!--    <tr>
-      <td><div ><span class="glyphicon glyphicon-wrench"></span> Código *</div></td>
-      <td><span >
-        <input name="codigo" type="password" required style="background-color:#C8C8C8 "> 
-      </span></td>
-    </tr>-->
+      <img width="128px" src="../img/logo_cc_blanco.svg" alt="Logo ConstruCloud 2.0"/>
+      <br>
+      <a href="../"><strong>Constru</strong>Cloud 2.0</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg">Nueva empresa en <strong>Constru</strong>Cloud</p>
 
-    <tr>    
-      <td><div ><span class="glyphicon glyphicon-camera"></span> Logo empresa<font size='2'> (opcional)</font></div></td>
-      <td><span >
-        <input name="logo_file" type="file" style="background-color:#C8C8C8 ">
-      </span></td>  
-    </tr>
-    <tr>    
-      <td><div style='text-align:right;' > *</div></td>
-      <td><span >
-              <h5> <input name="acepto" type="checkbox" required style="background-color:#C8C8C8 "> He leído y acepto la <a href=# >Condiciones de uso</a>, <a href=# >Política de privacidad</a> y <a href=# >Aviso legal</a> </h5>
-      </span></td>  
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
-      <td colspan="2"><div align="center">
-        <input class="btn btn-success" style='width:50%;font-size:40px' type="submit" name="Submit" value="Aceptar"  >
-      </div></td>
-      
-    </tr>
-  </table>
+        <?php echo $htmlAlert; ?>
 
+        <form action="../registro/empresa_nueva.php" method="post" enctype="multipart/form-data">
+          <div class="input-group mb-3">
+            <input type="email" name="email" id="email" class="form-control" required="required" placeholder="Email">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="password" name="password" id="password" class="form-control" required="required" placeholder="Password">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" name="empresa" id="empresa" class="form-control" placeholder="Empresa (opcional)">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-home"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <input type="text" name="user" id="user" class="form-control" placeholder="Usuario (opcional)">
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="far fa-user"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <div class="custom-file">
+              <input type="file" name="logo_file" id="logo_file" class="custom-file-input" placeholder="Logo empresa (opcional)">
+              <label class="custom-file-label text-muted" for="logo_file">Logo empresa (opcional)</label>
+            </div>
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fa fa-camera"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" name="acepto" id="acepto" required="required">
+              <label class="custom-control-label" for="acepto">
+                  He leído y acepto la <a href="#">Condiciones de uso</a>, <a href="#">Política de privacidad</a> y <a href="#">Aviso legal</a> 
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-8">
+              <a class="btn btn-secondary small text-white" href="../">Volver</a>
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <input class="d-none" type="hidden" name="Submit" value="Aceptar"/>
+              <button type="submit" class="btn btn-success btn-block">Crear</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+      </div>
+      <!-- /.login-card-body -->
+    </div>
+  </div>
+  <!-- /.login-box -->
 
-  </form>
-</div>
-
-</center>
-  
-
-<?php require '../include/footer.php'; ?>
-</BODY>
-</html>
-
+<?php 
+include_once('../templates/_inc_registro3_footer.php');
