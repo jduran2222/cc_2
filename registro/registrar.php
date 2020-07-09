@@ -27,14 +27,14 @@ $pais= pais($json_geoip);
 
 $login=0;
 
-//[FJSL-2020-07-05] Revisar por qué las claves son distintas
-$sql="SELECT * FROM Usuarios WHERE email='f.sanchez@solucionessl.com' AND id_usuario = 133 " ;
-$result=$Conn->query($sql);
-while ( $rs = $result->fetch_array(MYSQLI_ASSOC) ) {
-  var_dump($rs);
-}
-exit ;
-//--- [FJSL-2020-07-05] Revisar por qué las claves son distintas
+// //[FJSL-2020-07-05] Revisar por qué las claves son distintas
+// $sql="SELECT * FROM Usuarios WHERE email='f.sanchez@solucionessl.com' AND id_usuario = 133 " ;
+// $result=$Conn->query($sql);
+// while ( $rs = $result->fetch_array(MYSQLI_ASSOC) ) {
+//   var_dump($rs);
+// }
+// exit ;
+// //--- [FJSL-2020-07-05] Revisar por qué las claves son distintas
 
 // INICIAMOS COMPROBACION DE IDENTIFICACION
 // $sql="SELECT id_usuario,id_c_coste,usuario,password_hash,email,admin,admin_chat,autorizado FROM Usuarios_View WHERE email='$email' AND activo=1 AND $where_empresa " ;
