@@ -1,5 +1,5 @@
 <?php
-
+// cambios
 require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
