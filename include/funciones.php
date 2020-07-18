@@ -298,7 +298,7 @@ function dateformat_friendly($datetime1)
 
 function badge($number, $tipo='danger')
 {  //badge badge-danger navbar-badge
-   return (($number) ?  "<span  class='badge badge-$tipo'>$number</span>" : "") ;
+   return (($number) ?  "<span  class='rounded-circle navbar-badge badge badge-$tipo'>$number</span>" : "") ;
 //   return (($number) ?  "<span  class='badge badge-$tipo navbar-badge'>$number</span>" : "") ;
 
 }
@@ -1623,7 +1623,7 @@ function getVar($variable)
     } else
     {
 //        echo "RETURN DEL SELECT:" . $result->num_rows ;
-        echo "<script>alert('ERROR EN GETVAR: $variable'. Avise a ADMINISTRADOR);</script>" ;
+        echo "<script>var error='ERROR EN GETVAR: $variable Avise a ADMINISTRADOR'; alert(error); console.log(error);</script>" ;
         $return = 0;           // devuelvo 0 si no encuentro nada
     }
     

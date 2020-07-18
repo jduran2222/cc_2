@@ -3,10 +3,12 @@ ini_set("session.use_trans_sid",true);
 //ini_set("session.gc_maxlifetime",180000);  // parece que no está funcionando
 //ini_set('max_file_uploads', 50);
 
-session_start();
-ini_set("display_errors", 1);  
-error_reporting(E_ALL);
-
+//Para mostrar errores de programación y demás sólo cuando quieran ser visualizados
+if ($_GET['debugmode'] == 'si') {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
 
 // intentando evitar  EL DOUBLE INSERT
 //if(strpos($_SERVER['HTTP_USER_AGENT'],'Mediapartners-Google') !== false) {  exit();}
@@ -14,8 +16,7 @@ error_reporting(E_ALL);
 
 $_SESSION["adminlte"]=1;
 
-
-require_once("../conexion.php");
+require_once("../include/conexion.php");
 require_once("../include/funciones.php");
 
 $_m=  isset($_GET['_m']) ?  $_GET['_m'] : '' ;    // inicializamos la variable migas de pan $_m

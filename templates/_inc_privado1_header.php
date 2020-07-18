@@ -1,17 +1,31 @@
 <?php
 
 //Trabajar con sesiones al entrar en las páginas internas del sistema
-ini_set("session.use_trans_sid",true);
-session_start();
+if (strpos('localhost', $_SERVER['HTTP_HOST']) !== false) {
+  ini_set("session.use_trans_sid",true);
+  session_start();
 
-//Para mostrar errores de programación y demás sólo cuando quieran ser visualizados
-if ($_GET['debugmode'] == 'si') {
+  //Para mostrar errores de programación y demás sólo cuando quieran ser visualizados
+  if ($_GET['debugmode'] == 'si') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+  }
+
+  include_once('../include/conexion.php');
+  include_once('../include/funciones.php');
+}
+else {
+  // Tratar sesión al subir al FTP
+  include_once('../include/session.php');
 }
 
-//Importantísimo que no se haya escrito nada antes de todo este código (por eso está el texto ? > < ! DOCTYPE html > todo junto)
+//Limites de memoria:
+ini_set('memory_limit', '256M');
+
+
+//Importantísimo que no se haya escrito nada antes de todo este código por temas de sesiones y redirecciones 
+// (por eso está el texto ? > < ! DOCTYPE html > todo junto)
 
 ?><!DOCTYPE html>
 <html>
