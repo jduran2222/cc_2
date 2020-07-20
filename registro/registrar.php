@@ -4,7 +4,7 @@ $titulo = 'Credenciales erróneas';
 
 include_once('../templates/_inc_registro1_header.php');
   
-require_once( "../include/conexion.php") ;
+require_once( "../../conexion.php") ;
 require_once("../include/funciones.php"); 
 
   

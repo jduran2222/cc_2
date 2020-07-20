@@ -4,7 +4,7 @@ $titulo = 'Cambio de credenciales';
 
 include_once('../templates/_inc_registro1_header.php');
 
-include_once('../include/conexion.php');
+include_once('../../conexion.php');
 include_once('../include/funciones.php');
 
 //Revisar acceso

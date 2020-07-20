@@ -13,7 +13,7 @@ require_once ('../include/phpmailer/Exception.php');
 require_once ('../include/phpmailer/PHPMailer.php');
 require_once ('../include/phpmailer/SMTP.php');
 
-include_once('../include/conexion.php');
+include_once('../../conexion.php');
 include_once('../include/funciones.php');
 
 

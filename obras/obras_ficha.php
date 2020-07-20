@@ -86,7 +86,7 @@ if ($tipo_subcentro=='O')     // consulta para las OBRAS
 }elseif($tipo_subcentro=='G' OR $tipo_subcentro=='A')
 {
  $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,importe_sin_iva,IMPORTE, Valoracion  ,Gastos as Gasto_real,Valoracion-Gastos as Beneficio_real,VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
-         . ",Situacion,URL_Google_Maps "
+         . ",Situacion,URL_Google_Maps, TIPO_LICITACION "
          . ", user,fecha_creacion FROM Obras_View WHERE ID_OBRA=$id_obra AND $where_c_coste";
     
 }elseif($tipo_subcentro=='M')

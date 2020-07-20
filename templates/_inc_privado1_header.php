@@ -12,7 +12,7 @@ if (strpos('localhost', $_SERVER['HTTP_HOST']) !== false) {
     error_reporting(E_ALL);
   }
 
-  include_once('../include/conexion.php');
+  include_once('../../conexion.php');
   include_once('../include/funciones.php');
 }
 else {
