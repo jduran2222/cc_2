@@ -78,10 +78,9 @@ $filtro = isset($_POST["filtro"]) ? $_POST["filtro"] : '' ;
 
 
 
-echo "<br>-----------------Encrypt------------------------------------------------------------";
-echo "</b><br>Encrypt:<b>". encrypt($filtro) ;
-//echo "</b><br>Decrypt: <b>".  decrypt( ($filtro) ) ;
-echo "</b><br>Decrypt encrypt:<b>".  decrypt( encrypt($filtro) ) ;
+//echo "<br>-----------------Encrypt------------------------------------------------------------";
+//echo "</b><br>Encrypt:<b>". encrypt($filtro) ;
+//echo "</b><br>Decrypt encrypt:<b>".  decrypt( encrypt($filtro) ) ;
 
 echo "<br>----------------Encrypt2-------------------------------------------------------------";
 echo "</b><br><br>Encrypt2:<b>". encrypt2($filtro) ;

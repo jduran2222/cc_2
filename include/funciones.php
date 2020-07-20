@@ -20,7 +20,6 @@ function registra_session($rs)
 {
    $_SESSION["email"]=$rs["email"] ;
    $_SESSION["id_c_coste"]=$rs["id_c_coste"] ;
-//   $_SESSION["empresa"]=Dfirst("C_Coste_Texto","C_COSTES","id_c_coste={$_SESSION["id_c_coste"]}");
    $_SESSION["empresa"]=$rs["C_Coste_Texto"] ;
    $_SESSION["user"]=$rs["usuario"] ;
    $_SESSION["id_usuario"]=$rs["id_usuario"] ;
@@ -33,7 +32,6 @@ function registra_session($rs)
    $_SESSION["permiso_administracion"]=$rs["permiso_administracion"] ;
    $_SESSION["permiso_bancos"]=$rs["permiso_bancos"] ;
 
-//                               $cif=Dfirst("cif","C_COSTES","id_c_coste={$_SESSION["id_c_coste"]}") ;
    $_SESSION["cif"]=$rs["cif"] ;
    $_SESSION["invitado"]=0 ;       
    
@@ -738,15 +736,15 @@ function registrar_acceso($id_c_coste,$user,$empresa,$resultado,$ip, $error, $an
 	return $result;
 } 
 
-function encrypt($string) {
-    $key = "Construcloud.es ERP DE CONSTRUCCION. MALAGA. ESPAÑA";
-    return rawurlencode(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))))) ;
-}
- 
-function decrypt($string) {
-    $key = "Construcloud.es ERP DE CONSTRUCCION. MALAGA. ESPAÑA";
-    return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode(rawurldecode($string)), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
-}
+//function encrypt($string) {
+//    $key = "Construcloud.es ERP DE CONSTRUCCION. MALAGA. ESPAÑA";
+//    return rawurlencode(base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(md5($key))))) ;
+//}
+// 
+//function decrypt($string) {
+//    $key = "Construcloud.es ERP DE CONSTRUCCION. MALAGA. ESPAÑA";
+//    return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode(rawurldecode($string)), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+//}
 
 function encrypt2($string) {
     $key = "crypt_38064764f4bd84307739297f20892fd66301ca9c6276064f2e52df65757eb288";

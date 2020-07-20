@@ -59,7 +59,6 @@ if (($num_empresas=$result->num_rows)>0)
                    
 //                       $password_hash_db= Dfirst("password_hash","Usuarios","id_usuario=$id_usuario AND id_c_coste=$id_c_coste") ;
                      $password_hash_db= $rs["password_hash"] ;
-//                     if ($password==decrypt(Dfirst("password_web","Usuarios","id_usuario=$id_usuario AND id_c_coste=$id_c_coste")))  //  COMPROBACION DE PASSWORD PENDIENTE DE DESARROLLAR
                      if (cc_password_verify_hash($password , $password_hash_db))          //  COMPROBACION DE PASSWORD PENDIENTE DE DESARROLLAR
                       {      
                          
@@ -68,36 +67,13 @@ if (($num_empresas=$result->num_rows)>0)
 //                              $Conn->query($sql_update) ;
  
                   
-                         //   $num_empresas
                                $login=1;   
-                              // cc_password_verify_hash($password, $cc_hash)
-//                               $_SESSION["email"]=$rs["email"] ;
-//                               $_SESSION["id_c_coste"]=$rs["id_c_coste"] ;
-//                               $_SESSION["empresa"]=Dfirst("C_Coste_Texto","C_COSTES","id_c_coste={$_SESSION["id_c_coste"]}");
-//                               $_SESSION["user"]=$rs["usuario"] ;
-//                               $_SESSION["id_usuario"]=$rs["id_usuario"] ;
-//                               $_SESSION["admin"]=$rs["admin"] ;
-//                               $_SESSION["admin_chat"]=$rs["admin_chat"] ;
-//                               $_SESSION["autorizado"]=$rs["autorizado"] ;
-//                               $_SESSION["Moneda_simbolo"]=trim($rs["Moneda_simbolo"]) ;
-//                               $_SESSION["permiso_licitacion"]=$rs["permiso_licitacion"] ;
-//                               $_SESSION["permiso_obras"]=$rs["permiso_obras"] ;
-//                               $_SESSION["permiso_administracion"]=$rs["permiso_administracion"] ;
-//                               $_SESSION["permiso_bancos"]=$rs["permiso_bancos"] ;
-//
-////                               $cif=Dfirst("cif","C_COSTES","id_c_coste={$_SESSION["id_c_coste"]}") ;
-//                               $_SESSION["cif"]=$rs["cif"] ;
-//                               $_SESSION["invitado"]=0 ;       
    
-                                 registra_session($rs) ;
+                               registra_session($rs) ;  //registra la variable $_SESSION[]
                                
-                               //registrar_acceso($user,$empresa2,"OK") ; 
                                
                                registrar_acceso($_SESSION["id_c_coste"],$_SESSION["user"],$_SESSION["empresa"],'Acceso OK',$ip, 0, $_SESSION['android'] ,$pais, $json_geoip) ;
                                
-//                               $sql="insert into w_Accesos (id_c_coste,ip, usuario, clave,  sistema, resultado) "
-//                                       . " values  ($id_c_coste,'{$_SERVER['REMOTE_ADDR']}','$user','$empresa' , '{$_SERVER['HTTP_USER_AGENT']}','Acceso OK')";
-//                               $result = $Conn->query($sql);
 
                                if ($num_empresas>1)    //tenemos más de una empresa
                                {
@@ -111,22 +87,7 @@ if (($num_empresas=$result->num_rows)>0)
                                
                
                       }
-//                     else
-//                      { 
-////                                echo "Error password erróneo  " ;
-//                                //registrar_acceso($user,$empresa2,"Error empresa errónea: $empresa") ;
-//                                registrar_acceso($id_c_coste,$user,$empresa,"Error password erróneo user $user, empresa  $empresa, password $password",$ip, 1, $_SESSION['android'] ,$pais, $json_geoip) ;
-//
-////                                 $sql="insert into w_Accesos (id_c_coste, ip, usuario, clave,  sistema, resultado) values  "
-////                                         . "($id_c_coste,'{$_SERVER['REMOTE_ADDR']}','$user','$empresa' , '{$_SERVER['HTTP_USER_AGENT']}','Error password erróneo user $user, empresa  $empresa, password $password')";
-////                                 $result = $Conn->query($sql);
-//                                
-//                               $error=1 ;
-////                               echo "DEBUG" ;
-////                               die("LOGIN ERROR") ;
-//
-//
-//                      }
+
                }   // salimos del bucle SIN ÉXITO, el email era correcto pero el password no
 
                if (!$login)   // fuerzo a no registrar acceso erroneo
@@ -134,33 +95,16 @@ if (($num_empresas=$result->num_rows)>0)
                   $error=1 ;
                }
 
-}       // el email no tiene empresas, no extá registrado
+}       // el email no tiene empresas, no está registrado
  else
 {
-//                echo "<br><br><br><br><br><br><h1>La Empresa <b><i>$empresa</i></b> no está registrada, ¿desea crearla?</h1>" ;
-//                echo "<h1><a class='btn btn-primary btn-lg' href='../registro/empresa_nueva_form.php' >Crear empresa GRATIS</a></h1>" ;
                  registrar_acceso(0,$email,'error_no_email',"email INCORRECTO : $email",$ip, 1, $_SESSION['android'] ,$pais, $json_geoip) ;
                  $error=2 ;
-//                 echo "<br><br><br><br><br><br><h1>La Empresa <b><i>$empresa</i></b> no está registrada, ¿desea crearla?</h1>" ;
-//                 echo "<h1><a class='btn btn-primary btn-lg' href='../registro/empresa_nueva_form.php' >Crear empresa GRATIS</a></h1>" ;
-//                 echo  "<br><h1><a href='javascript:history.back(-1);' title='Ir la página anterior'>Volver</a></h1>" ;
-
-
-//                 $sql="insert into w_Accesos (id_c_coste,ip, usuario, clave,  sistema, resultado) values  (0,'{$_SERVER['REMOTE_ADDR']}','$user','$empresa' , '{$_SERVER['HTTP_USER_AGENT']}','Error empresa no existe: $empresa')";
-//                 $result = $Conn->query($sql);
-
-                //echo "<a href=\"../index.php\">Volver</a>" ;
  }
  
  if ($error)
  {
   
-  // echo  " <center><div >   <p align=center style='font-size:30px ; text-align:center; color:lightskyblue; font-family:verdana '><br>ConstruCloud.es<br>"
-    // . "<img src='../img/construcloud256.jpg'></p></div>" ;
-   
-  // echo "<br><br><br><h3>¡ERROR DE ACCESO cod: $error!, <br><br>si no tiene cuenta puede" ;
-  // echo " <a class='btn btn-link btn-lg' href='../registro/empresa_nueva_form.php' >crear una empresa</a> de forma gratuita</h3>" ;
-  // echo  "<br><h1><a class='btn btn-primary btn-lg' href='javascript:history.back(-1);' title='Ir la página anterior'>Volver a intentarlo</a></h1>" ;
   $htmlError = '';
   $htmlError .= '<div class="login-box">';
   $htmlError .= '  <div class="login-logo">';
