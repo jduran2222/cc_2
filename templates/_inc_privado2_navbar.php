@@ -432,8 +432,8 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                   </ul>
                 </li>
                 <?php
+                    $htmlAgregadoAdmin = '';
                     if ($_SESSION["admin"]) {
-                        $htmlAgregadoAdmin = '';
                         $htmlAgregadoAdmin .= '<!-- AdminLTE -->';
                         $htmlAgregadoAdmin .= '<li class="nav-item">';
                         $htmlAgregadoAdmin .= '  <a href="../adminlte/" class="nav-link" target="_blank">';
