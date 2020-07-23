@@ -159,8 +159,8 @@ include_once('../templates/_inc_privado2_1_topbar.php');
             </li>
 
             <?php 
+            $htmlMenuPermisoLicitacion = '';
             if($_SESSION["permiso_licitacion"]) {
-                $htmlMenuPermisoLicitacion = '';
                 
                 $htmlMenuPermisoLicitacion .= '<li class="nav-item has-treeview">';
                 $htmlMenuPermisoLicitacion .= '  <a href="#" class="nav-link">';
@@ -196,8 +196,8 @@ include_once('../templates/_inc_privado2_1_topbar.php');
             echo $htmlMenuPermisoLicitacion;
             ?>
             <?php 
+            $htmlMenuPermisoObras = '';
             if($_SESSION["permiso_obras"]) {
-                $htmlMenuPermisoObras = '';
 
                 $htmlMenuPermisoObras .= '<li class="nav-item has-treeview">';
                 $htmlMenuPermisoObras .= '  <a href="#" class="nav-link">';
@@ -246,8 +246,8 @@ include_once('../templates/_inc_privado2_1_topbar.php');
             echo $htmlMenuPermisoObras;
             ?>
             <?php 
+            $htmlMenuPermisoAdministracion = '';
             if($_SESSION["permiso_administracion"]) {
-                $htmlMenuPermisoAdministracion = '';
 
                 $htmlMenuPermisoAdministracion .= '<li class="nav-item has-treeview">';
                 $htmlMenuPermisoAdministracion .= '  <a href="#" class="nav-link">';
@@ -506,8 +506,8 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                   </a>
                 </li>
                 <?php
+                    $htmlMenuPermisoBancos = '';
                     if ($_SESSION["permiso_bancos"]) {
-                        $htmlMenuPermisoBancos = '';
       
                         $htmlMenuPermisoBancos .= '<!-- bancos -->';
                         $htmlMenuPermisoBancos .= '<li class="nav-item">';
