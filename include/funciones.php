@@ -61,7 +61,7 @@ function span_wiki($entrada_wiki)
    return     "<a style='opacity : .3;font-size:small;'  href='https://wiki.construcloud.es/index.php?title=$entrada_wiki' title='ver ConstruWIKI' target='_blank'>"
                . "<i class='fab fa-wikipedia-w'></i><i class='fas fa-question-circle'></i></a>"
                . "<div class='box_wiki'>"
-           . "<iframe src='https://wiki.construcloud.es/index.php?title=$entrada_wiki' width = '400px' height = '200px'></iframe>"
+           . "<iframe src='https://wiki.construcloud.es/index.php?title=$entrada_wiki' class='col-12' style='min-height:240px'></iframe>"
            . "</div>"   ; 
 
 }
