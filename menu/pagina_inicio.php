@@ -138,7 +138,7 @@ echo '<div>' ;
 if (1)    // ACTIVIDAD lo ponemos para todos los usuarios  , juand, abril 2020
 {
     // LOGO EMPRESA
-     echo "<img width='150' src='{$path_logo_empresa}' ><br>";
+     echo "<img width='150' src='{$path_logo_empresa}_large.jpg' ><br>";
 
      // Actividad
     $fecha_eventos_vistos=Dfirst("fecha_eventos_vistos","Usuarios_View"," $where_c_coste AND id_usuario={$_SESSION["id_usuario"]} " ) ;

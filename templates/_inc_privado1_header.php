@@ -1,11 +1,13 @@
 <?php
 
 //Trabajar con sesiones al entrar en las páginas internas del sistema
+//Para desarrollo local:
 if (strpos('localhost', $_SERVER['HTTP_HOST']) !== false) {
   ini_set("session.use_trans_sid",true);
   session_start();
 
-  //Para mostrar errores de programación y demás sólo cuando quieran ser visualizados
+  //Para mostrar errores de programación y demás sólo cuando quieran ser visualizados: 
+  //        poner en la url web.com/pagina.php?debugmode=si
   if ($_GET['debugmode'] == 'si') {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
@@ -15,6 +17,7 @@ if (strpos('localhost', $_SERVER['HTTP_HOST']) !== false) {
   include_once('../../conexion.php');
   include_once('../include/funciones.php');
 }
+//Para desarrollo en el VPS
 else {
   // Tratar sesión al subir al FTP
   include_once('../include/session.php');

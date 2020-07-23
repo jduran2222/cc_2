@@ -1,5 +1,7 @@
 <?php
 ini_set("session.use_trans_sid",true);
+session_start();
+
 //ini_set("session.gc_maxlifetime",180000);  // parece que no está funcionando
 //ini_set('max_file_uploads', 50);
 
