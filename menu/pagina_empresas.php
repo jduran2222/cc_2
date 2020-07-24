@@ -21,15 +21,15 @@ if ($_SESSION["email"]) {
     $templateItemList = '
           <a href="{{url}}" class="row mb-3">
             <div class="col-12 col-sm-2">
-                <img src="{{imagen}}">
+                <img class="img-fluid" src="{{imagen}}" alt="logo empresa {{empresa}}"/>
             </div>
-            <div class="col-12 col-sm-3">
-                {{empresa}}
+            <div class="col-12 col-sm-3 text-center">
+                <strong class="h3"> {{empresa}} </strong>
             </div>
-            <div class="col-12 col-sm-4">
+            <div class="col-12 col-sm-4 text-center">
                 {{usuario}}
             </div>
-            <div class="col-12 col-sm-3 small">
+            <div class="col-12 col-sm-3 text-right small">
                 {{autorizado}}
             </div>
           </a>';
@@ -37,8 +37,10 @@ if ($_SESSION["email"]) {
     $htmlSelectList = '';
     while ( $rs = $result->fetch_array(MYSQLI_ASSOC) ) {
         $tmpHtml = $templateItemList;
-        $tmpHtml = str_replace('{{url}}', $url.$rs['id_usuario'], $tmpHtml);
-        $tmpHtml = str_replace('{{imagen}}', $rs['path_logo'], $tmpHtml);
+        $urlEmpresa = $url.$rs['id_usuario'];
+        $urlImagen = ( isset($rs['path_logo']) && !empty($rs['path_logo']) ? $rs['path_logo'].'_large.jpg' : '../no-image.png');
+        $tmpHtml = str_replace('{{url}}', $urlEmpresa, $tmpHtml);
+        $tmpHtml = str_replace('{{imagen}}', $urlImagen, $tmpHtml);
         $tmpHtml = str_replace('{{empresa}}', $rs['C_Coste_Texto'], $tmpHtml);
         $tmpHtml = str_replace('{{usuario}}', $rs['usuario'], $tmpHtml);
         $tmpHtml = str_replace('{{autorizado}}', $rs['autorizado'], $tmpHtml);

@@ -56,6 +56,8 @@ ini_set('memory_limit', '256M');
   <link rel="stylesheet" href="../adminlte/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="../adminlte/plugins/summernote/summernote-bs4.css">
+  <!-- Estilos propietarios bajo el fichero principal main.css -->
+  <link rel="stylesheet" href="../css/main.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <!-- Icono por defecto -->
