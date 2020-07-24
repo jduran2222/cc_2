@@ -14,23 +14,7 @@ $titulo = $titulo_pagina;
 include_once('../templates/_inc_privado1_header.php');
 include_once('../templates/_inc_privado2_navbar.php');
 
-?>
 
-<style>
-  .box_wiki{
-    display: none;
-    width: 100%;
-}
-
-a:hover + .box_wiki,.box_wiki:hover{
-    display: block;
-    /*position: relative;*/
-    position: absolute;
-    z-index: 100;
-}
-  
-</style>
-<?php
 
 //CONTENIDO
 //...
