@@ -1,5 +1,9 @@
 <?php
+// cambios
 require_once("../include/session.php");
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
+
 
 
 //            VERSION PARA IMPRESORA, PDF, EXCEL, WORD   
@@ -31,37 +35,30 @@ else
 {
     echo "<SCRIPT>window.print()</SCRIPT>" ;
 }
+
+$titulo = 'PDFs';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 ?>
 
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
-    
-
-
-
-<HTML>
-    <HEAD>
-  <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-
-    </HEAD>
-    <BODY>
-    
-        <style>
-            
-            body{
-                background-color: white;
-                
-            }
-        </style>
 
 <!--<input type="button" name="imprimir" value="Imprimir" onclick="window.print();">-->
 
 <?php $id_obra = $_GET["id_obra"]; ?>
 
-<?php //require("../menu/topbar.php");
-?>
 
 
         <div id="main" class="mainc">
@@ -189,6 +186,13 @@ if ($result->num_rows > 0)
 $Conn->close();
 ?>
         </div>
-    </BODY>
-</HTML>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
 
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');

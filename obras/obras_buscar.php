@@ -1,61 +1,32 @@
 <?php
+// cambios
 require_once("../include/session.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
+
+$titulo = 'Buscador de obras';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 ?>
 
-<html>
-<head>
-<title>ConstruCloud </title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-<!--ANULADO 16JUNIO20<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" type="text/css">
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <!--ANULADO 16JUNIO20<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-</head>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
-<body>
-
-<!--<style>
- input,a ,ul{ 
-/*    border: 2px solid red;
-    background-color: lightyellow;*/
-    /*font-size:40px; width:400px; height:100px;*/
-    font-size:40px; width:100%; height:150px;
-
-}
-
-@media only screen and (max-width:981px) {
- 
-input,button ,a
-{
-    font-size:40px; width:100%; height:150px;
-}
-/*input.input_mobile , a.input_mobile {       
-     width: 100%;
-     height: 15% ;
-     font-size: 60px;
-}*/
- 
-
-}
- 
-
-    
-    
-</style>
-	-->
 <?php 
 
 
 $tipo_subcentro=$_GET["tipo_subcentro"] ;
 
-require_once("../../conexion.php"); 
-require_once("../include/funciones.php"); 
-require_once("../menu/topbar.php");
 //require("obras_menutop_r.php");
 
 
@@ -194,7 +165,13 @@ $Conn->close();
 ?>
 
 </div>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
 
-<?php require_once( '../include/footer.php' ); ?>
-</BODY>
-</html>
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
