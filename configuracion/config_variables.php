@@ -1,38 +1,26 @@
 <?php
+// cambios
 require_once("../include/session.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;   // AND $where_c_coste 
-?>
-<HTML>
-<HEAD>
-    <TITLE>Variables entorno</TITLE>
-	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-	
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-        	<!--ANULADO 16JUNIO20<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" type="text/css">
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <!--ANULADO 16JUNIO20<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-</HEAD>
-<BODY>
+$titulo = 'Variables de entorno';
 
-
-
-
-<!-- CONEXION CON LA BBDD Y MENUS -->
-<?php 
-
-require_once("../../conexion.php"); 
-require_once("../include/funciones.php"); 
-
-require_once("../menu/topbar.php");
-require_once("../menu/topbar.php"); 
-
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
+
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
 
 <div style="overflow:visible">	   
@@ -126,17 +114,13 @@ $Conn->close();
 
 </div>
 
-<!--	<div style="background-color:#f1f1f1;text-align:center;padding:10px;margin-top:7px;font-size:30px;">
-	
-	 <script language="javascript" type="text/javascript">
-         
-            document.writeln("<b>Tú resolución es de:</b> " + screen.width + " x " + screen.height +"");
-         //
-      </script>
-	
-	</div>
-	-->
-<?php require '../include/footer.php'; ?>
-</BODY>
-</HTML>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
 
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
