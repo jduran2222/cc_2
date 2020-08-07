@@ -6,10 +6,19 @@ session_start();
 //ini_set('max_file_uploads', 50);
 
 //Para mostrar errores de programación y demás sólo cuando quieran ser visualizados
-if ($_GET['debugmode'] == 'si') {
+if ($_GET['debugmode'] == 'si' || strpos('localhost', $_SERVER['HTTP_HOST']) !== false || strpos('ingenop', $_SERVER['HTTP_HOST']) !== false ||strpos('www2', $_SERVER['HTTP_HOST']) !== false) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+    //Guardar en sesión
+    $_SESSION['debugmode'] = 'si';
+}
+else if (isset($_SESSION['debugmode'])) {
+  if ($_SESSION['debugmode'] == 'si') {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+  }
 }
 
 // intentando evitar  EL DOUBLE INSERT
