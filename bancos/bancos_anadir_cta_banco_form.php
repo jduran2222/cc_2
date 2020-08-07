@@ -1,21 +1,28 @@
 <?php
+// cambios
 require_once("../include/session.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;	
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
+
+$titulo = 'Añadir nueva cuenta bancaria';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 ?>
-<html>
-<head>
-	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-<title>ConstruCloud</title></head>
 
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-<body >
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 <?php   
  
-
-require_once("../include/funciones.php");
-require_once("../menu/topbar.php");
 require_once("../bancos/bancos_menutop_r.php");
 
 ?>
@@ -81,7 +88,13 @@ require_once("../bancos/bancos_menutop_r.php");
   
 
 </div>
-<?php require '../include/footer.php'; ?>
-</BODY>
-</html>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
 
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
