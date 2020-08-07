@@ -1,84 +1,36 @@
 <?php
-//session_start();
+// cambios
 require_once("../include/session.php");
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
 
-//include('header.php');
+$titulo = 'Chat ';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Chat - ConstruCloud.es</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
-<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
-<!-- jQuery -->
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
-<link href="chat_style.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" rel="stylesheet" id="bootstrap-css">
-<!--<script src="js/chat.js"></script>-->
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
-        <link href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" rel=stylesheet type="text/css" hreflang="es">
-        <link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-        <!---->
+                <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
+                <!-- <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'> -->
+                <link href="chat_style.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" rel="stylesheet" id="bootstrap-css">
+                <!-- <link href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" rel=stylesheet type="text/css"> -->
+                <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"> -->
+                <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 
-        <!--ANULADO 16JUNIO20<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" type="text/css">
-
-<!--        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" type="text/css">-->
-
-        <!--<link rel="stylesheet" href="../css/icons.css" type="text/css" />-->
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <!--ANULADO 16JUNIO20<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-
-
-</head>
-<!--<body class="">-->
-<body >
-<!--<div role="navigation" class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button data-target=".navbar-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a href="../menu/pagina_inicio.php" class="navbar-brand">CONSTRUCLOUD</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active">Chat On Line</li>
-           
-          </ul>
-         
-        </div>/.nav-collapse 
-      </div>
-    </div>-->
-	
-<!--<div class="container" style="min-height:500px;">-->
-<!--<div class="container" >
-<div class=''>
-</div>
-<style>
-    .modal-dialog {
-        width: 400px;
-        margin: 30px auto;	
-    }
-</style>-->
 <?php
 //include('container.php');
-
-require_once("../../conexion.php");
-require_once("../include/funciones.php");
-
-require_once("../menu/topbar.php");
-//require_once("../../include/funciones.php");
  
 
 //         cc_email('juanduran@ingenop.com', "Construclud.es: Nuevo chat" , "Empresa/usuario: MENSAJE  " , '' );
@@ -454,5 +406,13 @@ function showTypingStatus() {
 	});
 }    
 </script>    
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
 
-</html>
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
