@@ -136,7 +136,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo ($path_logo_empresa); ?>" class="img-circle elevation-2" alt="logo empresa usuario">
+          <img src="<?php echo ($path_logo_empresa); ?>_large.jpg" class="img-circle elevation-2" alt="logo empresa usuario">
         </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo ($_SESSION["empresa"] .' | '. $_SESSION["user"]); ?></a>
@@ -406,13 +406,13 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                   </a>
                   <ul class="nav nav-treeview small">
                     <li class="nav-item">
-                      <a href="../proveedores/proveedores_buscar.php" class="nav-link">
+                      <a href="../configuracion/usuario_ficha.php" class="nav-link">
                         <i class="fa fa-user-cog nav-icon"></i>
                         <p>Usuario actual</p>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="../documentos/doc_upload_multiple_form.php?_m=<?php echo $_m; ?>&tipo_entidad=fra_prov" class="nav-link">
+                      <a href="../configuracion/usuario_anadir.php" class="nav-link">
                         <i class="fa fa-user-plus nav-icon"></i>
                         <p>Añadir usuario</p>
                       </a>

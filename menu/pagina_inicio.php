@@ -188,12 +188,9 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
 
 
         <!-- MENU container-fluid -->
-        <div class="container-fluid my-5">   
-
-
+        <div class="container-fluid mt-5">   
 
             <!--****************** M E N U   P R I N C I P A L  *****************-->
-
 
             <!--****************** REGISTROS  *****************-->
             <div class="row">
