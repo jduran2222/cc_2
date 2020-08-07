@@ -1,17 +1,26 @@
 <?php
-require("../include/session.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
+// cambios
+require_once("../include/session.php");
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
+
+$titulo = 'Pagos anuarios';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 ?>
-<html>
 
-<head>
-<title></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<link rel=stylesheet href="../css/estilos.css" type="text/css">
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-
-</head>
-<BODY>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
 <div align=center class="main"><h1>Anuario de Pagos e Ingresos</h1></div>
 
@@ -267,6 +276,14 @@ set rs=Nothing
 	Conn.close
 set Conn=nothing
 %>
-</body>
-</html>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
+
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
 

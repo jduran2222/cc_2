@@ -1,36 +1,31 @@
 <?php
+// cambios
 require_once("../include/session.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;   // AND $where_c_coste 
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
+
 $banco_titulo= isset($_GET["id_cta_banco"]) ?  Dfirst("Banco","ctas_bancos", "id_cta_banco={$_GET["id_cta_banco"]} AND $where_c_coste"  ) : "GLOBAL" ;
-$titulo_pagina="MOVS. BANCO $banco_titulo"  ;
+$titulo_pagina="Movs. Banco $banco_titulo"  ;
+$titulo = $titulo_pagina;
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
-<HTML>
-<HEAD>
-    <title><?php echo $titulo_pagina ?></title> 
-	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-	
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-  <!--ANULADO 16JUNIO20<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" type="text/css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--ANULADO 16JUNIO20<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-  <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"> </script>-->
-</HEAD>
-<BODY>
-
-    <BR><BR><BR>
-    
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
 <?php 
 
-//require_once("../../conexion.php"); 
-//require_once("../include/funciones.php"); 
-require_once("../menu/topbar.php");
 require_once("../bancos/bancos_menutop_r.php");
 
 
@@ -700,10 +695,14 @@ function mov_bancos_conciliar_selection(agrupar)
         
         
         
-    
-    
-    
-<?php require '../include/footer.php'; ?>
-</BODY>
-</HTML>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
+
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
 
