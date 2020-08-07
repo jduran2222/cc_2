@@ -1,25 +1,31 @@
 <?php
+// cambios
 require_once("../include/session.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;   // AND $where_c_coste 
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
+
+$titulo = 'Acceso web';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 ?>
-<HTML>
-<HEAD>
-	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-	
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-</HEAD>
-<BODY>
 
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
 
 <?php $id_cta_banco=$_GET["id_cta_banco"];?>
 
 <!-- CONEXION CON LA BBDD Y MENUS -->
-<?php // require_once("../../conexion.php"); ?> 
-<?php require("../menu/topbar.php");?>
 <?php // require("../bancos/bancos_menutop_r.php");?>
 
 
@@ -97,12 +103,13 @@ $Conn->close();
 
 </div>
 
-	<div style="background-color:#f1f1f1;text-align:center;padding:10px;margin-top:7px;font-size:30px;">
-	
-	
-	</div>
-	
-<?php require '../include/footer.php'; ?>
-</BODY>
-</HTML>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
 
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
