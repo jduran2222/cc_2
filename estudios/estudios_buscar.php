@@ -1,8 +1,16 @@
 <?php
+// cambios
 require_once("../include/session.php");
-?>
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
 
-<?php
+$titulo = 'Listado Estudios';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
+                  
 
 if (!empty($_POST))
 {
@@ -12,31 +20,21 @@ if (!empty($_POST))
   $num_max=20;
   $filtro="";
 };
-
-
 ?>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<HEAD>
-<META NAME="GENERATOR" Content="Microsoft FrontPage 5.0">
-<TITLE>Listado Estudios</TITLE>
-	<link href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" rel=stylesheet type="text/css" hreflang="es">
-	<!--ANULADO 16JUNIO20<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" type="text/css">
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <!--ANULADO 16JUNIO20<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
-</HEAD>
-<body>
-    <br><br><br><br><br><br>	
-<?php 
-    require_once("../menu/topbar.php");
-    require_once("../estudios/estudios_menutop_r.php");
-  ?>
-	
+
+
+
 <div align=center class="encabezadopagina2">Buscar Licitaciones</div>
   <!--<a class="boton" href="../estudios/estudios_calendar.php?fecha=<?php echo date("Y-m-d"); ?>" >Calendario Licitaciones</a>-->
   <a class="btn btn-link" href="../estudios/estudios_nuevo.php" ><i class='fas fa-plus-circle'></i> añadir Licitación</a>
@@ -137,8 +135,14 @@ $Conn->close();
 
 
 ?>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
 
-<?php require '../include/footer.php'; ?>
-</BODY>
-</html>
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
 

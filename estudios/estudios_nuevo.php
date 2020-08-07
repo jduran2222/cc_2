@@ -1,28 +1,30 @@
 <?php
+// cambios
 require_once("../include/session.php");
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
+
+$titulo = 'Estudio nuevo';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 ?>
-<HTML>
-<HEAD>
-<TITLE>Estudio nuevo</TITLE>    
-	<META NAME="GENERATOR" Content="NOTEPAD.EXE">
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-  <!--ANULADO 16JUNIO20<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css?v1=1" type="text/css">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--ANULADO 16JUNIO20<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>--> 
-</HEAD>
-<BODY>
-    
-<?php
-require_once("../menu/topbar.php");
-require_once("../estudios/estudios_menutop_r.php");    
-?>   
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-   
-<BR><BR><BR><BR><h1 >CREAR LICITACION</h1>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
+
+
+
+<h1 >CREAR LICITACION</h1>
 
 <center>
     <BR>
@@ -65,6 +67,13 @@ require_once("../estudios/estudios_menutop_r.php");
 
     </center>
 
-<?php require '../include/footer.php'; ?>
-</BODY>
-</HTML>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
+
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
