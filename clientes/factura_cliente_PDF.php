@@ -1,14 +1,10 @@
 <?php
+// cambios
 require_once("../include/session.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
-
-
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
 
 $id_fra=$_GET["id_fra"];
-
-
- require_once("../../conexion.php");
- require_once("../include/funciones.php");
  
  
 $result_emp=$Conn->query("SELECT * FROM C_COSTES WHERE  $where_c_coste");
@@ -38,24 +34,24 @@ echo "<script>window.print();</script>" ;
 }
 
 
+$titulo = 'Fra. '.$_SESSION["empresa"].' '.$n_fra;
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
-     <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
-    <title>factura_<?php echo $_SESSION["empresa"] ?>_<?php echo $n_fra ?></title>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
-	<style type="text/css">
-		@page { margin: 2cm }
-		p { margin-bottom: 0cm; margin-top: 0cm; padding: 0cm; so-language: zxx }
-		td p { margin-bottom: 0cm; so-language: zxx }
-		a:link { so-language: zxx }
-	</style>
-</head>
-<body dir="ltr">
   <?php     if (!$path_logo_empresa=Dfirst("path_archivo", "Documentos", "tipo_entidad='empresa' AND $where_c_coste")) $path_logo_empresa="../img/no_logo.jpg" ; ?>
 
     <p lang="zxx" align="left" style="margin-bottom: 0cm"><img width="300" src="<?php echo $path_logo_empresa; ?>" ></p>
@@ -336,13 +332,18 @@ Bancaria:</font></font></p>
 <?php  
 
 
-
-
 $Conn->close();
 
 ?>
  
 
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
 
-</body>
-</html>
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');

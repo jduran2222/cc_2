@@ -1,30 +1,26 @@
 <?php
+// cambios
 require_once("../include/session.php");
-?>
-<html>
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-<title>ConstruCloud</title></head>
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
 
+$titulo = 'Clientes Añadir';
 
-<body >
- 
-<center>
-<div >
-	<p align=center style='text-align:center'>
-		<img width="200" src="../img/construcloud64.svg">
-	</p>
-   
-</div>
-	
-<?php 
-require_once("../include/funciones.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;	
-
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
+
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
+
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
       	
 
 <form action="clientes_anadir.php" method="post" name="form1"  >
@@ -61,7 +57,14 @@ $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
 </center>
   
 </div>
-<?php require '../include/footer.php'; ?>
-</BODY>
-</html>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
+
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
 
