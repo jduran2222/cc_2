@@ -201,7 +201,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
 
                 $htmlMenuPermisoObras .= '<li class="nav-item has-treeview">';
                 $htmlMenuPermisoObras .= '  <a href="#" class="nav-link">';
-                $htmlMenuPermisoObras .= '    <i class="fa fa-tools nav-icon"></i>';
+                $htmlMenuPermisoObras .= '    <i class="fa fa-hard-hat nav-icon"></i>';
                 $htmlMenuPermisoObras .= '    <p title="Obras, proyectos y servicios">';
                 $htmlMenuPermisoObras .= '      Obras';
                 $htmlMenuPermisoObras .= '      <i class="fas fa-angle-left right"></i>';
@@ -305,7 +305,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                 $htmlMenuPermisoAdministracion .= '        </li>';
                 $htmlMenuPermisoAdministracion .= '        <li class="nav-item">';
                 $htmlMenuPermisoAdministracion .= '          <a href="../bancos/remesas_listado.php?tipo_remesa=tipo_remesa=\'P\'&conc=activa=1" class="nav-link">';
-                $htmlMenuPermisoAdministracion .= '            <i class="fa fa-funnel-dollar nav-icon"></i>';
+                $htmlMenuPermisoAdministracion .= '            <i class="fas fa-euro-sign nav-icon"></i>';
                 $htmlMenuPermisoAdministracion .= '            <p>Remesa de Pagos <span class="badge badge-info right">'.$num_remesa_pagos.'</span></p>';
                 $htmlMenuPermisoAdministracion .= '          </a>';
                 $htmlMenuPermisoAdministracion .= '        </li>';
@@ -342,7 +342,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                 $htmlMenuPermisoAdministracion .= '        </li>';
                 $htmlMenuPermisoAdministracion .= '        <li class="nav-item">';
                 $htmlMenuPermisoAdministracion .= '          <a href="../bancos/remesas_listado.php?tipo_remesa=tipo_remesa=\'C\'&conc=activa=1" class="nav-link">';
-                $htmlMenuPermisoAdministracion .= '            <i class="fa fa-funnel-dollar nav-icon"></i>';
+                $htmlMenuPermisoAdministracion .= '            <i class="fas fa-euro-sign nav-icon"></i>';
                 $htmlMenuPermisoAdministracion .= '            <p>Remesa de Cobros <span class="badge badge-info  right">'.$num_remesa_cobros.'</span></p>';
                 $htmlMenuPermisoAdministracion .= '          </a>';
                 $htmlMenuPermisoAdministracion .= '        </li>';
@@ -452,7 +452,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                         $htmlAgregadoAdmin .= '<!-- Remesas -->';
                         $htmlAgregadoAdmin .= '<li class="nav-item">';
                         $htmlAgregadoAdmin .= '  <a href="../bancos/remesas_listado.php?tipo_remesa=tipo_remesa=P&conc=activa=1" class="nav-link">';
-                        $htmlAgregadoAdmin .= '    <i class="fa fa-funnel-dollar nav-icon"></i>';
+                        $htmlAgregadoAdmin .= '    <i class="fas fa-euro-sign nav-icon"></i>';
                         $htmlAgregadoAdmin .= '    Remesa de Pagos';
                         $htmlAgregadoAdmin .= '    <span class="badge badge-info right" >'.$num_remesa_pagos.'</span>';
                         $htmlAgregadoAdmin .= '  </a>';
@@ -493,7 +493,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                     </li>
                     <li class="nav-item">
                       <a href="../bancos/remesas_listado.php?tipo_remesa=tipo_remesa=C&conc=activa=1" class="nav-link">
-                        <i class="fa fa-funnel-dollar nav-icon"></i>
+                        <i class="fas fa-euro-sign nav-icon"></i>
                         <p>Remesa de Cobros <span class='badge badge-info  right' ><?php echo $num_remesa_cobros; ?></span></p>
                       </a>
                     </li>
@@ -589,7 +589,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="../include/tabla_general.php?url_enc=<?php echo encrypt2("tabla=historial&where=Tipo_cambio LIKE '%PHP%' &campo=titulo&campo_id=id&link=../include/ficha_general.php?tabla=historial__AND__id_update=id__AND__id_valor=") ?>" class="nav-link">
                     <i class="fa fa-list nav-icon"></i>
                     Versiones
                   </a>

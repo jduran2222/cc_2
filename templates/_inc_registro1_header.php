@@ -5,10 +5,19 @@ ini_set("session.use_trans_sid",true);
 session_start();
 
 //Para mostrar errores de programación y demás sólo cuando quieran ser visualizados
-if ($_GET['debugmode'] == 'si') {
+if ($_GET['debugmode'] == 'si' || strpos('localhost', $_SERVER['HTTP_HOST']) !== false || strpos('ingenop', $_SERVER['HTTP_HOST']) !== false ||strpos('www2', $_SERVER['HTTP_HOST']) !== false) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
+    //Guardar en sesión
+    $_SESSION['debugmode'] = 'si';
+}
+else if (isset($_SESSION['debugmode'])) {
+  if ($_SESSION['debugmode'] == 'si') {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+  }
 }
 
 //Importantísimo que no se haya escrito nada antes de todo este código (por eso está el texto ? > < ! DOCTYPE html > todo junto)

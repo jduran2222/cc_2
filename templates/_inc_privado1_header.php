@@ -8,10 +8,19 @@ if (strpos('localhost', $_SERVER['HTTP_HOST']) !== false) {
 
   //Para mostrar errores de programación y demás sólo cuando quieran ser visualizados: 
   //        poner en la url web.com/pagina.php?debugmode=si
-  if ($_GET['debugmode'] == 'si') {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
+  if ($_GET['debugmode'] == 'si' || strpos('localhost', $_SERVER['HTTP_HOST']) !== false || strpos('ingenop', $_SERVER['HTTP_HOST']) !== false ||strpos('www2', $_SERVER['HTTP_HOST']) !== false) {
+      ini_set('display_errors', 1);
+      ini_set('display_startup_errors', 1);
+      error_reporting(E_ALL);
+      //Guardar en sesión
+      $_SESSION['debugmode'] = 'si';
+  }
+  else if (isset($_SESSION['debugmode'])) {
+    if ($_SESSION['debugmode'] == 'si') {
+      ini_set('display_errors', 1);
+      ini_set('display_startup_errors', 1);
+      error_reporting(E_ALL);
+    }
   }
 
   include_once('../../conexion.php');
