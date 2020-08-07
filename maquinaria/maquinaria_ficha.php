@@ -1,23 +1,26 @@
 <?php
+// cambios
 require_once("../include/session.php");
-$where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
+$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+$id_c_coste = $_SESSION['id_c_coste'];
+
+$titulo = 'Maquinaria';
+
+//INICIO
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 ?>
 
-<HTML>
-<HEAD>
-     <title>Maquinaria</title>
-	<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />	
-	<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
-	
-   <!--ANULADO 16JUNIO20<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-   <link rel="stylesheet" href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" type="text/css">
+        <!-- Contenido principal -->
+        <div class="container-fluid bg-light">
+            <div class="row">
+                <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-3"></div>
+                <!--****************** ESPACIO LATERAL  *****************-->
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <!--ANULADO 16JUNIO20<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-
-</HEAD>
-<BODY>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
 
 <?php 
@@ -31,9 +34,6 @@ $id_obra=$_GET["id_obra"];
 //   $_SESSION['nombre_obra']=Dfirst("NOMBRE_OBRA","OBRAS","id_obra=$id_obra AND $where_c_coste ") ;
 //}
 
- 
- 
- require_once("../menu/topbar.php");
  require_once("../obras/obras_menutop_r.php");    
 
 ?>
@@ -161,9 +161,14 @@ $Conn->close();
 
 </div>
 
-	<div style="background-color:#f1f1f1;text-align:center;padding:10px;margin-top:7px;font-size:12px;">FOOTER</div>
-	
-<?php require '../include/footer.php'; ?>
-</BODY>
-</HTML>
+                </div>
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            </div>
+        </div>
+        <!-- FIN Contenido principal -->
+
+<?php 
+
+//FIN
+include_once('../templates/_inc_privado3_footer.php');
 
