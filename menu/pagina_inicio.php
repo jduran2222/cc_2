@@ -105,7 +105,6 @@ if ($_SESSION["is_desarrollo"]) {
 }       
 ?>
 
-<BR><BR>
         <div class="container-fluid">	
             <div class="row">
 
