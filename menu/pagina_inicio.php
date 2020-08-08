@@ -116,7 +116,7 @@ if ($_SESSION["is_desarrollo"]) {
 
                 <!--****************** BUSQUEDA GLOBAL  *****************-->
                 <div class="col-12 col-md-4 col-lg-6 bg-light text-center">
-                    <div style='margin: 20px;'><img style='max-width:400px; max-height:300px;' src='<?php echo $path_logo_empresa;?>_large.jpg' >
+                    <div style='margin: 20px;'><img style='max-width:400px; max-height:200px;' src='<?php echo $path_logo_empresa;?>_large.jpg' >
                     </div>
                     <form action="busqueda_global.php" method="post" id="form1" name="form1" target='_blank'>
                 
