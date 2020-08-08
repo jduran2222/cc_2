@@ -887,7 +887,7 @@ $content_ficha .=  "</table>" ;
                 <!-- tools card -->
                 <div class="card-tools">
                   <!-- button with a dropdown -->
-                  <div class="btn-group">
+<!--                  <div class="btn-group">
                     <button type="button" class="btn btn-tool btn-sm dropdown-toggle" data-toggle="dropdown" data-offset="-52">
                       <i class="fas fa-bars"></i></button>
                     <div class="dropdown-menu" role="menu">
@@ -897,7 +897,7 @@ $content_ficha .=  "</table>" ;
                       <div class="dropdown-divider"></div>
                       <a href="#" class="dropdown-item">View calendar</a>
                     </div>
-                  </div>
+                  </div>-->
                   <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
                   </button>

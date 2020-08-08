@@ -133,7 +133,7 @@ $id_parte=$rs["ID_PARTE"] ;
 //  if (!$rs["importe"])    //  NO HAY DETALLES, podemos cambiar de Proveedor o borrrar el Vale (CAMBIAR A Dcount(id detalles)
   if (!$rs["importe"] OR $admin )    //  NO HAY DETALLES, podemos cambiar de Proveedor o borrrar el Vale (CAMBIAR A Dcount(id detalles)
   {
-  $selects["ID_PROVEEDORES"]=["ID_PROVEEDORES","PROVEEDOR","Proveedores","../proveedores/proveedores_anadir.php"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+  $selects["ID_PROVEEDORES"]=["ID_PROVEEDORES","PROVEEDOR","Proveedores","../proveedores/proveedores_anadir.php","../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
   $etiquetas["ID_PROVEEDORES"]='PROVEEDOR' ; 
 
   }

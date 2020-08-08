@@ -5,7 +5,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
 ?>
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light navbar-fixed-top noprint">
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light navbar-fixed-top text-sm noprint">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
@@ -13,7 +13,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
           <i class="fas fa-bars"></i>
         </a>
       </li>
-      <li class="nav-item d-inline-block">
+      <li class="nav-item d-sm-inline-block">
         <a href="#" class="px-1 px-sm-2 btn btn-link" title="Busqueda global" onclick="busqueda_global();">
           <i class="fas fa-search"></i>
           <span class="d-none d-sm-inline">Búsqueda</span>
@@ -24,7 +24,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
           <i class="fas fa-print"></i>
         </a>
       </li>
-      <li class="nav-item d-inline-block p-1">
+      <li class="nav-item d-inline-block p-1 border-left">
         <a href="?" class="p-1 px-1 px-sm-2 btn btn-success btn-xs" title="Refrescar">
           <i class="fas fa-redo"></i>
           <span class="d-none d-sm-inline">Refrescar</span>
@@ -44,13 +44,13 @@ include_once('../templates/_inc_privado2_1_topbar.php');
       <li class="nav-item d-inline-block border-left">
         <a href="../debug/debug_logs.php" class="px-1 px-sm-2 btn btn-link" target="_blank" title="Abrir debugger">
             <i class="fab fa-dyalog"></i>
-            <span class="d-none d-sm-inline"><span class="d-none">D</span>ebug</span>
+            <span class="d-none d-sm-inline"><span class="d-none">D</span></span>
         </a>
       </li>
       <li class="nav-item d-inline-block">
         <a href="../debug/debug_reset.php" target="_blank" title="Realizar reset" class="px-1 px-sm-2 btn btn-link ">
             <i class="fas fa-registered"></i>
-            <span class="d-none d-sm-inline"><span class="d-none">R</span>eset</span>
+            <span class="d-none d-sm-inline"><span class="d-none">R</span></span>
         </a>
       </li>
         ';
@@ -59,45 +59,47 @@ include_once('../templates/_inc_privado2_1_topbar.php');
       ?>
 
       <li class="nav-item d-inline-block border-left">
-        <a id="btn_empresa" href="../configuracion/empresa_ficha.php" class="px-1 px-sm-2 btn btn-link" title="Ver ficha Empresa">
-            <i class="fas fa-building"></i>
-            <span class="d-none d-sm-inline"> <?php echo (ucwords($_SESSION["empresa"])); ?> </span>
-        </a>
-      </li>
-      <li class="nav-item d-inline-block border-left">
-        <a href="../configuracion/usuario_ficha.php" class="px-1 px-sm-2 btn btn-link" title="Ver ficha Usuario">
-            <i class="far fa-user"></i>
-            <span class="d-none d-sm-inline">  
-                <?php echo (ucwords($_SESSION["user"])); ?>
-                <sup class="bg-info small px-0 px-sm-1">
+                       <!-- button with a dropdown -->
+                  <div class="btn-group">
+                    <button type="button" class="nav-item d-inline-block btn btn-link  dropdown-toggle" data-toggle="dropdown" data-offset="-52">
+                      <i class="fas fa-building"></i>
+                    <span class="d-none d-sm-inline"> <?php echo (ucwords($_SESSION["empresa"])); ?> </span>/
+                    <i class="far fa-user"></i>
+                    <span class="d-none d-sm-inline"><?php echo (ucwords($_SESSION["user"])); ?>
+                  
                 <?php 
-                    // if ($admin AND 0) { echo " (admin)"; } //AND 0 hace que siempre sea falsa la condicion.
-
-                    echo ( 
-                            isset($_SESSION['android']) ?
-                            (
-                                ( 
-                                    !empty($_SESSION['android'])) ?
-                                    'android' :
-                                    'pc'
-                            ) :
-                            'pc' 
-                        );
+                    if ($admin) {echo  "<sup class='bg-info small px-0 px-sm-1'>". (   isset($_SESSION['android']) ?  (  ( !empty($_SESSION['android'])) ? 'admin-android' :'admin-pc') :'admin-pc'  )."</sup>"; }
                 ?>
-                </sup>
-            </span>
-        </a>
+                   </span></button>
+                    <div class="dropdown-menu" role="menu">
+                       
+                      <a href="../configuracion/empresa_ficha.php"  class="dropdown-item" title='Ficha de la empresa'><i class="fas fa-building"></i> Mi empresa</a>
+                      <a href="<?php echo "../include/ficha_general.php?url_enc=".encrypt2("tabla=Licencias&id_update=id_licencia&no_update=1&id_valor=".$_SESSION["id_licencia"]); ?>"  title='Licencia activa'  class="dropdown-item"><i class='fas fa-key'></i> Licencia</a>
+                      <a href="../menu/pagina_empresas.php"  title='Cambia a otras empresas a las que el usuario pertenece' target='_blank' class="dropdown-item"><i class='fas fa-exchange-alt'></i> Cambiar empresa</a>
+                     <div class="dropdown-divider"></div>
+                      <a href="../configuracion/usuario_ficha.php"  class="dropdown-item" title='Ficha del Usuario'><i class="far fa-user"></i> Mi usuario</a>
+                      <a href="../registro/cerrar_sesion.php"  title='Cierra la sesión actual' class="dropdown-item"><i class='fas fa-power-off'></i> Cerrar sesión</a>
+                    </div>
+                  </div>
       </li>
+      
+      
     </ul>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <li class="nav-item d-inline-block border-left">
+        <a id="btn_empresa" href="../agenda/eventos.php" class="px-1 px-sm-2 btn btn-link" title="Registro de Actividad de la empresa">
+          <i class='fas fa-chart-line'></i>
+          <span class="d-none d-sm-inline">Actividad</span> 
+        </a>
+      </li>
+      <li class="nav-item d-inline-block">
         <a id="btn_empresa" href="../agenda/tareas.php" class="px-1 px-sm-2 btn btn-link" title="Tareas">
           <i class="fab fa-tumblr"></i>
           <span class="d-none d-sm-inline"><span class="d-none">T</span>areas</span> 
           <?php 
-            echo (badge($tareas,'info') . badge($tareas_new,'danger'));
+            echo "<sup class='small px-0 px-sm-1'>". badge($tareas,'info') . badge($tareas_new,'danger') ."</sup>"  ;
           ?> 
         </a>
       </li>
@@ -106,7 +108,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
           <i class="fas fa-pen-nib"></i>
           <span class="d-none d-sm-inline">PortaFirmas</span> 
           <?php 
-            echo (badge($portafirmas,'danger'));
+            echo "<sup class='small px-0 px-sm-1'>".badge($portafirmas,'danger')."</sup>";
           ?> 
         </a>
       </li>
@@ -115,7 +117,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
           <i class="far fa-comments"></i>
           <span class="d-none d-sm-inline">Chat</span> 
           <?php 
-            echo ($badge_txt);
+            echo "<sup class='small px-0 px-sm-1'>".$badge_txt."</sup>";
           ?> 
         </a>
       </li>
@@ -126,7 +128,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4 noprint">
     <!-- Brand Logo -->
-    <a href="../" class="brand-link">
+    <a href="//construcloud.es" class="brand-link" target="_blank">
       <img src="../img/construcloud64.svg" alt="ConstruCloud Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light"><strong>Constru</strong>Cloud 2.0</span>
     </a>
@@ -136,16 +138,16 @@ include_once('../templates/_inc_privado2_1_topbar.php');
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo ($path_logo_empresa); ?>_large.jpg" class="img-circle elevation-2" alt="logo empresa usuario">
+          <img src="<?php echo ($path_logo_empresa); ?>_medium.jpg" class="elevation-2" alt="logo empresa usuario">
         </div>
         <div class="info">
-          <a href="#" class="d-block"><?php echo ($_SESSION["empresa"] .' | '. $_SESSION["user"]); ?></a>
+          <a href="../menu/pagina_inicio.php" class="d-block"><?php echo ($_SESSION["empresa"] .' | '. $_SESSION["user"]); ?></a>
         </div>
       </div>
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul id="left-navbar" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul id="left-navbar" class="nav nav-pills nav-sidebar flex-column nav-flat nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
 
@@ -337,7 +339,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                 $htmlMenuPermisoAdministracion .= '        <li class="nav-item">';
                 $htmlMenuPermisoAdministracion .= '          <a href="../clientes/facturas_clientes.php?cobrada=0" class="nav-link">';
                 $htmlMenuPermisoAdministracion .= '            <i class="fa fa-file-invoice-dollar nav-icon"></i>';
-                $htmlMenuPermisoAdministracion .= '            <p>Fras. Clientes pdte cobro <span class="badge badge-danger right">'.'pdte'.'></span></p>';
+                $htmlMenuPermisoAdministracion .= '            <p>Fras. Clientes pdte cobro </p>';
                 $htmlMenuPermisoAdministracion .= '          </a>';
                 $htmlMenuPermisoAdministracion .= '        </li>';
                 $htmlMenuPermisoAdministracion .= '        <li class="nav-item">';
@@ -438,23 +440,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                         $htmlAgregadoAdmin .= '<li class="nav-item">';
                         $htmlAgregadoAdmin .= '  <a href="../adminlte/" class="nav-link" target="_blank">';
                         $htmlAgregadoAdmin .= '    <i class="fa fa-code nav-icon"></i>';
-                        $htmlAgregadoAdmin .= '    <p>Admin LTE</p>';
-                        $htmlAgregadoAdmin .= '  </a>';
-                        $htmlAgregadoAdmin .= '</li>';
-                        $htmlAgregadoAdmin .= '<!-- Fras -->';
-                        $htmlAgregadoAdmin .= '<li class="nav-item">';
-                        $htmlAgregadoAdmin .= '  <a href="../proveedores/facturas_proveedores.php?_m='.$_m.'&conciliada=1&pagada=0&fecha1='.$fecha_inicio.'" class="nav-link">';
-                        $htmlAgregadoAdmin .= '    <i class="fa fa-file-invoice-dollar nav-icon"></i>';
-                        $htmlAgregadoAdmin .= '    Fras prov. no pagadas';
-                        $htmlAgregadoAdmin .= '    <span class="num_fras_prov_NP badge badge-danger right">'.'pdte'.'</span>';
-                        $htmlAgregadoAdmin .= '  </a>';
-                        $htmlAgregadoAdmin .= '</li>';
-                        $htmlAgregadoAdmin .= '<!-- Remesas -->';
-                        $htmlAgregadoAdmin .= '<li class="nav-item">';
-                        $htmlAgregadoAdmin .= '  <a href="../bancos/remesas_listado.php?tipo_remesa=tipo_remesa=P&conc=activa=1" class="nav-link">';
-                        $htmlAgregadoAdmin .= '    <i class="fas fa-euro-sign nav-icon"></i>';
-                        $htmlAgregadoAdmin .= '    Remesa de Pagos';
-                        $htmlAgregadoAdmin .= '    <span class="badge badge-info right" >'.$num_remesa_pagos.'</span>';
+                        $htmlAgregadoAdmin .= '    <p>Admin LTE(solo admin)</p>';
                         $htmlAgregadoAdmin .= '  </a>';
                         $htmlAgregadoAdmin .= '</li>';
                     }
@@ -462,64 +448,6 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                 ?>
               </ul>
 
-              <ul class="nav nav-treeview small">
-                <!-- CLIENTES -->
-                <li class="nav-item has-treeview">
-                  <a href="#" class="nav-link">
-                    <i class="fas fa-users nav-icon"></i>
-                    <p>
-                      Clientes
-                      <i class="right fas fa-angle-left"></i>
-                    </p>
-                  </a>
-                  <ul class="nav nav-treeview small">
-                    <li class="nav-item">
-                      <a href="../clientes/clientes_buscar.php" class="nav-link">
-                        <i class="fa fa-portrait nav-icon"></i>
-                        <p>Clientes</p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="../clientes/facturas_clientes.php?fecha1=<?php echo $fecha_inicio; ?>" class="nav-link">
-                        <i class="fa fa-file-invoice-dollar nav-icon"></i>
-                        <p>Facturas Clientes <span class="badge badge-info right"><?php echo $num_fras_cli; ?></span></p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="../clientes/facturas_clientes.php?cobrada=0" class="nav-link">
-                        <i class="fa fa-file-invoice-dollar nav-icon"></i>
-                        <p>Fras. Clientes pdte cobro <span class="badge badge-danger right"><?php echo "pdte"; ?></span></p>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a href="../bancos/remesas_listado.php?tipo_remesa=tipo_remesa=C&conc=activa=1" class="nav-link">
-                        <i class="fas fa-euro-sign nav-icon"></i>
-                        <p>Remesa de Cobros <span class='badge badge-info  right' ><?php echo $num_remesa_cobros; ?></span></p>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item">
-                  <a href="../personal/personal_listado.php?baja=BAJA=0" class="nav-link">
-                    <i class="fa fa-person-booth nav-icon"></i>
-                    <p>Personal<span class='badge badge-info  right' ><?php echo $num_empleados; ?></span></p>
-                  </a>
-                </li>
-                <?php
-                    $htmlMenuPermisoBancos = '';
-                    if ($_SESSION["permiso_bancos"]) {
-      
-                        $htmlMenuPermisoBancos .= '<!-- bancos -->';
-                        $htmlMenuPermisoBancos .= '<li class="nav-item">';
-                        $htmlMenuPermisoBancos .= '  <a href="../bancos/bancos_ctas_bancos.php?_m='.$_m.'&activo=on" class="nav-link">';
-                        $htmlMenuPermisoBancos .= '    <i class="fas fa-university nav-icon"></i>';
-                        $htmlMenuPermisoBancos .= '    <p>Bancos<span class="badge badge-info right">'.$num_ctas_bancos.'</span></p>';
-                        $htmlMenuPermisoBancos .= '  </a>';
-                        $htmlMenuPermisoBancos .= '</li>';
-                    }
-                    echo $htmlMenuPermisoBancos;
-                ?>
-              </ul>
             </li>
 
 
@@ -588,12 +516,12 @@ include_once('../templates/_inc_privado2_1_topbar.php');
                     Wiki ConstruCloud
                   </a>
                 </li>
-                <li class="nav-item">
+<!--                <li class="nav-item">
                   <a href="../include/tabla_general.php?url_enc=<?php echo encrypt2("tabla=historial&where=Tipo_cambio LIKE '%PHP%' &campo=titulo&campo_id=id&link=../include/ficha_general.php?tabla=historial__AND__id_update=id__AND__id_valor=") ?>" class="nav-link">
                     <i class="fa fa-list nav-icon"></i>
                     Versiones
                   </a>
-                </li>              
+                </li>              -->
               </ul>
             </li>
         </ul>

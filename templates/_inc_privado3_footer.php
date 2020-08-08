@@ -8,6 +8,10 @@
       </a>
 
     </span>
+      <button style='color:white' class='btn btn-link  noprint'  onclick="window.open('../menu/contactar.php')">
+            <i class="far fa-envelope"></i>
+            <span class='c_text'> contactar </span>
+           </button>  
     <div class="float-right d-none d-sm-inline-block">
       <b>Versión</b> D-2.0.1
       &copy; 2019-<?php echo date("y"); ?> 

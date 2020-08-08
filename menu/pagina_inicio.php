@@ -105,7 +105,7 @@ if ($_SESSION["is_desarrollo"]) {
 }       
 ?>
 
-
+<BR><BR>
         <div class="container-fluid">	
             <div class="row">
 
@@ -142,35 +142,33 @@ echo '<div>' ;
 // ESQUINA SUPERIOR DERECHA
 
 //if ($_SESSION['autorizado'])
-if (1)    // ACTIVIDAD lo ponemos para todos los usuarios  , juand, abril 2020
-{
-    // LOGO EMPRESA
-     echo "<img width='150' src='{$path_logo_empresa}_large.jpg' ><br>";
+  // LOGO EMPRESA
+ echo "<img width='250' src='{$path_logo_empresa}_large.jpg' >";
 
-     // Actividad
-    $fecha_eventos_vistos=Dfirst("fecha_eventos_vistos","Usuarios_View"," $where_c_coste AND id_usuario={$_SESSION["id_usuario"]} " ) ;
-    echo "<a target='_blank' class='btn btn-link btn-xs' href='../agenda/eventos.php' ><i class='fas fa-chart-line'></i> Actividad"
-    . "<span id='badget_eventos' class='badge badge-danger' >...</span></a><br>" ;
-    echo "<script>dfirst_ajax('#badget_eventos','count(id)','eventos','$where_c_coste AND Fecha_Creacion >= \'$fecha_eventos_vistos\'  ');</script>" ;
+//     // Actividad
+//    $fecha_eventos_vistos=Dfirst("fecha_eventos_vistos","Usuarios_View"," $where_c_coste AND id_usuario={$_SESSION["id_usuario"]} " ) ;
+//    echo "<a target='_blank' class='btn btn-link btn-xs' href='../agenda/eventos.php' ><i class='fas fa-chart-line'></i> Actividad"
+//    . "<span id='badget_eventos' class='badge badge-danger' ></span></a>" ;
+//    echo "<script>dfirst_ajax('#badget_eventos','count(id)','eventos','$where_c_coste AND Fecha_Creacion >= \'$fecha_eventos_vistos\'  ');</script>" ;
 
-}
+
 
 // Licencia
-$links["licencia"] = ["../include/ficha_general.php?url_enc=".encrypt2("tabla=Licencias&id_update=id_licencia&no_update=1")."&id_valor=", "id_licencia",'', 'formato_sub'] ;
-
-echo "<br><a class='btn btn-link btn-xs' target='_blank' href='../include/ficha_general.php?url_enc=".encrypt2("tabla=Licencias&id_update=id_licencia&no_update=1&id_valor=".$_SESSION["id_licencia"])."' >"
-                  . "<i class='fas fa-key'></i> $msg_licencia</a><br>" ;
+//$links["licencia"] = ["../include/ficha_general.php?url_enc=".encrypt2("tabla=Licencias&id_update=id_licencia&no_update=1")."&id_valor=", "id_licencia",'', 'formato_sub'] ;
+//
+//echo "<br><a class='btn btn-link btn-xs' target='_blank' href='../include/ficha_general.php?url_enc=".encrypt2("tabla=Licencias&id_update=id_licencia&no_update=1&id_valor=".$_SESSION["id_licencia"])."' >"
+//                  . "<i class='fas fa-key'></i> $msg_licencia</a>" ;
 //echo "<br> $msg_licencia " ;   {$_SESSION["id_licencia"]}
 
 // cambio empresa
-if (is_multiempresa()) { 
-    echo "<br><a class='btn btn-link btn-xs' target='_blank' title='Cambiar a otra empresa a la que pertenezca el usuario' href='../menu/pagina_empresas.php' >"
-    . "<i class='fas fa-exchange-alt'></i> cambiar empresa</a><br>" ; 
-}
+//if (is_multiempresa()) { 
+//    echo "<br><a class='btn btn-link btn-xs' target='_blank' title='Cambiar a otra empresa a la que pertenezca el usuario' href='../menu/pagina_empresas.php' >"
+//    . "<i class='fas fa-exchange-alt'></i> cambiar empresa</a>" ; 
+//}
 
     
 // cerrar sesion
-echo "<br><a class='btn btn-danger btn-xs' href='../registro/cerrar_sesion.php' ><i class='fas fa-power-off'></i> Cerrar sesión</a><br>";
+//echo "<br><a class='btn btn-link btn-xs' href='../registro/cerrar_sesion.php' ><i class='fas fa-power-off'></i> Cerrar sesión</a><br>";
 echo '</div>' ;
 
 
@@ -210,18 +208,11 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
             <!--****************** #LICITACIONES  *****************-->
                 <div class="col-sm-12 col-md-4 col-lg-3 float-left"> 
                     <div class='div_ppal_expand'>
-                        <a target="_blank" class="btn btn-info btn-block btn-lg"  href="../estudios/estudios_calendar.php?_m=<?php echo $_m; ?>&fecha=<?php echo date("Y-m-d"); ?>" title="Licitaciones de obra" >
-                            <i class="far fa-calendar-alt"></i>
-                            Licitaciones y Presupuestos <?php echo "($num_estudios)"; ?> 
-                        </a>
-                    </div>
-                    <div class='div_boton_expand small'>
-                        <button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_estudios'>
-                            <small>
-                                <small>
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </small>
-                            </small>
+                             
+                   
+                        <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_estudios'>
+                           <i class="far fa-calendar-alt"></i>
+                            Licitaciones y Presupuestos <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
                     <div id='div_estudios' class='collapse in small'>
@@ -233,7 +224,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../estudios/estudios_buscar.php" >
                             <i class="fas fa-list"></i>
-                            Listado Licitaciones
+                            Listado Licitaciones <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_estudios</sup>"; ?>
                         </a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../estudios/ofertas_clientes.php?_m=<?php echo $_m; ?>&fecha=<?php echo date("Y-m-d"); ?>" >
@@ -252,24 +243,15 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                 <!------------------------#OBRAS---------------------->    
                 <div class="col-sm-12 col-md-4 col-lg-3 float-left">
                     <div class='div_ppal_expand'>
-                        <a target="_blank" class="btn btn-info btn-block btn-lg" href="../obras/obras_buscar.php?_m=<?php echo $_m; ?>&tipo_subcentro=OGA" >
-                            <i class="fas fa-hard-hat"></i> Obras o Proyectos
-                        </a>
-                    </div>
-                    <div class='div_boton_expand small'>
-                        <button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_obras'>
-                            <small>
-                                <small>
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </small>
-                            </small>
+                        <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_obras'>
+                                   <i class="fas fa-hard-hat"></i> Obras o Proyectos <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
                     <div id='div_obras' class='collapse in small'>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../obras/obras_buscar.php?_m=<?php echo $_m; ?>&tipo_subcentro=OEGA" >
                             <i class="fas fa-hard-hat"></i>
-                            Obras o Proyectos <?php echo "($num_obras)"; ?>
+                            Obras o Proyectos <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_obras</sup>"; ?>
                         </a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../personal/partes.php" >
@@ -284,7 +266,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../maquinaria/maquinaria_buscar.php?_m=<?php echo $_m; ?>&tipo_subcentro=M" >
                             <i class="fas fa-truck-pickup"></i>
-                            Maquinaria <?php echo "($num_maquinaria)"; ?>
+                            Maquinaria <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_maquinaria</sup>"; ?>
                         </a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../obras/obras_view.php?_m=<?php echo $_m; ?>&tipo_subcentro=O&fecha1=<?php echo $fecha_inicio; ?>"  >
@@ -306,34 +288,25 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                     <!------------------------#ADMINISTRACION---------------------->    
 
                     <div class='div_ppal_expand'>
-                        <a target="_blank" class="btn btn-info btn-block btn-lg"  href="../proveedores/proveedores_buscar.php"  >
-                            <i class="fas fa-shopping-cart"></i>
-                            Administración <?php echo "($num_proveedores/{$limites["proveedores"]})"; ?>
-                        </a>
-                    </div>
-                    <div class='div_boton_expand small'>
-                        <button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_proveedores'>
-                            <small>
-                                <small>
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </small>
-                            </small>
+                        <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_proveedores'>
+                            <i class="fa fa-coins nav-icon"></i>
+                            Administración <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
                     <div id='div_proveedores' class='collapse in small'>
                         <div class="dropdown"> 
-                            <button class="btn btn-link text-info text-left dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-shopping-cart"></i> Proveedores <?php echo "($num_proveedores/{$limites["proveedores"]})..."; ?>
+                            <button class="btn btn-link text-info text-left dropdown-toggle" type="button" data-toggle="dropdown"><i class="fas fa-shopping-cart"></i> Proveedores <?php echo "<sup class='bg-info small px-0 px-sm-1'>$num_proveedores</sup>"; ?>
                             </button>
                             <ul class="dropdown-menu p-3">
                                 <li>
                                     <a target="_blank" class="text-info" href="../proveedores/proveedores_buscar.php"  >
                                         <i class="fas fa-shopping-cart"></i> 
-                                        Proveedores
+                                        Proveedores 
                                     </a>
                                 </li>
                                 <li>
                                     <a target="_blank" class="text-info" href="../documentos/doc_upload_multiple_form.php?_m=<?php echo $_m; ?>&tipo_entidad=fra_prov" title='Permite subir facturas de proveedores (pdf, jpg, fotos movil...) para su posterior registro en PROVEEDORES->Facturas Prov. PDTES REGISTRAR'  >
-                                        <i class="fas fa-plus-circle"></i> 
+                                        <i class='fas fa-cloud-upload-alt'></i>
                                         Enviar fras. proveedor
                                     </a>
                                 </li>
@@ -363,7 +336,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                                 <li>
                                     <a target="_blank" class="text-info" href="../bancos/remesas_listado.php?tipo_remesa=tipo_remesa='P'&conc=activa=1" title='Gestión de Remesa de pagos a proveedores y nóminas' >
                                         <i class="fas fa-euro-sign"></i> 
-                                        Remesas de Pagos
+                                        Remesas de Pagos <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_remesa_pagos</sup>"; ?>
                                     </a>  
                                 </li>
                             </ul>
@@ -372,7 +345,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                         <div class="dropdown"> 
                             <button class="btn btn-link text-info text-left dropdown-toggle" type="button" data-toggle="dropdown">
                                 <i class="fas fa-shopping-cart"></i>
-                                Clientes <?php echo "($num_clientes/{$limites["clientes"]})..."; ?>
+                                Clientes <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_clientes</sup>"; ?>
                             </button>
                             <ul class="dropdown-menu p-3">
                                 <li>
@@ -384,7 +357,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                                 <li>
                                     <a target="_blank" class="text-info" href="../clientes/facturas_clientes.php?fecha1=<?php echo $fecha_inicio; ?>"  >
                                         <i class="fas fa-list"></i> 
-                                        Facturas de Clientes <?php echo "($num_fras_cli)"; ?>
+                                        Facturas de Clientes <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_fras_cli</sup>"; ?>
                                     </a>
                                 </li>
                                 <li>
@@ -398,7 +371,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                         
                         <a target="_blank" class="btn btn-link text-info text-left" href="../personal/personal_listado.php?baja=BAJA=0" >
                             <i class="far fa-user"></i> 
-                            Personal <?php echo "($num_empleados/{$limites["empleados"]})"; ?>
+                            Personal <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_empleados</sup>"; ?>
                         </a>
 <?php      
        
@@ -409,7 +382,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../bancos/bancos_ctas_bancos.php?_m=<?php echo $_m; ?>&activo=on" title="Cuentas bancarias" >
                             <i class="fas fa-university"></i> 
-                            Bancos 
+                            Bancos <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_ctas_bancos</sup>"; ?>
                         </a>
                         
                       
@@ -549,25 +522,17 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
 
                 <div class="col-sm-12 col-md-4 col-lg-3 float-left">
                     <div class='div_ppal_expand'>
-                        <a target="_blank" class="btn btn-info btn-block btn-lg"  href="../utilidades/configuracion.php" >
-                            <i class="fas fa-cogs"></i> 
-                            Herramientas
-                        </a>
-                    </div>
-                    <div class='div_boton_expand small'>
-                        <button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_configuracion'>
-                            <small>
-                                <small>
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </small>
-                            </small>
+
+                        <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_configuracion'>
+                           <i class="fas fa-cogs"></i> 
+                            Herramientas <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
                     <div id='div_configuracion' class='collapse in small'>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../documentos/documentos.php"  >
                             <i class="far fa-file-alt"></i> 
-                            Documentos <?php echo badge($num_documentos,"info"); ?></a>
+                            Documentos <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_documentos</sup>"; ?></a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../documentos/documentos.php?_m=<?php echo $_m; ?>&clasificar=1" title='Documentación que se ha subido a la plataforma y aún no ha sido tramitada o archivada en su lugar. P. ej. la foto de albarán enviado opr movil desde la propia obra. '>
                             <i class="far fa-file-alt"></i>
@@ -576,12 +541,12 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../configuracion/usuario_ficha.php" >
                             <i class="far fa-user"></i> 
-                            Ficha Usuario <?php echo " ({$_SESSION["user"]})"; ?>
+                            Mi Usuario <?php echo " ({$_SESSION["user"]})"; ?>
                         </a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../configuracion/empresa_ficha.php" >
                             <i class="fas fa-building"></i> 
-                            Empresa <?php echo " ({$_SESSION["empresa"]})"; ?></a>
+                            Mi Empresa <?php echo " ({$_SESSION["empresa"]})"; ?></a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../configuracion/usuario_anadir.php" >
                             <i class="fas fa-user-plus"></i> 
@@ -680,18 +645,10 @@ if ($admin)
                 <!--          #AYUDA           -->
                 <div class="col-sm-12 col-md-4 col-lg-3 float-left">
                     <div class='div_ppal_expand'>
-                        <a target="_blank" class="btn btn-info btn-block btn-lg"  href="../img/diagrama_construwin.jpg" >
+                      
+                        <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_ayuda'>
                             <span class="glyphicon glyphicon-question-sign"></span>
-                            Ayuda
-                        </a>
-                    </div>
-                    <div class='div_boton_expand small'>
-                        <button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_ayuda'>
-                            <small>
-                                <small>
-                                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                                </small>
-                            </small>
+                            Ayuda <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
                     <div id='div_ayuda' class='collapse in small'>
@@ -721,9 +678,9 @@ if ($admin)
                             ConstruWIKI 
                         </a> 
                         <br>
-                        <a target="_blank" class="btn btn-link text-info text-left" href="../include/tabla_general.php?url_enc=<?php echo encrypt2("tabla=historial&where=Tipo_cambio LIKE '%PHP%' &campo=titulo&campo_id=id&link=../include/ficha_general.php?tabla=historial__AND__id_update=id__AND__id_valor=") ?>" >
-                            0.99 Versiones
-                        </a>
+<!--                        <a target="_blank" class="btn btn-link text-info text-left" href="../include/tabla_general.php?url_enc=<?php echo encrypt2("tabla=historial&where=Tipo_cambio LIKE '%PHP%' &campo=titulo&campo_id=id&link=../include/ficha_general.php?tabla=historial__AND__id_update=id__AND__id_valor=") ?>" >
+                             Versiones
+                        </a>-->
 
                     </div>          
                 </div>  

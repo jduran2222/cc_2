@@ -32,6 +32,9 @@ else {
   include_once('../include/session.php');
 }
 
+// juand, agosto 2020
+if ( preg_match("/ingenop|www2/i", $_SERVER['HTTP_HOST'])  ) {  error_reporting(E_ALL);}
+
 //Limites de memoria:
 ini_set('memory_limit', '256M');
 
@@ -115,5 +118,8 @@ ini_set('memory_limit', '256M');
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
+<!--hay que añadir layout-navbar-fixed al body para hacer fijo el navbar pero tapa la página principal
+añadiendo content-wrapper al div hacemos el movimiento horizontal de la página al collapsar el menu lateral, pero interfiere con el navbar
+juand , 7 agosto 2020-->
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

@@ -1,11 +1,13 @@
-$titulo_pagina="Prov " . Dfirst("PROVEEDOR","Proveedores", "ID_PROVEEDORES={$_GET["id_proveedor"]} AND $where_c_coste"  ) ;
 <?php
 // cambios
 require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo = 'Proveedor Ficha';
+$titulo_pagina="Prov " . Dfirst("PROVEEDOR","Proveedores", "ID_PROVEEDORES={$_GET["id_proveedor"]} AND $where_c_coste"  ) ;
+
+//$titulo = 'Proveedor Ficha';
+$titulo = $titulo_pagina;
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');

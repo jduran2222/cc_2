@@ -57,8 +57,8 @@ $titulo_wd = "Documentos ({$result_wd->num_rows})" ;
                              
                              
 // upload documento
-$content_wd .= "<a class='btn btn-link btn-xs  noprint' href=\"../documentos/doc_upload_multiple_form.php?tipo_entidad=$tipo_entidad&id_subdir=$id_subdir&id_entidad=$id_entidad\" "
-        . "target='_blank' ><i class='fas fa-cloud-upload-alt'></i> Subir doc </a>" ;
+//$content_wd .= "<a class='btn btn-link btn-xs  noprint' href=\"../documentos/doc_upload_multiple_form.php?tipo_entidad=$tipo_entidad&id_subdir=$id_subdir&id_entidad=$id_entidad\" "
+//        . "target='_blank' ><i class='fas fa-cloud-upload-alt'></i> Subir doc </a>" ;
 $href_subir_doc = "../documentos/doc_upload_multiple_form.php?tipo_entidad=$tipo_entidad&id_subdir=$id_subdir&id_entidad=$id_entidad" ;
 
 
@@ -69,9 +69,9 @@ $sql_insert= "INSERT INTO `Documentos` (`id_c_coste`, `tipo_entidad`, `id_entida
         . "VALUES ( '{$_SESSION['id_c_coste']}', '$tipo_entidad', '$id_entidad', '$id_subdir', 'link', '','_VARIABLE1_', '0', '', '$fecha_doc', '{$_SESSION['user']}' );"   ;
 
 $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;    
-$content_wd .= "<a class='btn btn-link btn-xs noprint ' href='#' "
-     . " onclick=\"js_href('$href' ,'1','', 'PROMPT_Introduce_link'  )\"   "
-     . "title='anexar documento por su link (URL, Dropbox, Google Drive, ...)' ><i class='fas fa-link'></i> Añadir link </a>" ;
+//$content_wd .= "<a class='btn btn-link btn-xs noprint ' href='#' "
+//     . " onclick=\"js_href('$href' ,'1','', 'PROMPT_Introduce_link'  )\"   "
+//     . "title='anexar documento por su link (URL, Dropbox, Google Drive, ...)' ><i class='fas fa-link'></i> Añadir link </a>" ;
 $onclick_anadir_link = "js_href('$href' ,'1','', 'PROMPT_Introduce_link'  )" ;
 
 // importar id_documento ya subido y PDTE_CLASIFICAR  (permitimos importar cualquier documento aun NO PDTE_CLASIFICAR, juand abril20)
@@ -83,19 +83,27 @@ $sql_import= "UPDATE `Documentos` SET `tipo_entidad` = '$tipo_entidad', `id_enti
 
 $href='../include/sql.php?sql=' . encrypt2($sql_import)  ;    
 
-$content_wd .= "<a class='btn btn-link btn-xs noprint ' href='#' "
-     . " onclick=\"js_href('$href' ,'1','', 'PROMPT_Introduce_ID_DOCUMENTO'  )\"   "
-     . "title='Importar documento existente y pendiente de Clasificar a esta ficha. Indicar número de ID_DOCUMENTO' ><i class='fas fa-file-import'></i> Importar doc.</a>" ;
+//$content_wd .= "<a class='btn btn-link btn-xs noprint ' href='#' "
+//     . " onclick=\"js_href('$href' ,'1','', 'PROMPT_Introduce_ID_DOCUMENTO'  )\"   "
+//     . "title='Importar documento existente y pendiente de Clasificar a esta ficha. Indicar número de ID_DOCUMENTO' ><i class='fas fa-file-import'></i> Importar doc.</a>" ;
+$onclick_importar_doc = "js_href('$href' ,'1','', 'PROMPT_Introduce_ID_DOCUMENTO'  )" ;
 
 
 
 // generar DOCUMENTO desde Plantilla
 // creamos un FORM 
-$content_wd .= "<div  style='border:1px solid silver;' >"
-        . "<form action='../documentos/generar_PDF.php' method='post' id='form_generar' name='form_generar' target='_blank'>"    ;
+
+$content_wd .="<div class='div_boton_expand'>"
+            . "<button data-toggle='collapse' class='btn btn-link btn-xs noprint' data-target='#div_generar_doc' title='Genera un documento desde una plantilla con los datos de la entidad'>"
+            . "Generar doc </button>"
+            . "</div>"
+            . "<div id='div_generar_doc' class='collapse in'  style='border:1px solid silver;'>" ;
+
+
+$content_wd .=  "<form action='../documentos/generar_PDF.php' method='post' id='form_generar' name='form_generar' target='_blank'>"    ;
  
 $plantillas=scandir("../plantillas") ;
-$select_plantillas= "<select class='btn btn-xs btn-default noprint'  name='plantilla_html'  id='plantilla_html' style='width: 30%; '>"
+$select_plantillas= "<select class='btn btn-xs btn-default noprint'  name='plantilla_html'  id='plantilla_html' style='width: 40%; '>"
         . "<option value='0'>Plantilla</option>" ;
 
 foreach ($plantillas as $valor)
@@ -137,7 +145,6 @@ $content_wd .= "</form></div>" ;
 
 
 
-//$content_wd .= "<a class='btn'  href=\"../documentos/doc_upload_multiple_form.php?tipo_entidad=$tipo_entidad&id_subdir=$id_subdir&id_entidad=$id_entidad\" target='_blank' ><i class='fas fa-cloud-upload-alt'></i> Subir PDF</a>" ;
 $content_wd .= "<br>" ;
 $size=isset($size)? $size : '100px' ;
 $resolucion=isset($resolucion)? $resolucion : '_large.jpg' ;     // por defecto mostramos el tamaño grande
@@ -245,7 +252,7 @@ if ($result_wd->num_rows > 0)
  ?>
 
             <!-- PINTAMO EN HTML -->
-            <div class="card bg-gradient-info <?php echo $card_collapse ;?>">
+            <div class="card <?php echo $card_collapse ;?>">
               <div class="card-header border-0">
 
                 <h2 class="card-title">
@@ -261,10 +268,11 @@ if ($result_wd->num_rows > 0)
                       <i class="fas fa-bars"></i></button>
                     <div class="dropdown-menu" role="menu">
                        
-                      <a href="<?php echo $href_subir_doc ;?>" target='_blank' class="dropdown-item"><i class='fas fa-cloud-upload-alt'></i> Subir doc</a>
-                      <a href="#" onclick="<?php echo $onclick_anadir_link ;?>" target='_blank' class="dropdown-item"><i class='fas fa-link'></i> Añadir link </a>
-                      <div class="dropdown-divider"></div>
-                      <a href="#" class="dropdown-item">View calendar</a>
+                      <a href="<?php echo $href_subir_doc ;?>" target='_blank' class="dropdown-item" title='Sube un documento asociado a esta entidad'><i class='fas fa-cloud-upload-alt'></i> Subir doc</a>
+                      <a href="#" onclick="<?php echo $onclick_anadir_link ;?>" title='anexar documento por su link (URL, Dropbox, Google Drive, ...)' target='_blank' class="dropdown-item"><i class='fas fa-link'></i> Añadir link </a>
+                      <a href="#" onclick="<?php echo $onclick_importar_doc ;?>" title='Importar documento existente y pendiente de Clasificar a esta entidad. Indicar número de ID_DOCUMENTO' target='_blank' class="dropdown-item"><i class='fas fa-file-import'></i> Importar doc</a>
+<!--                      <div class="dropdown-divider"></div>
+                      <a href="#" class="dropdown-item">View calendar</a>-->
                     </div>
                   </div>
                   <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse">

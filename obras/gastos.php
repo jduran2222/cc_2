@@ -453,13 +453,13 @@ function imputar_a_subobra(id_obra) {
     $sql_T="SELECT 'Suma' AS D, SUM(IMPORTE) as importe $select_MENSUAL  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "albaran":
-    $sql="SELECT ID_VALE,ID_PROVEEDORES,ID_FRA_PROV,PROVEEDOR AS ID_SUBTOTAL_PROVEEDOR,FECHA,REF ,ID_PARTE AS NID_PARTE, SUM(IMPORTE) as importe,ID_FRA_PROV,,N_FRA, Observaciones,user "
+    $sql="SELECT ID_VALE,ID_PROVEEDORES,ID_FRA_PROV,PROVEEDOR AS ID_SUBTOTAL_PROVEEDOR,FECHA,REF ,ID_PARTE AS NID_PARTE, SUM(IMPORTE) as importe,ID_FRA_PROV,N_FRA, Observaciones,user "
            . " FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY ID_VALE  ORDER BY PROVEEDOR ,FECHA " ;
     $sql_T="SELECT '' AS B,'TOTAL GASTO:' AS C, SUM(IMPORTE) as importe, '' as dd  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
 
     $col_subtotal='ID_SUBTOTAL_PROVEEDOR' ;
     $array_sumas['importe']=0 ;
-     $colspan=2 ;
+    $colspan=2 ;
     break;
 
    case "albaran_no_conc": // PROVISIONAL hasta poner checkbox de NO CONCILIADOS 
@@ -517,7 +517,8 @@ function imputar_a_subobra(id_obra) {
 
  }
 
-//echo $sql ;
+//echo "<br>".$sql ;
+//echo "<br>".$sql_T ;
 //$result=$Conn->query($sql) ;
 //$result_T=$Conn->query($sql_T) ;
 $result=$Conn->query($sql) ;
@@ -527,7 +528,7 @@ if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para lo
 if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
 
-echo "<h6>Aprupar por : $agrupar <br> {$result->num_rows} filas </h6>";
+echo "<h6>Agrupar por : $agrupar <br> {$result->num_rows} filas </h6>";
 
 $formats["Enero"] = "moneda" ; $formats["Febrero"] = "moneda" ; $formats["Marzo"] = "moneda" ; $formats["Abril"] = "moneda" ; $formats["Mayo"] = "moneda" ; $formats["Junio"] = "moneda" ;
 $formats["Julio"] = "moneda" ; $formats["Agosto"] = "moneda" ; $formats["Septiembre"] = "moneda" ; $formats["Octubre"] = "moneda" ; $formats["Noviembre"] = "moneda" ; $formats["Diciembre"] = "moneda" ;
