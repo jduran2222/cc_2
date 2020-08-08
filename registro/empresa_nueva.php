@@ -187,8 +187,8 @@ if(Dfirst("email","C_COSTES","email='$email'"))
                if ($id_obra_gg=DInsert_into( "OBRAS", "( id_c_coste,tipo_subcentro,NOMBRE_OBRA ,ID_CLIENTE)" , "   ( $id_c_coste , 'G','001-GG-GASTOS GENERALES',$id_cliente_auto )" , "ID_OBRA" , $where_c_coste ) )
                {  // añadido  con éxito        
                    setVar("id_obra_gg", $id_obra_gg) ;
-                   setVar("id_obra_oficina", $id_obra_gg) ;    // para ser compatible con versiones anteriores 
-                   setVar("Vale_ID_OBRA", $id_obra_gg) ;       // ID_OBRA por defecto al crear un Vale-Factura semiautomatico
+//                   setVar("id_obra_oficina", $id_obra_gg) ;    // OBSOLETO, juand, ago2020. para ser compatible con versiones anteriores 
+//                   setVar("Vale_ID_OBRA", $id_obra_gg) ;       // OBSOLETO, juand, ago2020. ID_OBRA por defecto al crear un Vale-Factura semiautomatico
                }   
                if ($id_obra_mo=DInsert_into( "OBRAS", "( id_c_coste,tipo_subcentro,NOMBRE_OBRA ,ID_CLIENTE)" , "   ( $id_c_coste , 'G','002-MO-MANO DE OBRA',$id_cliente_auto )" , "ID_OBRA" , $where_c_coste ) )
                {  // añadido  con éxito        

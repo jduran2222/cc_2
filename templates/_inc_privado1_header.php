@@ -33,7 +33,13 @@ else {
 }
 
 // juand, agosto 2020
-if ( preg_match("/ingenop|www2/i", $_SERVER['HTTP_HOST'])  ) {  error_reporting(E_ALL);}
+//if ( preg_match("/ingenop|www2/i", $_SERVER['HTTP_HOST'])  ) 
+if ( $_SESSION["is_desarrollo"] ) 
+        {
+//        $_SESSION["is_desarrollo"]=1 ;
+        error_reporting(E_ALL);
+        
+        }
 
 //Limites de memoria:
 ini_set('memory_limit', '256M');

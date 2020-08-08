@@ -100,7 +100,7 @@ $mes_txt=ucwords(utf8_encode(strftime( '%B-%Y' , $fecha->getTimestamp() ))) ;   
 </TABLE>
    <TABLE  align=center width=95% style="border: 1px solid grey;">
    <TR  height='50'> 
-        <TD align=center width=15%><h2>L2</h2></TD>
+        <TD align=center width=15%><h2>L</h2></TD>
         <TD align=center width=15%><h2>M</h2></TD>
 	<TD align=center width=15%><h2>X</h2></TD>
 	<TD align=center width=15%><h2>J</h2></TD>

@@ -14,7 +14,7 @@ $num_empleados=Dfirst("count(id_personal)","PERSONAL","BAJA=0 AND $where_c_coste
 $num_documentos=Dfirst("count(id_documento)","Documentos", $where_c_coste ) ;
 $num_documentos_pdte_clasif=Dfirst("count(id_documento)","Documentos", "tipo_entidad='pdte_clasif' AND $where_c_coste"  ) ;
 $num_conceptos=Dfirst("count(id_concepto)","CONCEPTOS", "id_proveedor=" . getvar("id_proveedor_auto")) ;
-$num_fras_prov=Dfirst("count(ID_FRA_PROV)","Fras_Prov_Listado", "$where_c_coste"  ) ;
+$num_fras_prov=Dfirst("count(ID_FRA_PROV)","Fras_Prov_Listado", "$where_c_coste"  ) - 2 ;  // restamos 2 por las facturas ocultas de mano obra y maquinaria
 $num_fras_cli=Dfirst("count(ID_FRA)","Fras_Cli_Listado", $where_c_coste ) ;
 $num_remesa_pagos=Dfirst("count(id_remesa)","Remesas_listado", $where_c_coste ." AND activa=1 AND tipo_remesa='P'"  ) ;
 $num_remesa_cobros=Dfirst("count(id_remesa)","Remesas_listado", $where_c_coste ." AND activa=1 AND tipo_remesa='C'" ) ;

@@ -497,7 +497,7 @@ $num_vales_sin_conc= $result->num_rows;
 
  $titulo="<span>Albaranes sin conciliar  ($num_vales_sin_conc <span class='glyphicon glyphicon-tags'></span>) <br><small>Alb. sin conciliar:  ".cc_format($importe_pdte_conc,"moneda")."</small></span>" ; 
 
- $msg_tabla_vacia="No hay vales sin conciliar de este proveedor";
+ $msg_tabla_vacia="No hay Albaranes sin conciliar de este proveedor";
 
 
  

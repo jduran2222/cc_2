@@ -52,8 +52,8 @@ $result=$Conn->query($sql);
            {   $id_proveedor=Dfirst( "MAX(ID_PROVEEDORES)", "Proveedores", "id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
            
                 // creamos el CONCEPTO POR DEFECTO
-                $id_obra_gg‌ = getVar("id_obra_gg‌") ;
-                $id_cuenta =  ($id_personal)?     getVar("id_cuenta_mo")  :  getVar("id_cuenta_auto") ;  // si el proveedor es PROVEEDOR-NOMINA el concepto es CUENTA GASTO 'MANO OBRA APLICADA'
+                $id_obra_gg‌ = getVar("id_obra_gg") ;
+                $id_cuenta =  ($id_personal)?  getVar("id_cuenta_mo")  :  getVar("id_cuenta_auto") ;  // si el proveedor es PROVEEDOR-NOMINA el concepto es CUENTA GASTO 'MANO OBRA APLICADA'
                 
 
 

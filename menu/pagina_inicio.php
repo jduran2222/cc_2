@@ -115,7 +115,9 @@ if ($_SESSION["is_desarrollo"]) {
                 </div>
 
                 <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 col-lg-6 bg-light">
+                <div class="col-12 col-md-4 col-lg-6 bg-light text-center">
+                    <div style='margin: 20px;'><img style='max-width:400px; max-height:300px;' src='<?php echo $path_logo_empresa;?>_large.jpg' >
+                    </div>
                     <form action="busqueda_global.php" method="post" id="form1" name="form1" target='_blank'>
                 
                         <h2 title='Búsqueda de entidades (obras, empleados, provedores, clientes...) 
@@ -132,18 +134,20 @@ if ($_SESSION["is_desarrollo"]) {
                 
                 <!--****************** ENLACES Y SALIDA  *****************-->
                 <div class="col-12 col-md-4 col-lg-3 text-center">
+                 <div>   
+                 <div>   
 
 <?php
 
 
 
-echo '<div>' ;
+//echo '<div>' ;
 
 // ESQUINA SUPERIOR DERECHA
 
 //if ($_SESSION['autorizado'])
   // LOGO EMPRESA
- echo "<img style='max-width:250px; max-height:200px;' src='{$path_logo_empresa}_large.jpg' >";
+// echo "<img style='max-width:250px; max-height:200px;' src='{$path_logo_empresa}_large.jpg' >";
 
 //     // Actividad
 //    $fecha_eventos_vistos=Dfirst("fecha_eventos_vistos","Usuarios_View"," $where_c_coste AND id_usuario={$_SESSION["id_usuario"]} " ) ;
@@ -169,7 +173,7 @@ echo '<div>' ;
     
 // cerrar sesion
 //echo "<br><a class='btn btn-link btn-xs' href='../registro/cerrar_sesion.php' ><i class='fas fa-power-off'></i> Cerrar sesión</a><br>";
-echo '</div>' ;
+//echo '</div>' ;
 
 
 
@@ -319,7 +323,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                                 </li>
                                 <li>
                                     <a target="_blank" class="text-info" href="../proveedores/facturas_proveedores.php?_m=<?php echo $_m; ?>&id_proveedor=<?php echo $id_proveedor_auto; ?>" title='Facturas subidas al sistema y pendientes de registrar sus datos ' >
-                                        Fras prov. no registradas<?php echo badge($num_fras_prov_NR); ?>
+                                        Fras prov. no registradas  <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_fras_prov_NR</sup>"; ?>
                                     </a>
                                 </li>
                                 <li>

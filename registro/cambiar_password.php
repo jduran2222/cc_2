@@ -41,7 +41,7 @@ if(!empty($new_password) && !empty($new_password_confirm) && $new_password == $n
   $new_password_hash= cc_password_hash($new_password) ;
   $sql="UPDATE `Usuarios` SET `password_hash` = '$new_password_hash' WHERE id_usuario='{$id_usuario}' ";
   if ($Conn->query($sql)) {
-    $htmlAlert = '<div class="alert alert-warning small" role="alert">Imposible conectar con estas credenciales.</div>';
+    $htmlAlert = '<div class="alert alert-success small" role="alert">Password cambiada correctamente.</div>';
   }
   else {
     $htmlAlert = '<div class="alert alert-danger small" role="alert">Error inserperado con la BBDD. Inténtelo de nuevo más tarde.</div>';
