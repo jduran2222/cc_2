@@ -10,7 +10,7 @@ $num_obras=Dfirst("count(id_obra)","OBRAS", " tipo_subcentro='O' AND $where_c_co
 $num_estudios=Dfirst("count(id_estudio)","Estudios_de_Obra", $where_c_coste ) ;
 $num_maquinaria=Dfirst("count(id_obra)","OBRAS", " tipo_subcentro='M' AND $where_c_coste" ) ;
 $num_usuarios=Dfirst("count(id_usuario)","Usuarios", $where_c_coste   ) ;
-$num_empleados=Dfirst("count(id_personal)","PERSONAL", $where_c_coste   ) ;
+$num_empleados=Dfirst("count(id_personal)","PERSONAL","BAJA=0 AND $where_c_coste"   ) ;
 $num_documentos=Dfirst("count(id_documento)","Documentos", $where_c_coste ) ;
 $num_documentos_pdte_clasif=Dfirst("count(id_documento)","Documentos", "tipo_entidad='pdte_clasif' AND $where_c_coste"  ) ;
 $num_conceptos=Dfirst("count(id_concepto)","CONCEPTOS", "id_proveedor=" . getvar("id_proveedor_auto")) ;

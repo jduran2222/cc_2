@@ -1,15 +1,17 @@
 <?php 
 //incluimos códigos y datos de cálculo y consultas para el menú superior
 include_once('../templates/_inc_privado2_1_topbar.php');
+include_once('../include/funciones_js.php');
 
 ?>
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light navbar-fixed-top text-sm noprint">
     <!-- Left navbar links -->
+    <input id="auxiliar" type="hidden">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"  onclick="carga_ajax('auxiliar','../menu/menu_lateral_collapse_ajax.php');">
           <i class="fas fa-bars"></i>
         </a>
       </li>
@@ -25,7 +27,7 @@ include_once('../templates/_inc_privado2_1_topbar.php');
         </a>
       </li>
       <li class="nav-item d-inline-block p-1 border-left">
-        <a href="?" class="p-1 px-1 px-sm-2 btn btn-success btn-xs" title="Refrescar">
+        <a href="#" class="p-1 px-1 px-sm-2 btn btn-success btn-xs" title="Refrescar" onclick='javascript:window.location.reload();'>
           <i class="fas fa-redo"></i>
           <span class="d-none d-sm-inline">Refrescar</span>
         </a>

@@ -4,9 +4,9 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$_m=  (isset($_GET['_m']) ?  $_GET['_m'] : '') . '\cta_bancaria';
+$_m=  (isset($_GET['_m']) ?  $_GET['_m'] : '') . '\cta_no_bancarias';
 
-$titulo = 'Cuentas Bancarias';
+$titulo = 'Cuentas no bancarias';
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
@@ -36,7 +36,7 @@ require_once("bancos_menutop_r.php");?>
 	<!--************ INICIO SUBCONTRATOS *************  -->
 
 <div id="main" class="mainc_100" >
-	<h1>OTRAS CUENTAS</h1>
+	<h1>CUENTAS NO BANCARIAS</h1>
 <?php 
      
 $filtro = isset($_POST["filtro"]) ? $_POST["filtro"] : '' ;
@@ -50,7 +50,7 @@ $activos = isset($_POST["activos"]) ? $_POST["activos"] : '1' ;
 //echo $_POST["fmt_activos"] ;
  ?>
 
-<a class="btn btn-link btn-lg" href="bancos_anadir_cta_banco_form.php"><i class="fas fa-plus-circle"></i> Añadir cuenta bancaria</a><br>
+<a class="btn btn-link btn-lg" href="bancos_anadir_cta_banco_form.php"><i class="fas fa-plus-circle"></i> Añadir cuenta no bancaria</a><br>
 
 <div style="width:100% ; border-style:solid;border-width:2px; border-color:silver ;" >
 	

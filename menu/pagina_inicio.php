@@ -143,7 +143,7 @@ echo '<div>' ;
 
 //if ($_SESSION['autorizado'])
   // LOGO EMPRESA
- echo "<img width='250' src='{$path_logo_empresa}_large.jpg' >";
+ echo "<img style='max-width:250px; max-height:200px;' src='{$path_logo_empresa}_large.jpg' >";
 
 //     // Actividad
 //    $fecha_eventos_vistos=Dfirst("fecha_eventos_vistos","Usuarios_View"," $where_c_coste AND id_usuario={$_SESSION["id_usuario"]} " ) ;
