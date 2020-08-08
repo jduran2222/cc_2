@@ -91,6 +91,11 @@ if(Dfirst("email","C_COSTES","email='$email'"))
               $_SESSION["Moneda_simbolo"]='€' ;       
               $_SESSION['android']= preg_match('/Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ;     // estamos en un movil o tablet
 
+              // damos todos los permisos al usuario nuevo que ha creado la empresa
+              $_SESSION["permiso_licitacion"]=1;
+              $_SESSION["permiso_obras"]=1;
+              $_SESSION["permiso_administracion"]=1;
+              $_SESSION["permiso_bancos"]=1;
 
               // creo el usuario nuevo           
                $result=$Conn->query("INSERT INTO `Usuarios` (`id_c_coste`,`usuario`,  `password_hash`, `autorizado`, `email`) "
