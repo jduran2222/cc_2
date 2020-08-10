@@ -18,6 +18,7 @@ include_once('../templates/_inc_privado2_navbar.php');
                 <!--****************** ESPACIO LATERAL  *****************-->
                 <div class="col-12 col-md-4 col-lg-3"></div>
                 <!--****************** ESPACIO LATERAL  *****************-->
+                <div class="col-12 col-md-4 col-lg-9">
 
                 <!--****************** BUSQUEDA GLOBAL  *****************-->
 
@@ -43,7 +44,6 @@ $result=$Conn->query("SELECT * from Proyecto_View WHERE ID_OBRA=".$id_obra);
 
 if (!isset($_FILES["file_BC3"]))         // evitamos que salga el Form una vez importado el BC3
 {     
-                <div class="col-12 col-md-4 col-lg-9">
 ?>
 
 <form action="obras_importar_BC3.php?_m=$_m&id_obra=<?php echo $id_obra;?>" method="POST" enctype="multipart/form-data">
