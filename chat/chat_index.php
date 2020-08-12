@@ -170,7 +170,7 @@ $_SESSION['login_details_id'] = $lastInsertId;
                         <div class="message-input" id="replyContainer">
                             <div class="wrap">
                                 <!--<input type="text" class="chatMessage"  id="chatMessage<?php echo $currentSession; ?>" placeholder="Escribe tu mensaje..." />-->
-                                <textarea rows="3" cols="80" class="chatMessage"  id="chatMessage<?php echo $currentSession; ?>" placeholder="Escribe tu mensaje..." 
+                                <textarea rows="3" cols="60" class="chatMessage"  id="chatMessage<?php echo $currentSession; ?>" placeholder="Escribe tu mensaje..." 
                                           onkeyup = "if(event.key == '&') alert('pulsado @ (PRUEBAS)') ; " ></textarea>
                                 <button class="submit chatButton" id="chatButton<?php echo $currentSession; ?>"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>	
                             </div>
