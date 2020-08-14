@@ -296,11 +296,13 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
 //      $sql="SELECT ID_PARTE, ID_OBRA, NOMBRE_OBRA,Fecha,NumP, Cargado,Observaciones FROM Partes_View WHERE $where ORDER BY  Fecha  " ;
     if ($listado_global)    
     {
-        $sql="SELECT ID_PARTE,ID_PERSONAL ,ID_OBRA,Fecha,CONCAT(NOMBRE,' (' ,MID(NOMBRE_OBRA,1,10),')') as link_calendario ,HO,IF(HX>0,CONCAT('+<b>',HX,'</b>'),'')"
+        $sql="SELECT ID_PARTE,ID_PERSONAL ,ID_OBRA,Fecha,CONCAT(NOMBRE,' (' ,MID(NOMBRE_OBRA,1,10),')') as link_calendario ,Observaciones as id_link_calendario_TOOLTIP"
+                . " ,HO,IF(HX>0,CONCAT('+<b>',HX,'</b>'),'')"
                 . "  FROM Partes_Personal_View WHERE $where AND $where_nombre ORDER BY  Fecha,NOMBRE  " ;
 //        $sql="SELECT ID_PARTE,ID_PERSONAL ,ID_OBRA,Fecha,CONCAT(NOMBRE,' (' ,MID(NOMBRE_OBRA,1,12),')') as link_calendario ,HO,IF(HX>0,HX,7)  FROM Partes_Personal_View WHERE $where ORDER BY  Fecha,NOMBRE  " ;
     }else
-    { $sql="SELECT ID_PARTE,ID_PERSONAL ,ID_OBRA,Fecha,NOMBRE as link_calendario ,HO,IF(HX>0,CONCAT('+<b>',HX,'</b>'),'') FROM Partes_Personal_View WHERE $where AND $where_nombre ORDER BY  Fecha,NOMBRE  " ;
+    { $sql="SELECT ID_PARTE,ID_PERSONAL ,ID_OBRA,Fecha,NOMBRE as link_calendario ,Observaciones as id_link_calendario_TOOLTIP"
+            . ",HO,IF(HX>0,CONCAT('+<b>',HX,'</b>'),'') FROM Partes_Personal_View WHERE $where AND $where_nombre ORDER BY  Fecha,NOMBRE  " ;
     }        
     $sql_T="SELECT '' " ;
 //    echo $sql ;

@@ -42,7 +42,7 @@ $id_personal=$_GET["id_personal"];
  
  
 // CONFIGURO EL MENU PERSONAL 
-$GET_listado_personal="?nombre={$rs["NOMBRE"]}" ;
+$GET_listado_personal="?nombre={$rs["NOMBRE"]}&agrupar=cal_nombres" ;
 $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
  
  require_once("../personal/personal_menutop_r.php");
