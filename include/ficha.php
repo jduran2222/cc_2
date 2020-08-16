@@ -16,14 +16,14 @@ div.div_boton_expand .btn.collapsed:after {
 }
     */
     
-    
+/*    
 .transparente{
     opacity:0.15 ;
     padding: 2px;
 }
  .transparente:hover{
     opacity:0.5 ;
-}
+}*/
 
     
     

@@ -322,7 +322,7 @@ $result=$Conn->query($sql);        // ANULACION SISTEMA LICENCIAS
 ////  print_r($rs);
 //  print_r($limites);
 // echo "</pre>";
-// $id_doc_logo=Dfirst("id_doc_logo", "C_COSTES", "$where_c_coste") ;
+// $doc_logo=Dfirst("doc_logo", "C_COSTES", "$where_c_coste") ;
 
 //if (!$path_logo_empresa = Dfirst("path_logo", "Empresas_Listado", "$where_c_coste")) {$path_logo_empresa = "../img/no_logo.jpg";}  // lo calculamos en el adminLTE
         

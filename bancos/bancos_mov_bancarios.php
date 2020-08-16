@@ -5,7 +5,7 @@ $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
 $banco_titulo= isset($_GET["id_cta_banco"]) ?  Dfirst("Banco","ctas_bancos", "id_cta_banco={$_GET["id_cta_banco"]} AND $where_c_coste"  ) : "GLOBAL" ;
-$titulo_pagina="Movs. Banco $banco_titulo"  ;
+$titulo_pagina="Cuenta banco $banco_titulo"  ;
 $titulo = $titulo_pagina;
 
 //INICIO

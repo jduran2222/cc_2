@@ -29,35 +29,43 @@ include_once('../templates/_inc_privado2_navbar.php');
  $id_c_coste=$_SESSION['id_c_coste'];
 
  echo '<br><br><br><br>';
+ 
 
  if($_SESSION['admin'])
  {
    $id_empresa= isset($_GET["id_empresa"]) ? $_GET["id_empresa"] : $id_c_coste ;     
    
    echo "<br><br><a class='btn btn_link' target='_blank' href='../registro/login_as.php?id_empresa=$id_empresa' >login as...</a>    "  ;
-   $sql="SELECT * FROM Empresas_View_ext WHERE  id_c_coste=$id_empresa";
+   echo "<br><a class='btn btn_link' target='_blank' href='../include/ficha_general.php?url_enc=".encrypt2("tabla=Empresas_View_ext&id_update=id_c_coste&no_update=1")."&id_valor=$id_empresa' >Ficha COMPLETA de Empresa</a>    "  ;
+   
+   
+   
+//   $sql="SELECT * FROM Empresas_View_ext WHERE  id_c_coste=$id_empresa";
+   
  $updates=['*']  ; 
  }
 elseif ($_SESSION['autorizado'])
 {
    $id_empresa= $id_c_coste ;       
-   $sql="SELECT id_c_coste,C_Coste_Texto,nombre_centro_coste,domicilio,cod_postal,Municipio,Provincia,Estado_Pais,Moneda_simbolo,tels"
-         . ",cif,email,web,Banco_fras,IBAN_fras,BIC_fras,id_doc_logo,id_doc_clave_privada,id_doc_clave_publica,pais,fecha_creacion FROM C_COSTES WHERE  id_c_coste=$id_empresa";
-//   $no_updates=['C_Coste_Texto']  ;  // no permitimos cambiar el nombre de la empersa. Puede entrar en conflicto con otra empresa
    $updates=['*']  ; 
 }else
 {
    $id_empresa= $id_c_coste ;       
-   $sql="SELECT id_c_coste,C_Coste_Texto,nombre_centro_coste,domicilio,cod_postal,Municipio,Provincia,Estado_Pais,tels"
-         . ",cif,pais,fecha_creacion FROM C_COSTES WHERE  id_c_coste=$id_empresa";
     $updates=[]  ; // el no autorizado no puede cambiar nada
 }    
  
+
+$sql="SELECT id_c_coste,C_Coste_Texto,nombre_centro_coste,domicilio,cod_postal,Municipio,Provincia,Estado_Pais,Moneda_simbolo,tels"
+         . ",cif,email,web,Banco_fras,IBAN_fras,BIC_fras,doc_logo,id_doc_clave_privada,id_doc_clave_publica,pais,fecha_creacion FROM C_COSTES WHERE  id_c_coste=$id_empresa";
+
+
+
 $etiquetas['C_Coste_Texto']='Empresa';
 $etiquetas['nombre_centro_coste']='Nombre completo Empresa';
 //  $etiquetas['C_Coste_Texto']='Empresa';
 //  $etiquetas['C_Coste_Texto']='Empresa';
-$tooltips["id_doc_logo"]='Para disponer de un logo, suba el logo con añadir Doc y posteriormente selecciónelo en este campo.  '  ;
+//$tooltips["doc_logo"]='Para disponer de un logo, suba el logo con añadir Doc y posteriormente selecciónelo en este campo.  '  ;
+$tooltips["doc_logo"]='Para disponer de un logo de empresa, suba el JPG con Subir Doc y posteriormente márquelo como predeterminado  '  ;
 $tooltips["Moneda_simbolo"]='Símbolo de moneda: € , $ , COP, MXN... '  ;
 
 
@@ -85,7 +93,7 @@ $id_valor=$id_empresa ;
 $wikis["id_doc_clave_privada"]="doc_clave_privada";
 $wikis["id_doc_clave_publica"]="doc_clave_publica";
 
-$selects["id_doc_logo"]=["id_documento","nombre_archivo","Documentos","","../documentos/documento_ficha.php?id_documento=","id_doc_logo"," AND tipo_entidad=\'empresa\' "] ;   // datos para clave foránea
+//$selects["doc_logo"]=["id_documento","nombre_archivo","Documentos","","../documentos/documento_ficha.php?id_documento=","doc_logo"," AND tipo_entidad=\'empresa\' "] ;   // datos para clave foránea
 $selects["id_doc_clave_privada"]=["id_documento","nombre_archivo","Documentos","","../documentos/documento_ficha.php?id_documento=","id_doc_clave_privada"," AND tipo_entidad=\'empresa\' "] ;   // datos para clave foránea
 $selects["id_doc_clave_publica"]=["id_documento","nombre_archivo","Documentos","","../documentos/documento_ficha.php?id_documento=","id_doc_clave_publica"," AND tipo_entidad=\'empresa\' "] ;   // datos para clave foránea
 //  $selects["id_doc_clave_privada"]=["id_documento","nombre_archivo","Documentos","","../documentos/documento_ficha.php?id_documento=","id_doc_clave_privada"] ;   // datos para clave foránea

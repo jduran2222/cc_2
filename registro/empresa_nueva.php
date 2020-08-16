@@ -128,7 +128,7 @@ if(Dfirst("email","C_COSTES","email='$email'"))
                   {
                     $id_documento=$id_documento_array[0] ;
                     // asignamos el logo como id_logo_empresa  
-                    $result=$Conn->query("UPDATE `C_COSTES` SET `id_doc_logo` = '$id_documento' WHERE id_c_coste= $id_c_coste " );
+                    $result=$Conn->query("UPDATE `C_COSTES` SET `doc_logo` = '$id_documento' WHERE id_c_coste= $id_c_coste " );
                      echo 'REGISTRO DE LOGO OK'     ;
 
 
