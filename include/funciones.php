@@ -1610,7 +1610,8 @@ function getVar($variable)
         $nueva_conn = false;
     }
     
-     $sql = "Select `valor` FROM `c_coste_vars` WHERE variable='$variable' AND {$GLOBALS["where_c_coste"]} ";
+//     $sql = "Select `valor` FROM `c_coste_vars` WHERE variable='$variable' AND {$GLOBALS["where_c_coste"]} ";
+     $sql = "Select `valor` FROM `c_coste_vars` WHERE variable='$variable' AND id_c_coste={$_SESSION["id_c_coste"]} ";
     
 //    echo $sql ;                            //debug  
     $result = $Conn->query($sql);

@@ -89,14 +89,14 @@ if (!$id_concepto)
 ////  $id_concepto_auto=Dfirst("id_concepto_auto","Proveedores" ,"ID_PROVEEDORES=$id_proveedor AND $where_c_coste" )  ;
 ////                  $id_subobra_auto=Dfirst("id_subobra_auto","OBRAS" ,"ID_OBRA=$id_obra AND $where_c_coste" )  ;
 ////                  $id_subobra_auto= getVar("id_subobra_si" )  ;
-  $id_subobra_si‌ = Dfirst("id_subobra_auto","OBRAS"," $where_c_coste AND ID_OBRA=$id_obra")  ;
-  $id_subobra_si‌ = $id_subobra_si‌ ? $id_subobra_si‌ :  getVar("id_subobra_si") ;  // en caso de que haya error usamos la predeterminada
+  $id_subobra_si = Dfirst("id_subobra_auto","OBRAS"," $where_c_coste AND ID_OBRA=$id_obra")  ;
+  $id_subobra_si = $id_subobra_si ? $id_subobra_si :  getVar("id_subobra_si") ;  // en caso de que haya error usamos la predeterminada
 
   
  // evitamos que se genere una línea de detalle a CERO en albaranes solo con foto y proveedor pdte de registrar 
  if ($cantidad) 
  {    
-  $sql="INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) VALUES ( '$id_vale' , '$id_concepto', '$cantidad'  ,   '$id_subobra_si‌' );" ;
+  $sql="INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) VALUES ( '$id_vale' , '$id_concepto', '$cantidad'  ,   '$id_subobra_si' );" ;
 //                 echo ($sql);
   logs($sql);  
   if (!$result=$Conn->query($sql)) { logs("ERROR EN:$sql"); die("ERROR: $sql") ;};

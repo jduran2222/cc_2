@@ -49,21 +49,21 @@ $result2=$Conn->query($sql2);
              { 	$id_vale=Dfirst( "MAX(ID_VALE)", "Vales_list", "id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
              
                 
-                $id_subobra_si‌ = Dfirst( "id_subobra_auto", "OBRAS", "$where_c_coste AND ID_OBRA=$id_obra" ) ; 
-                $id_subobra_si‌ = $id_subobra_si‌ ? $id_subobra_si‌ : getVar("id_subobra_si") ;         // por si alguna OBRA no tiene id_subobra_auto
+                $id_subobra_si = Dfirst( "id_subobra_auto", "OBRAS", "$where_c_coste AND ID_OBRA=$id_obra" ) ; 
+                $id_subobra_si = $id_subobra_si ? $id_subobra_si : getVar("id_subobra_si") ;         // por si alguna OBRA no tiene id_subobra_auto
 
                 
                 $id_concepto_auto=Dfirst( "id_concepto_auto", "Proveedores", "ID_PROVEEDORES=$id_proveedor" ) ; 
                 
                 if (!$id_concepto_auto)    // proveedor sin id_concepto_auto (concepto para cargo de gastos automático) CREAMOS UN CONCEPTO NUEVO A COSTE 1€
                 {
-                    $id_obra_gg‌ = getVar("id_obra_gg‌") ;
+                    $id_obra_gg = getVar("id_obra_gg") ;
                     $id_cuenta_auto = getVar("id_cuenta_auto") ;
                     
                     
                     
                     $sql4 =  "INSERT INTO `CONCEPTOS` ( ID_PROVEEDOR,ID_OBRA,ID_CUENTA,CONCEPTO,COSTE,`user` ) ";
-                    $sql4 .= "VALUES ( '$id_proveedor', '$id_obra_gg‌','$id_cuenta_auto' ,'GASTOS DE {$rs["PROVEEDOR"]}' ,'1', '{$_SESSION["user"]}' );" ;
+                    $sql4 .= "VALUES ( '$id_proveedor', '$id_obra_gg','$id_cuenta_auto' ,'GASTOS DE {$rs["PROVEEDOR"]}' ,'1', '{$_SESSION["user"]}' );" ;
 
 //                    echo ($sql4);
                     $result4=$Conn->query($sql4);
@@ -79,7 +79,7 @@ $result2=$Conn->query($sql2);
                 
                              
                 $sql3 = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-                $sql3 .="VALUES ( '$id_vale', '$id_concepto_auto','{$rs["pdte_conciliar"]}' ,'$id_subobra_si‌' );" ;
+                $sql3 .="VALUES ( '$id_vale', '$id_concepto_auto','{$rs["pdte_conciliar"]}' ,'$id_subobra_si' );" ;
 
 //                echo ($sql3);
                 $result3=$Conn->query($sql3);

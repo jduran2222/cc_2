@@ -21,10 +21,10 @@ $result=$Conn->query("SELECT * FROM Partes_Maquinas_View WHERE Fecha>='2012-07-1
 $id_proveedor = getVar("id_proveedor_mo")  ;   // proveedor automatico para mano de obra
 $id_fra_prov = getVar("id_fra_mo")  ;          //  factura automatica para conciliar mano de obra
 $id_subobra_general = getVar("id_subobra_si") ;        // en esta SUBOBRA general registraremos los abonos
-$id_subobra_si‌ =   getVar("id_subobra_si") ;  // en caso de que haya error usamos la predeterminada
+$id_subobra_si =   getVar("id_subobra_si") ;  // en caso de que haya error usamos la predeterminada
 
-$id_concepto_dc‌ = getVar("id_concepto_dc‌") ;  // concepto de Media Dieta 
-$id_concepto_md‌ = getVar("id_concepto_md‌") ;  // concepto de Dieta Completa
+$id_concepto_dc = getVar("id_concepto_dc") ;  // concepto de Media Dieta 
+$id_concepto_md = getVar("id_concepto_md") ;  // concepto de Dieta Completa
 
 $c=0;
 $id_vale_cargo=0;
@@ -40,7 +40,7 @@ $fecha=$rs["Fecha"];
 
 // buscamos VARIABLES DE ENTORNO
 
-//$id_subobra_si‌ = Dfirst("id_subobra_auto","OBRAS"," $where_c_coste AND ID_OBRA=$id_obra")  ;
+//$id_subobra_si = Dfirst("id_subobra_auto","OBRAS"," $where_c_coste AND ID_OBRA=$id_obra")  ;
 
 
   // vemos cual es el valor del último id_vale para comparar

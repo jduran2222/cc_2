@@ -52,13 +52,13 @@ $result=$Conn->query($sql);
            {   $id_proveedor=Dfirst( "MAX(ID_PROVEEDORES)", "Proveedores", "id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
            
                 // creamos el CONCEPTO POR DEFECTO
-                $id_obra_gg‌ = getVar("id_obra_gg") ;
+                $id_obra_gg = getVar("id_obra_gg") ;
                 $id_cuenta =  ($id_personal)?  getVar("id_cuenta_mo")  :  getVar("id_cuenta_auto") ;  // si el proveedor es PROVEEDOR-NOMINA el concepto es CUENTA GASTO 'MANO OBRA APLICADA'
                 
 
 
                 $sql4 =  "INSERT INTO `CONCEPTOS` ( ID_PROVEEDOR,ID_OBRA,ID_CUENTA,CONCEPTO,COSTE,`user` ) ";
-                $sql4 .= "VALUES ( '$id_proveedor', '$id_obra_gg‌','$id_cuenta' ,'Gastos de $proveedor' ,'1', '{$_SESSION["user"]}' );" ;
+                $sql4 .= "VALUES ( '$id_proveedor', '$id_obra_gg','$id_cuenta' ,'Gastos de $proveedor' ,'1', '{$_SESSION["user"]}' );" ;
 
     //                    echo ($sql4);
                 $result4=$Conn->query($sql4);

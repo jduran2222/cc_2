@@ -25,12 +25,13 @@ $fecha=$rs["Fecha"];
 $id_proveedor = getVar("id_proveedor_mo")  ;   // proveedor automatico para mano de obra
 $id_fra_prov = getVar("id_fra_mo")  ;          //  factura automatica para conciliar mano de obra
 
-$id_subobra_general = getVar("id_subobra_si") ;        // en esta SUBOBRA general registraremos los abonos
-$id_subobra_si‌ = Dfirst("id_subobra_auto","OBRAS"," $where_c_coste AND ID_OBRA=$id_obra")  ;
-$id_subobra_si‌ = $id_subobra_si‌ ? $id_subobra_si‌ :  getVar("id_subobra_si") ;  // en caso de que haya error usamos la predeterminada
+$id_concepto_dc = getVar("id_concepto_dc") ;  // concepto de Media Dieta 
+$id_concepto_md = getVar("id_concepto_md") ;  // concepto de Dieta Completa
 
-$id_concepto_dc‌ = getVar("id_concepto_dc‌") ;  // concepto de Media Dieta 
-$id_concepto_md‌ = getVar("id_concepto_md‌") ;  // concepto de Dieta Completa
+$id_subobra_general = getVar("id_subobra_si") ;        // en esta SUBOBRA general registraremos los abonos
+$id_subobra_si = Dfirst("id_subobra_auto","OBRAS"," $where_c_coste AND ID_OBRA=$id_obra")  ;
+$id_subobra_si = $id_subobra_si ? $id_subobra_si :  getVar("id_subobra_si") ;  // en caso de que haya error usamos la predeterminada
+
 
 
 if (!isset($_GET["id_vale"]))  // no hay ID_VALE, creamos uno y lo vinculamos a la obra
@@ -133,7 +134,7 @@ if (!$delete_vale)
             // registramos gasto de horas totales de cada personal
             $horas_total= $rs["HO"] + $rs["HX"]   ;        // sumamos horas ordinarias + horas extras
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_cargo','{$rs["id_concepto_mo"]}' ,'$horas_total', '$id_subobra_si‌' );" ;
+            $sql3 .= "VALUES ( '$id_vale_cargo','{$rs["id_concepto_mo"]}' ,'$horas_total', '$id_subobra_si' );" ;
         //  echo ($sql3);
             $result3=$Conn->query($sql3);
             // registramos los ABONOS DE MANO DE OBRA
@@ -148,12 +149,12 @@ if (!$delete_vale)
             if ($rs["MD"])
             {
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_cargo','$id_concepto_md‌' ,'1', '$id_subobra_si‌' );" ;
+            $sql3 .= "VALUES ( '$id_vale_cargo','$id_concepto_md' ,'1', '$id_subobra_si' );" ;
         //  echo ($sql3)."<br>";
             $result3=$Conn->query($sql3);    
             // ABONOS 
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_abono','$id_concepto_md‌' ,'-1', '$id_subobra_general' );" ;
+            $sql3 .= "VALUES ( '$id_vale_abono','$id_concepto_md' ,'-1', '$id_subobra_general' );" ;
         //  echo ($sql3)."<br>";
             $result3=$Conn->query($sql3);    
             }
@@ -162,7 +163,7 @@ if (!$delete_vale)
             if ($rs["DC"])
             {
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_cargo','$id_concepto_dc' ,'1', '$id_subobra_si‌' );" ;
+            $sql3 .= "VALUES ( '$id_vale_cargo','$id_concepto_dc' ,'1', '$id_subobra_si' );" ;
         //  echo ($sql3)."<br>";
             $result3=$Conn->query($sql3);  
             // abono
@@ -186,7 +187,7 @@ if (!$delete_vale)
         {
             // registramos gasto de horas totales de cada personal
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_cargo','{$rs["id_concepto_mq"]}' ,'{$rs["cantidad"]}', '$id_subobra_si‌' );" ;
+            $sql3 .= "VALUES ( '$id_vale_cargo','{$rs["id_concepto_mq"]}' ,'{$rs["cantidad"]}', '$id_subobra_si' );" ;
         //  echo ($sql3)."<br>";
             $result3=$Conn->query($sql3);
 
