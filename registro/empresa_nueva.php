@@ -61,8 +61,11 @@ if(Dfirst("email","C_COSTES","email='$email'"))
 
                 // GEOLOCALIZACION DE LA IP
                  $ip=$_SERVER['REMOTE_ADDR'] ;
-                 $json_geoip=json_geoip($ip) ;
-                 $pais= pais($json_geoip);
+//                 $json_geoip=json_geoip($ip) ;
+//                 $pais= pais($json_geoip);
+                  // PROVISIONAL para detectar un error desde Argentina
+                 $json_geoip='json_geoip' ;
+                 $pais= 'pais';
 
 
 
