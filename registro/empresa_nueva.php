@@ -136,7 +136,7 @@ if(Dfirst("email","C_COSTES","email='$email'"))
                   }else
                   {
                       echo 'ERROR EN REGISTRO DE LOGO'     ;
-                      logs_db_error ('ERROR EN REGISTRO DE LOGO' )    ;
+//                      logs_db_error ('ERROR EN REGISTRO DE LOGO' )    ;
                   }   
                }
                else
@@ -287,7 +287,7 @@ if(Dfirst("email","C_COSTES","email='$email'"))
                               . 'no dudes en transmitírnosla, te lo agradecemos. <br/>'
                               . ' <br/>'
                               . 'Un saludo <br/>'
-                              . 'Juan Durán';
+                              . 'Equipo de Soporte de ConstruCloud.es';
                $id_usuario_admin_chat= 2;
                 DInsert_into( "chat", "(reciever_userid, sender_userid, message, status) " , 
                                "   ( '{$_SESSION["id_usuario"]}' , '$id_usuario_admin_chat' , '$chat_bienvenida','1') "  ) ;
@@ -322,7 +322,7 @@ if(Dfirst("email","C_COSTES","email='$email'"))
         {
             echo "<br><br><br><br><br><br>";
             echo  "<h1>Error desconocido al crear empresa, inténtelo de nuevo </h1>" ;
-            logs_db_error( "Error desconocido al crear empresa, inténtelo de nuevo") ;
+//            logs_db_error( "Error desconocido al crear empresa, inténtelo de nuevo") ;
             echo  "<h1><a href='javascript:history.back(-1);' title='Ir la página anterior'>Volver</a></h1>" ;
         }
 
