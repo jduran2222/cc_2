@@ -13,15 +13,15 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
-        <!-- Contenido principal -->
+        <!-- Contenido principal 
         <div class="container-fluid bg-light">
             <div class="row">
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
 
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 col-lg-9">
+                <!--****************** BUSQUEDA GLOBAL  *****************
+                <!--<div class="col-12 col-md-4 col-lg-9">-->
 
 
 <?php  
@@ -35,14 +35,6 @@ $id_pof=$_GET["id_pof"];
 //require_once("../menu/topbar.php");
 
 ?>
-
-<div style="overflow:scroll; ">	   
-   
-	<!--************ INICIO ficha POF *************  -->
-       
-        
-<div id="main" class="mainc_30" >
-
 
 			
 <?php   // Iniciamos variables para ficha.php  background-color:#B4045
@@ -92,6 +84,19 @@ $array_plantilla = $rs ;      // copiamos array para datos para la Generación d
 
 //echo $plantilla_get_url   ;
 
+?>
+                
+<div style="overflow:scroll; ">	   
+   
+	<!--************ INICIO ficha POF *************  -->
+       
+        
+<div id="main" class="mainc_30" >
+
+
+
+
+<?php
 require("../include/ficha.php");
 
 ?>
@@ -773,7 +778,7 @@ function add_pof_concepto(id_pof) {
 
     
                 </div>
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>
         <!-- FIN Contenido principal -->

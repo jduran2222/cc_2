@@ -14,22 +14,22 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
-        <!-- Contenido principal -->
+        <!-- Contenido principal 
         <div class="container-fluid bg-light">
             <div class="row">
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
 
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 col-lg-9">
+                <!--****************** BUSQUEDA GLOBAL  *****************
+                <!--<div class="col-12 col-md-4 col-lg-9">-->
 
 <?php 
 
 $id_estudio=$_GET["id_estudio"];
  
 
- echo '<br><br><br><br><br>' ;
+// echo '<br><br><br><br><br>' ;
 
  $sql="SELECT ID_ESTUDIO,NUMERO,NOMBRE,`Nombre Completo`,EXPEDIENTE,`NO VAMOS`,Presentada,Estado ,`Presupuesto Tipo`,`PLAZO ENTREGA`, `Plazo Proyecto` "
          . ",hora_entrega,Organismo, URL_licitacion, id_obra_estudio, id_prod_estudio_costes,URL_Google_Maps ,Requisitos, Observaciones"
@@ -180,12 +180,17 @@ $Conn->close();
 
 </div>
 
-                </div>
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <!--</div>-->
+                <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>
         <!-- FIN Contenido principal -->
-
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+ 
 <?php 
 
 //FIN

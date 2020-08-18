@@ -797,7 +797,7 @@ if ($max_fila>10000)  // si tenemos campos con orden de fila mayor a 10.000 , te
     $cont_TD++ ;
 
     $item_TD =  "</table>" ;
-    $item_TD .=  "<div class='div_boton_expand'><button data-toggle='collapse'   class='btn btn-link btn-block btn-lg noprint' style='border:none;text-align:left;' data-target='#div_exp$cont_TD'>"
+    $item_TD .=  "<div class='div_boton_expand'><button data-toggle='collapse'   class='btn btn-link btn-block btn-xs noprint' style='border:none;text-align:left;' data-target='#div_exp$cont_TD'>"
              . " Más datos... </button></div>"
               . "<div id='div_exp$cont_TD' class='collapse'>" ;
     $item_TD .=  "<table>" ;

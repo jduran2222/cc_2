@@ -12,15 +12,15 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
-        <!-- Contenido principal -->
+        <!-- Contenido principal 
         <div class="container-fluid bg-light">
             <div class="row">
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
 
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 col-lg-9">
+                <!--****************** BUSQUEDA GLOBAL  *****************
+                <!--<div class="col-12 col-md-4 col-lg-9">-->
 
                 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"> -->
                 <!-- <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'> -->
@@ -407,7 +407,7 @@ function showTypingStatus() {
 }    
 </script>    
                 </div>
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>
         <!-- FIN Contenido principal -->

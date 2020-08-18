@@ -532,3 +532,5 @@ include_once('../include/funciones_js.php');
     </div>
     <!-- /.sidebar -->
   </aside>
+  
+  <div class="content-wrapper">

@@ -12,15 +12,15 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
-        <!-- Contenido principal -->
+        <!-- Contenido principal 
         <div class="container-fluid bg-light">
             <div class="row">
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
 
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 col-lg-9">
+                <!--****************** BUSQUEDA GLOBAL  *****************
+                <!--<div class="col-12 col-md-4 col-lg-9">-->
 
 
 <!-- CONEXION CON LA BBDD Y MENUS -->
@@ -162,7 +162,7 @@ $titulo="<h2>ACTIVIDAD $global_txt ({$result->num_rows})</h2>";
 $msg_tabla_vacia="No hay.";
 ?>
 <?php require("../include/tabla.php"); echo $TABLE ;?>
-
+    <br>
 </div>
 
 <!--************ FIN  *************  -->
@@ -179,7 +179,7 @@ $Conn->close();
 </div>
 
                 </div>
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>
         <!-- FIN Contenido principal -->

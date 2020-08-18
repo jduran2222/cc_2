@@ -108,7 +108,7 @@ if ($_SESSION["is_desarrollo"]) {
         <div class="container-fluid">	
             <div class="row">
 
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3">
                     <!-- <img width="150" src="../img/construcloud64.svg" >        -->
                 </div>
@@ -197,9 +197,9 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
             <!--****************** REGISTROS  *****************-->
             <div class="row">
 
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
 
                 <!--****************** ESPACIO CENTRAL  *****************-->
                 <div class="col-12 col-md-8 col-lg-9">

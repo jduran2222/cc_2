@@ -281,7 +281,7 @@ echo "<br><br><br><br><br><a class='btn btn-xs btn-link noprint'  href='#'  oncl
                 <div class="col-sm-12 col-md-4  col-lg-3">
                     <img width="150" src="../img/construcloud64.svg" >       
                 </div>
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <!--****************** BUSQUEDA GLOBAL  *****************
                 <div class="col-sm-12 col-md-4  col-lg-6 " style="background-color: lightblue">
                     <form action="busqueda_global.php" method="post" id="form1" name="form1" target='_blank'>
                         <h2 title='Búsqueda de entidades (obras, empleados, provedores, clientes...) 

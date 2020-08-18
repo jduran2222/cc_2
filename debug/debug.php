@@ -12,15 +12,15 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
-        <!-- Contenido principal -->
+        <!-- Contenido principal 
         <div class="container-fluid bg-light">
             <div class="row">
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
 
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 col-lg-9">
+                <!--****************** BUSQUEDA GLOBAL  *****************
+                <!--<div class="col-12 col-md-4 col-lg-9">-->
 
 <form action="debug.php" method="post" enctype="multipart/form-data" >
     Select image to upload:
@@ -94,7 +94,7 @@ $("#"+input_id).append("<b>Appended text2</b>");
 
 
                 </div>
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>
         <!-- FIN Contenido principal -->

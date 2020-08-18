@@ -35,6 +35,8 @@
     -->
   </footer>
 
+  
+  
   <div style="position:fixed; bottom:20px; right:20px;z-index: 99;" class="bg-info text-info">
     <div class="p-2 h5 text-center m-0" style="cursor:pointer;" onclick="$('#chat_textarea').fadeToggle(500, 'swing');">
       <i class="far fa-comments"></i>

@@ -12,15 +12,15 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
-        <!-- Contenido principal -->
+        <!-- Contenido principal 
         <div class="container-fluid bg-light">
             <div class="row">
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************-->
+                <!--****************** ESPACIO LATERAL  *****************
 
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 col-lg-9">
+                <!--****************** BUSQUEDA GLOBAL  *****************
+                <!--<div class="col-12 col-md-4 col-lg-9">-->
 
 
 <?php 
@@ -50,7 +50,7 @@ $id_udo=$rs["id_udo"] ;
  require_once("../obras/obras_menutop_r.php");   // metemos el menu OBRAS despues de declarar la variables $id_obra
  
 //  $titulo="Concepto de POF: <b>{$rs["CONCEPTO"]}</b><br>(POF:{$rs["NUMERO"]}-{$rs["NOMBRE_POF"]})" ;
-  $titulo="POF:<b>{$rs["NUMERO"]}-{$rs["NOMBRE_POF"]}</b><br> Concepto: {$rs["CONCEPTO"]}" ;
+  $titulo="<br> Concepto: <b>{$rs["CONCEPTO"]}</b><br>POF:{$rs["NUMERO"]}-{$rs["NOMBRE_POF"]}" ;
   
 //  $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;
 //  $links["RAZON_SOCIAL"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;
@@ -208,10 +208,11 @@ $Conn->close();
 </div>
 
                 </div>
-                <!--****************** BUSQUEDA GLOBAL  *****************-->
+                <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>
         <!-- FIN Contenido principal -->
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <?php 
 
