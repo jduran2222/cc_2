@@ -40,7 +40,7 @@ if ($iniciar_form)
         $fecha1="" ;  
         $fecha2="" ;  
         $MES="" ;  
-        $anno="" ;  
+        $Anno="" ;  
         $tamano1="" ;
         $tamano2="" ;
         $conciliada="" ;
@@ -77,7 +77,7 @@ if ($iniciar_form)
         
         $MES=$_POST["MES"] ;
 //        $Trimestre=$_POST["Trimestre"] ;
-        $anno=$_POST["anno"] ;
+        $Anno=$_POST["Anno"] ;
         
         $tamano1=$_POST["tamano1"] ;
         $tamano2=$_POST["tamano2"] ;
@@ -120,7 +120,7 @@ echo "<TR><TD>Fecha máx.     </TD><TD><INPUT type='date' id='fecha2'     name='
 
 echo "<TR><TD>MES     </TD><TD><INPUT type='text' id='MES'     name='MES'    value='$MES'><button type='button' onclick=\"document.getElementById('MES').value='' \" >*</button></TD></TR>" ;
 //echo "<TR><TD>Trimestre     </TD><TD><INPUT type='text' id='Trimestre'     name='Trimestre'    value='$Trimestre'><button type='button' onclick=\"document.getElementById('Trimestre').value='' \" >*</button></TD></TR>" ;
-echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='anno'     name='anno'    value='$anno'><button type='button' onclick=\"document.getElementById('anno').value='' \" >*</button></TD></TR>" ;
+echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='Anno'     name='Anno'    value='$Anno'><button type='button' onclick=\"document.getElementById('Anno').value='' \" >*</button></TD></TR>" ;
 
 
 echo "<TR><TD>Tamaño min (kb)    </TD><TD><INPUT type='text' id='tamano1'     name='tamano1'    value='$tamano1'><button type='button' onclick=\"document.getElementById('tamano1').value='' \" >*</button></TD></TR>" ;
@@ -204,7 +204,7 @@ $where=$metadatos==""? $where : $where . " AND metadatos LIKE '%".str_replace(" 
 
 $where=$MES==""? $where : $where . " AND DATE_FORMAT(fecha_creacion, '%Y-%m') = '$MES' " ;
 //$where=$Trimestre==""? $where : $where . " AND $select_trimestre = '$Trimestre' " ;
-$where=$anno==""? $where : $where . " AND YEAR(fecha_creacion) = '$anno' " ;
+$where=$Anno==""? $where : $where . " AND YEAR(fecha_creacion) = '$Anno' " ;
 
 //$where=$FECHA2==""? $where : $where . " AND fecha_creacion <= STR_TO_DATE('$FECHA2','%Y-%m-%d') " ;
 
@@ -342,7 +342,7 @@ $dblclicks["tipo_entidad"]="tipo_entidad" ;
 
 $dblclicks["MES"]="MES" ;
 //$dblclicks["Trimestre"]="Trimestre" ;
-$dblclicks["anno"]="anno" ;
+$dblclicks["Anno"]="Anno" ;
 
 //$dblclicks["TIPO_GASTO"]="TIPO_GASTO" ;
 

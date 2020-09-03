@@ -534,7 +534,7 @@ $sql="INSERT INTO `MOV_BANCOS` ( id_cta_banco,fecha_banco,cargo,Concepto,user ) 
   $result=$Conn->query($sql);
   $id_mov_banco=Dfirst( "MAX(id_mov_banco)", "MOV_BANCOS", "id_cta_banco=$id_cta_banco" ) ; 
 
-}elseif (substr( $id_mov_banco, 0, 4 ) =='CTA_' )          //$id_mov_banco CTA_xxx, debemos crear MOV_BANCO en cta ID_CTA=XXX y conciliar despues 8util para ABONOS Y COMPENSACIONES DE FRAS
+}elseif (substr( $id_mov_banco, 0, 4 ) =='CTA_' )   //$id_mov_banco CTA_xxx, debemos crear MOV_BANCO en cta ID_CTA=XXX y conciliar despues 8util para ABONOS Y COMPENSACIONES DE FRAS
 {
     // preparamos para crear primero el id_mov_banco en la cta_banco CAJA_METALICO
 $id_cta_banco= substr( $id_mov_banco, 4 ) ;	              // CUENTA CTA_XXX
@@ -556,7 +556,7 @@ $sql="INSERT INTO `MOV_BANCOS` ( id_cta_banco,fecha_banco,cargo,Concepto,user ) 
   
 elseif ($id_mov_banco=='SOLO_PAGO')
 {
-    // preparamos para crear primero el id_mov_banco en la cta_banco CAJA_METALICO
+
 $id_cta_banco= getVar('id_cta_banco_auto') ;	                    // CUENTA POR DEFECTO previamente habría que consultar si existe la variable y en caso negativo, crearla cta_banco_auto y la variable
 $importe=Round(Dfirst("pdte_pago","Fras_prov_importes", "ID_FRA_PROV=$id_fra_prov"), 2) ;	
 $fecha_banco=Dfirst("FECHA","FACTURAS_PROV", "ID_FRA_PROV=$id_fra_prov") ;	
@@ -564,8 +564,10 @@ $concepto=Dfirst( "CONCAT(PROVEEDOR,' ', N_FRA)","Fras_Prov_View", "ID_FRA_PROV=
     
 }   
 else
-{    
-$id_cta_banco=Dfirst("id_cta_banco","MOV_BANCOS", "id_mov_banco=$id_mov_banco") ;	// conciliamos el nuevo pago con un id_mov_banco existente
+{    // conciliamos el nuevo pago con un id_mov_banco existente
+    
+logs("creando Pago en fra_prov para el id_mov_banco $id_mov_banco ") ;
+$id_cta_banco=Dfirst("id_cta_banco","MOV_BANCOS", "id_mov_banco=$id_mov_banco") ;	
 $importe=Round(Dfirst("cargo","MOV_BANCOS", "id_mov_banco=$id_mov_banco"), 2) ;	
 $fecha_banco=Dfirst("fecha_banco","MOV_BANCOS", "id_mov_banco=$id_mov_banco") ;	
 $concepto=Dfirst("Concepto","MOV_BANCOS", "id_mov_banco=$id_mov_banco") ;	
@@ -594,7 +596,8 @@ $sql="INSERT INTO `PAGOS` ( id_cta_banco,tipo_pago,f_vto,importe,observaciones,u
          
         }
       else
-       {die('ERROR CREANDO PAGO');
+       {
+//          die('ERROR CREANDO PAGO '. ($_SESSION["admin"]? $sql : "") );   // ANULADO JUAND, AGO20, mejor que siga aunque haya errores y concilie el resto
        }
 
 //  echo "CONCILACION CREADA: $id_mov_banco - $id_fra_prov"     ;   //DEBUG
@@ -1208,23 +1211,29 @@ switch ($format) {
                         $format_style=" style='text-align:center;' " ;
                         break;
             case "icon_usuarios":
-                        $valor =($valor==0) ? "" : "$valor <i class='far fa-user'></i> " ;
+                        $icono=" <i class='far fa-user'></i> "  ;
+                        $valor = ($valor=="solo_icon") ? $icono : (($valor==0) ? "" : "$valor $icono" ) ;
                         $format_style=" style='text-align:center;' " ;
                         break;
             case "icon_fotos":
-                        $valor =($valor==0) ? "" : " $valor <span class='glyphicon glyphicon-camera'></span> "  ;
+                        $icono=" <i class='fas fa-camera'></i> "  ;
+                        $valor = ($valor=="solo_icon") ? $icono : (($valor==0) ? "" : "$valor $icono" ) ;
+                
                         $format_style=" style='text-align:center;' " ;
                         break;
             case "icon_albaranes":
-                        $valor = ($valor==0) ? "" : "$valor <span class='glyphicon glyphicon-tags'></span> "  ;
+                        $icono=" <i class='fas fa-tags'></i> "  ;
+                        $valor = ($valor=="solo_icon") ? $icono : (($valor==0) ? "" : "$valor $icono" ) ;
                         $format_style=" style='text-align:center;' " ;
                         break;
             case "icon_maquinaria":
-                        $valor = ($valor==0) ? "" : "$valor <i class='fas fa-truck-pickup'></i> "  ;
+                        $icono=" <i class='fas fa-truck-pickup'></i> "  ;
+                        $valor = ($valor=="solo_icon") ? $icono : (($valor==0) ? "" : "$valor $icono" ) ;
                         $format_style=" style='text-align:center;' " ;
                         break;
             case "icon_produccion":
-                        $valor = ($valor==0) ? "" : "$valor <span class='glyphicon glyphicon-road'></span> "  ;
+                        $icono=" <i class='fa fa-hard-hat'></i> "  ;
+                        $valor = ($valor=="solo_icon") ? $icono : (($valor==0) ? "" : "$valor $icono" ) ;
                         $format_style=" style='text-align:center;' " ;
                         break;
             case "boolean_txt":
@@ -1317,7 +1326,7 @@ switch ($format) {
                         
             case "conciliacion":
                         $format_style=$valor==1 ? " style='background-color: green; text-align:center;' "  : " style='background-color: red; text-align:center;' "  ;   
-                        $valor = $valor==1 ? '<span class="glyphicon glyphicon-resize-horizontal"></span>' : '<span class="glyphicon glyphicon-random"></span>' ;
+                        $valor = $valor==1 ? '<i class="fas fa-arrows-alt-h"></i>' : '<i class="fas fa-expand-arrows-alt"></i>' ;
 
                         break;
             case "semaforo":

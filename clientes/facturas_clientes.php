@@ -36,7 +36,7 @@ if ($iniciar_form)
         $fecha2 = isset($_GET["fecha2"]) ?  $_GET["fecha2"] :   ""  ;  
         $MES = isset($_GET["MES"]) ?  $_GET["MES"] :   ""  ;
         $Trimestre = isset($_GET["Trimestre"]) ?  $_GET["Trimestre"] :   ""  ;
-        $anno = isset($_GET["anno"]) ?  $_GET["anno"] :   ""  ;
+        $Anno = isset($_GET["Anno"]) ?  $_GET["Anno"] :   ""  ;
         $importe1 = isset($_GET["importe1"]) ?  $_GET["importe1"] :   ""  ;
         $importe2 = isset($_GET["importe2"]) ?  $_GET["importe2"] :   ""  ;
         $negociada = isset($_GET["negociada"]) ?  $_GET["negociada"] :   ""  ;
@@ -51,7 +51,7 @@ if ($iniciar_form)
         $fecha2=$_POST["fecha2"] ;  
         $MES=$_POST["MES"] ;
         $Trimestre=$_POST["Trimestre"] ;
-        $anno=$_POST["anno"] ;
+        $Anno=$_POST["Anno"] ;
         $importe1=$_POST["importe1"] ;
         $importe2=$_POST["importe2"] ;
         $negociada=$_POST["negociada"] ;
@@ -133,7 +133,7 @@ echo "<TR><TD>Fecha mín.     </TD><TD><INPUT type='date' id='fecha1'     name='
 echo "<TR><TD>Fecha máx.     </TD><TD><INPUT type='date' id='fecha2'     name='fecha2'    value='$fecha2'><button type='button' onclick=\"document.getElementById('fecha2').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>MES     </TD><TD><INPUT type='text' id='MES'     name='MES'    value='$MES'><button type='button' onclick=\"document.getElementById('MES').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>Trimestre     </TD><TD><INPUT type='text' id='Trimestre'     name='Trimestre'    value='$Trimestre'><button type='button' onclick=\"document.getElementById('Trimestre').value='' \" >*</button></TD></TR>" ;
-echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='anno'     name='anno'    value='$anno'><button type='button' onclick=\"document.getElementById('anno').value='' \" >*</button></TD></TR>" ;
+echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='Anno'     name='Anno'    value='$Anno'><button type='button' onclick=\"document.getElementById('Anno').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>importe min     </TD><TD><INPUT type='text' id='importe1'     name='importe1'    value='$importe1'><button type='button' onclick=\"document.getElementById('importe1').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>importe máx     </TD><TD><INPUT type='text' id='importe2'     name='importe2'    value='$importe2'><button type='button' onclick=\"document.getElementById('importe2').value='' \" >*</button></TD></TR>" ;
 
@@ -234,7 +234,7 @@ $where=$fecha1==""? $where : $where . " AND FECHA_EMISION >= '$fecha1' " ;
 $where=$fecha2==""? $where : $where . " AND FECHA_EMISION <= '$fecha2' " ;
 $where=$MES==""? $where : $where . " AND DATE_FORMAT(FECHA_EMISION, '%Y-%m') = '$MES' " ;
 $where=$Trimestre==""? $where : $where . " AND $select_trimestre = '$Trimestre' " ;
-$where=$anno==""? $where : $where . " AND YEAR(FECHA_EMISION) = '$anno' " ;
+$where=$Anno==""? $where : $where . " AND YEAR(FECHA_EMISION) = '$Anno' " ;
 $where=$importe1==""? $where : $where . " AND IMPORTE_IVA > $importe1" ;
 $where=$importe2==""? $where : $where . " AND IMPORTE_IVA < $importe2" ;
 $where=$negociada==""? $where : $where . " AND Negociada=$negociada " ;
@@ -302,7 +302,7 @@ $where=$cobrada==""? $where : $where . " AND  Cobrada=$cobrada" ;
     $sql_T="SELECT '' AS D,COUNT(ID_FRA) AS Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  " ;
     
     // google chart
-    $cols_chart['anno']=["Años","string"] ;  // columnas con las que realizar el gráfico
+    $cols_chart['Anno']=["Años","string"] ;  // columnas con las que realizar el gráfico
     $cols_chart['Base_Imponible']=["Facturacion","number"] ;  // columnas con las que realizar el gráfico
     
     break;
@@ -311,7 +311,7 @@ $where=$cobrada==""? $where : $where . " AND  Cobrada=$cobrada" ;
      //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
      $sql_T="SELECT '' AS d,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  " ;   
      $sql_S="SELECT anno, SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  GROUP BY anno ORDER BY anno  " ;      
-     $id_agrupamiento="anno" ;
+     $id_agrupamiento="Anno" ;
      $anchos_ppal=[30,20,20,20,20] ;
     
 //     $tabla_update="Udos" ;
@@ -351,7 +351,7 @@ $dblclicks["CLIENTE"]="cliente" ;
 $dblclicks["N_FRA"]="n_fra" ;
 $dblclicks["MES"]="MES" ;
 $dblclicks["Trimestre"]="Trimestre" ;
-$dblclicks["anno"]="anno" ;
+$dblclicks["Anno"]="Anno" ;
 //$dblclicks["CONCEPTO"]="CONCEPTO" ;
 //$dblclicks["TIPO_GASTO"]="TIPO_GASTO" ;
 

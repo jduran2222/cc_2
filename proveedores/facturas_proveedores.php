@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo = 'Fras. Proveedor';
+$titulo = 'FACTURAS PROV.';
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
@@ -38,7 +38,7 @@ if ($iniciar_form)
         $importe2=isset($_GET["importe2"])? $_GET["importe2"] :  "" ;
         $MES = isset($_GET["MES"]) ?  $_GET["MES"] :   ""  ;
         $Trimestre = isset($_GET["Trimestre"]) ?  $_GET["Trimestre"] :   ""  ;
-        $anno = isset($_GET["anno"]) ?  $_GET["anno"] :   ""  ;
+        $Anno = isset($_GET["Anno"]) ?  $_GET["Anno"] :   ""  ;
         $NOMBRE_OBRA=isset($_GET["NOMBRE_OBRA"])? $_GET["NOMBRE_OBRA"] :  "" ;
         $iva=isset($_GET["iva"])? $_GET["iva"] :  "" ;
         $pdf=isset($_GET["pdf"])? $_GET["pdf"] :  "" ;
@@ -66,7 +66,7 @@ if ($iniciar_form)
         $importe2=$_POST["importe2"] ; 
         $MES=$_POST["MES"] ;
         $Trimestre=$_POST["Trimestre"] ;
-        $anno=$_POST["anno"] ;
+        $Anno=$_POST["Anno"] ;
         $NOMBRE_OBRA=$_POST["NOMBRE_OBRA"] ;
         $iva=$_POST["iva"] ;
         $pdf=$_POST["pdf"] ;
@@ -155,7 +155,7 @@ echo "<TR><TD>Fecha mín.     </TD><TD><INPUT type='date' id='fecha1'     name='
 echo "<TR><TD>Fecha máx.     </TD><TD><INPUT type='date' id='fecha2'     name='fecha2'    value='$fecha2'><button type='button' onclick=\"document.getElementById('fecha2').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>MES     </TD><TD><INPUT type='text' id='MES'     name='MES'    value='$MES'><button type='button' onclick=\"document.getElementById('MES').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>Trimestre     </TD><TD><INPUT type='text' id='Trimestre'     name='Trimestre'    value='$Trimestre'><button type='button' onclick=\"document.getElementById('Trimestre').value='' \" >*</button></TD></TR>" ;
-echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='anno'     name='anno'    value='$anno'><button type='button' onclick=\"document.getElementById('anno').value='' \" >*</button></TD></TR>" ;
+echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='Anno'     name='Anno'    value='$Anno'><button type='button' onclick=\"document.getElementById('Anno').value='' \" >*</button></TD></TR>" ;
 
 echo "</TABLE></div><div class='col-lg-4'><TABLE class='seleccion'> " ;   
 
@@ -317,18 +317,23 @@ echo "<div id='myDIV' class='noprint'>" ;
 
 $btnt['ultimas_fras_reg']=['ultimas registradas','muestra las últimas facturas registradas'] ;
 $btnt['facturas']=['facturas','Listado de todas las facturas según el filtro'] ;
-$btnt['prov_fras']=['prov-fras',''] ;
-$btnt['proveedor']=['proveedor',''] ;
+if ($listado_global) 
+{   
+    $btnt['prov_fras']=['prov-fras',''] ;
+    $btnt['proveedor']=['proveedor',''] ;
+}
 $btnt['obras']=['obras',''] ;
+$btnt['vacio3']=['','',''] ;
 $btnt['meses']=['meses',''] ;
 $btnt['trimestres']=['trimestres',''] ;
 $btnt['annos']=['años',''] ;
+$btnt['vacio2']=['','',''] ;
 $btnt['cuadros']=["<span class='glyphicon glyphicon-th-large'></span> cuadros",'Muestra las facturas seleccionadas en forma de cuadros'] ;
 
 foreach ( $btnt as $clave => $valor)
 {
-  $active= ($clave==$agrupar) ? " cc_active" : "" ;  
-  echo "<button class='cc_btnt$active' title='{$valor[1]}' onclick=\"getElementById('agrupar').value = '$clave'; document.getElementById('form1').submit(); \">{$valor[0]}</button>" ;  
+  $active= ($clave==$agrupar) ? "cc_active" : "" ;  
+  echo (substr($clave,0,5)=='vacio') ? "   " : "<button class='cc_btnt $active' title='{$valor[1]}' onclick=\"getElementById('agrupar').value = '$clave'; document.getElementById('form1').submit(); \">{$valor[0]}</button>" ;  
 }  
 
 //echo "</form>" ;
@@ -366,7 +371,7 @@ $where=$fecha1==""? $where : $where . " AND FECHA >= '$fecha1' " ;
 $where=$fecha2==""? $where : $where . " AND FECHA <= '$fecha2' " ;
 $where=$MES==""? $where : $where . " AND DATE_FORMAT(FECHA, '%Y-%m') = '$MES' " ;
 $where=$Trimestre==""? $where : $where . " AND $select_trimestre = '$Trimestre' " ;
-$where=$anno==""? $where : $where . " AND YEAR(FECHA) = '$anno' " ;
+$where=$Anno==""? $where : $where . " AND YEAR(FECHA) = '$Anno' " ;
 $where=$importe1==""? $where : $where . " AND IMPORTE_IVA >= $importe1" ;
 $where=$importe2==""? $where : $where . " AND IMPORTE_IVA <= $importe2" ;
 $where=$iva==""? $where : ($iva>0 ? $where . " AND iva>0 " : $where . " AND iva=0 ") ;
@@ -385,7 +390,7 @@ $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%
 
 <!--EXPAND SELECCION -->    
   
-<br><button type='button' class='btn btn-default noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'>Operar con facturas seleccionadas<span class="glyphicon glyphicon-chevron-down"></span></button>
+<br><button type='button' class='btn btn-xs btn-link noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'>Operar con facturas seleccionadas <i class="fa fa-angle-down" aria-hidden="true"></i></button>
 <div id='div_seleccion' class='collapse'>
   
 <div class="noprint" style="border-width:1px; border-style:solid;">
@@ -435,7 +440,7 @@ $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%
 <!--FIN SELECCION DE REMESA -->     
 <!--EXPAND RESUMEN -->   
   
-<br><button type='button' class='btn btn-default noprint' id='exp_resumen' data-toggle='collapse' data-target='#div_resumen'>Resumen de importes <span class="glyphicon glyphicon-chevron-down"></span></button>
+<br><button type='button' class='btn btn-xs btn-link noprint' id='exp_resumen' data-toggle='collapse' data-target='#div_resumen'>Resumen de importes  <i class="fa fa-angle-down" aria-hidden="true"></i></button>
 <div id='div_resumen' class='collapse'>
   
 <div  style="border-width:1px; border-style:solid;">
@@ -599,7 +604,7 @@ $dblclicks["N_FRA"]="n_fra" ;
 //$dblclicks["TIPO_GASTO"]="TIPO_GASTO" ;
 $dblclicks["MES"]="MES" ;
 $dblclicks["Trimestre"]="Trimestre" ;
-$dblclicks["anno"]="anno" ;
+$dblclicks["Anno"]="Anno" ;
 
 $links["NOMBRE_OBRA"] = ["../obras/obras_ficha.php?id_obra=", "ID_OBRA","ver Obra","formato_sub_vacio"] ;
 $links["PROVEEDOR"] = ["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES","ver Proveedor","formato_sub"] ;
@@ -780,6 +785,11 @@ function genera_remesa()
 </script>
         
                 </div>
+                  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

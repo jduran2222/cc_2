@@ -7,7 +7,7 @@ $id_c_coste = $_SESSION['id_c_coste'];
 $_m=  isset($_GET['_m']) ?  $_GET['_m'] : '' ;
 $_m.='\cta_bancaria'  ;
 
-$titulo = 'Cuentas Bancarias';
+$titulo = 'CUENTAS BANCOS';
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
@@ -151,11 +151,15 @@ $Conn->close();
 	 
 
 </div>
-                </div>
-                <!--****************** BUSQUEDA GLOBAL  *****************
-            </div>
-        </div>
-        <!-- FIN Contenido principal -->
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+                <!--</div>-->
+                <!--****************** BUSQUEDA GLOBAL  *****************-->
+            <!--</div>-->
+        <!--</div>-->
+        <!-- FIN Contenido principal 
 
 <?php 
 

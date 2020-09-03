@@ -21,6 +21,7 @@ require_once("../include/funciones.php");
 $modo=isset($_GET["modo"]) ? $_GET["modo"]: ''  ; 
 $id_fra_prov_unica=isset($_GET["id_fra_prov_unica"]) ? $_GET["id_fra_prov_unica"]: ''  ; 
 $abrir_factura=0;
+$actualizar_datos_factura=0;
 
 if ($id_fra_prov_unica=='FACTURA_NUEVA')
 {
@@ -28,6 +29,7 @@ if ($id_fra_prov_unica=='FACTURA_NUEVA')
         
   $id_fra_prov_unica= factura_proveedor_anadir() ;
   $abrir_factura=1;
+  $actualizar_datos_factura=1;
 
     /// pdte creamos factura y asociamos id a su $id_fra_prov_unica
 }
@@ -45,7 +47,7 @@ if ($modo=='MOVS_A_FRA')
 }elseif (isset($_GET["array_str"]))                  // venimos con array_str  (MULTIPLES conciliaciones, table_selection_IN())
 {  
     $array_str=rawurldecode($_GET["array_str"])   ;
-    logs('JUAN:'.$array_str);
+//    logs('JUAN:'.$array_str);
     $values_mov_banco_fras_array = explode("-", $array_str);
 
 }else    // no es Array_str, solo hay una conciliacion
@@ -57,8 +59,8 @@ if ($modo=='MOVS_A_FRA')
  
 //   echo $array_str.'<br>'; 
       
-  foreach ($values_mov_banco_fras_array as $values_mov_banco_fras)    
-  {
+foreach ($values_mov_banco_fras_array as $values_mov_banco_fras)    
+{
        $array_id = explode("&", $values_mov_banco_fras);            // creamos el array del par ( $id_mov_banco ,  $id_fra_prov )
 
     if (count($array_id)==2)          // es un par  ( $id_mov_banco ,  $id_fra_prov )  ?
@@ -66,7 +68,7 @@ if ($modo=='MOVS_A_FRA')
         $id_mov_banco=$array_id[0]  ;
         $id_fra_prov=$array_id[1]  ;
     }
-    elseif (count($array_id)==1 AND $id_fra_prov_unica )          // es un unico  ( $id_mov_banco )  estsmos en modo MOVS_A_FRA
+    elseif (count($array_id)==1 AND $id_fra_prov_unica )          // es un unico  ( $id_mov_banco )  estasmos en modo MOVS_A_FRA
     {     
         $id_mov_banco=$array_id[0]  ;
         $id_fra_prov=$id_fra_prov_unica  ;
@@ -83,10 +85,11 @@ if ($modo=='MOVS_A_FRA')
     {if (concilia_mov_banco_fra_prov($id_mov_banco,$id_fra_prov))
        { // echo "CONCILACION CREADA: $id_mov_banco - $id_fra_prov"       ;
 //         echo "<script languaje='javascript' type='text/javascript'>window.close();</script>"; 
+          $id_mov_banco_valido=$id_mov_banco ;  // cogemos cualquier mov banco válido para rellenar los datos de la FACTURA_NUEVA
 
         }   //DEBUG 
        else 
-       {  echo "ERROR EN CONCILACION: $id_mov_banco - $id_fra_prov"  ;
+       {  echo "ERROR EN CONCILIACION: $id_mov_banco - $id_fra_prov"  ;
        }  
       
        
@@ -95,7 +98,22 @@ if ($modo=='MOVS_A_FRA')
       //echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../bancos/conciliar_fra_prov_mov_banco.php?$values_mov_banco_fras'>" ;
     }         
            
-  }
+}
+
+// si es FACTURA_NUEVA registramos sus posibles datos de N_FRA, FECHA e IMPORTE con los datos del los MOVS_BANCOS
+
+if ($actualizar_datos_factura)
+{
+    $importe_fra=Dfirst("importe_pagado", "Fras_prov_pagosV", "id_fra_prov=$id_fra_prov_unica") ;
+    $fecha_fra=Dfirst("fecha_banco", "MOV_BANCOS", "id_mov_banco=$id_mov_banco_valido") ;
+    $n_fra=Dfirst("Concepto", "MOV_BANCOS", "id_mov_banco=$id_mov_banco_valido") ;
+    
+    $sql_update= "UPDATE `FACTURAS_PROV` SET N_FRA='$n_fra' ,  FECHA='$fecha_fra' ,  IMPORTE_IVA='$importe_fra'  WHERE  ID_FRA_PROV=$id_fra_prov_unica ; "  ;
+    $resultado=$Conn->query($sql_update) ;
+
+    logs( "Actualizar Factura prov:    $sql_update , Resultado: $resultado");
+}    
+
       
 //echo ("<br>CONCILIACION MOV. BANCOS Y FACTURAS TERMINADA SATISTACTORIAMENTE");     
 //echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../bancos/remesa_ficha.php?id_remesa=$id_remesa'>" ;

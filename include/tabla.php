@@ -1164,7 +1164,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                                             . " onblur=\"tabla_update_onchange('$cadena_link',this.innerHTML,'div_edit','div$cont_TD' )\"   >$valor</div>$div_extras_html"
                                              ."</td>" ;
                                    
-                                    $TABLE .= ($debug)? "<button onclick='alert($(\"#div$cont_TD\").html());' style='cursor:pointer;'  >VER</button>" :"" ;
+//                                    $TABLE .= ($debug)? "<button onclick='alert($(\"#div$cont_TD\").html());' style='cursor:pointer;'  >VER</button>" :"" ;
 
                                    //anulado , puede usarse: contenteditable="true"
 //                                   $TABLE .= "<script type='text/javascript'>" ;

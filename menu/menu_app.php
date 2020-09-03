@@ -144,13 +144,13 @@ $id_c_coste = $_SESSION['id_c_coste'];
                     //../proveedores/albaran_anadir.php?id_obra='+id_obra+'&id_proveedor='+id_proveedor+'&fecha='+fecha+'&ref='+ref+'&importe='+importe+'&add_foto='+add_foto
             $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 80px;width:12%; height:180px;' "
                     . " href='../proveedores/albaran_anadir.php?id_obra={$rs["ID_OBRA"]}&fecha=$fecha&add_foto=1' "
-                    . " target='_blank' ><span class='glyphicon glyphicon-tags'></span></a>";
+                    . " target='_blank' ><i class='fas fa-tags'></i></a>";
             $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 80px;width:12%; height:180px;' "
                     . " href='../documentos/doc_upload_multiple_form.php?tipo_entidad=obra_foto&id_entidad={$rs["ID_OBRA"]}&fecha_doc=$fecha' "
-                    . " target='_blank' ><span class='glyphicon glyphicon-camera'></span></a>";
+                    . " target='_blank' ><i class='fas fa-camera'></i></a>";
             $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 80px;width:12%; height:180px;' "
                     . " href='../obras/obras_ficha.php?id_obra={$rs["ID_OBRA"]}' "
-                    . " target='_blank' ><span class='glyphicon glyphicon-road'></span></a>";
+                    . " target='_blank' ><i class='fa fa-hard-hat'></i></a>";
             $partes_hoy_html .= "<br>";
         }
     } else

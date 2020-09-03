@@ -371,7 +371,7 @@ $content_anadir_med="" ;
 ?>
 <!--EXPAND SELECCION -->    
   
-<br><button type='button' class='btn btn-default noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'>Operar con movimientos seleccionados<span class="glyphicon glyphicon-chevron-down"></span></button>
+<br><button type='button' class='btn btn-default noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'>Operar con movimientos seleccionados <i class="fa fa-angle-down" aria-hidden="true"></i></button>
 <div id='div_seleccion' class='collapse'>
   
 <div class="noprint" style="border-width:1px; border-style:solid;">

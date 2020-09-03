@@ -420,7 +420,7 @@ $actions_row["delete_link"]="1";
 
 <div style='background-color: white' class="mainc" >
 
-<button type='button' class='btn btn-default noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'><h3>Añadir Conceptos a la POF <span class="glyphicon glyphicon-chevron-down"></span></h3></button>
+<button type='button' class='btn btn-default noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'><h3>Añadir Conceptos a la POF  <i class="fa fa-angle-down" aria-hidden="true"></i></h3></button>
 <div  id='div_seleccion' class='collapse'>
     
   <div class='border' style='background-color: white; border-color: grey'>    

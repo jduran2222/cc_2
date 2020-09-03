@@ -1,29 +1,6 @@
 <style>
     
  
-/*     Icon when the collapsible content is shown 
-div.div_boton_expand .btn:after {
-  font-family: "Glyphicons Halflings";
-  content: "\e080";
-  content: "\e113";
-}
-
- Icon when the collapsible content is hidden 
-div.div_boton_expand .btn.collapsed:after {
-      font-family: "Glyphicons Halflings";
-
-  content: "\e114";
-}
-    */
-    
-/*    
-.transparente{
-    opacity:0.15 ;
-    padding: 2px;
-}
- .transparente:hover{
-    opacity:0.5 ;
-}*/
 
     
     
@@ -50,21 +27,7 @@ div.div_edit {
     resize:both;
   }
 
-/*a.dentro_tabla_ficha {
-    
-  background: #eee; 
-  color: grey; 
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 5px 0 5px;
-  position: relative;
-  margin: 0 5px 5px 0;
-  text-decoration: none;
-  -webkit-transition: color 0.2s;
-  font-size: 9px ;
-}                */
-                
+
 .tabla_ficha2  select {
     /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
     border-collapse: collapse;
@@ -151,12 +114,7 @@ a:hover + .box_wiki,.box_wiki:hover{
     td p label {
     font-size: 6vw; 
   }
-/*   .btn {
-    font-size: 6vw; 
-  }*/
-/*  a.dentro_tabla_ficha {
-    font-size: 6vw; 
-  }*/
+
  .no_update {
     font-size: 6vw; 
   }
@@ -303,7 +261,9 @@ if ($result->num_rows > 0)
         // a falta de $etiqueta por código o CLAVE_DB improvisamos una
         //  inicializamos la $etiqueta_txt con su etiqueta o en su defecto el nombre del campo sin el 'ID_' y sin '_'
        $etiqueta_txt= isset($etiquetas[$clave]) ? $etiquetas[$clave] : str_replace('_',' ',( (strtoupper(substr($clave,0,3))=="ID_")? substr($clave,3)  :   $clave     ))  ; 
-    
+       $etiqueta_txt .= $etiqueta_txt ? " :&nbsp;&nbsp;" : ""  ;  // añadimos los dos puntos si la etiqueta tiene caracteres
+       
+       
        //   FIN ASIGNACION DE ETIQUETAS
        
        // calculo del FORMATO
@@ -396,8 +356,7 @@ if ($result->num_rows > 0)
         
         $formato_valor= (isset($formats[$clave])) ? $formats[$clave] :  'auto' ;                                 
         $valor_txt=cc_format( $valor, $formato_valor , $format_style, $clave ) ;    // formateamos el valor
-        $valor_txt=$valor_txt? $valor_txt : "<span class='btn btn-lg btn-link noprint transparente'  title='editar'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>"  ;                          // si el valor_txt es vacio ponemos unos guiones para poder pinchar y editar
-
+        $valor_txt=$valor_txt? $valor_txt : "---"  ;       // si el valor_txt es vacio ponemos unos guiones para poder pinchar y editar
         
         // <SPAN> HTML PARA GESTIÓN DE ETIQUETAS CON CLAVE_DB. Solo para ADMIN_CHAT 
          $clave_db_editar_html="";
@@ -429,8 +388,11 @@ if ($result->num_rows > 0)
         }  
         
         $div_etiqueta_required= $is_requerido ? "<span style='color:red;' title='campo requerido, rellenelo o cambie el valor asignado por defecto' >(*)</span>" : '' ;
-        $TD_etiqueta = "<span  >$etiqueta_txt </span>$div_etiqueta_required $div_tooltip_html $clave_db_editar_html $clave_db_nuevo_html" ;
+        $title_tooltip_txt = $tooltip_txt?  "title='$tooltip_txt'" : "" ;
+        $TD_etiqueta = "<span $title_tooltip_txt  >$etiqueta_txt </span>$div_etiqueta_required" ;
         
+        // ponemos al final los otros span auxiliares
+        $spans_html_txt.= " $div_tooltip_html $clave_db_editar_html $clave_db_nuevo_html" ;
 
         // TIPOS DE CAMPO VISIBLES: SELECT, UPDATE, LINKS, GENERAL
         // el campo IS_SELECT , campo SELECIONABLE deentre valores a calcular
@@ -460,12 +422,12 @@ if ($result->num_rows > 0)
               // PROVISIONAL UNOS DÍAS HASTA VER QUÉ FICHAS REQUIEREN AÑADIR LOS SELECT AL UPDATES[]
 //                if (!$is_update) { $valor_txt_sel = '¡¡ ATENCION!! AÑADIR EL SELECT AL UPDATES SI PROCEDE (juand)' ;}
               // LINK PARA VER LA ENTIDAD
-              $add_link_select_ver = $link_ver ? "<a class='btn btn-link' href='{$link_ver}{$rs[$id_campo]}&_m=$_m' target='_blank'>$valor_txt_sel</a>" : "$valor_txt_sel" ;
+              $add_link_select_ver = $link_ver ? "<a class='btn tn-md btn-link' href='{$link_ver}{$rs[$id_campo]}&_m=$_m' target='_blank'>$valor_txt_sel</a>" : "$valor_txt_sel" ;
 
               if ($is_update)
               {
         //              LINKS EN CASO DE SER EDITABLE (UPDATES)
-                      $add_link_select= $link_nuevo ? "<a class='btn btn-link noprint transparente' href='$link_nuevo' target='_blank' title='nuevo'>"
+                      $add_link_select= $link_nuevo ? "<a class='btn btn-xs btn-link noprint transparente' href='$link_nuevo' target='_blank' title='nuevo'>"
                                                           . "<i class='fas fa-plus-circle'></i></a>" : "" ;
 
                       
@@ -484,11 +446,11 @@ if ($result->num_rows > 0)
                       $add_link_select_cambiar="<INPUT class='noprint' style='font-size: 70% ;font-style: italic ;' id='input_$cont_TD' size='7'  "
                               . "  onkeyup=\"ficha_update_select_showHint('$cadena_select_enc','$campo_texto','$valor_txt_sel','p$cont_TD','$otro_where' ,this.value)\" placeholder='buscar...' value=''  >" ;
                       // LUPA busca todos, intruduce tres espacios en el INPUT
-                      $add_link_select_cambiar.= "<span class='btn btn-link noprint transparente'  " 
+                      $add_link_select_cambiar.= "<span class='btn btn-xs btn-link noprint transparente'  " 
                               . " onclick=\" $('#input_$cont_TD').val($('#input_$cont_TD').val()+'   ')  ; $('#input_$cont_TD').keyup()   \"   "
                               . " title='Buscar'> <i class='fas fa-search'></i></span>" ;
                       // FUNCION PASTE()
-                       $add_link_select_cambiar.= "<span class='btn btn-link noprint transparente'  "
+                       $add_link_select_cambiar.= "<span class='btn btn-xs btn-link noprint transparente'  "
                               . " onclick=\" paste( function(nuevo_valor){  document.getElementById('input_$cont_TD').value=nuevo_valor ; $('#input_$cont_TD').keyup() } )  \"   "
                               . " title='paste from clipboard'> <i class='fas fa-paste'></i> </span>";
                              
@@ -526,7 +488,7 @@ if ($result->num_rows > 0)
               }
               //  IMPRESION DE CAMPO $SELECT[]
              
-              $TD_valor =  "<p id='pcont999'>$add_link_select_ver $add_link_select_cambiar $add_link_select $add_link_select_valor_null $add_link_select_cambiar_div_sugerir</p>"
+              $TD_valor =  "<span id='pcont999'>$add_link_select_ver $add_link_select_cambiar $add_link_select $add_link_select_valor_null $spans_html_txt $add_link_select_cambiar_div_sugerir</span>"
                            . "<div id='p$cont_TD'></div>" ;
               
               
@@ -538,6 +500,7 @@ if ($result->num_rows > 0)
            // formateo $valor a $valor_encode para evitar problemas con el window.prompt()
            $valor_encode=str_replace("\r\n"," ",$valor) ;  // sustituyo los saltos de línea por espacios para que funcione el 'prompt' del javascript         
        
+           
            // vemos los posibles tipos de campos       
            if ($is_fecha)     // UPDATE  FECHA
            {  //<input type="text" id="datepicker">
@@ -546,8 +509,8 @@ if ($result->num_rows > 0)
  
                $TD_valor =  "<input type='date' style='border:none;' id='p$cont_TD' value='$fecha0' "  
                    . " onchange=\"ficha_update_fecha('$cadena_link',this.value )\">  "
-                   . "<span class='btn btn-link noprint transparente' onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD','', 'date' )\"  title='editar fecha manualmente'>$ICON-pencil$SPAN</span>"
-                   . "<span class='btn btn-link noprint transparente'  onclick=\"paste( function(nuevo_valor){ ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD',nuevo_valor, 'date'  ); } ) \"  >"
+                   . "<span class='btn btn-xs btn-link noprint transparente' onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD','', 'date' )\"  title='editar fecha manualmente'><i class='fas fa-pencil-alt'></i></span>"
+                   . "<span class='btn btn-xs btn-link noprint transparente'  onclick=\"paste( function(nuevo_valor){ ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD',nuevo_valor, 'date'  ); } ) \"  >"
                        . " <i class='fas fa-paste'></i> </span>"
                    . "$spans_html_txt" ;                                                                    // hacemos el JAVASCRIPT para actualizar la FECHA
                    // PENDIENTE DE PONER UN PENCIL-UPDATE DONDE METER LA FECHA CON COPIA PEGA EN FORMATO DD/MM/AAAA CON UN PROMPT    
@@ -592,22 +555,24 @@ if ($result->num_rows > 0)
 
               // metemos la etiqueta en el mismo <TD> que el textarea
               
-              $TD_etiqueta =  "<span class='etiqueta' style='text-align: left;'><span  >$etiqueta_txt </span>$div_etiqueta_required $div_tooltip_html"
-                      . " $clave_db_editar_html $clave_db_nuevo_html</span>" ;   // quitamos la Etiqueta
+//              $TD_etiqueta =  "<span class='etiqueta' style='text-align: left;'><span  >$etiqueta_txt </span>$div_etiqueta_required $div_tooltip_html"
+//                      . " $clave_db_editar_html $clave_db_nuevo_html</span>" ;   // quitamos la Etiqueta
+              $TD_etiqueta =  "<span class='etiqueta' style='text-align: left;'><span  >$etiqueta_txt </span>$div_etiqueta_required</span>" ;   // quitamos la Etiqueta
 
 
               $TD_valor = "<div id='div$cont_TD' contenteditable='true'  class='div_edit redimensionable'  "
                         . " onblur=\"ficha_update_div_edit('$cadena_link',this.innerHTML ,'div$cont_TD' )\"   >$valor</div>"
-                         . ($admin? "<button onclick='alert($(\"#div$cont_TD\").html());' style='cursor:pointer;'  >VER</button>" : "" ) 
+//                         . ($admin? "<button onclick='alert($(\"#div$cont_TD\").html());' style='cursor:pointer;'  >VER</button>" : "" ) 
                         ." $spans_html_txt"  ;
 //                        
                 
            }elseif ($is_numero)  // UPDATE NUMERICO
            {    
                $TD_valor =  "<span style='cursor: pointer;'  onclick=\"ficha_update_numero('$cadena_link','$clave','$valor_encode','p$cont_TD' )\"  id='p$cont_TD' >$valor_txt  </span>"
-                    . "<a class='btn btn-xs btn-link noprint transparente'  "
+                       . "<span  class='btn btn-xs btn-link noprint transparente'  onclick=\"ficha_update_numero('$cadena_link','$clave','$valor_encode','p$cont_TD' )\" title='editar' ><i class='fas fa-pencil-alt'></i></span>"
+                       . "<span class='btn btn-xs btn-link noprint transparente'  "
                        . " onclick=\"paste( function(nuevo_valor){ ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' , nuevo_valor,'num' ); } ) \"  id='p$cont_TD' title='paste from clipboard' >"
-                       . "<i class='fas fa-paste'></i></a>"
+                       . "<i class='fas fa-paste'></i></span>"
                        . "$spans_html_txt" ;
                 
            }elseif ($is_URL)  // UPDATE URL 
@@ -627,10 +592,10 @@ if ($result->num_rows > 0)
                $iframe_url="<span><iframe src='$valor' width = '300px' height = '100px'></iframe></span>";
                
                $TD_valor = "<span class='float_left' $format_style ><a class='btn btn-link btn-xs'  href= '$valor' title='ir a URL' target='_blank'>{$valor_txt}</a></span>"
-                           . "<br><span class='float_left noprint transparente'   onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' ,'','')\"  title='editar Url'>$ICON-pencil$SPAN</span>"
+                           . "<br><span class='float_left noprint transparente'   onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' ,'','')\"  title='editar Url'><i class='fas fa-pencil-alt'></i></span>"
                            . "<span class='btn btn-xs btn-link noprint transparente'   onclick=\"paste( function(nuevo_valor){ ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' , nuevo_valor ); } ) ;location.reload(); \" "
                        . " title='paste from clipboard'> <i class='fas fa-paste'></i> </span>"
-                       . "$spans_html_txt $add_link_url_valor_null $iframe_url";        
+                       . "$spans_html_txt $add_link_url_valor_null $iframe_url $spans_html_txt";        
 
                 
            }elseif ($is_EMAIL)  // UPDATE EMAIL 
@@ -647,7 +612,8 @@ if ($result->num_rows > 0)
            {                    
                     
               $TD_valor =  "<div class='span_general' $format_style  style='cursor: pointer;'   onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' )\" id='p$cont_TD' title='editar' >$valor_txt </div>"
-                    . "<span class='btn btn-xs btn-link noprint transparente' style='cursor:pointer;'   onclick=\" paste( function(nuevo_valor){  ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' , nuevo_valor ) ; } )\" "
+                       . "<span  class='btn btn-xs btn-link noprint transparente'  onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' )\" title='editar' ><i class='fas fa-pencil-alt'></i></span>"
+                      . "<span class='btn btn-xs btn-link noprint transparente' style='cursor:pointer;'   onclick=\" paste( function(nuevo_valor){  ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' , nuevo_valor ) ; } )\" "
                       . " id='p$cont_TD' title='paste from clipboard' > <i class='fas fa-paste'></i> </span>"
                       . "$spans_html_txt";
               
@@ -745,7 +711,7 @@ if ($result->num_rows > 0)
 //                 $item_TD.=  "<tr><td colspan='2'>" ;
 //                 echo  "<TD class='etiqueta'>$TD_etiqueta</TD>" ;
 //                 echo  "<TD>$TD_valor</TD>"  ;
-                 $item_TD .=  "<div id='div_td' class='float_left'><span class='etiqueta'>$TD_etiqueta</span><br>" ;
+                 $item_TD .=  "<div id='div_td' class='float_left'><span class='etiqueta'>$TD_etiqueta</span>" ;
                  $item_TD .=   "<span>$TD_valor</span></div>"  ;
 //                 $item_TD .=   "</td></tr>" ;
                  
@@ -781,7 +747,7 @@ if ($result->num_rows > 0)
     }  // fin del FOREACH 
     
     // pintamos CAMPOS NO VISIBLES. ponemos línea de ID_INFO en GRIS
-     $item_TD_final =  "<tr><td colspan=2  style='text-align:left;color:silver;font-size:small;white-space: normal;'><h5 style='text-align:left'>$id_info_user $id_info</h5></td></tr>" ;   //pintamos los ID_INFO  campos ID ignorados
+     $item_TD_final =  "<tr><td colspan=2  style='text-align:left;color:silver;font-size:small;white-space: normal;'><small style='text-align:left'>$id_info_user $id_info</small></td></tr>" ;   //pintamos los ID_INFO  campos ID ignorados
 }
 else
 {
@@ -845,10 +811,7 @@ foreach ($array_TD as $value) {
     {  
         $content_ficha .=($td_abierto)?  "</td></tr>" : ""  ;  // si está abierto lo cerramos
          $content_ficha .= "<tr><td colspan='2'>" ;
-        //                 echo  "<TD class='etiqueta'>$TD_etiqueta</TD>" ;
-        //                 echo  "<TD>$TD_valor</TD>"  ;
          $content_ficha .=$value["TD"]  ;
-//         echo  "</td></tr>" ;
          $td_abierto=1 ;
          
     }else   // el campo va en línea

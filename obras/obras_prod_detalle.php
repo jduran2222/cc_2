@@ -4,6 +4,27 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
+// adaptación para abrir laPRODUCCION_OBRA o ESTUDIO_COSTE directamente
+
+if ($_GET["id_produccion"]=="PRODUCCION_OBRA" OR $_GET["id_produccion"]=="ESTUDIO_COSTES")
+{
+    if (!isset($_GET["id_obra"])) 
+        {die("ERROR EN ID_PRODUCCION");}
+        else 
+            {
+             $id_obra=$_GET["id_obra"] ;
+             if ($_GET["id_produccion"]=="PRODUCCION_OBRA")   
+             {
+                $_GET["id_produccion"]=Dfirst("id_produccion_obra","OBRAS","ID_OBRA=$id_obra AND $where_c_coste") ;
+             }
+             else{
+                $_GET["id_produccion"]=Dfirst("id_prod_estudio_costes","OBRAS","ID_OBRA=$id_obra AND $where_c_coste") ;
+
+             }
+        }    
+}
+
+
 $titulo_pagina="Rv " . Dfirst("PRODUCCION","Prod_view", "ID_PRODUCCION={$_GET["id_produccion"]} AND $where_c_coste"  ) ;
 $titulo = $titulo_pagina;
 
@@ -423,12 +444,13 @@ function formato_estudio_costes()
 <!--    <button data-toggle='collapse' style="text-align:left" class="btn btn-default btn-block btn-lg" data-target='#div_formato'>FORMATO <i class="fas fa-chevron-down"></i></button>
 
     <div id='div_formato' class='collapse in'>-->
+<small>
 <br>Modos:
 <a class="btn btn-link btn-xs noprint" title="formato para realizar un Estudio de costes de un Proyecto o Liciación" href=#  onclick="formato_estudio_costes();"><i class="fas fa-euro-sign"></i> modo Estudio de Costes</a>
 <a class="btn btn-link btn-xs noprint" title="formato de formulario para registrar Producciones de Obra" href=#  onclick="formato_prod_obra();"><i class="fas fa-hard-hat"></i> modo Producción Obra</a>
 <a class="btn btn-link btn-xs noprint" title="imprimir la producción con formato de Certificación sin costes, con texto_udo y con resumen" href=#  onclick="formato_certif();"><i class="fas fa-print"></i> modo Certificacion</a>
 
-<br>Personalizado: <br>
+<br>Modo personalizado: <br>
 <label title='permite seleccionar udos para operar con ellas'><INPUT type="checkbox" id="fmt_seleccion" name="fmt_seleccion" <?php echo $fmt_seleccion;?>  >&nbsp;Selección&nbsp;&nbsp;</label>
 <label title='añade una columna de Costes Estimados de cada Udo'><INPUT type="checkbox" id="fmt_costes" name="fmt_costes" <?php echo $fmt_costes;?>  >&nbsp;Costes Est.&nbsp;&nbsp;</label>
 <label title='Agrupa el listado de Udos por capítulos'><INPUT type="checkbox" id="fmt_agrupar_cap" name="fmt_agrupar_cap" <?php echo $fmt_agrupar_cap;?>  >&nbsp;Agrupar Capitulos&nbsp;&nbsp;</label>
@@ -442,7 +464,8 @@ function formato_estudio_costes()
 <label title='Muestra todas las Subobras aunque no tengan Udos asignadas'><INPUT type="checkbox" id="fmt_subobras"  name="fmt_subobras" <?php echo $fmt_subobras;?>  >&nbsp;Subobras vacias&nbsp;&nbsp;</label>
 <label title='No muestra los capítulos con la etiqueta _NO_PRINT_ (ó simplificada _NP_ ), para poder imprimir certificaciones sin los capítulos auxiliares como p.ej. COSTES INDIRECTOS'><INPUT type="checkbox" id="fmt_no_print"  name="fmt_no_print" <?php echo $fmt_no_print;?>  >&nbsp;Quitar NP&nbsp;&nbsp;</label>
 
-       
+ </small>
+
 <!--</div>-->         
 </div>         
          
@@ -453,8 +476,8 @@ $style_hidden_if_global=$listado_global? " disabled " : ""  ;
 echo "<div id='myDIV' class='col-lg-12 noprint' style='margin-top: 25px; padding:10px'>" ; 
 
 
-$btnt['capitulos']=['capitulos','', ''] ;
-$btnt['cap_udos']=['cap-udos','',''] ;
+$btnt['capitulos']=['capitulos','Agrupa por Capítulos', ''] ;
+$btnt['cap_udos']=['cap-udos','Agrupa por Capítulos desplegables',''] ;
 $btnt['udos']=['udos','',''] ;
 //$btnt['detalle_costes']=['estudio costes','formato que facilita el Estudio de Costes de la Relación Valorada',''] ;
 $btnt['detalle']=['detalle','Muestra la Relación Valorada con cada detalle de Medición',''] ;
@@ -464,23 +487,24 @@ $btnt['subobras_udos']=['subobras-udos','Agrupa por subobras y expande subobras'
 $btnt['balance']=['balance','Balance económico por Subobras. Ingresos - Gastos reales imputados', $style_hidden_if_global] ;
 $btnt['vacio2']=['','',''] ;
 if ($listado_global) { $btnt['obras']=['obras','Agrupa por Obra',''] ;}
-$btnt['comparadas']=['comparadas','',''] ;
-$btnt['EDICION']=['MODO EDICION','' ,$style_hidden_if_global ] ;
+$btnt['comparadas']=['comparadas','Compara dos Relaciones Valoradas',''] ;
+$btnt['EDICION']=['MODO EDICION','Permite añadir mediciones' ,$style_hidden_if_global ] ;
 $btnt['vacio']=['','' ,'' ] ;
-$btnt['dias']=['dias','' ,'' ] ;
-$btnt['semanas']=['semanas','' ,'' ] ;
-$btnt['meses']=['meses','' ,'' ] ;
-//$btnt['trimestres']=['trimestres','' ,'' ] ;
-$btnt['annos']=['años','' ,'' ] ;
-$btnt['vacio2']=['','' ,'' ] ;
+$btnt['dias']=['dias','Agrupa por Días' ,'' ] ;
+$btnt['semanas']=['semanas','Agrupa por Semanas' ,'' ] ;
+$btnt['meses']=['meses','Agrupa por Meses' ,'' ] ;
+$btnt['trimestres']=['trimestres','Agrupa por Trimestres' ,'' ] ;
+$btnt['annos']=['años','Agrupa por Años' ,'' ] ;
+$btnt['vacio3']=['','' ,'' ] ;
 $btnt['solo_resumen']=['solo resumen','' ,'' ] ;
 
+echo "Agrupar por:<br>";
 foreach ( $btnt as $clave => $valor)
 {
-  $active= ($clave==$agrupar) ? " cc_active" : "" ; 
+  $active= ($clave==$agrupar) ? "cc_active" : "" ; 
   $disabled= isset($valor[2]) ? $valor[2] : ""  ;
 //  echo "<button $disabled id='btn_agrupar_$clave' class='cc_btnt$active' title='{$valor[1]}' onclick=\"getElementById('agrupar').value = '$clave'; document.getElementById('form1').submit(); \">{$valor[0]}</button>" ;  
-  echo (substr($clave,0,5)=='vacio') ? "   " : "<button $disabled id='btn_agrupar_$clave' class='cc_btnt$active' title='{$valor[1]}' "
+  echo (substr($clave,0,5)=='vacio') ? "   " : "<button $disabled id='btn_agrupar_$clave' class='btn-xs cc_btnt $active' title='{$valor[1]}' "
                     . " onclick=\"getElementById('agrupar').value = '$clave'; document.getElementById('form1').submit(); \">{$valor[0]}</button>" ;  
 }           
   
@@ -532,15 +556,16 @@ $where=$fmt_no_print==""? $where : $where . " AND CAPITULO NOT LIKE '%_NO_PRINT_
 
 
 $select_semana="DATE_FORMAT(fecha, '%Y semana %u')"  ;
+$select_trimestre="CONCAT(YEAR(fecha), '-', QUARTER(fecha),'T')"  ;
 
    
 $where_fecha="" ;
 $where_fecha=$FECHA1==""? $where_fecha : $where_fecha . " AND FECHA >= '$FECHA1' " ;
 $where_fecha=$FECHA2==""? $where_fecha : $where_fecha . " AND FECHA <= '$FECHA2' " ; 
-
+$where_fecha=$Dia==""? $where_fecha : $where_fecha . " AND DATE_FORMAT(FECHA, '%Y-%m-%d')='$Dia' " ;
 $where_fecha = $Semana==""? $where_fecha : $where_fecha . " AND $select_semana = '$Semana' " ;
 $where_fecha = $Mes==""? $where_fecha : $where_fecha . " AND DATE_FORMAT(fecha, '%Y-%m') = '$Mes' " ;
-//$where = $Trimestre==""? $where_fecha : $where_fecha . " AND $select_trimestre = '$Trimestre' " ;
+$where_fecha = $Trimestre==""? $where_fecha : $where_fecha . " AND $select_trimestre = '$Trimestre' " ;
 $where_fecha = $Anno==""? $where_fecha : $where_fecha . " AND YEAR(fecha) = '$Anno' " ;
 
 
@@ -693,10 +718,10 @@ if (!$listado_global)
 //    $where_urlencode=$where ;
     
     
-    echo "<a class='btn btn-link noprint ' target='_blank' href='../obras/subobra_anadir.php?id_obra=$id_obra' ' "
+    echo "<a class='btn btn-xs btn-link noprint ' target='_blank' href='../obras/subobra_anadir.php?id_obra=$id_obra' ' "
              . "title='Crea nueva Subobra' ><i class='fas fa-plus-circle'></i> añadir SUBOBRA</a>" ;
 
-    echo " <a class='btn btn-link  noprint ' href='#' onclick=\"copy_prod_consulta($id_obra,$id_produccion,'$where_urlencode','$PRODUCCION')\" "
+    echo " <a class='btn btn-xs btn-link  noprint ' href='#' onclick=\"copy_prod_consulta($id_obra,$id_produccion,'$where_urlencode','$PRODUCCION')\" "
             . "title='Crea una Relación Valorada nueva con la consulta actual' ><i class='fas fa-plus-circle'></i> copiar a nueva RV</a>" ;
 }  
 // FIN BOTONES A MOSTRAR
@@ -906,6 +931,10 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
     break;
    case "meses":
     $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m') as MES,SUM(importe) as importe  FROM ConsultaProd WHERE $where   GROUP BY MES  ORDER BY MES  " ;
+    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
+    break;
+   case "trimestres":
+    $sql="SELECT  $select_trimestre as Trimestre,SUM(importe) as importe  FROM ConsultaProd WHERE $where   GROUP BY Trimestre  ORDER BY Trimestre  " ;
     $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
     break;
    case "annos":
@@ -1560,7 +1589,13 @@ $Conn->close();
 
 </div>
 	
-                </div>
+                <!--</div>-->
+                
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

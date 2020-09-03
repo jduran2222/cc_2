@@ -215,7 +215,7 @@ else
 
 
  <!--<div id="main" class="mainc" style="background-color:orange">-->
- <div  style="background-color:#ffffcc;float:left;width:80%;padding:0 20px;" >
+ <div  style="background-color:#ffffcc;float:left;width:100%;padding:0 20px;" >
 	
 <?php require("../include/tabla.php"); echo $TABLE ; ?>
 	 
@@ -232,8 +232,15 @@ $Conn->close();
 	 
 
 </div>
+                   </div>
+             
+                  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-                </div>
+
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

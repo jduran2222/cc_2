@@ -209,7 +209,8 @@ $selects["id_fra_prov_abono"]=["ID_FRA_PROV","N_FRA","Fras_Prov_Listado","../pro
 
 //  BOTON SPAN EN FICHA.PHP  INLINE   ULTIMA_VERSION
 $sql_span=encrypt2("UPDATE `$tabla_update` SET `iva` = 0   WHERE $id_update=$id_valor ; ") ;
-$spans_html['iva'] = "<a class='btn-link noprint' target='_blank' title='cambia Iva al 0%' href='../include/sql.php?code=1&sql=$sql_span' >0%</a>" ;
+//$spans_html['iva'] = "<a class='btn-link noprint' target='_blank' title='cambia Iva al 0%' href='../include/sql.php?code=1&sql=$sql_span' >0%</a>" ;
+$spans_html['iva'] = "<a class='btn-link noprint' title='cambia Iva al 0%'  onclick=\"js_href('../include/sql.php?code=1&sql=$sql_span' ) \" >0%</a>" ;
   
 //  BOTON SPAN EN FICHA.PHP  INLINE   ATENCION !!! HAY QUE HACER SEGURO EL SITIO CONSTRUWIN.SW24.ES
 //$sql_span=encrypt2("UPDATE `$tabla_update` SET `iva` = 0   WHERE $id_update=$id_valor ; ") ;
@@ -380,7 +381,7 @@ else
     $link_conciliar.="<select  id='id_obra' style='width: 60%; '>" ;
     $link_conciliar.=DOptions_sql("SELECT ID_OBRA,NOMBRE_OBRA FROM OBRAS WHERE activa=1  AND $where_c_coste ORDER BY NOMBRE_OBRA ") ;
     $link_conciliar.="  </select>" ;
-    $link_conciliar.=" <a class='btn btn-warning btn-xs' href='#'  onclick='cargar_a_obra_href($id_fra_prov);'>Cargar</a>" ;
+    $link_conciliar.=" <a class='btn btn-warning btn-xs' href='#'  onclick='cargar_a_obra_href($id_fra_prov);location.reload();'>Cargar</a>" ;
     $link_conciliar.="</div>" ;
 
 
@@ -641,7 +642,7 @@ if (1)     // antiguo else
         ."</select>"
 //        ."<a class='btn btn-link noprint' href='#' onclick=\"window.open('../bancos/remesa_anadir_selection.php?array_str=$id_fra_prov&id_remesa='+document.getElementById('id_remesa').value )\" "
         ."<a class='btn btn-link noprint' href='#' onclick=\"js_href('../bancos/remesa_anadir_selection.php?array_str=$id_fra_prov&id_remesa='+document.getElementById('id_remesa').value )\" "
-                                . " title='Añade/Genera remesa con la factura' ><i class='fas fa-plus-circle'></i>R<i class='fas fa-link'></i> Añadir a remesa</a>"
+                                . " title='Añade/Genera remesa con la factura' ><i class='fas fa-link'></i> Añadir a remesa</a>"
         ."<a class='btn btn-link btn-xs noprint' style='opacity:0.3;' href='#' onclick=\"window.open('../bancos/remesa_ficha.php?id_remesa='+document.getElementById('id_remesa').value ) \" "
                                    . " title='abre la remesa seleccionada' >Ver remesa</a>"
         ."</div>" ;
@@ -657,7 +658,7 @@ if (1)     // antiguo else
                         . "WHERE $where_c_coste  AND NOT conc AND cargo=$pdte_pago ORDER BY fecha_banco DESC ") ;
     $link_conciliar.="  </select>" ;
     $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='mov_bancos_conciliar_selection_fras($id_fra_prov);' title='Ej. Cuando ya se ha pagado previamente. Ej. pagos con tarjeta'  >"
-                        . "<i class='fas fa-plus-circle'></i>M<i class='fas fa-link'></i> Crea Pago y lo concilia con el mov.banco</a>"
+                        . "<i class='fas fa-link'></i> Crea Pago y lo concilia con el mov.banco</a>"
                       ." <a class='btn btn-link btn-xs noprint' style='opacity:0.3;'  href='#' onclick=\"window.open('../bancos/pago_ficha.php?id_mov_banco='+document.getElementById('id_mov_banco').value ) \"    "
                        ." title='Ver Movimiento bancario' >Ver mov banco</a>" ;
 
@@ -678,7 +679,7 @@ if (1)     // antiguo else
     $link_conciliar.="  </select>" ;    
     $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='mov_bancos_conciliar_fras_cta($id_fra_prov);' "
                     . " title='Crea Pago nuevo, crea un mov. bancario en la cta.banco seleccionada y los concilia \n Ej. Cuando se paga con Caja Metálico, pagos hechos a cargo de Notas de Gastos de empleados, cuando hay compensaciones de facturas o abonos...' >"
-                    . "<i class='fas fa-plus-circle'></i><i class='fas fa-plus-circle'></i>M<i class='fas fa-link'></i> Crear Pago, crea mov.banco y concilia ($pdte_pago_txt)</a>" 
+                    . "<i class='fas fa-plus-circle'></i><i class='fas fa-link'></i> Crear Pago, crea mov.banco y concilia ($pdte_pago_txt)</a>" 
                     .""
                      . " <a class='btn btn-link btn-xs noprint' style='opacity:0.3;'  href='#' onclick=\"window.open('../bancos/bancos_mov_bancarios.php?id_cta_banco='+document.getElementById('id_cta_banco').value ) \"    "
                     ." title='Ver cuenta bancaria' >ver cta bancaria</a>" ;
@@ -871,7 +872,7 @@ function cargar_a_obra_href(id_fra_prov) {
  xhttp.open("GET", '../proveedores/fra_prov_cargar_a_obra.php?id_fra_prov='+id_fra_prov+'&id_obra='+id_obra, true);
  xhttp.send();   
 
-location.reload();
+//location.reload();
 //   window.open('../proveedores/fra_prov_cargar_a_obra.php?id_fra_prov='+id_fra_prov+'&id_obra='+id_obra);
 
     

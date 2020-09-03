@@ -66,7 +66,7 @@ if (!isset($_POST["PROVEEDOR"]))
   $Semana = isset($_GET["Semana"]) ?  $_GET["Semana"] :   ""  ;
   $Mes = isset($_GET["Mes"]) ?  $_GET["Mes"] :   ""  ;
   $Trimestre = isset($_GET["Trimestre"]) ?  $_GET["Trimestre"] :   ""  ;
-  $Anno = isset($_GET["anno"]) ?  $_GET["anno"] :   ""  ;
+  $Anno = isset($_GET["Anno"]) ?  $_GET["Anno"] :   ""  ;
   
   $CUENTA=isset($_GET["CUENTA"])? $_GET["CUENTA"] :  "" ;
   $SUBOBRA=isset($_GET["SUBOBRA"])? $_GET["SUBOBRA"] :  "" ;
@@ -96,7 +96,7 @@ if (!isset($_POST["PROVEEDOR"]))
     $Dia=$_POST["Dia"] ;
     $Mes=$_POST["Mes"] ;
     $Trimestre=$_POST["Trimestre"] ;
-    $Anno=$_POST["anno"] ;
+    $Anno=$_POST["Anno"] ;
     $PROVEEDOR=$_POST["PROVEEDOR"];
     $CONCEPTO=$_POST["CONCEPTO"];                  //str_replace(" ","%",trim($_POST["CONCEPTO"]));
     $REF=$_POST["REF"];
@@ -146,7 +146,7 @@ if ($gastos_global)                // Estamos en pantalla de GASTOS GLOBALES (to
     echo "<div class='col-lg-4'> " ;   
     
     echo "<TABLE align='center'>"  ;
-}    
+}     
     
 
 echo "<TR><TD>PROVEEDOR  </TD><TD><INPUT type='text' id='PROVEEDOR'  name='PROVEEDOR' value='$PROVEEDOR'><button type='button' onclick=\"document.getElementById('PROVEEDOR').value='' \" >*</button></TD></TR>" ;
@@ -159,7 +159,7 @@ echo "<TR><TD>Dia     </TD><TD><INPUT type='text' id='Dia'     name='Dia'    val
 echo "<TR><TD>Semana     </TD><TD><INPUT type='text' id='Semana'     name='Semana'    value='$Semana'><button type='button' onclick=\"document.getElementById('Semana').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>Mes     </TD><TD><INPUT type='text' id='Mes'     name='Mes'    value='$Mes'><button type='button' onclick=\"document.getElementById('Mes').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>Trimestre     </TD><TD><INPUT type='text' id='Trimestre'     name='Trimestre'    value='$Trimestre'><button type='button' onclick=\"document.getElementById('Trimestre').value='' \" >*</button></TD></TR>" ;
-echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='anno'     name='anno'    value='$Anno'><button type='button' onclick=\"document.getElementById('anno').value='' \" >*</button></TD></TR>" ;
+echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='Anno'     name='Anno'    value='$Anno'><button type='button' onclick=\"document.getElementById('Anno').value='' \" >*</button></TD></TR>" ;
 
 echo "</TABLE></div><div class='col-lg-4'><TABLE> " ;   
 
@@ -283,7 +283,7 @@ $where=$SUBOBRA==""? $where : $where . " AND SUBOBRA LIKE '%".str_replace(" ","%
 
 $where=$fecha1==""? $where : $where . " AND FECHA >= '$fecha1' " ;
 $where=$fecha2==""? $where : $where . " AND FECHA <= '$fecha2' " ;
-$where=$Dia==""? $where : $where . " AND DATE_FORMAT(FECHA, '%Y-%m-%d')=$Dia " ;
+$where=$Dia==""? $where : $where . " AND DATE_FORMAT(FECHA, '%Y-%m-%d')='$Dia' " ;
 $where=$Semana==""? $where : $where . " AND $select_semana = '$Semana' " ;
 $where=$Mes==""? $where : $where . " AND DATE_FORMAT(FECHA, '%Y-%m') = '$Mes' " ;
 $where=$Trimestre==""? $where : $where . " AND $select_trimestre = '$Trimestre' " ;
@@ -331,10 +331,10 @@ $table_selection_IN .= ")";
 
 //  <!--SELECCION DE SUBOBRA A IMPUTAR-->   
 
-echo "<div class='container noprint' style='border-width:1px; border-style:solid;'> "
-    . "<button data-toggle='collapse' class='btn btn-default btn-lg' data-target='#div_imputar'>Imputar a SubObras </button> "
+echo "<div class='container noprint' > "
+    . "<button data-toggle='collapse' class='btn btn-link btn-xs' data-target='#div_imputar'>Imputar a SubObras  <i class='fa fa-angle-down' ></i></button> "
         . "<div id='div_imputar' class='collapse'> "
-        . "<div class='form-group'> Imputar gastos a Subobra  <select id='id_subobra' style='font-size: 15px; width: 20%;'> ";
+        . "<div class='form-group' style='border:1px solid silver;' > Imputar gastos a Subobra  <select id='id_subobra' style='font-size: 15px; width: 20%;'> ";
 
 echo DOptions_sql("SELECT ID_SUBOBRA,SUBOBRA FROM SubObras WHERE ID_OBRA=$id_obra ORDER BY SUBOBRA ", "Selecciona SubObra...") ;
 echo     "  </select>" ;
@@ -528,7 +528,7 @@ if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para lo
 if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
 
-echo "<h6>Agrupar por : $agrupar <br> {$result->num_rows} filas </h6>";
+echo "<small style='color:silver;'>Agrupar por : $agrupar ( {$result->num_rows} filas) </small>";
 
 $formats["Enero"] = "moneda" ; $formats["Febrero"] = "moneda" ; $formats["Marzo"] = "moneda" ; $formats["Abril"] = "moneda" ; $formats["Mayo"] = "moneda" ; $formats["Junio"] = "moneda" ;
 $formats["Julio"] = "moneda" ; $formats["Agosto"] = "moneda" ; $formats["Septiembre"] = "moneda" ; $formats["Octubre"] = "moneda" ; $formats["Noviembre"] = "moneda" ; $formats["Diciembre"] = "moneda" ;
@@ -547,7 +547,7 @@ $dblclicks["Dia"]="Dia" ;
 $dblclicks["Semana"]="Semana" ;
 $dblclicks["Mes"]="Mes" ;
 $dblclicks["Trimestre"]="Trimestre" ;
-$dblclicks["anno"]="anno" ;
+$dblclicks["Anno"]="Anno" ;
 
 
 
@@ -611,8 +611,12 @@ $Conn->close();
 	 
 
 </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-                </div>
+                <!--</div>-->
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

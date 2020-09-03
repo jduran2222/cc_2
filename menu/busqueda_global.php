@@ -390,7 +390,7 @@ if ($_SESSION["permiso_administracion"])
  
 // buscamos CONCEPTOS  , CONCEPTO PROVEEDOR -> Concepto
  $result=$Conn->query("SELECT ID_CONCEPTO,CONCAT('CONCEPTO ',MID(PROVEEDOR,1,12),' ',COSTE,' € <b>',CONCEPTO,'</b> ',MID(NOMBRE_OBRA,1,12),' (',FORMAT(SUM(IMPORTE),0),'€ en total)') AS filtro, "
-         . "YEAR(Fecha_Creacion) as anno  FROM ConsultaGastos_View WHERE CONCAT_WS('.','CONCEPTO',PROVEEDOR,CONCEPTO) LIKE '%$filtro%' AND $where_c_coste GROUP BY ID_CONCEPTO ORDER BY Fecha_Creacion DESC LIMIT $limite");
+         . "YEAR(Fecha_Creacion) as Anno  FROM ConsultaGastos_View WHERE CONCAT_WS('.','CONCEPTO',PROVEEDOR,CONCEPTO) LIKE '%$filtro%' AND $where_c_coste GROUP BY ID_CONCEPTO ORDER BY Fecha_Creacion DESC LIMIT $limite");
  
 // $result=$Conn->query("SELECT ID_CONCEPTO,CONCAT('CONCEPTO ',MID(PROVEEDOR,1,12),' ',COSTE,' € <b>',CONCEPTO,'</b> ',MID(NOMBRE_OBRA,1,12),' (',FORMAT(SUM(IMPORTE),0),'€ en total)') AS filtro, "
 //         . "YEAR(Fecha_Creacion) as anno  FROM ConsultaGastos_View WHERE "
@@ -403,8 +403,8 @@ if ($_SESSION["permiso_administracion"])
     while($rs = $result->fetch_array(MYSQLI_ASSOC))    // cojo la de mayor usuarios permitidos 
     {
      $c++ ;   $g++ ;
-//     $content.= "<br><a id='a_link' style='font-size: 40px;' target='_blank' href='../include/ficha_general.php?tabla=CONCEPTOS&id_update=ID_CONCEPTO&id_valor={$rs["ID_CONCEPTO"]}'>{$rs["filtro"]} </a>...<font size=5 color=grey>(Año {$rs["anno"]} )</font>"   ;
-     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../proveedores/concepto_ficha.php?id_concepto={$rs["ID_CONCEPTO"]}'>{$rs["filtro"]} </a>...<font size=5 color=grey>(Año {$rs["anno"]} )</font>"   ;
+//     $content.= "<br><a id='a_link' style='font-size: 40px;' target='_blank' href='../include/ficha_general.php?tabla=CONCEPTOS&id_update=ID_CONCEPTO&id_valor={$rs["ID_CONCEPTO"]}'>{$rs["filtro"]} </a>...<font size=5 color=grey>(Año {$rs["Anno"]} )</font>"   ;
+     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../proveedores/concepto_ficha.php?id_concepto={$rs["ID_CONCEPTO"]}'>{$rs["filtro"]} </a>...<font size=5 color=grey>(Año {$rs["Anno"]} )</font>"   ;
     }
     //if ($c==$limite) {$content.= ".....<a class='btn btn-link btn-xs' href='../obras/obras_prod_detalle.php?id_produccion={$rs["NOMBRE"]}' >Buscar más Obras</a> " ; }
     

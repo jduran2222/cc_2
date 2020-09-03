@@ -157,8 +157,11 @@ $Conn->close();
 	 
 
 </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-                </div>
+                <!--</div>-->
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

@@ -175,8 +175,9 @@ if ($rs["tipo_pago"]=='P')         // PAGO
 
 
 
-    $titulo="<h3>Facturas Prov. de este Pago</h3>" ;
+    $titulo="Facturas Prov. de este Pago" ;
     $msg_tabla_vacia="No hay facturas conciliados a este pago";
+    $tabla_expandida=0; 
 
     echo "<div class='right2' style='background-color:orange'>" ;
 
@@ -255,11 +256,11 @@ if ($rs["tipo_pago"]=='P')         // PAGO
 }  
     
     
-echo  "<div class='right2' style='background-color:lightgreen' >" ;
+echo  "<div class='right2_50' style='background-color:lightgreen' >" ;
 
   if ($id_mov_banco)
       {
-      echo "<h1><font color='green'>$titulo_txt CONCILIADO</font></h1>" ;  //"../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco"
+      echo "<h3><font color='green'>$titulo_txt CONCILIADO</font></h3>" ;  //"../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco"
 //      echo "<a class='btn btn-link' href='../bancos/pago_ficha.php?_m=$_m&id_mov_banco=$id_mov_banco' target='_blank'>ver mov. banco</a>" ;
 
                        $sql="UPDATE PAGOS SET id_mov_banco='$id_mov_banco' WHERE id_pago=$id_pago ;"  ;
@@ -269,15 +270,15 @@ echo  "<div class='right2' style='background-color:lightgreen' >" ;
 //      echo "<a class='btn btn-link' href=\"$href\" target='_blank'>"
 //                                                        . "<i class='fas fa-unlink'></i> desconciliar pago-mov.banco</a>" ;
       
-      echo "<a class='btn btn-link'  href='#'  onclick=\"js_href('$href' )\" >"
+      echo "<a class='btn btn-xs btn-link'  href='#'  onclick=\"js_href('$href' )\" >"
                                                         . "<i class='fas fa-unlink'></i> DESCONCILIAR $titulo_txt - MOV. BANCO</a>" ;
       echo "</div>" ;
       
-      }
+      } 
  else
       {
-        echo "<h1><font color='red'>Provisión $titulo_txt no cobrado</font></h1>" ;  //"../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco"   
-        echo "</div>" ;
+        echo "<h3><font color='red'>$titulo_txt no cobrado</font></h3>" ;  //"../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco"   
+//        echo "</div>" ;
        
            // MOV. BANCOS CONCILIABLES
         //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
@@ -308,11 +309,12 @@ echo  "<div class='right2' style='background-color:lightgreen' >" ;
 
         //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
         //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
-        $titulo="MOVs. BANCO conciliables...($result->num_rows) " ;
+        $titulo="Buscar conciliacion bancaria...($result->num_rows) " ;
+        $tabla_expandida=0; 
         $msg_tabla_vacia="";
 
         //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
-        echo "<div class='right_50'  >" ;
+//        echo "<div class='right2_50'  >" ;
 
         //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
 
@@ -380,11 +382,11 @@ if ($id_mov_banco)
         // $sql_insert_mov_banco=base64_encode($sql_insert_mov_banco) ;
          $sql_insert_mov_banco= encrypt2($sql_insert_mov_banco) ;
 
-           echo "<br><br><br><a class='btn btn-link bnt-lg' target='_blank' title='Duplica un mov. banco para poder descomponerlo en varios pagos o cobros de suma el importe original' "
+           echo "<br><br><br><a class='btn btn-xs btn-link' target='_blank' title='Duplica un mov. banco para poder descomponerlo en varios pagos o cobros de suma el importe original' "
                    . " href=\"../include/sql.php?code=1&sql=$sql_insert_mov_banco \" >"
                    . "<i class='far fa-copy'></i> Duplicar Mov. Banco</a> ";
 
-           echo "<a class='btn btn-link bnt-lg' target='_blank' title='Duplica un mov. banco simetricamente, cambia cargo por importe y viceversa'"
+           echo "<a class='btn btn-xs btn-link' target='_blank' title='Duplica un mov. banco simetricamente, cambia cargo por importe y viceversa'"
                    . " href=\"../include/sql.php?code=1&sql=$sql_insert_mov_banco_simetrico \" >"
                    . "<i class='far fa-copy'></i> Duplicar Mov. Banco simétrico</a> ";
 
@@ -429,7 +431,7 @@ if ($id_mov_banco)
 
            if($id_pago)
            {    
-               $titulo .= "<a class='btn btn-link noprint' href='../bancos/pago_ficha.php?_m=$_m&id_pago=$id_pago' target='_blank'>ver Pago</a>" ;
+//               $titulo .= "<a class='btn btn-link noprint' href='../bancos/pago_ficha.php?_m=$_m&id_pago=$id_pago' target='_blank'>ver Pago</a>" ;
 
                if($id_fra_prov=Dfirst("id_fra_prov","Fras_Prov_Pagos_View", "id_pago=$id_pago"))
                {
@@ -758,7 +760,7 @@ if ($id_mov_banco)
     
 }else
     {
-    echo "<h1>NO HAY Movimiento Banco  conciliado al Pago/Cobro/Traspaso...</h1>" ;
+    echo "<h3>NO HAY Movimiento Banco</h3>" ;
 }    
     
 echo "</div>" ;

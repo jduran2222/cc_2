@@ -93,7 +93,7 @@ if (!$listado_global)
     $id_valor=$id_cta_banco ;
     $delete_boton=1;
          
-    echo "  <div id='main' class='mainc_80'> ";
+    echo "  <div id='main' class='mainc_70'> ";
     require("../include/ficha.php");
     echo " </div> " ;
   ?>
@@ -120,7 +120,30 @@ if (!$listado_global)
 <?php           
     
     ////////////////// FIN FICHA CTA_BANCO
+   
 
+// BOTONERA BAJO ficha
+
+    
+   $fecha=date('Y-m-d');
+ 
+   $sql_insert_mov_banco= "INSERT INTO `MOV_BANCOS` (`id_cta_banco`, `numero`, `fecha_banco`, `Concepto` ,user)" 
+             ." VALUES ( '$id_cta_banco', '0', '$fecha', '' , '{$_SESSION['user']}');" ;    
+     
+//   $sql_insert_mov_banco=base64_encode($sql_insert_mov_banco) ;
+   $sql_insert_mov_banco= encrypt2($sql_insert_mov_banco) ;
+   
+   echo "<div class='right2'>";
+    echo "<h5>SALDO EN CUENTA: $saldo <br></h5> " ;
+  
+    echo "<br><a class='btn btn-xs btn-link noprint' target='_blank' title='añade nuevo movimiento bancario vacío' href=\"../include/sql.php?code=1&sql=$sql_insert_mov_banco \" >"
+           . "<i class='fas fa-plus-circle'></i> añadir Movimiento Banco</a> ";
+   
+    echo "<br><a class='btn btn-xs btn-link  noprint' target='_blank' href= '../bancos/mov_bancos_upload_form.php?id_cta_banco=$id_cta_banco' ><i class='fas fa-plus-circle'></i> Importar mov bancos desde .CSB</a>" ;
+    echo "<br><a class='btn btn-xs btn-link  noprint' target='_blank' href= '../bancos/mov_bancos_importar_XLS_caixabank.php?id_cta_banco=$id_cta_banco' ><i class='fas fa-plus-circle'></i> Importar mov bancos desde .XLS (Caixabank)</a>" ;
+    echo "<br><a class='btn btn-xs btn-link  noprint' target='_blank' href= '../bancos/mov_bancos_importar_XLS_unicaja.php?id_cta_banco=$id_cta_banco' ><i class='fas fa-plus-circle'></i> Importar mov bancos desde .XLS (Unicaja)</a>" ;
+    echo "<br><a class='btn btn-xs btn-link  noprint' target='_blank' href= '../bancos/mov_bancos_importar_XLS_cajasur.php?id_cta_banco=$id_cta_banco' ><i class='fas fa-plus-circle'></i> Importar mov bancos desde .XLS (Cajasur)</a>" ;
+   echo "</div>";
 
     
   }
@@ -264,10 +287,13 @@ $where_conc.= $fecha1==""? '' : " AND FECHA >= '$fecha1' " ;
 $where_conc.=$fecha2==""? '' :  " AND FECHA <= '$fecha2' " ;
 
 
+
+
 ?>
 <!--EXPAND SELECCION -->    
   
-<br><button type='button' class='btn btn-default noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'>Operar con movimientos seleccionados<span class="glyphicon glyphicon-chevron-down"></span></button>
+<br><button type='button' class='btn btn-link noprint' id='exp_seleccion' data-toggle='collapse' 
+            data-target='#div_seleccion'>Operar con movimientos seleccionados <i class="fa fa-angle-down" aria-hidden="true"></i></button>
 <div id='div_seleccion' class='collapse'>
   
 <div class="noprint" style="border-width:1px; border-style:solid;">
@@ -277,29 +303,38 @@ $where_conc.=$fecha2==""? '' :  " AND FECHA <= '$fecha2' " ;
  <?php
 
 // eliminacion en grupo de seleccionados
+  echo "<div style='border: 1px solid silver;'>";
+
 $where_id_cta_banco= $listado_global ? "1=1" : "id_cta_banco=$id_cta_banco" ;      // permitimos borrar en listado global
 $sql_delete= "DELETE FROM `MOV_BANCOS` WHERE  $where_id_cta_banco AND id_mov_banco IN _VARIABLE1_ ; "  ;
 $href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
-echo "<a class='btn btn-danger btn-xs noprint ' href='#' "
+echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint ' href='#' "
      . " onclick=\"js_href('$href' ,'1','¿Borrar Movs. Bancos seleccionados?' ,'table_selection_IN()' )\"   "
      . "title='Borra los movimientos bancarios seleccionados' ><i class='far fa-trash-alt'></i> Borrar movs. bancos seleccionadas</a>" ;
       
+  echo "</div>";
       
       
 // conciliar a factura proveedor 
+  echo "<div style='border: 1px solid silver;'>";
+
       $url_sugerir= encrypt2( "javascript_code=js_href('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
               . "id_fra_prov_unica=_ID_VALOR__JS_AND_array_str=_VARIABLE1_',1,'','table_selection_IN()')"
               . "&sql_sugerir=SELECT ID_FRA_PROV,CONCAT('Proveedor: ',PROVEEDOR,'<br>N.Factura: ',N_FRA) FROM Fras_Prov_Listado WHERE  $where_c_coste AND "
               . " filtro LIKE '%_FILTRO_%' LIMIT 10" );
       
-      echo "<br>Buscar factura donde conciliar: <INPUT  style='font-size: 70% ;font-style: italic ;' id='input_fra_prov' size='13'  "
+      echo "Buscar factura donde conciliar: <INPUT  style='font-size: 70% ;font-style: italic ;' id='input_fra_prov' size='13'  "
               . "  onkeyup=\"sugerir('$url_sugerir',this.value,'sugerir_fra_prov')\" placeholder='buscar Prov-factura...' value=''  >"
               . "<div class='sugerir' id='sugerir_fra_prov'></div>" ;
+  echo "</div>";
 
-      echo "<button class='btn btn-xs btn-link' onclick=\"js_href('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
+  echo "<div style='border: 1px solid silver;'>"; 
+
+      echo "<button class='btn btn-xs btn-link' onclick=\"js_href2('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
               . "id_fra_prov_unica=FACTURA_NUEVA_JS_AND_array_str=_VARIABLE1_',1,'','table_selection_IN()' ) \"  >"
               . "Conciliar en una factura nueva</button> " ;
        
+  echo "</div>";
       
  ?>     
     </div>
@@ -461,29 +496,6 @@ if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los 
 $is_conciliando= ( substr($agrupar,0,5)=='conc_')  ;       // indica que estamos en aprupacion de CONCILIACION
 
 //if (!$listado_global AND !$is_conciliando)
-if (!$listado_global )
-    {
-
-    
-   $fecha=date('Y-m-d');
- 
-   $sql_insert_mov_banco= "INSERT INTO `MOV_BANCOS` (`id_cta_banco`, `numero`, `fecha_banco`, `Concepto` ,user)" 
-             ." VALUES ( '$id_cta_banco', '0', '$fecha', '' , '{$_SESSION['user']}');" ;    
-     
-//   $sql_insert_mov_banco=base64_encode($sql_insert_mov_banco) ;
-   $sql_insert_mov_banco= encrypt2($sql_insert_mov_banco) ;
-   
-   echo "<br><a class='btn btn-link bnt-lg noprint' target='_blank' title='añade nuevo movimiento bancario vacío' href=\"../include/sql.php?code=1&sql=$sql_insert_mov_banco \" >"
-           . "<i class='fas fa-plus-circle'></i> añadir Movimiento Banco</a> ";
-   
-    echo "<a class='btn btn-link  noprint' target='_blank' href= '../bancos/mov_bancos_upload_form.php?id_cta_banco=$id_cta_banco' ><i class='fas fa-plus-circle'></i> Importar mov bancos desde .CSB</a>" ;
-    echo "<a class='btn btn-link  noprint' target='_blank' href= '../bancos/mov_bancos_importar_XLS_caixabank.php?id_cta_banco=$id_cta_banco' ><i class='fas fa-plus-circle'></i> Importar mov bancos desde .XLS (Caixabank)</a>" ;
-    echo "<a class='btn btn-link  noprint' target='_blank' href= '../bancos/mov_bancos_importar_XLS_unicaja.php?id_cta_banco=$id_cta_banco' ><i class='fas fa-plus-circle'></i> Importar mov bancos desde .XLS (Unicaja)</a>" ;
-    echo "<a class='btn btn-link  noprint' target='_blank' href= '../bancos/mov_bancos_importar_XLS_cajasur.php?id_cta_banco=$id_cta_banco' ><i class='fas fa-plus-circle'></i> Importar mov bancos desde .XLS (Cajasur)</a>" ;
- 
-    echo "<h5>SALDO EN CUENTA: $saldo <br></h5> " ;
-
-    }
 
 if ( $is_conciliando)
     {
@@ -519,6 +531,7 @@ $dblclicks=[];
 $dblclicks["Banco"]="Banco" ;
 $dblclicks["tipo"]="tipo" ;
 $dblclicks["Concepto"]="concepto" ;
+$dblclicks["Concepto2"]="concepto" ; 
 //$dblclicks["CIF"]="proveedor" ;
 $dblclicks["meses"]="fecha1" ;
 //$dblclicks["CONCEPTO"]="CONCEPTO" ;
@@ -692,10 +705,14 @@ function mov_bancos_conciliar_selection(agrupar)
   
 </script>
     
-        
-        
-        
                 </div>
+        
+   <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+       
+        
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

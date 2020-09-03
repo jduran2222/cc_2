@@ -208,7 +208,7 @@ $links["NOMBRE"] = ["../personal/personal_ficha.php?id_personal=", "ID_PERSONAL"
 //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Personal de Obra ($result->num_rows <i class='fas fa-user'></i>)" ;
+$titulo="Personal de Obra ($result->num_rows". cc_format( "solo_icon", "icon_usuarios") ." )" ;
 $msg_tabla_vacia="No hay personal";
 
 
@@ -282,7 +282,7 @@ $formats["path_archivo"]='pdf_100_500' ;
 //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Maquinaria Propia ($result->num_rows <i class='fas fa-truck-pickup'></i>)" ;
+$titulo="Maquinaria Propia ($result->num_rows". cc_format( "solo_icon", "icon_maquinaria") ." )" ;
 $msg_tabla_vacia="No hay maquinaria";
 
 $add_link_html= "<div >Añadir Maquinaria:<select id='id_obra_maq' style='width: 50%;' > "
@@ -358,7 +358,8 @@ $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_P
 //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Albaranes de proveedor ($result->num_rows <span class='glyphicon glyphicon-tags'></span>)" ;
+//$titulo="Albaranes de proveedor ($result->num_rows <span class='glyphicon glyphicon-tags'></span>)" ;
+$titulo="Albaranes de proveedor ($result->num_rows". cc_format( "solo_icon", "icon_albaranes") ." )" ;
 $msg_tabla_vacia="No hay Albaranes";
 
 $primera_option=" <option value='".getVar("id_proveedor_auto")."'>-proveedor pdte registrar-</option>   ";
@@ -428,7 +429,7 @@ $formats["documento"] = "text_edit" ;
 //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Fotos ($result->num_rows <span class='glyphicon glyphicon-camera'></span> )" ;
+$titulo="Fotos ($result->num_rows". cc_format( "solo_icon", "icon_fotos") ." )" ;
 $msg_tabla_vacia="No hay fotos";
 
 $add_link_html= "<div >"
@@ -488,7 +489,7 @@ $actions_row["delete_link"]="1";
 $links["UDO"] = ["../obras/udo_prod.php?id_produccion=$id_produccion_obra&id_udo=", "ID_UDO" ,"ver detalles de medición de la Unidad de Obra", 'ppal'] ;    
 
 
-$titulo="Producción de Obra ($result->num_rows <span class='glyphicon glyphicon-road'></span> )" ;
+$titulo="Producción de Obra ($result->num_rows". cc_format( "solo_icon", "icon_produccion") ." )" ;
 $msg_tabla_vacia="No hay produccion de obra";
 
 $add_link_html= "<div >"
@@ -727,6 +728,10 @@ echo $html_anterior_siguiente ;
 
 ?>
                 </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

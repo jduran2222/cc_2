@@ -106,7 +106,7 @@ include_once('../include/funciones_js.php');
         </a>
       </li>
       <li class="nav-item d-inline-block">
-        <a id="btn_empresa" href="../agenda/portafirmas.php" class="px-1 px-sm-2 btn btn-link" title="Realizar firma">
+        <a id="btn_empresa" href="../agenda/portafirmas.php" class="px-1 px-sm-2 btn btn-link" title="Realizar firma" target='_blank'>
           <i class="fas fa-pen-nib"></i>
           <span class="d-none d-sm-inline">PortaFirmas</span> 
           <?php 

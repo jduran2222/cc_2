@@ -302,6 +302,7 @@ $select_trimestre="CONCAT(YEAR(fecha), '-', QUARTER(fecha),'T')"  ;
 
 $where_fecha = $fecha1 ==""? $where_fecha : $where_fecha . " AND fecha >= '$fecha1' " ;
 $where_fecha = $fecha2 ==""? $where_fecha : $where_fecha . " AND fecha <= '$fecha2' " ;
+$where_fecha=$Dia==""? $where_fecha : $where_fecha . " AND DATE_FORMAT(FECHA, '%Y-%m-%d')='$Dia' " ;
 $where_fecha = $Semana==""? $where_fecha : $where_fecha . " AND $select_semana = '$Semana' " ;
 $where_fecha = $Mes==""? $where_fecha : $where_fecha . " AND DATE_FORMAT(fecha, '%Y-%m') = '$Mes' " ;
 $where_fecha = $Trimestre==""? $where_fecha : $where_fecha . " AND $select_trimestre = '$Trimestre' " ;
@@ -375,6 +376,10 @@ $select_prod_origen_Union="" ;
 $select_prod_origen_Union_T="" ;
 
 
+$is_obra_unica=(Dfirst("COUNT(ID_OBRA)","OBRAS", $where )==1)  ; // miramos si es una única obra la seleccionada para añadir opciones de link y Cerrar Mes
+$id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // cogemos el ID_OBRA de esa obra única
+
+
  switch ($agrupar) {
    case "obras":
 //     $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA,importe_sin_iva,Cartera_pdte "
@@ -434,7 +439,7 @@ $select_prod_origen_Union_T="" ;
        
        $group_order="GROUP BY ID_OBRA ORDER BY NOMBRE_OBRA";
        
-
+       //BOTONES LINK A DESGLOSE DE IMPORTES
        $links["importe_prod"] = ["../obras/obras_prod_detalle.php?$cadena_link_periodo&agrupar=udos&id_produccion=", "id_produccion_obra", "Abrir la PRODUCCION OBRA "] ;
        $links["gasto_real"] = ["../obras/gastos.php?$cadena_link_periodo&id_obra=", "ID_OBRA", "Abrir los Gastos "] ;
        $links["benef_real"] = ["../obras/obras_prod_detalle.php?$cadena_link_periodo&agrupar=balance&id_produccion=", "id_produccion_obra", "Abrir la Balance "] ;
@@ -446,11 +451,10 @@ $select_prod_origen_Union_T="" ;
        // sql produccion
 //        echo $sql ;
 
-        // si filtramos por Mes mostramos el boton de CERRAR Mes
+        // CIERRE MES: si filtramos por Mes mostramos el boton de CERRAR Mes
        if ($Mes) // PROVISIONAL
-//       if ($Mes AND 0)
        {
-            $fecha_ventas=$Mes."-01" ;
+            $fecha_ventas=$Mes."-01" ;   // fecha del mes a cerrar
             $onclick1_VARIABLE1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
             $onclick1_VARIABLE2_="importe_prod" ;     // idem
             $onclick1_VARIABLE3_="gasto_real" ;     // idem
@@ -462,9 +466,6 @@ $select_prod_origen_Union_T="" ;
 
             $sql_insert=encrypt2($sql_insert) ;
 
-//            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
-//                    . " href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_&variable2=_VARIABLE2_&variable3=_VARIABLE3_ \"  "
-//                    . "onclick='location.reload();' >cerrar mes</a> ";
             $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
                     . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_&variable2=_VARIABLE2_&variable3=_VARIABLE3_ \")'  "
                     . " >cerrar mes</a> ";
@@ -479,6 +480,21 @@ $select_prod_origen_Union_T="" ;
        $select_PPAL_Union=" Fecha , " ;
        $group_order="GROUP BY Fecha ORDER BY Fecha";
 
+       //BOTONES LINK A DESGLOSE DE IMPORTES AL SER UNA UNICA OBRA
+       if ($is_obra_unica) 
+         {
+           $links["importe_prod"] = ["../obras/obras_prod_detalle.php?id_obra=$id_obra_unica&agrupar=udos&id_produccion=PRODUCCION_OBRA&Dia=", "Fecha", "Abrir la PRODUCCION OBRA "] ;
+           $links["gasto_real"] = ["../obras/gastos.php?id_obra=$id_obra_unica&Dia=", "Fecha", "Abrir los Gastos "] ;
+           $links["benef_real"] = ["../obras/obras_prod_detalle.php?id_obra=$id_obra_unica&agrupar=balance&id_produccion=PRODUCCION_OBRA&Dia=", "Fecha", "Abrir la Balance "] ;
+//           $links["VENTAS"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica", "ID_OBRA","abrir Ventas y Facturación de obra"] ;
+//           $links["GASTOS_EX"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica", "ID_OBRA","abrir Ventas y Facturación de obra"] ;
+//           $links["Facturado_iva"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica", "ID_OBRA","abrir Ventas y Facturación de obra"] ;
+         }         
+
+
+       
+       
+       
     break;
    case "prod_gasto_semanas":
        
@@ -496,20 +512,21 @@ $select_prod_origen_Union_T="" ;
        $select_PPAL_Union=" Mes , " ;
        $group_order="GROUP BY Mes ORDER BY Mes";
        
-        // si filtramos por OBRA y ese filtro Obra es una única obra mostramos el boton de CERRAR Mes
-       if ($Obra AND (Dfirst("COUNT(ID_OBRA)","OBRAS"," NOMBRE_OBRA='$Obra' AND $where_c_coste ")==1)) // PROVISIONAL
-//       if ($Mes AND 0)
+        // CERRAR MES.  si filtramos por OBRA y ese filtro Obra es una única obra mostramos el boton de CERRAR Mes
+//       if ($Obra AND (Dfirst("COUNT(ID_OBRA)","OBRAS"," NOMBRE_OBRA='$Obra' AND $where_c_coste ")==1)) // PROVISIONAL
+       if ($is_obra_unica) // PROVISIONAL
        {
+           
+//           echo $where ;
 //            $fecha_ventas=$Mes."-01" ;
-            $id_obra_cierre_mes=Dfirst("ID_OBRA","OBRAS"," NOMBRE_OBRA='$Obra' AND $where_c_coste ");
             $onclick1_VARIABLE1_="Mes" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
             $onclick1_VARIABLE2_="importe_prod" ;     // idem
             $onclick1_VARIABLE3_="gasto_real" ;     // idem
 
-            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA=$id_obra_cierre_mes AND FECHA='_VARIABLE1_-01' ;"  ;
+            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA=$id_obra_unica AND FECHA='_VARIABLE1_-01' ;"  ;
 //            $sql_insert="UPDATE VENTAS SET PLAN=999999 WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
             $sql_insert.="INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
-                      " VALUES ( '$id_obra_cierre_mes', '_VARIABLE1_-01','_VARIABLE2_','_VARIABLE3_'  );"  ;
+                      " VALUES ( '$id_obra_unica', '_VARIABLE1_-01','_VARIABLE2_','_VARIABLE3_'  );"  ;
 
             $sql_insert=encrypt2($sql_insert) ;
 
@@ -520,8 +537,19 @@ $select_prod_origen_Union_T="" ;
                     . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_&variable2=_VARIABLE2_&variable3=_VARIABLE3_ \")'  "
                     . " >cerrar mes</a> ";
             $actions_row["id"]="Mes";
-       }   
-     
+                                 
+       }  
+       
+       //BOTONES LINK A DESGLOSE DE IMPORTES AL SER UNA UNICA OBRA
+       if ($is_obra_unica) 
+         {
+           $links["importe_prod"] = ["../obras/obras_prod_detalle.php?id_obra=$id_obra_unica&agrupar=udos&id_produccion=PRODUCCION_OBRA&Mes=", "Mes", "Abrir la PRODUCCION OBRA "] ;
+           $links["gasto_real"] = ["../obras/gastos.php?id_obra=$id_obra_unica&Mes=", "Mes", "Abrir los Gastos "] ;
+           $links["benef_real"] = ["../obras/obras_prod_detalle.php?id_obra=$id_obra_unica&agrupar=balance&id_produccion=PRODUCCION_OBRA&Mes=", "Mes", "Abrir la Balance "] ;
+           $links["VENTAS"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica&Mes=", "Mes","abrir Ventas y Facturación de obra"] ;
+           $links["GASTOS_EX"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica&Mes=", "Mes","abrir Ventas y Facturación de obra"] ;
+           $links["Facturado_iva"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica&Mes=", "Mes","abrir Ventas y Facturación de obra"] ;
+         }         
        
 
     break;
@@ -531,6 +559,17 @@ $select_prod_origen_Union_T="" ;
        $select_PPAL_Union=" Anno , " ;
        $group_order="GROUP BY Anno ORDER BY Anno";
 
+       //BOTONES LINK A DESGLOSE DE IMPORTES AL SER UNA UNICA OBRA
+       if ($is_obra_unica) 
+         {
+           $links["importe_prod"] = ["../obras/obras_prod_detalle.php?id_obra=$id_obra_unica&agrupar=udos&id_produccion=PRODUCCION_OBRA&Anno=", "Anno", "Abrir la PRODUCCION OBRA "] ;
+           $links["gasto_real"] = ["../obras/gastos.php?id_obra=$id_obra_unica&Anno=", "Anno", "Abrir los Gastos "] ;
+           $links["benef_real"] = ["../obras/obras_prod_detalle.php?id_obra=$id_obra_unica&agrupar=balance&id_produccion=PRODUCCION_OBRA&Anno=", "Anno", "Abrir la Balance "] ;
+           $links["VENTAS"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica&Anno=", "Anno","abrir Ventas y Facturación de obra"] ;
+           $links["GASTOS_EX"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica&Anno=", "Anno","abrir Ventas y Facturación de obra"] ;
+           $links["Facturado_iva"] = ["../obras/obras_ventas.php?id_obra=$id_obra_unica&Anno=", "Anno","abrir Ventas y Facturación de obra"] ;
+         }         
+       
     break;
    case "prod_gasto_tipo":
        
@@ -547,6 +586,12 @@ $select_prod_origen_Union_T="" ;
 
 
    }
+   
+   
+   
+   
+   
+   
   
  // componemos los SQL para las prod_gasto*  
 if (like($agrupar,'prod_gasto%'))
@@ -637,6 +682,7 @@ $links["concepto_banco"]=["../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banc
 
 
 $dblclicks=[] ;  
+$dblclicks["tipo_subcentro"]="tipo_subcentro" ;
 $dblclicks["NOMBRE_OBRA"]="Obra" ;
 $dblclicks["CAPITULO"]="CAPITULO" ;
 $dblclicks["UDO"]="UDO" ;

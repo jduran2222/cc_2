@@ -35,7 +35,7 @@ if ($iniciar_form)
         $fecha2 = isset($_GET["fecha2"]) ?  $_GET["fecha2"] :   ""  ;  
         $MES = isset($_GET["MES"]) ?  $_GET["MES"] :   ""  ;
         $Trimestre = isset($_GET["Trimestre"]) ?  $_GET["Trimestre"] :   ""  ;
-        $anno = isset($_GET["anno"]) ?  $_GET["anno"] :   ""  ;
+        $Anno = isset($_GET["Anno"]) ?  $_GET["Anno"] :   ""  ;
         $importe1 = isset($_GET["importe1"]) ?  $_GET["importe1"] :   ""  ;
         $importe2 = isset($_GET["importe2"]) ?  $_GET["importe2"] :   ""  ;
         $check1 = isset($_GET["check1"]) ?  $_GET["check1"] :   ""  ;
@@ -50,7 +50,7 @@ if ($iniciar_form)
         $fecha2=$_POST["fecha2"] ;  
         $MES=$_POST["MES"] ;
         $Trimestre=$_POST["Trimestre"] ;
-        $anno=$_POST["anno"] ;
+        $Anno=$_POST["Anno"] ;
         $importe1=$_POST["importe1"] ;
         $importe2=$_POST["importe2"] ;
         $check1=$_POST["check1"] ;
@@ -157,7 +157,7 @@ echo "<TR><TD>Fecha mín.     </TD><TD><INPUT type='date' id='fecha1'     name='
 echo "<TR><TD>Fecha máx.     </TD><TD><INPUT type='date' id='fecha2'     name='fecha2'    value='$fecha2'><button type='button' onclick=\"document.getElementById('fecha2').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>MES     </TD><TD><INPUT type='text' id='MES'     name='MES'    value='$MES'><button type='button' onclick=\"document.getElementById('MES').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>Trimestre     </TD><TD><INPUT type='text' id='Trimestre'     name='Trimestre'    value='$Trimestre'><button type='button' onclick=\"document.getElementById('Trimestre').value='' \" >*</button></TD></TR>" ;
-echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='anno'     name='anno'    value='$anno'><button type='button' onclick=\"document.getElementById('anno').value='' \" >*</button></TD></TR>" ;
+echo "<TR><TD>Año     </TD><TD><INPUT type='text' id='Anno'     name='Anno'    value='$Anno'><button type='button' onclick=\"document.getElementById('Anno').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>importe min     </TD><TD><INPUT type='text' id='importe1'     name='importe1'    value='$importe1'><button type='button' onclick=\"document.getElementById('importe1').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>importe máx     </TD><TD><INPUT type='text' id='importe2'     name='importe2'    value='$importe2'><button type='button' onclick=\"document.getElementById('importe2').value='' \" >*</button></TD></TR>" ;
 
@@ -300,7 +300,7 @@ $where=$fecha1==""? $where : $where . " AND FECHA >= '$fecha1' " ;
 $where=$fecha2==""? $where : $where . " AND FECHA <= '$fecha2' " ;
 $where=$MES==""? $where : $where . " AND DATE_FORMAT(FECHA, '%Y-%m') = '$MES' " ;
 $where=$Trimestre==""? $where : $where . " AND $select_trimestre = '$Trimestre' " ;
-$where=$anno==""? $where : $where . " AND YEAR(FECHA) = '$anno' " ;
+$where=$Anno==""? $where : $where . " AND YEAR(FECHA) = '$Anno' " ;
 $where=$importe1==""? $where : $where . " AND IMPORTE_IVA > $importe1" ;
 $where=$importe2==""? $where : $where . " AND IMPORTE_IVA < $importe2" ;
 $where=$check1==""? $where : $where . " AND Aceptado=$check1 " ;
@@ -374,7 +374,7 @@ $where=$check2==""? $where : $where . " AND  Rechazado=$check2" ;
      //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
      $sql_T="SELECT '' AS d,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA FROM Ofertas_View WHERE $where  " ;   
      $sql_S="SELECT DATE_FORMAT(FECHA, '%Y') as anno, SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA FROM Ofertas_View WHERE $where  GROUP BY anno ORDER BY anno  " ;      
-     $id_agrupamiento="anno" ;
+     $id_agrupamiento="Anno" ;
      $anchos_ppal=[30,20,20,20,20] ;
     
 //     $tabla_update="Udos" ;
@@ -414,7 +414,7 @@ $dblclicks["CLIENTE"]="cliente" ;
 $dblclicks["NUMERO"]="NUMERO" ;
 $dblclicks["MES"]="MES" ;
 $dblclicks["Trimestre"]="Trimestre" ;
-$dblclicks["anno"]="anno" ;
+$dblclicks["Anno"]="Anno" ;
 //$dblclicks["CONCEPTO"]="CONCEPTO" ;
 //$dblclicks["TIPO_GASTO"]="TIPO_GASTO" ;
 

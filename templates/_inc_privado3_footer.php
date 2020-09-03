@@ -35,8 +35,16 @@
     -->
   </footer>
 
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark noprint">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
   
-  
+  <!--CHAT SOPORTE-->
   <div style="position:fixed; bottom:20px; right:20px;z-index: 99;" class="bg-info text-info">
     <div class="p-2 h5 text-center m-0" style="cursor:pointer;" onclick="$('#chat_textarea').fadeToggle(500, 'swing');">
       <i class="far fa-comments"></i>
@@ -51,14 +59,6 @@
       <div id="mensaje_enviado" class="small mb-2" style="display: none;">Mensaje enviado, recibirá respuesta en su chat</div>
     </div>
   </div>
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark noprint">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
-</div>
-<!-- ./wrapper -->
 
   
   <!-- Script activo para las funcionalidades básicas de la web: debería ir en un main.js -->
@@ -135,8 +135,8 @@
       //    alert("el nuevo valor es: "+valor) ;
       if (!(nuevo_valor === null))
       {
-        // window.open("../menu/busqueda_global.php?filtro=" + encodeURIComponent(nuevo_valor), '_blank');
-        window.location.href = "../menu/busqueda_global.php?filtro=" + encodeURIComponent(nuevo_valor);
+         window.open("../menu/busqueda_global.php?filtro=" + encodeURIComponent(nuevo_valor), '_blank');
+//        window.location.href = "../menu/busqueda_global.php?filtro=" + encodeURIComponent(nuevo_valor);
       }
       return;
     }
