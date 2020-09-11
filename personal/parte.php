@@ -76,21 +76,51 @@ $id_parte=$_GET["id_parte"];
 <div style="overflow:visible">	   
   <div id="main" class="mainc"> 
       
-  <?php 
-  
-     echo "<br><br><br><a class='btn btn-link btn-sm' href='../personal/parte_pdf.php?id_parte=$id_parte' ><i class='fas fa-print'></i> Imprimir PDF</a>" ;
-     echo "<a class='btn btn-link btn-sm' href='../personal/partes.php?_m=$_m&id_obra=$id_obra' ><i class='far fa-calendar-alt'></i> Calendario Partes Obra <b>{$rs["NOMBRE_OBRA"]}</b></a>" ;
+<?php 
+// boton AÑADIR PARTE
+echo "<br><a class='btn btn-xs btn-link' href='../obras/obras_anadir_parte.php?id_obra=$id_obra'  target='_blank'><i class='fas fa-plus-circle'></i> añadir Parte</a>" ;
 
 
-     $html_anterior_siguiente="<div style='width:100%'>";
-     $html_anterior_siguiente.= "<div style='float:left'>   <a class='btn btn-link btn-xs'  title='Parte anterior' href='../personal/parte.php?_m=$_m&id_parte=$id_parte_anterior' >"
-             . "<i class='fas fa-arrow-left'></i> Parte anterior</a></div>" ;
-     $html_anterior_siguiente.="<div style='float:right'><a class='btn btn-link btn-xs' title='Parte siguiente' href='../personal/parte.php?_m=$_m&id_parte=$id_parte_siguiente' >"
-             . " Parte siguiente <i class='fas fa-arrow-right'></i></a></div>" ;
-     $html_anterior_siguiente.="</div>";
+//importar parte dia anterior $boton_importar_parte='';
+if ($id_parte_anterior)
+{
+    $sql_insert="INSERT INTO PARTES_PERSONAL (ID_PARTE,ID_PERSONAL,HO,HX,MD,DC,Plus,PC,id_por_cuenta,ejecutado_pc,id_subobra,Observaciones)"
+            . " SELECT '$id_parte',ID_PERSONAL,HO,HX,MD,DC,Plus,PC,id_por_cuenta,ejecutado_pc,id_subobra,Observaciones FROM  PARTES_PERSONAL WHERE ID_PARTE=$id_parte_anterior ;" ;
+    $sql_insert.="INSERT INTO Partes_Maquinas (ID_PARTE,id_obra,cantidad,id_subobra,Observaciones)"
+            . " SELECT '$id_parte',id_obra,cantidad,id_subobra,Observaciones FROM  Partes_Maquinas WHERE ID_PARTE=$id_parte_anterior ;" ;
+
+    $href='../include/sql.php?sql=' . encrypt2($sql_insert)     ;
+    echo "<br><a class='btn btn-link btn-xs noprint ' href='#' "
+         . " onclick=\"js_href('$href','1' )\"   "
+         . "title='Importa el Personal y Maquinaria Propia del Parte anterior'><i class='fas fa-file-import'></i> Importar Parte anterior</a>" ;
+}
 
 
-     echo $html_anterior_siguiente ;
+// BOTONES iMPRIMIR pdf (ANULADO , DA ERRORES)  Y cALENDARIO pARTES
+// echo "<br><a class='btn btn-link btn-sm' href='../personal/parte_pdf.php?id_parte=$id_parte' ><i class='fas fa-print'></i> Imprimir PDF</a>" ;
+ echo "<br><a class='btn btn-link btn-sm' href='../personal/partes.php?_m=$_m&id_obra=$id_obra' ><i class='far fa-calendar-alt'></i> Cal. Partes Obra <b>{$rs["NOMBRE_OBRA"]}</b></a>" ;
+
+ 
+ 
+ 
+ 
+ echo "<br><br>";
+// botones PARTE ANTERIOR   PARTE SUGUIENTE
+ 
+ $html_anterior_siguiente="<div style='width:100%'>";
+ $html_anterior_siguiente.= $id_parte_anterior ? "<div style='float:left'>   <a class='btn btn-link btn-xs'  title='Parte anterior' href='../personal/parte.php?_m=$_m&id_parte=$id_parte_anterior' >"
+         . "<i class='fas fa-arrow-left'></i> Parte anterior</a></div>" 
+         : "" ;
+ $html_anterior_siguiente.= $id_parte_siguiente? "<div style='float:right'><a class='btn btn-link btn-xs' title='Parte siguiente' href='../personal/parte.php?_m=$_m&id_parte=$id_parte_siguiente' >"
+         . " Parte siguiente <i class='fas fa-arrow-right'></i></a></div>" 
+         : "";
+ $html_anterior_siguiente.="</div>";
+
+ echo $html_anterior_siguiente ;
+     
+     
+
+
   
   require("../include/ficha.php"); ?>
    
@@ -148,26 +178,6 @@ $id_parte=$_GET["id_parte"];
 	
 <?php            // ----- div PARTES PERSONAL  tabla.php   -----<!--  DETALLE DEL PARTE -->
 
-//importar parte dia anterior
-//$boton_importar_parte='';
-if ($id_parte_anterior)
-{
-    
-
-$sql_insert="INSERT INTO PARTES_PERSONAL (ID_PARTE,ID_PERSONAL,HO,HX,MD,DC,Plus,PC,id_por_cuenta,ejecutado_pc,id_subobra,Observaciones)"
-        . " SELECT '$id_parte',ID_PERSONAL,HO,HX,MD,DC,Plus,PC,id_por_cuenta,ejecutado_pc,id_subobra,Observaciones FROM  PARTES_PERSONAL WHERE ID_PARTE=$id_parte_anterior ;" ;
-
-$sql_insert.="INSERT INTO Partes_Maquinas (ID_PARTE,id_obra,cantidad,id_subobra,Observaciones)"
-        . " SELECT '$id_parte',id_obra,cantidad,id_subobra,Observaciones FROM  Partes_Maquinas WHERE ID_PARTE=$id_parte_anterior ;" ;
-
-
-$href='../include/sql.php?sql=' . encrypt2($sql_insert)     ;
-echo "<div  class='mainc'><a class='btn btn-link btn-xs noprint ' href='#' "
-     . " onclick=\"js_href('$href','1' )\"   "
-     . "title='Importa el Personal y Maquinaria Propia del Paret anterior'><i class='fas fa-file-import'></i> Importar Parte anterior</a></div>" ;
-   
-
-}
 
 
 

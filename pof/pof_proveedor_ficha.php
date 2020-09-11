@@ -161,7 +161,7 @@ $sql="SELECT id,CANTIDAD,CONCEPTO,Precio_Cobro,Precio_Cobro*CANTIDAD AS Importe_
 //echo $sql;
 $result=$Conn->query($sql );
 
-$sql_T="SELECT '' as a,'Total' as b,'' as c,Precio_Cobro*CANTIDAD AS Importe_Cobro,'' as c2,SUM(P{$id_num_prov}*CANTIDAD) as Importe FROM POF_CONCEPTOS  WHERE ID_POF=$id_pof  ";
+$sql_T="SELECT '' as a,'Total' as b,'' as c,SUM(Precio_Cobro*CANTIDAD) AS Importe_Cobro,'' as c2,SUM(P{$id_num_prov}*CANTIDAD) as Importe FROM POF_CONCEPTOS  WHERE ID_POF=$id_pof  ";
 //$sql="SELECT '' as a,'' as b,'' as c, SUM(importe) as importe FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
 //echo $sql;
 $result_T=$Conn->query($sql_T );

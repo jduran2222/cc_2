@@ -165,8 +165,9 @@ echo "<br><br><br><br>" ;
 
 //  $formats["VENTAS"]="moneda" ;
   $formats["GASTOS_EX"]="moneda" ;
+  $formats["Facturado"]="moneda_porcentaje_sobre_$importe_sin_iva" ;
   $formats["Beneficio"]="moneda_porcentaje_sobre_".(isset($rs["VENTAS"])? $rs["VENTAS"] : 0) ;
-  $formats["Facturado_iva"]="moneda_porcentaje_sobre_".$rs["IMPORTE"] ;
+  $formats["Facturado_iva"]="moneda" ;
   $formats["Cobrado"]="moneda" ;
   $formats["Pdte_Cobro"]="moneda" ;
   $formats["Gastos"]="moneda" ;

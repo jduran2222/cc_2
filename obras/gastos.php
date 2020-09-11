@@ -473,8 +473,8 @@ function imputar_a_subobra(id_obra) {
 
     break;
    case "detalle":
-    $sql="SELECT id,ID_VALE,ID_PROVEEDORES,ID_CONCEPTO,ID_FRA_PROV, FECHA,REF,PROVEEDOR,CONCEPTO, COSTE ,CANTIDAD, IMPORTE,ID_FRA_PROV AS facturado,N_FRA FROM ConsultaGastos_View WHERE $where AND $where_c_coste   ORDER BY FECHA,PROVEEDOR  " ;
-    $sql_T="SELECT '' AS B,'' AS C,'' AS D, SUM(IMPORTE) as importe, '' as dd  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+    $sql="SELECT id,ID_VALE,ID_PROVEEDORES,ID_CONCEPTO,ID_FRA_PROV, FECHA,REF,PROVEEDOR,CONCEPTO, COSTE ,CANTIDAD, IMPORTE,ID_FRA_PROV AS facturado,N_FRA,Fecha_Creacion FROM ConsultaGastos_View WHERE $where AND $where_c_coste   ORDER BY FECHA,PROVEEDOR  " ;
+    $sql_T="SELECT '' AS B,'' AS C,'' AS D, SUM(IMPORTE) as importe, '' as dd, '' as dd2  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     
     $col_sel="id" ;
     
@@ -496,7 +496,7 @@ function imputar_a_subobra(id_obra) {
     $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "annos":
-    $sql="SELECT  DATE_FORMAT(FECHA, '%Y') as anno,SUM(importe) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY anno  ORDER BY anno  " ;
+    $sql="SELECT  DATE_FORMAT(FECHA, '%Y') as Anno,SUM(importe) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY Anno  ORDER BY Anno  " ;
     $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "tipo_gasto":
@@ -542,6 +542,7 @@ $dblclicks["TIPO_GASTO"]="TIPO_GASTO" ;
 $dblclicks["REF"]="REF" ;
 $dblclicks["SUBOBRA"]="SUBOBRA" ;
 $dblclicks["tipo_subcentro"]="tipo_subcentro" ;
+$dblclicks["CUENTA"]="CUENTA" ;
 
 $dblclicks["Dia"]="Dia" ;
 $dblclicks["Semana"]="Semana" ;

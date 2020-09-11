@@ -388,7 +388,7 @@ $chart_ocultos=isset($chart_ocultos) ? $chart_ocultos : [] ;     // por defecto 
 
 
 $add_link_html= (isset($add_link_html)) ? $add_link_html :
-              (isset($add_link) ? "<p><a class='btn btn-link noprint' href='#' onclick=\"tabla_add_row( '{$tabla_update}' , '{$add_link['field_parent']}', '{$add_link['id_parent']}'  ) ;\"  >"
+              (isset($add_link) ? "<p><a class='btn btn-xs btn-link noprint' href='#' onclick=\"tabla_add_row( '{$tabla_update}' , '{$add_link['field_parent']}', '{$add_link['id_parent']}'  ) ;\"  >"
             . "<i class='fas fa-plus-circle'></i> añadir fila</a></p> " : "" ) ;
 
 

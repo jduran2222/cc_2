@@ -38,8 +38,8 @@ while( $rs = $result->fetch_array(MYSQLI_ASSOC))
  $fecha= ($rs["FECHA"]== '0000-00-00 00:00:00' )?  date('Y-m-d') : $rs["FECHA"] ;
 
 $sql2 =  "INSERT INTO `VALES` ( ID_PROVEEDORES,ID_OBRA,Fecha,REF,ID_FRA_PROV,`user` ) ";
-//$sql2 .= "VALUES ( '$id_proveedor', '$id_obra','$fecha' ,'vfac {$rs["N_FRA"]}' ,'$id_fra_prov', '{$_SESSION["user"]}' );" ;
-$sql2 .= "VALUES ( '$id_proveedor', '$id_obra','$fecha' ,'{$rs["FECHA"]}' ,'$id_fra_prov', '{$_SESSION["user"]}' );" ;
+$sql2 .= "VALUES ( '$id_proveedor', '$id_obra','$fecha' ,'vfac {$rs["N_FRA"]}' ,'$id_fra_prov', '{$_SESSION["user"]}' );" ;
+//$sql2 .= "VALUES ( '$id_proveedor', '$id_obra','$fecha' ,'{$rs["FECHA"]}' ,'$id_fra_prov', '{$_SESSION["user"]}' );" ;
 
 
 // echo ($sql2);

@@ -162,6 +162,11 @@ $Conn->close();
 </div>
 
                 </div>
+                
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

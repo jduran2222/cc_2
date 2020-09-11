@@ -54,7 +54,7 @@ $subcentro=Dfirst("subcentro","tipos_subcentro", "tipo_subcentro='$tipo_subcentr
 <div id="main"  style="margin-top: 60px; "><h1><?php echo $subcentro ; ?><br></h1> 
 
 
-    <a class="boton" href= '../obras/obras_anadir.php?&nombre_obra=maquinaria_nueva&tipo_subcentro=M' target='_blank' >Añadir <?php echo strtolower($subcentro) ; ?></a><br><br><br>
+    <a class="boton" href= '../obras/obras_anadir.php?&nombre_obra=maquinaria_nueva&tipo_subcentro=M&id_cliente=<?php echo getVar("id_cliente_auto");?>' target='_blank' ><i class='fas fa-plus-circle'></i> Añadir Maquinaria</a><br><br><br>
     
 	<FORM action="maquinaria_buscar.php?tipo_subcentro=<?php echo $tipo_subcentro ; ?>" method="post" id="form1"  name="form1">
             <table>

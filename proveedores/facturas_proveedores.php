@@ -562,8 +562,8 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     $agrupados=1 ;
      break;
     case "annos":
-    $sql="SELECT  DATE_FORMAT(FECHA, '%Y') as anno,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
-            . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY anno  ORDER BY anno  " ;
+    $sql="SELECT  DATE_FORMAT(FECHA, '%Y') as Anno,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
+            . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY Anno  ORDER BY Anno  " ;
     $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;
     $agrupados=1 ;
      break;
@@ -605,6 +605,8 @@ $dblclicks["N_FRA"]="n_fra" ;
 $dblclicks["MES"]="MES" ;
 $dblclicks["Trimestre"]="Trimestre" ;
 $dblclicks["Anno"]="Anno" ;
+
+
 
 $links["NOMBRE_OBRA"] = ["../obras/obras_ficha.php?id_obra=", "ID_OBRA","ver Obra","formato_sub_vacio"] ;
 $links["PROVEEDOR"] = ["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES","ver Proveedor","formato_sub"] ;

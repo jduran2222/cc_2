@@ -22,8 +22,6 @@ include_once('../templates/_inc_privado2_navbar.php');
                 <!--****************** BUSQUEDA GLOBAL  *****************
                 <!--<div class="col-12 col-md-4 col-lg-9">-->
                   
-<div style="overflow:visible">	   
-  <div id="main" class="mainc"> 
 
 <?php 
 
@@ -63,10 +61,17 @@ $array_plantilla = $rs ;      // copiamos array para datos para la Generación d
 //$array_plantilla["FECHA"] = cc_format($array_plantilla["FECHA"],'fecha') ;     
 
 // fin $array_plantilla
-  
- echo "<br><br><br><br>" ;
- require("../include/ficha.php");
+ 
 
+?>
+<div style="overflow:visible">	   
+  <div id="main" class="mainc"> 
+                
+<?php
+ 
+ 
+ 
+ require("../include/ficha.php");
 
 
 ?>
@@ -164,6 +169,12 @@ $Conn->close();
 </div>
 
                 </div>
+                
+                
+                
+                  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

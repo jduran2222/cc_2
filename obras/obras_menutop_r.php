@@ -92,6 +92,7 @@ $id_estudio=$rs_obra["ID_ESTUDIO"];
         echo "<a ".($active=='gastos'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\gastos.php?id_obra=$id_obra\">Gastos</a>  ";
         echo "<a ".($active=='facturas_proveedores'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../proveedores/facturas_proveedores.php?NOMBRE_OBRA=$nombre_obra\">Fras proveedores</a>  ";        
         echo "<a ".($active=='gastos'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\gastos.php?importe1=0&importe2=0&agrupar=albaranes_pdf&id_obra=$id_obra\">Vales pdte valorar</a>  ";
+        echo "<a ".($active=='obras_ventas'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\obras_ventas.php?id_obra=$id_obra\" title='Factura a Clientes, certificaciones, Ventas...'>Ventas</a>  ";
         echo "<a ".($active=='obras_fotos'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\obras_fotos.php?id_obra=$id_obra\">Fotos</a>  ";
         
         break;

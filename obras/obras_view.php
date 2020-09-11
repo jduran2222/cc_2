@@ -177,7 +177,7 @@ $fmt_facturacion = isset($_GET["fmt_facturacion"]) ?
    <form class='noprint' action="../obras/obras_view.php" method="post" id='form1' name='form1' >
       <INPUT type='hidden' id='fecha_cal' name='fecha_cal' value='<?php echo $fecha_cal;?>'>
        
-    <div class='col-lg-6'>
+    <div class='col-lg-4'>
            
 <TABLE class="noprint">
 <!--    <TR><TD color=red colspan=2 bgcolor=PapayaWhip align=center>
@@ -204,7 +204,7 @@ echo "<TR><TD>Activas</td><td>"
      . "</TD></TR>" ;
 ?>              
 
-</TABLE></div><div class='col-lg-6'><TABLE> 
+</TABLE></div><div class='col-lg-4'><TABLE> 
 
 <TR><TD colspan="2" align="center"><b>PERIODO</b></TD></TR>
 <TR><TD>Fecha desde </TD><TD><INPUT   type="date" id="fecha1" name="fecha1" value="<?php echo $fecha1;?>"><button type="button" onclick="document.getElementById('fecha1').value='' ; ">*</button></TD></TR>
@@ -302,11 +302,11 @@ $select_trimestre="CONCAT(YEAR(fecha), '-', QUARTER(fecha),'T')"  ;
 
 $where_fecha = $fecha1 ==""? $where_fecha : $where_fecha . " AND fecha >= '$fecha1' " ;
 $where_fecha = $fecha2 ==""? $where_fecha : $where_fecha . " AND fecha <= '$fecha2' " ;
-$where_fecha=$Dia==""? $where_fecha : $where_fecha . " AND DATE_FORMAT(FECHA, '%Y-%m-%d')='$Dia' " ;
-$where_fecha = $Semana==""? $where_fecha : $where_fecha . " AND $select_semana = '$Semana' " ;
-$where_fecha = $Mes==""? $where_fecha : $where_fecha . " AND DATE_FORMAT(fecha, '%Y-%m') = '$Mes' " ;
+$where_fecha = $Dia == ""?   $where_fecha : $where_fecha . " AND DATE_FORMAT(FECHA, '%Y-%m-%d')='$Dia' " ;
+$where_fecha = $Semana ==""? $where_fecha : $where_fecha . " AND $select_semana = '$Semana' " ;
+$where_fecha = $Mes == ""?   $where_fecha : $where_fecha . " AND DATE_FORMAT(fecha, '%Y-%m') = '$Mes' " ;
 $where_fecha = $Trimestre==""? $where_fecha : $where_fecha . " AND $select_trimestre = '$Trimestre' " ;
-$where_fecha = $Anno==""? $where_fecha : $where_fecha . " AND YEAR(fecha) = '$Anno' " ;
+$where_fecha = $Anno==""?   $where_fecha : $where_fecha . " AND YEAR(fecha) = '$Anno' " ;
 
 // CADENA_URL PARA LINK DEL PERIODO
 $cadena_link_periodo="v=1" ;

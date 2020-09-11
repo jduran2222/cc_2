@@ -108,7 +108,7 @@ $sql_insert_mov_banco.= "INSERT INTO `OFERTAS` (`ID_CLIENTE`, `NUMERO`, `FECHA`,
          ." VALUES ( @id_cliente,@numero, '$fecha', 'presupuesto_nuevo' ,'$guid' , '{$_SESSION['user']}');" ;    
 $sql_insert_mov_banco= encrypt2($sql_insert_mov_banco) ;
 
-echo "<br><a class='btn btn-link bnt-lg noprint' target='_blank' title='Crea un Presupuesto nuevo vacío' "
+echo "<br><a class='btn btn-link btn-xs noprint' href='#' target='_blank' title='Crea un Presupuesto nuevo vacío' "
 . "onclick=\" js_href('../include/sql.php?code=1&sql=$sql_insert_mov_banco'); window.open('../estudios/oferta_cliente.php?guid=$guid', '_blank'); \" >"
        . "<i class='fas fa-plus-circle'></i> Presupuesto nuevo</a> ";
 

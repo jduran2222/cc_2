@@ -26,7 +26,15 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 <?php  
 
-$id_pof=$_GET["id_pof"];
+
+if (isset($_GET["guid"]))   // por si identificamos con el GUID en vez de con id_pof
+{
+   $id_pof=Dfirst("ID_POF", "PETICION_DE_OFERTAS", " guid='{$_GET["guid"]}' "); 
+}else  
+{
+    $id_pof=$_GET["id_pof"]; 
+    
+}
 
 //<!-- CONEXION CON LA BBDD Y MENUS -->
 //require_once("../obras/obras_menutop_r.php");
@@ -72,7 +80,25 @@ $msg_tabla_vacia="No hay.";
 require_once("../obras/obras_menutop_r.php");   // menu obras despues de declarar $id_obra
   
 echo "<br><br><br><br><br>" ;
-echo "<a target='_blank' class='btn btn-link btn-lg' href='../pof/pof_PDF.php?id_pof=$id_pof' >ver Petición PDF</a>" ;
+echo "<a target='_blank' class='btn btn-link btn-xs noprint' href='../pof/pof_PDF.php?id_pof=$id_pof' ><i class='fas fa-print'></i> ver Petición PDF</a>" ;
+
+// hacer POF copia
+$guid =  guid(); 
+
+$sql_insert= "SELECT @numero:=(MAX(NUMERO)+1) FROM PETICION_DE_OFERTAS WHERE ID_OBRA=$id_obra ;" ;
+$sql_insert.= "INSERT INTO `PETICION_DE_OFERTAS` (`ID_OBRA`, `NUMERO`, `NOMBRE_POF`,  `guid` ,user)" 
+             ." VALUES (  '$id_obra',@numero, '{$rs["NOMBRE_POF"]} - (Copia)' ,'$guid' , '{$_SESSION['user']}');" ;    
+             
+$sql_insert.= "SELECT @id_pof:=ID_POF FROM PETICION_DE_OFERTAS WHERE guid='$guid'  ;" ;
+$sql_insert.= "INSERT INTO `POF_CONCEPTOS` (`ID_POF`, `id_udo`,  `Ocultar` ,  `CANTIDAD` , `CONCEPTO` , `DESCRIPCION` ,`Precio_Cobro` ,user)" 
+         ."                       SELECT @id_pof, id_udo, Ocultar, CANTIDAD, CONCEPTO, DESCRIPCION, Precio_Cobro, '{$_SESSION['user']}' "
+         . " FROM POF_CONCEPTOS WHERE ID_POF=$id_pof ;" ;    
+$sql_insert= encrypt2($sql_insert) ;
+
+echo "<br><a class='btn btn-xs btn-link  noprint' href='#' title='Crea una nueva POF copia de la actual' "
+    . "onclick=\" js_href('../include/sql.php?code=1&sql=$sql_insert'); window.open('../pof/pof.php?guid=$guid', '_blank'); \" >"
+       . "<i class='fas fa-copy'></i> Duplicar POF</a> ";
+
 
 
 // relleno con espacios los elementos del array vacíos  futura ARRAY_QUITA_VACIOS
@@ -91,7 +117,7 @@ $array_plantilla = $rs ;      // copiamos array para datos para la Generación d
 	<!--************ INICIO ficha POF *************  -->
        
         
-<div id="main" class="mainc_30" >
+<div id="main" class="mainc_60" >
 
 
 
@@ -104,23 +130,8 @@ require("../include/ficha.php");
 </div>
 
 <!--************ FIN FICHA POF *************  -->
-<div class="right2">
-
-<?php 
-//  WIDGET FIRMAS 
-$tipo_entidad='pof' ;
-$id_entidad=$id_pof ;
-$firma="POF de {$rs["NOMBRE_OBRA"]}  {$rs["NUMERO"]}-{$rs["NOMBRE_POF"]}(".cc_format($rs["Importe_aprox"], 'moneda').") " ;
-
-//$id_subdir=$id_proveedor ;
-//$size='400px' ;
-require("../include/widget_firmas.php");          // FIRMAS
-
- ?>
-</div>
-
 <!--************ DOCUMENTOS POF *************  -->
-<div class="right2">
+<div class="right2_30">
 	
 
 <?php 
@@ -155,9 +166,28 @@ require("../include/widget_documentos.php");
 	 
 </div>
 
+<!--************ FIRMAS *************  -->
+
+
+<div class="right2_30">
+
+<?php 
+//  WIDGET FIRMAS 
+$tipo_entidad='pof' ;
+$id_entidad=$id_pof ;
+$firma="POF de {$rs["NOMBRE_OBRA"]}  {$rs["NUMERO"]}-{$rs["NOMBRE_POF"]}(".cc_format($rs["Importe_aprox"], 'moneda').") " ;
+
+//$id_subdir=$id_proveedor ;
+//$size='400px' ;
+require("../include/widget_firmas.php");          // FIRMAS
+
+ ?>
+</div>
+
+
 <!--************ INICIO POF_DETALLE (#SUBCONTRATOS ) *************  -->
 
-<div  class="right2_50" >
+<div  class="right2_30" >
 
 <?php   // Iniciamos variables para tabla.php  
 $sql="SELECT id_subcontrato,id_proveedor,PROVEEDOR, subcontrato,Importe_subcontrato,Porc_ej,Observaciones FROM Subcontratos_todos_View WHERE id_pof=$id_pof AND $where_c_coste ORDER BY id_subcontrato";
@@ -202,8 +232,8 @@ require("../include/tabla.php"); echo $TABLE ;?>
 <!--************ FIN POF_DETALLE (SUBCONTRATOS) *************  -->	
 <!--************ INICIO POF_DETALLE (PROVEEDORES - #OFERTAS) *************  -->
 
-<!--<div  class="mainc_100" >-->
-<div  class="right2_60" >
+<div  class="mainc_100" >
+<!--<div  class="right2_60" >-->
 
 <?php   // Iniciamos variables para tabla.php  
 
@@ -445,7 +475,7 @@ $actions_row["delete_link"]="1";
        <?php 
         
 //        $id_concepto_auto=Dfirst("id_concepto_auto","Proveedores","ID_PROVEEDORES=$id_proveedor")   ;
-       echo  "<option value='0' >Selecciona Capítulo...</option>"  ;
+       echo  "<option value='0' >Selecciona Udo...</option>"  ;
        echo DOptions_sql("SELECT ID_UDO,CONCAT('(',ID_UDO,') ' ,CAPITULO,':  ',MED_PROYECTO, ' ',ud,' ',UDO) FROM Udos_View "
                . "WHERE ID_OBRA=$id_obra AND $where_c_coste  ORDER BY CAPITULO, ID_UDO ") ;
 
