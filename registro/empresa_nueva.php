@@ -61,18 +61,20 @@ if(Dfirst("email","C_COSTES","email='$email'"))
 
                 // GEOLOCALIZACION DE LA IP
                  $ip=$_SERVER['REMOTE_ADDR'] ;
-//                 $json_geoip=json_geoip($ip) ;
-//                 $pais= pais($json_geoip);
+                 $json_geoip=json_geoip($ip) ;
+                 $pais= pais($json_geoip);
                   // PROVISIONAL para detectar un error desde Argentina
-                 $json_geoip='json_geoip' ;
-                 $pais= 'pais';
+//                 $json_geoip='json_geoip' ;
+//                 $pais= 'pais';
 
 
 
 
           // creo una empresa nueva 
+//            $sql="INSERT INTO `C_COSTES` (`C_Coste_Texto`, `nombre_centro_coste` , `email`, pais,Moneda_simbolo, json_geoip)   "
+//                                 . " VALUES ( '$empresa', '$empresa', '$email','$pais','€','$json_geoip' );" ;
             $sql="INSERT INTO `C_COSTES` (`C_Coste_Texto`, `nombre_centro_coste` , `email`, pais,Moneda_simbolo, json_geoip)   "
-                                 . " VALUES ( '$empresa', '$empresa', '$email','$pais','€','$json_geoip' );" ;
+                                 . " VALUES ( '$empresa', '$empresa', '$email','pais','€','json_geoip' );" ;
 
             $result=$Conn->query($sql);
              //echo ($sql);
