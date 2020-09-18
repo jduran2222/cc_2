@@ -480,7 +480,7 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
  switch ($agrupar) { 
     case "ultimas_fras_reg":
      $sql="SELECT ID_FRA_PROV, $select_fmt_pdf   ID_PROVEEDORES,N_FRA,FECHA,PROVEEDOR,Base_Imponible, iva, "
-            . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,Observaciones "
+            . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,Observaciones "
             . " FROM Fras_Prov_View WHERE $where  ORDER BY Fecha_Creacion DESC LIMIT 100 " ;
 //     echo $sql;
      $sql_T="SELECT '' " ;
@@ -489,11 +489,11 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     break;
     case "facturas":
      $sql="SELECT ID_FRA_PROV, $select_fmt_pdf   ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, "
-            . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,Observaciones "
+            . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,Observaciones "
             . " FROM Fras_Prov_View WHERE $where  ORDER BY Fecha_Creacion " ;
         
 //     $sql="SELECT $select_fmt_pdf  ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,"
-//         . "ID_OBRA, NOMBRE_OBRA,Observaciones, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago, concepto "
+//         . "ID_OBRA, NOMBRE_OBRA,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago, concepto "
 //            . " FROM Fras_Prov_View WHERE $where  ORDER BY FECHA DESC " ;
      $sql_T="SELECT $select_fmt_pdf_T '' AS c,'' AS c1,'Totales' AS d,'' AS f11,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a41,'' AS a1 "
              . ",SUM(pdte_conciliar) as pdte_conciliar,'' AS a31,'' AS a11,'' AS b1,'' AS c1,SUM(pdte_pago) AS pdte_pago  FROM Fras_Prov_View WHERE $where  " ;   
@@ -505,7 +505,7 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     break;
     case "cuadros":
      $sql="SELECT path_archivo as pdf_500,ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,"
-         . "ID_OBRA, NOMBRE_OBRA,Observaciones, firmado, pdte_conciliar,conc as cargada,pagada,cobrada, concepto "
+         . "ID_OBRA, NOMBRE_OBRA,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada, concepto "
             . " FROM Fras_Prov_View WHERE $where  ORDER BY FECHA DESC " ;
      $formats["pdf_500"] = 'pdf_500_500' ;   
      $linkss["pdf_500"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura",""] ;

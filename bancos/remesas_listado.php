@@ -84,11 +84,11 @@ $grupo=isset($_POST["grupo"])?$_POST["grupo"] : 'listado' ;
  switch ($grupo) {
     case "listado":
 //     $sql="SELECT id_remesa,remesa,activa,Observaciones,Banco,importe,num_pagos  FROM Remesas_View WHERE  (filtro LIKE '%$filtro%') AND $conc AND $where_c_coste  ORDER BY id_remesa DESC LIMIT $limite" ;
-     $sql="SELECT id_remesa,activa,tipo_remesa,f_vto,remesa,Observaciones,doc_logo,Banco,importe,ingreso,num_pagos,firmada, cobrada "
+     $sql="SELECT id_remesa,activa,tipo_remesa,f_vto,remesa,Observaciones,doc_logo,Banco,importe,ingreso,num_pagos,firmado_TOOLTIP,firmado,firmada, cobrada "
             . "  FROM Remesas_View WHERE remesa LIKE '%$filtro%' AND $conc  AND $cobradas AND $tipo_remesa AND $where_c_coste  ORDER BY f_vto,id_remesa DESC LIMIT $limite" ;
 
 
-     $sql_T="SELECT '' AS A1 ,'' AS A11 ,'Suma:' AS A12 ,'' AS A41 , '' AS A2,SUM(importe) as importe,SUM(ingreso) as ingreso,'' AS B,'' AS C,'' as d,'' as f FROM Remesas_View WHERE remesa LIKE '%$filtro%' AND $conc  AND $cobradas AND $tipo_remesa AND $where_c_coste  " ;
+     $sql_T="SELECT '' AS A1 ,'' AS A11 ,'Suma:' AS A12 ,'' AS A41,'' AS A427 , '' AS A2,SUM(importe) as importe,SUM(ingreso) as ingreso,'' AS B,'' AS C,'' as d,'' as f FROM Remesas_View WHERE remesa LIKE '%$filtro%' AND $conc  AND $cobradas AND $tipo_remesa AND $where_c_coste  " ;
     break;
    case "meses":
 //     $sql="SELECT  DATE_FORMAT(f_vto, '%Y-%m') as mes,SUM(importe) as importe, SUM(importe*conc) as importe_conc,  SUM(ingreso) as ingreso ,  SUM(ingreso*conc) as ingreso_conc FROM Pagos_View WHERE tipo_pago='P' AND (filtro LIKE '%$filtro%') AND $conc AND $where_c_coste  GROUP BY mes " ;
@@ -125,6 +125,7 @@ $formats["ingreso_conc"] = "moneda" ;
 $formats["ingreso"] = "moneda" ;
 $formats["f_vto"] = "fecha" ;
 $formats["activa"] = "boolean" ;
+$formats["firmado"] = "firmado" ;
 $formats["firmada"] = "semaforo" ;
 $formats["saldo"] = "moneda" ;
 $formats["cobrada"] = "semaforo_OK" ;
