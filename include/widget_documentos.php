@@ -153,7 +153,6 @@ if ($result_wd->num_rows > 0)
  {  
     
     
-    $pdte_doc_logo = (isset($rs["doc_logo"]) AND !$rs["doc_logo"])  ;
 
     
     //$content_wd .= "<a href=\"$path_archivo\" >descargar PDF</a><br>" ;
@@ -207,15 +206,20 @@ if ($result_wd->num_rows > 0)
 
         //BOTON IMAGEN PREDETERMINADA
          // marcar como PREDETERMINADO el primer documento que se suba si existe el campo DOC_LOGO
+        
+        
+        // vemos si existe el campo 'doc_logo' para hacer predeterminada la imagen en la entidad
+       if (isset($rs["doc_logo"])) 
+       {  
          $sql_update= "UPDATE `$tabla_update` SET doc_logo='$id_documento'  WHERE  $id_update='$id_valor'  ; "  ;        
-         if ($pdte_doc_logo )   // SI hay campo doc_logo y es vacío
+         if (!$rs["doc_logo"] )   // SI hay campo doc_logo y es vacío
             {
                 $Conn->query($sql_update ) ;     // si no hay doc_logo predeterminado, le asignamos el primer documento que haya
                 $pdte_doc_logo=False ;
             }  
         $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;         
         $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href=# onclick=\"js_href('$href' ,'1' )\"   title='hace este documento como imagen predeterminada de la entidad'>predet.</a> "; 
-        
+       }
 //        $links["nid_documento"] = ["../documentos/documento_ficha.php?id_documento=", "id_documento", "ver ficha documento", 'ppal'] ;
 
         //BOTON DELETE

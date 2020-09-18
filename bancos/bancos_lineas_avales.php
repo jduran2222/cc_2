@@ -80,6 +80,7 @@ $id_agrupamiento="id_linea_avales" ;
 //echo $sql ;
 $result=$Conn->query($sql) ;
 $result_T=$Conn->query($sql_T) ;
+
 if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
 

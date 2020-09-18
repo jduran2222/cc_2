@@ -204,9 +204,9 @@ echo "<TR><TD></td><td>$radio_html</TD></TR>" ;
 //Datos
 $radio=$nomina ;
 $radio_name='nomina' ;
-$radio_options=["todas","Nominas","Terceros"]; 
+$radio_options=["todas","Nominas","Proveedores"]; 
 $radio_etiqueta="Tipo proveedor";
-$radio_title="Distingue entre facturas a Terceros o nóminas del personal";
+$radio_title="Permite filtrar las facturas o adeudos por nóminas del Personal o solo Proveedores";
 // código
 $chk_todos =  ['','']  ; $chk_on = ['','']  ; $chk_off =  ['','']  ;
 if ($radio=="") { $chk_todos = ["active","checked"] ;} elseif ($radio==1) { $chk_on =  ["active","checked"]  ;} elseif ($radio==0)  { $chk_off =  ["active","checked"]  ;}

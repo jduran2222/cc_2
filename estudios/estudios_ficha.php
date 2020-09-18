@@ -68,7 +68,8 @@ else { require_once("../estudios/estudios_menutop_r.php"); }
   $id_update="ID_ESTUDIO" ;
   $id_valor=$id_estudio ;
   
-  $importe_iva=$rs['Presupuesto Tipo']*(1+getVar('iva_auto')) ;
+//  $importe_iva=$rs['Presupuesto Tipo']*(1+getVar('iva_auto')) ;
+  $importe_iva=$rs['Presupuesto Tipo']*(1+$rs['iva']) ;
   
   $link_anadir_obra_estudio= "../obras/obras_anadir.php?NOMBRE_COMPLETO={$rs['Nombre Completo']}.({$rs['Organismo']})&nombre_obra={$rs['NOMBRE']}&IMPORTE={$importe_iva}&ID_ESTUDIO=$id_estudio&tipo_subcentro=E"                 ;
   

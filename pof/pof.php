@@ -155,6 +155,11 @@ $array_plantilla["HTML_TABLA1"]=urlencode($TABLE) ;
 
 
 
+// reponemos las variables a usar en widget_documentos.php al ser UNSET (eliminadas) por tabla.php como medida higiénica.
+$tabla_update="PETICION DE OFERTAS" ;
+$id_update="ID_POF" ; 
+
+
 
 $tipo_entidad='pof_doc' ;
 $id_entidad=$id_pof;

@@ -161,18 +161,19 @@ a:hover + .box_wiki,.box_wiki:hover{
  {
    if ($delete_boton )
    {
-     $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rs["$id_update"] ; 
+       $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rs["$id_update"] ; 
      
-     
-   if (isset($disabled_delete))  
-   { $disabled_delete = "disabled" ;
-     $disabled_title=isset($disabled_tltle)? $disabled_tltle : "Elimine las filas de detalle antes de eliminar la Entidad principal" ;
-   } else
-   { $disabled_delete="" ;  
-     $delete_title="Elimina la ficha actual" ;
-   } 
-     $titulo_sin_html= strip_tags($titulo)   ;
-     echo "<a class='btn btn-danger btn-lg noprint transparente' $disabled_delete title='$delete_title'  href=# onclick=\"ficha_delete('$cadena_link', '$titulo_sin_html')\"><i class='far fa-trash-alt'></i></a> "; 
+       if (isset($disabled_delete))  
+       { 
+           $disabled_delete_txt = $disabled_delete? "disabled" :"" ;
+           $delete_title=isset($delete_title)? $delete_title : ($disabled_delete ? "Elimine las filas de detalle antes de eliminar la entidad principal" : "Elimina la ficha actual") ;
+       } else
+       { 
+           $disabled_delete_txt="" ;  
+           $delete_title=isset($delete_title)? $delete_title : "Elimina la ficha actual" ;
+       } 
+       $titulo_sin_html= strip_tags($titulo)   ;
+       echo "<button class='btn btn-danger btn-lg noprint transparente' $disabled_delete_txt title='$delete_title'  onclick=\"ficha_delete('$cadena_link', '$titulo_sin_html')\"><i class='far fa-trash-alt'></i></button> "; 
      
    }  
  }
@@ -195,7 +196,7 @@ if ($result->num_rows > 0)
 {
    // INICIALIZAMOS LAS VARIABLES
    $cont_TD= mt_rand (1,1000000)  ;           // inicializamos el contador con rand() para evitar que se solapen los TD y otros elementos de diferentes tablas
-   $id_info="solo admin:" ; 
+   $id_info_admin=($_SESSION["admin"]) ? "solo admin:" :"" ; 
    $id_info_user="creación: " ; 
    $visibles= isset($visibles) ? $visibles : [] ;  // $visibles es array con campos ID_ que queremos mostrar
    $ocultos= isset($ocultos) ? $ocultos : [] ;  // $ocultos es array con campos ID_ que NO queremos mostrar
@@ -736,7 +737,7 @@ if ($result->num_rows > 0)
            if ($clave=='user' OR $clave=='fecha_creacion' OR $clave=='fecha_modificacion' )
            { $id_info_user.= "  $valor  //   " ;}    
            elseif($_SESSION["admin"]) 
-           { $id_info.= "$clave=". cc_format($valor,'textarea_10') ." "  ;}
+           { $id_info_admin.= "$clave=". cc_format($valor,'textarea_10') ." "  ;}
            
          
        }
@@ -747,12 +748,12 @@ if ($result->num_rows > 0)
     }  // fin del FOREACH 
     
     // pintamos CAMPOS NO VISIBLES. ponemos línea de ID_INFO en GRIS
-     $item_TD_final =  "<tr><td colspan=2  style='text-align:left;color:silver;font-size:small;white-space: normal;'><small style='text-align:left'>$id_info_user $id_info</small></td></tr>" ;   //pintamos los ID_INFO  campos ID ignorados
+     $item_TD_final =  "<tr><td colspan=2  style='text-align:left;color:silver;font-size:small;white-space: normal;'><small style='text-align:left'>$id_info_user $id_info_admin</small></td></tr>" ;   //pintamos los ID_INFO  campos ID ignorados
 }
 else
 {
 die ("<tr><td><h1>ERROR, FICHA NO ENCONTRADA</h1></td></tr>" );         // FICHA NO ENCONTRADA. ABORTAMOS LA PAGINA
-echo "<tr><td><h1>ERROR, FICHA NO ENCONTRADA</h1></td></tr>" ;
+//echo "<tr><td><h1>ERROR, FICHA NO ENCONTRADA</h1></td></tr>" ;
 
 }
 

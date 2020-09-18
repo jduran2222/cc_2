@@ -340,12 +340,16 @@ $tr_totales .=  "</table>";
 
 if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el ARRAY de ANIDACION
  {
-  $tabla_subgrupo = $result_S->fetch_all(MYSQLI_ASSOC);          // listdo de filas desplegables
+  $tabla_subgrupo = $result_S->fetch_all(MYSQLI_ASSOC);          // listado de filas desplegables
                                      
   foreach($tabla_subgrupo as $x => $x_value)
   {
-   $tabla_subgrupo2[array_values($x_value)[0]]=$x_value ;        // El primer valor de la fila ahora será también la clave del nuevo array $tabla_subgrupo2
+      $nueva_clave=array_values($x_value)[0];
+   $tabla_subgrupo2["$nueva_clave"]=$x_value ;        // El primer valor de la fila ahora será también la clave del nuevo array $tabla_subgrupo2
    }
+   
+//   print_r($tabla_subgrupo2);
+   
    
    // creamos el content de encabezado principal
     $content_TH_ppal="<tr>";
@@ -468,7 +472,7 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
 //                 echo "<tr ><td COLSPAN=3></td></tr>";
                  echo "<tr onclick=\"document.getElementById('exp_$id_subgrupo').click(); \" >";        // hace que se expanda el grupo al tocar en toda la fila <TR>
                  $c=0;
-                 foreach ($tabla_subgrupo2[$id_subgrupo] as $clave => $valor)   //  row del subgrupo a imprimir
+                 foreach ($tabla_subgrupo2["$id_subgrupo"] as $clave => $valor)   //  row del subgrupo a imprimir
                  { 
                            $format_style="";	   
                            if (isset($formats[$clave])) 

@@ -74,6 +74,7 @@ $id_update="id_remesa" ;
 $id_valor=$id_remesa ;
 
 $delete_boton=1 ;
+$disabled_delete=Dfirst("id_remesa", "PAGOS"," id_remesa=$id_remesa") ;
 
 
 ?>
@@ -94,7 +95,26 @@ $delete_boton=1 ;
    
       <!--// FIN     **********    FICHA.PHP-->
  </div>
+
+<div class="right2">
 	
+<?php 
+//  WIDGET #FIRMAS 
+$tipo_entidad='remesa' ;
+$id_entidad=$id_remesa ;
+//$flags_firma = ($conc ? "Cargada " : "" ) . ($pagada ? "Pagada " : " " ) . ($cobrada ? "Cobrada" : "" ) ;
+$firma="Remesa {$rs["remesa"]} de importe ".cc_format($rs["importe"], 'moneda')." ({$rs["num_pagos"]} pagos) " ;
+
+//$id_subdir=$id_proveedor ;
+//$size='400px' ;
+require("../include/widget_firmas.php");          // FIRMAS
+
+ ?>
+	 
+</div>	
+
+      
+      
 <?php 
 
 

@@ -47,15 +47,15 @@
   <!--CHAT SOPORTE-->
   <div style="position:fixed; bottom:20px; right:20px;z-index: 99;" class="bg-info text-info noprint">
     <div class="p-2 h5 text-center m-0 noprint" style="cursor:pointer;" onclick="$('#chat_textarea').fadeToggle(500, 'swing');">
-      <i class="far fa-comments"></i>
+      <i class="far fa-comments noprint"></i>
       <p class="p-0 m-0 noprint">
         <span class="d-none d-sm-inline noprint">Chat Soporte</span> 
       </p>
     </div>
       
     <div class="mx-auto text-center noprint" style="display:none;z-index: 3;" id="chat_textarea">
-      <textarea class="form-control col-11 mx-auto mb-2" onfocus="$('#mensaje_enviado').hide();" row='10' cols='28'  id="chat_soporte" placeholder="Hola, bienvenido a ConstruCloud.es ¿en qué podemos ayudarte?"/></textarea>
-      <button class="btn_topbar col-11 btn btn-light btn-xs  mb-2 noprint" onclick="chat_send_soporte()">Enviar</button>
+      <textarea class="form-control col-11 mx-auto mb-2 noprint" onfocus="$('#mensaje_enviado').hide();" row='10' cols='28'  id="chat_soporte" placeholder="Hola, bienvenido a ConstruCloud.es ¿en qué podemos ayudarte?"/></textarea>
+      <button class="btn_topbar col-11 btn btn-light btn-xs mb-2 noprint" onclick="chat_send_soporte()">Enviar</button>
       <div id="mensaje_enviado" class="small mb-2 noprint" style="display: none;">Mensaje enviado, recibirá respuesta en su chat</div>
     </div>
   </div>
