@@ -1296,7 +1296,8 @@ switch ($format) {
                          $pdf_size2=  (isset($pdf_size2) AND $pdf_size2 ) ?  $pdf_size2  :  $pdf_size*2 ;   
 //                            $valor = "<img src='{$valor}_large.jpg' onmouseover='this.width=500;' onmouseout='this.width=100;' width='100' >" ;
              // retardar con uso de setTimeout  PENDIENTE
-                         $valor= "<a style='font-size:0px'   href=\"{$valor}_large.jpg\" target='_blank' >"
+//                         $valor= "<a style='font-size:0px'   href=\"{$valor}_large.jpg\" target='_blank' >"
+                         $valor= "<a style='font-size:0px'   href=\"{$valor}\" target='_blank' >" 
                         . "<img style='border: 10px solid white;' src=\"{$valor}_medium.jpg\"  "
                         . "onmouseover='this.style.borderImageWidth=\"20px 30px\";this.width=\"$pdf_size2\";' "
                                 . "onmouseout='this.style.borderImageWidth=20 ;this.width=\"$pdf_size\";' width='$pdf_size'  >"

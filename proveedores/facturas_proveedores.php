@@ -47,7 +47,8 @@ if ($iniciar_form)
         $conciliada=isset($_GET["conciliada"])? $_GET["conciliada"] :  "" ;
         $pagada=isset($_GET["pagada"])? $_GET["pagada"] :  "" ;
         $cobrada=isset($_GET["cobrada"])? $_GET["cobrada"] :  "" ;
-        $agrupar = isset($_GET["agrupar"])? $_GET["agrupar"] :  'ultimas_fras_reg' ;     
+        $grupo=isset($_GET["grupo"])? $_GET["grupo"] :  "" ;
+        $agrupar = isset($_GET["agrupar"])? $_grupoGET["agrupar"] :  'ultimas_fras_reg' ;     
         
         $fmt_pdf = isset($_GET["fmt_pdf"]) ?  $_GET["fmt_pdf"] :  "checked";
         
@@ -75,6 +76,7 @@ if ($iniciar_form)
         $conciliada=$_POST["conciliada"] ;
         $pagada=$_POST["pagada"] ;
         $cobrada=$_POST["cobrada"] ;
+        $grupo=$_POST["grupo"] ;
         $agrupar =$_POST["agrupar"] ;    
         
         $fmt_pdf=isset($_POST["fmt_pdf"]) ? 'checked' : '' ;
@@ -161,6 +163,7 @@ echo "</TABLE></div><div class='col-lg-4'><TABLE class='seleccion'> " ;
 
 echo "<TR><TD>Importe min     </TD><TD><INPUT type='text' id='importe1'     name='importe1'    value='$importe1'><button type='button' onclick=\"document.getElementById('importe1').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>importe máx     </TD><TD><INPUT type='text' id='importe2'     name='importe2'    value='$importe2'><button type='button' onclick=\"document.getElementById('importe2').value='' \" >*</button></TD></TR>" ;
+echo "<TR><TD>grupo   </TD><TD><INPUT type='text' id='grupo'   name='grupo'  value='$grupo'><button type='button' onclick=\"document.getElementById('grupo').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>observaciones   </TD><TD><INPUT type='text' id='observaciones'   name='observaciones'  value='$observaciones'><button type='button' onclick=\"document.getElementById('observaciones').value='' \" >*</button></TD></TR>" ;
 echo "<TR><TD>Metadatos   </TD><TD><INPUT type='text' id='metadatos'   name='metadatos'  value='$metadatos'><button type='button' onclick=\"document.getElementById('metadatos').value='' \" >*</button></TD></TR>" ;
 
@@ -221,8 +224,8 @@ echo "<TR title='$radio_title'><TD>$radio_etiqueta</td><td>$radio_html</TD></TR>
 // FIN PADIO BUTTON CHK
 
 
-echo "<TR><TD>path archivo </TD><TD><INPUT type='text' id='path_archivo'   name='path_archivo'  value='$path_archivo'><button type='button' onclick=\"document.getElementById('path_archivo').value='' \" >*</button></TD></TR>" ;
-echo "<TR><TD>firmado </TD><TD><INPUT type='text' id='firmado'   name='firmado'  value='$firmado'><button type='button' onclick=\"document.getElementById('firmado').value='' \" >*</button></TD></TR>" ;
+echo "<TR><TD>path archivo </TD><TD><INPUT type='text' id='path_archivo'   name='path_archivo'  value='$path_archivo' title='Filtra por el nombre del archivo PDF original'><button type='button' onclick=\"document.getElementById('path_archivo').value='' \" >*</button></TD></TR>" ;
+echo "<TR><TD>firmado </TD><TD><INPUT type='text' id='firmado'   name='firmado'  value='$firmado' title='Estado de las Firmas. Filtrar por CONFORME, NO_CONF, PDTE...' ><button type='button' onclick=\"document.getElementById('firmado').value='' \" >*</button></TD></TR>" ;
 
 echo "</TABLE></div><div class='col-lg-4'><TABLE class='seleccion'> " ;   
 
@@ -328,6 +331,8 @@ $btnt['meses']=['meses',''] ;
 $btnt['trimestres']=['trimestres',''] ;
 $btnt['annos']=['años',''] ;
 $btnt['vacio2']=['','',''] ;
+$btnt['grupo']=['grupo','Agrupa las facturas por grupos '] ;
+
 $btnt['cuadros']=["<span class='glyphicon glyphicon-th-large'></span> cuadros",'Muestra las facturas seleccionadas en forma de cuadros'] ;
 
 foreach ( $btnt as $clave => $valor)
@@ -380,6 +385,7 @@ $where=$nomina==""? $where : $where . " AND nomina=$nomina " ;
 $where=$conciliada==""? $where : $where . " AND conc=$conciliada " ;
 $where=$pagada==""? $where : $where . " AND pagada=$pagada " ;
 $where=$cobrada==""? $where : $where . " AND cobrada=$cobrada " ;
+$where=$grupo==""? $where : $where . " AND grupo LIKE '%".str_replace(" ","%",trim($grupo))."%'" ;
 $where=$observaciones==""? $where : $where . " AND Observaciones LIKE '%".str_replace(" ","%",trim($observaciones))."%'" ;
 $where=$metadatos==""? $where : $where . " AND metadatos LIKE '%".str_replace(" ","%",trim($metadatos))."%'" ;
 $where=$path_archivo==""? $where : $where . " AND path_archivo LIKE '%".str_replace(" ","%",trim($path_archivo))."%'" ;
@@ -429,7 +435,17 @@ $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%
    echo " <a class='btn btn-warning btn-xs' href='#'  onclick='mov_bancos_conciliar_fras_cta();'>pagar con este Banco</a>" ;    
    echo "</div>" ;
     
-    ?>
+          // cambiar GRUPO
+   echo "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
+    $sql_update= "UPDATE `FACTURAS_PROV` SET grupo='_VARIABLE1_' WHERE  ID_FRA_PROV IN _VARIABLE2_ ; "  ;
+    $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;    
+echo "Cambiar el grupo de las facturas seleccionadas: <a class='btn btn-warning btn-xs noprint ' href='#' "
+     . " onclick=\"js_href('$href' ,'1','', 'PROMPT_Nombre_nuevo_grupo' ,'table_selection_IN()' )\"   "
+     . "title='Cambia a otro grupo las facturas seleccionadas' > cambiar grupo</a>" ;
+
+   echo "</div>" ; 
+    
+    ?> 
       
 
       
@@ -480,7 +496,7 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
  switch ($agrupar) { 
     case "ultimas_fras_reg":
      $sql="SELECT ID_FRA_PROV, $select_fmt_pdf   ID_PROVEEDORES,N_FRA,FECHA,PROVEEDOR,Base_Imponible, iva, "
-            . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,Observaciones "
+            . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,grupo,Observaciones "
             . " FROM Fras_Prov_View WHERE $where  ORDER BY Fecha_Creacion DESC LIMIT 100 " ;
 //     echo $sql;
      $sql_T="SELECT '' " ;
@@ -489,11 +505,11 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     break;
     case "facturas":
      $sql="SELECT ID_FRA_PROV, $select_fmt_pdf   ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, "
-            . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,Observaciones "
+            . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,grupo,Observaciones "
             . " FROM Fras_Prov_View WHERE $where  ORDER BY Fecha_Creacion " ;
         
 //     $sql="SELECT $select_fmt_pdf  ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,"
-//         . "ID_OBRA, NOMBRE_OBRA,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago, concepto "
+//         . "ID_OBRA, NOMBRE_OBRA,grupo,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago, concepto "
 //            . " FROM Fras_Prov_View WHERE $where  ORDER BY FECHA DESC " ;
      $sql_T="SELECT $select_fmt_pdf_T '' AS c,'' AS c1,'Totales' AS d,'' AS f11,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a41,'' AS a1 "
              . ",SUM(pdte_conciliar) as pdte_conciliar,'' AS a31,'' AS a11,'' AS b1,'' AS c1,SUM(pdte_pago) AS pdte_pago  FROM Fras_Prov_View WHERE $where  " ;   
@@ -505,7 +521,7 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     break;
     case "cuadros":
      $sql="SELECT path_archivo as pdf_500,ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,"
-         . "ID_OBRA, NOMBRE_OBRA,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada, concepto "
+         . "ID_OBRA, NOMBRE_OBRA,grupo,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada, concepto "
             . " FROM Fras_Prov_View WHERE $where  ORDER BY FECHA DESC " ;
      $formats["pdf_500"] = 'pdf_500_500' ;   
      $linkss["pdf_500"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura",""] ;
@@ -567,6 +583,12 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;
     $agrupados=1 ;
      break;
+    case "grupo":
+    $sql="SELECT  grupo,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
+            . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY grupo  ORDER BY grupo  " ;
+    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;
+    $agrupados=1 ;
+     break;
  }
 
 //echo "PDF es $pdf"  ;
@@ -597,6 +619,7 @@ echo "<br><font size=2 color=grey>Agrupar por : $agrupar <br> {$result->num_rows
 
 $dblclicks=[];
 $dblclicks["PROVEEDOR"]="proveedor" ;
+$dblclicks["grupo"]="grupo" ;
 $dblclicks["NOMBRE_OBRA"]="NOMBRE_OBRA" ;
 $dblclicks["CIF"]="proveedor" ;
 $dblclicks["N_FRA"]="n_fra" ;

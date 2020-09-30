@@ -154,13 +154,27 @@ require("../include/widget_documentos.php");
  ?>
 	 
 </div>
+        
+<!--  TAREAS ANULADO PROVISIONALMENTE MIENTRAS TAREAS NO ESTÉN VINCULADAS A ENTIDADES, juand mayo20-->
+  <div class="right2">
+	
+  <?php 
+
+//$tipo_entidad='obra_doc' ;
+//$id_entidad=$id_obra;
+
+  require("../agenda/widget_tareas.php");
+ 
+ ?>
+	 
+  </div>
 	
 <div class="right2">
 	
 <?php 
 //  WIDGET #FIRMAS 
-$tipo_entidad='estudios' ;
-$id_entidad=$id_estudio ;
+//$tipo_entidad='estudios' ;
+//$id_entidad=$id_estudio ;
 //$flags_firma = ($conc ? "Cargada " : "" ) . ($pagada ? "Pagada " : " " ) . ($cobrada ? "Cobrada" : "" ) ;
 $firma="Estudio $nombre_estudio (B.final ".cc_format($baja_final, 'porcentaje').") " ;
 

@@ -364,6 +364,8 @@ $debug=$admin;
 // INICIALIZACION DE VARIABLES 
 $TABLE=''; 
 
+
+
 $updates= isset($updates)? $updates :  [] ;    // si no existe $updates lo inicializo vacío para poder hacer llamadas sin que dé error
 $visibles= isset($visibles) ? $visibles : [] ;  // $visibles es array con campos ID_ que queremos mostrar
 $ocultos= isset($ocultos) ? $ocultos : [] ;  // $ocultos es array con campos ID_ que NO queremos mostrar
@@ -375,6 +377,7 @@ $tabla_expandible= isset($tabla_expandible) ? $tabla_expandible : ( !isset($prin
 // ANULAMOS PROVISIONALEMNTE LA EXPANDIBILIDAD HASTA ENCAJAR ADMIN LTE JUNIO2020
 //$tabla_expandible= 0 ;    // por defecto lo hacemos NO EXPANDIBLE
 
+$tabla_style=isset($tabla_style) ? $tabla_style : '' ;     // style de la TABLE
 $tabla_expandida=isset($tabla_expandida) ? $tabla_expandida : 1 ;     // por defecto la mostramos EXPANDIDA
 
 $tabla_collapse= isset($tabla_expandida) ? ($tabla_expandida ?  '' : 'collapsed-card') : 'collapsed-card'  ;   // por defecto NO EXPANDIDA
@@ -633,7 +636,7 @@ if (isset($result_T)  )   // Hay TOTALES?
      
     $TABLE .= "<div id='chart_div$idtabla' style='display:none;'></div>" ;  // div para el gráfico
   
-   $TABLE .= "<div><table  id=\"$idtabla\"  >";
+   $TABLE .= "<div><table  id=\"$idtabla\" $tabla_style >";
     
    if (isset($chart_ON) AND $chart_ON )
    { echo "<script> $(document).ready(function(){ $('#chart_button$idtabla').click();})</script>" ; }
@@ -2148,7 +2151,7 @@ chart<?php echo $idtabla; ?>.draw(view<?php echo $idtabla; ?>, options<?php echo
   // INICIALIZAMOS TODAS LAS VARIABLES Y ARRAYS DE TABLA.PHP PARA EVITAR INTERFERENCIAS CON NUEVAS REQUERY EN EL MISMO PHP.
    
       //  $result=$Conn->query("SELECT id_aval , Motivo, Importe from Avales WHERE ID_OBRA=".$id_obra );
-unset( $tabla_footer,$add_link_html, $add_link, $result_T, $rs_T,$result_T2, $rs_T2,$result_T3, $rs_T3, $tabla_expandida,$tabla_expandible, $tabla_update, $id_update,$col_sel,$array_sumas,$valign,$colspan,$col_subtotal,$print_id, 
+unset( $tabla_style, $tabla_footer,$add_link_html, $add_link, $result_T, $rs_T,$result_T2, $rs_T2,$result_T3, $rs_T3, $tabla_expandida,$tabla_expandible, $tabla_update, $id_update,$col_sel,$array_sumas,$valign,$colspan,$col_subtotal,$print_id, 
         $titulo, $msg_tabla_vacia,  $add_link,  $links, $formats, $format_style, $tooltips, $actions_row,
         $updates,$dblclicks ,$id_agrupamiento, $buttons ,$cols_string,$cols_number,$chart_ON,$ocultos,$cols_line) ;
 

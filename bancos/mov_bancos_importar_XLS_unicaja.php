@@ -205,6 +205,8 @@ $file_XLS=$_POST["file_XLS"] ;
 
 ?>
                 </div>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

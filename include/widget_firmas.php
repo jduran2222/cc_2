@@ -24,7 +24,7 @@ $sql_insert= "INSERT INTO `Firmas` (`tipo_entidad`, `id_entidad`,`id_usuario`, f
         . "VALUES ( '$tipo_entidad', '$id_entidad', '_VARIABLE1_' , '$firma','_VARIABLE2_' , '{$_SESSION['user']}' );"   ;
 
 // campo usuario q quien envio la firma        
-$add_link_html= "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" 
+$add_link_html= "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;font-size:xx-small;'>" 
                . "<br>Añadir firma: <select  id='id_usuario' style='width: 30%; '>"
                . DOptions_sql("SELECT id_usuario, usuario FROM Usuarios WHERE activo AND $where_c_coste ORDER BY usuario  ", "Selecciona Usuario...") 
                . "  </select>" ;    
@@ -63,7 +63,8 @@ if ($firmas=$result->num_rows)
   
 }else
 {
-  $conforme_txt = "no hay firmas" ;    
+//  $conforme_txt = "no hay firmas" ;    
+  $conforme_txt = "" ;    // no mostramos ningun mensaje porque hay 0 firmas  , juand, sep-2020
 }    
 
 $updates=['pdte','conforme','no_conforme', 'observaciones'] ;
@@ -80,6 +81,7 @@ $actions_row["delete_confirm"]=0;
         
 $titulo="Firmas ($firmas) $conforme_txt" ;       
 $msg_tabla_vacia="No hay firmas";
+$tabla_style=" style='font-size:xx-small;' " ;
 
 require("../include/tabla.php"); echo $TABLE ;  // firmas
  

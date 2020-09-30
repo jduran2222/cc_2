@@ -8,7 +8,7 @@ $id_fra_prov=$_GET["id_fra_prov"];
  
 $sql="SELECT CONCAT(PROVEEDOR,'-',N_FRA) as id_titulo_pagina,   id_fra_prov AS Nid_fra_prov, ID_FRA_PROV,ID_PROVEEDORES,"
          . "'Metadatos factura' as EXPAND,  metadatos , '-' AS FIN_EXPAND,"
-         . "N_FRA,FECHA,Base_Imponible,iva,IMPORTE_IVA  ,  Observaciones "
+         . "N_FRA,FECHA,Base_Imponible,iva,IMPORTE_IVA  , grupo, Observaciones "
          . ", 0 as Registrada,conc,importe_vales as importe_cargado,pdte_conciliar,pagada,importe_pagado,pdte_pago,id_fra_prov_abono,cobrada"
         . ",user,Fecha_Creacion, PROVEEDOR "
          . "FROM Fras_Prov_View WHERE id_fra_prov=$id_fra_prov AND $where_c_coste";
@@ -76,7 +76,7 @@ $titulo="FACTURA DE PROVEEDOR" ;
 //  $links["RAZON_SOCIAL"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;
 
 $ocultos=['PROVEEDOR'];
-$updates=[ 'ID_PROVEEDORES',  'N_FRA','FECHA','IMPORTE_IVA','iva', 'FECHA_ENTRADA' , 'Observaciones', 'id_fra_prov_abono']  ;
+$updates=[ 'ID_PROVEEDORES',  'N_FRA','FECHA','IMPORTE_IVA','iva', 'FECHA_ENTRADA' , 'grupo' , 'Observaciones', 'id_fra_prov_abono']  ;
 
 //  $not_id_var=['RAZON_SOCIAL','CIF','ID_FRA_PROV'] ;
 

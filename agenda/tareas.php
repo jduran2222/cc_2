@@ -107,7 +107,7 @@ $where .= ($terminada=='') ? '' : " AND Terminada=$terminada"  ;
  switch ($grupo) {
     case "listado":
 //     $sql="SELECT id_remesa,remesa,activa,Observaciones,Banco,importe,num_pagos  FROM Remesas_View WHERE  (filtro LIKE '%$filtro%') AND $conc AND $where_c_coste  ORDER BY id_remesa DESC LIMIT $limite" ;
-     $sql="SELECT  IF(fecha_modificacion >= '$fecha_tareas_vistas',0,1) AS vista,id,fecha_modificacion,usuarios,Tarea,Texto,Terminada,user,indice  FROM Tareas_View "
+     $sql="SELECT  IF(fecha_modificacion >= '$fecha_tareas_vistas',0,1) AS vista,id,fecha_modificacion,usuarios,Tarea,Texto,Terminada,fecha_creacion,user  FROM Tareas_View "
             . "WHERE usuarios LIKE '%$usuario%' AND $where  AND $where_c_coste  ORDER BY fecha_modificacion DESC LIMIT $limite" ;
 //    echo $sql ;
 
@@ -187,6 +187,13 @@ $Conn->close();
 	 
 </div>
                 </div>
+                
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            
+                
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

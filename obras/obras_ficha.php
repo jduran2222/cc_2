@@ -227,18 +227,18 @@ $spans_html['COEF_BAJA'] = "<a class='btn btn-xs btn-link noprint transparente' 
 ?>
 	
 <!--  TAREAS ANULADO PROVISIONALMENTE MIENTRAS TAREAS NO ESTÉN VINCULADAS A ENTIDADES, juand mayo20-->
-  <!--<div class="right2">-->
+  <div class="right2">
 	
   <?php 
 
-//$tipo_entidad='obra_doc' ;
-//$id_entidad=$id_obra;
-//
-//  require("../agenda/widget_tareas.php");
+$tipo_entidad='obra_doc' ;
+$id_entidad=$id_obra;
+
+  require("../agenda/widget_tareas.php");
  
  ?>
 	 
-  <!--</div>-->
+  </div>
 
 <!--  DOCUMENTOS -->
 
