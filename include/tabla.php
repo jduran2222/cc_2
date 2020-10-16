@@ -677,7 +677,7 @@ if (isset($result_T)  )   // Hay TOTALES?
        $c_sel=0;
        
        // si hay SELECTION ponemos el la primera columna de los ENCABEZADOS la seleccion de TODO
-       if (isset($col_sel)  ) {$TABLE .=  "<th class='noprint'><input onclick=\"selection_todo('$idtabla');\" type=\"checkbox\" id=\"selection_todo\""
+       if (isset($col_sel)  ) {$TABLE .=  "<th class='noprint'><input onclick=\"selection_todoF('$idtabla');\" type=\"checkbox\" id=\"selection_todo\""
                                              . " value=\"0\"></td>" ;  $c++ ;$c_sel=1; }       // Si hay columna de Selección añadimos una columna vacía a los TOTALES
        $style_th_color="";
        
@@ -2007,10 +2007,13 @@ function table_selection_IN()
   return array_str;
 }
 
-function selection_todo(idtabla)
+function selection_todoF(idtabla)
  { 
 // var valor = document.getElementById("selection_todo").checked;
-    
+
+//alert("select todo");
+
+
 // $('.table2 input:checkbox').each(
  $( '#' + idtabla + ' input:checkbox').each(
     function() {

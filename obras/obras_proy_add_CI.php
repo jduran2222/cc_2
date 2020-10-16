@@ -21,7 +21,7 @@ $id_obra=Dfirst( "ID_OBRA"  ,'OBRAS' , " ID_OBRA=$id_obra AND $where_c_coste " )
 if ($id_obra)
 {
        $sql= "INSERT INTO  `Capitulos` (id_obra,CAPITULO ,user )  "
-                        . " VALUES ('$id_obra', '99.- COSTES INDIRECTOS _NO_PRINT_' , '{$_SESSION['user']}'  ) "  ;
+                        . " VALUES ('$id_obra', '99.- COSTES INDIRECTOS _np_' , '{$_SESSION['user']}'  ) "  ;
  
        $result = $Conn->query($sql);                 
        $id_capitulo=Dfirst( "MAX(ID_CAPITULO)"  ,'Capitulos_View' ," ID_OBRA=$id_obra AND $where_c_coste" ) ;              // metemos las comillas invertidas para compatibilidad con campos que usan espacios en el nombre: 'Estudios_de_Obra'

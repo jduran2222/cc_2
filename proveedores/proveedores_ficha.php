@@ -130,7 +130,7 @@ echo   "<br><br><br><br><br><a class='btn btn-link noprint' href='../proveedores
 	
 <?php            //  div documentos  
 
-$tabla_expandida=1;
+//$tabla_expandida=1;     // ya no expandimos los docs del proveedor, para eso vemos su logo en la ficha (juand, sep-2020)
 $tipo_entidad='proveedores' ;
 $id_entidad=$id_proveedor;
 $id_subdir=$id_proveedor ;
@@ -166,7 +166,7 @@ require("../include/widget_documentos.php");
 //
 //
 //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
-$sql="SELECT ID_FRA_PROV,ID_PROVEEDORES,ID_OBRA,FECHA,N_FRA,NOMBRE_OBRA,IMPORTE_IVA,firmado,conc,pagada,cobrada,path_archivo as pdf,Observaciones "
+$sql="SELECT ID_FRA_PROV,ID_PROVEEDORES,ID_OBRA,FECHA,N_FRA,NOMBRE_OBRA,IMPORTE_IVA,firmado,conc,pagada,cobrada,path_archivo as pdf,grupo,Observaciones "
         . " FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC LIMIT 20 " ;
 $sql_T="SELECT '' as a, '' as aa, '' as aaa, SUM(IMPORTE_IVA) as IMPORTE_IVA,'' as a1, '' as aa1, '' as aaa1   FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC LIMIT 20 " ;
 
@@ -174,10 +174,9 @@ $sql_T="SELECT '' as a, '' as aa, '' as aaa, SUM(IMPORTE_IVA) as IMPORTE_IVA,'' 
 $result=$Conn->query($sql );
 $result_T=$Conn->query($sql_T );
 
-$updates=[];
-//$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
-//  $tabla_update="Avales" ;
-//  $id_update="ID_AVAL" ;
+$updates=['Observaciones','grupo'];
+$tabla_update="FACTURAS_PROV" ;
+$id_update="ID_FRA_PROV" ;
 
 //$formats["f_vto"]='fecha';
 $formats["IMPORTE_IVA"]='moneda';

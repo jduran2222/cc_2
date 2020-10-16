@@ -552,7 +552,7 @@ $where=$DETALLE==""? $where : $where . " AND Observaciones LIKE '%$DETALLE_filtr
 //$where=$FECHA1=="01-01-1980"? $where : $where . " AND FECHA >= STR_TO_DATE($FECHA1,'%d-%m-%Y')" ;
 
 // no dibujamos ni imprimimos los Capitulos con la etiqueta _NO_PRINT (o _NP_ ) en su nombre
-$where=$fmt_no_print==""? $where : $where . " AND CAPITULO NOT LIKE '%_NO_PRINT_%' AND CAPITULO NOT LIKE '%_NP_%'" ;
+$where=$fmt_no_print==""? $where : $where . " AND CAPITULO NOT LIKE '%_NO_PRINT_%' AND CAPITULO NOT LIKE '%_np_%'" ;
 
 
 $select_semana="DATE_FORMAT(fecha, '%Y semana %u')"  ;

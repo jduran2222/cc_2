@@ -1284,7 +1284,9 @@ switch ($format) {
                         break;
             case "pdf":
                 // mostramos solo el medium sin link ni aumentar
-                        if ($valor) $valor = "<img src='{$valor}_medium.jpg'  width='$pdf_size' >" ;
+//                        if ($valor) $valor = "<img src='{$valor}_medium.jpg'  width='$pdf_size' >" ;
+                        $valor_file= (file_exists( $valor . '_medium.jpg') ) ? $valor . '_medium.jpg' : $valor ;  // si existe el _medium.jpg lo mostramos, si no (ej. un link) mostramos el doc directo
+                        if ($valor) $valor = "<img src='$valor_file'  width='$pdf_size' >" ;
                         $format_style=" style='text-align:center;' " ;        
                         break;
             case "pdf_":
@@ -1297,8 +1299,9 @@ switch ($format) {
 //                            $valor = "<img src='{$valor}_large.jpg' onmouseover='this.width=500;' onmouseout='this.width=100;' width='100' >" ;
              // retardar con uso de setTimeout  PENDIENTE
 //                         $valor= "<a style='font-size:0px'   href=\"{$valor}_large.jpg\" target='_blank' >"
-                         $valor= "<a style='font-size:0px'   href=\"{$valor}\" target='_blank' >" 
-                        . "<img style='border: 10px solid white;' src=\"{$valor}_medium.jpg\"  "
+                        $valor_file= (file_exists( $valor . '_medium.jpg') ) ? $valor . '_medium.jpg' : $valor ;  // si existe el _medium.jpg lo mostramos, si no (ej. un link) mostramos el doc directo
+                        $valor= "<a style='font-size:0px'   href=\"{$valor}\" target='_blank' >" 
+                        . "<img style='border: 10px solid white;' src=\"$valor_file\"  "
                         . "onmouseover='this.style.borderImageWidth=\"20px 30px\";this.width=\"$pdf_size2\";' "
                                 . "onmouseout='this.style.borderImageWidth=20 ;this.width=\"$pdf_size\";' width='$pdf_size'  >"
                                 . "</a>" ;

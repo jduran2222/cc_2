@@ -56,7 +56,10 @@ $result=$Conn->query($sql="SELECT id, Terminada, Tarea,Texto,usuarios FROM Tarea
 
 
 
-$updates=['Terminada','Tarea','Texto', 'usuarios'] ;
+$updates=['Terminada','Texto', 'usuarios'] ;
+
+$links["Tarea"] = ["../agenda/tarea_ficha.php?id=", "id",'', 'formato_sub'] ;
+
 $formats["Terminada"]='boolean' ;
 $formats["Texto"]='text_edit' ;
 $formats["conforme"]='semaforo' ;

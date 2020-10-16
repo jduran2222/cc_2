@@ -298,7 +298,7 @@ $where=$cobrada==""? $where : $where . " AND  Cobrada=$cobrada" ;
     $sql_T="SELECT '' AS D,COUNT(ID_FRA) AS Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where   " ;
     break; 
     case "annos": 
-    $sql="SELECT  DATE_FORMAT(FECHA_EMISION, '%Y') as anno,COUNT(ID_FRA) AS Fras, SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado,SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  GROUP BY anno  ORDER BY anno  " ;
+    $sql="SELECT anno,COUNT(ID_FRA) AS Fras, SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado,SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  GROUP BY anno  ORDER BY anno  " ;
     $sql_T="SELECT '' AS D,COUNT(ID_FRA) AS Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  " ;
     
     // google chart
@@ -351,7 +351,7 @@ $dblclicks["CLIENTE"]="cliente" ;
 $dblclicks["N_FRA"]="n_fra" ;
 $dblclicks["MES"]="MES" ;
 $dblclicks["Trimestre"]="Trimestre" ;
-$dblclicks["Anno"]="Anno" ;
+$dblclicks["anno"]="Anno" ;
 //$dblclicks["CONCEPTO"]="CONCEPTO" ;
 //$dblclicks["TIPO_GASTO"]="TIPO_GASTO" ;
 

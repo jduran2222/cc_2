@@ -212,6 +212,13 @@ $where=$documento==""? $where : $where . " AND documento LIKE '%".str_replace(" 
 $tabla_group=0 ;
 $tabla_cuadros=0 ;
 
+$fecha=date('Y-m-d'); 
+
+echo  "<div >"
+              . " <a class='btn btn-link btn-xs' href='#'  onclick=\"add_fotos( '$id_obra' , '$fecha' ) \" >"
+             . "<i class='fas fa-plus-circle'></i> Añadir Fotos <span class='glyphicon glyphicon-camera'></span></a>" 
+            . "  </div>   " ;
+
 
  switch ($agrupar) {
     case "ultimos_docs":
@@ -377,48 +384,30 @@ $Conn->close();
 	
 <script>
 
-//function clasificar_selection()
-//{
-//  //  alert( table_selection() ) ;
-// var tipo_entidad_clasif=document.getElementById("tipo_entidad_clasif").value ;
-// var id_obra=document.getElementById("id_obra").value ;
-//
-//if (window.confirm("Clasificar los Documentos_fotos seleccionados como "+ tipo_entidad_clasif ) )
-//{
-//
-// window.open("../documentos/clasificar_selection.php?tipo_entidad=" + tipo_entidad_clasif + "&id_obra=" + id_obra+ "&array_str=" + table_selection() )   ;
-//  
-//}
-//
-//}
-//
-//function delete_doc_listado(id_documento,path_archivo) {
-//    var nuevo_valor=window.confirm("¿Borrar documento? ");
-////    alert("el nuevo valor es: "+valor) ;
-//   if (!(nuevo_valor === null) && nuevo_valor)
-//   { 
-//       cadena_link="tabla='Documentos'&wherecond=id_documento=".id_documento ; 
-//       var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText.substr(0,5)=="ERROR")
-//        { alert(this.responseText) ;}                   // mostramos el ERROR
-//        else
-//        {  //alert(this.responseText) ;     //debug
-//           location.reload(true); }  // refresco la pantalla tras edición
-//      }
-//  };
-//  xhttp.open("GET", "../documentos/delete_doc_ajax.php?id_documento="+id_documento+"&path_archivo="+path_archivo, true);
-//  xhttp.send();   
-//   }
-//   else
-//   {return;}
+function add_fotos(id_obra, fecha) {
+    
+    //var valor0 = valor0_encode;
+    //var valor0 = JSON.parse(valor0_encode);
+   // var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
+//    alert("el nuevo valor es: "+valor) ;
+//   alert('PENDIENTE DESARROLLO (juand)') ;
+//   var id_proveedor=document.getElementById("id_proveedor").value ;
+//   var importe=document.getElementById("importe").value ;
+//   var ref=document.getElementById("ref").value ;
+//    
+////   var d= new Date() ;
+////   var date_str=d.toISOString();
 //   
-//}
-    
-    
+   window.open('../documentos/doc_upload_multiple_form.php?tipo_entidad=obra_foto&id_entidad='+id_obra+'&fecha_doc='+fecha, '_blank');
+//    
+//    
+    return ;
+ }
+ 
+ 
 </script>
-        
+               
+       
                 </div>
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>

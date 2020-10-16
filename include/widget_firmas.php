@@ -25,7 +25,7 @@ $sql_insert= "INSERT INTO `Firmas` (`tipo_entidad`, `id_entidad`,`id_usuario`, f
 
 // campo usuario q quien envio la firma        
 $add_link_html= "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;font-size:xx-small;'>" 
-               . "<br>Añadir firma: <select  id='id_usuario' style='width: 30%; '>"
+               . "<br>Añadir firma: <select  id='id_usuario_wf' style='width: 30%; '>"
                . DOptions_sql("SELECT id_usuario, usuario FROM Usuarios WHERE activo AND $where_c_coste ORDER BY usuario  ", "Selecciona Usuario...") 
                . "  </select>" ;    
 
@@ -35,7 +35,7 @@ $add_link_html.= "<input type='text' id='id_observaciones' placeholder='Observac
 //añadimos boton para 'añadir firma' al Portafirmas
 $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;    
 $add_link_html.= "<a class='btn btn-link btn-xs noprint' href='#' "
-     . " onclick=\"js_href('$href' ,'1','', 'id_usuario', 'id_observaciones'  )\"   "
+     . " onclick=\"js_href('$href' ,'1','', 'id_usuario_wf', 'id_observaciones'  )\"   "
      . "title='añadir firma de usuario' ><i class='fas fa-plus-circle'></i> Añadir Firma</a>" ;
 
 $add_link_html.= "<br></div>" ;

@@ -212,11 +212,11 @@ if ($result_wd->num_rows > 0)
        if (isset($rs["doc_logo"])) 
        {  
          $sql_update= "UPDATE `$tabla_update` SET doc_logo='$id_documento'  WHERE  $id_update='$id_valor'  ; "  ;        
-         if (!$rs["doc_logo"] )   // SI hay campo doc_logo y es vacío
-            {
-                $Conn->query($sql_update ) ;     // si no hay doc_logo predeterminado, le asignamos el primer documento que haya
-                $pdte_doc_logo=False ;
-            }  
+//         if (!$rs["doc_logo"] )   // SI hay campo doc_logo y es vacío  (ANULAMOS PROV. el hacer predet. el primer doc de la entidad de forma automática
+//            {
+//                $Conn->query($sql_update ) ;     // si no hay doc_logo predeterminado, le asignamos el primer documento que haya
+//                $pdte_doc_logo=False ;
+//            }  
         $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;         
         $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href=# onclick=\"js_href('$href' ,'1' )\"   title='hace este documento como imagen predeterminada de la entidad'>predet.</a> "; 
        }

@@ -537,8 +537,8 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     case "prov_fras":
 //     $sql="SELECT ID_PROVEEDORES,PROVEEDOR,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
 //     $sql_T="SELECT 'Totales' AS c,'' AS d,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;   
-     $sql="SELECT $select_fmt_pdf ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, Observaciones,pdte_conciliar,conc as cargada,pagada,cobrada  FROM Fras_Prov_View WHERE $where  ORDER BY PROVEEDOR  " ;
-     $sql_T="SELECT 'Totales' AS a,$select_fmt_pdf_T'' AS c,'' AS d,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a1,'' AS b1,'' AS c1,'' AS c3,'' AS c6  FROM Fras_Prov_View WHERE $where  " ;   
+     $sql="SELECT $select_fmt_pdf ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,ID_OBRA, grupo, Observaciones,pdte_conciliar,conc as cargada,pagada,cobrada  FROM Fras_Prov_View WHERE $where  ORDER BY PROVEEDOR  " ;
+     $sql_T="SELECT 'Totales' AS a,$select_fmt_pdf_T'' AS c,'' AS d,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a1,'' AS b1,'' AS b15,'' AS c1,'' AS c3,'' AS c6  FROM Fras_Prov_View WHERE $where  " ;   
 
 //     $sql_S="SELECT ID_CAPITULO,$select_global CAPITULO , SUM(IMPORTE) as importe,SUM(gasto_est) as gasto_est,(SUM(IMPORTE)- SUM(gasto_est)) as beneficio  FROM ConsultaProd WHERE $where   GROUP BY ID_CAPITULO ORDER BY CAPITULO " ;
      $sql_S="SELECT ID_PROVEEDORES,PROVEEDOR,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
@@ -546,7 +546,7 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
      $id_agrupamiento="ID_PROVEEDORES" ;
      // permite editar el coste_est
 //    $updates=['MED_PROYECTO','COSTE_EST']  ;
-    $anchos_ppal=[30,20,20,20,20,20,20,20,20,20,20,20,20] ;
+    $anchos_ppal=[30,20,20,20,20,20,20,20,20,20,20,20,20,20] ;
     
 //    $tabla_update="Udos" ;
 //    $id_update="ID_UDO" ;
@@ -602,7 +602,7 @@ if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los 
 // AÑADE BOTON DE 'BORRAR' FACTURA . SOLO BORRARÁ SI ESTÁ VACÍO DE PERSONAL 
 if (!$agrupados)
 {    
- $updates=['Observaciones']  ;
+ $updates=['Observaciones','grupo']  ;
  $tabla_update="FACTURAS_PROV" ;
  $id_update="ID_FRA_PROV" ;
  

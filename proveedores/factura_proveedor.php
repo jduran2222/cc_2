@@ -89,7 +89,7 @@ $id_proveedor=$rs["ID_PROVEEDORES"] ;
 $requeridos["ID_PROVEEDORES"] =  (getvar("id_proveedor_auto")==$rs["ID_PROVEEDORES"] )    ; // Campo requerido. Condición: ID_PROVEEDOR<> getvar id_prov_auto
 $requeridos["N_FRA"] =  ( $rs["N_FRA"]=='') ; // Campo requerido. Condición: ID_PROVEEDOR<> getvar id_prov_auto
 $requeridos["IMPORTE_IVA"] = ($rs["IMPORTE_IVA"]==0)  ; // Campo requerido. Condición: ID_PROVEEDOR<> getvar id_prov_auto
-$requeridos["FECHA"] = ($rs["FECHA"]=='')  ; // Campo requerido. Condición: ID_PROVEEDOR<> getvar id_prov_auto
+$requeridos["FECHA"] = ($rs["FECHA"]=='' OR $rs["FECHA"]== '0000-00-00 00:00:00')  ; // Campo requerido. Condición: ID_PROVEEDOR<> getvar id_prov_auto
 
 $factura_registrada= ! in_array ( 1, $requeridos ) ; // la factura no está totalmente REGISTRADA si algún requerimiento no está cumplido
 

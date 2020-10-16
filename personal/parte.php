@@ -705,7 +705,7 @@ function add_parte_personal(id_parte) {
     return ;
  }
  
-   function add_fotos(id_obra, fecha) {
+function add_fotos(id_obra, fecha) {
     
     //var valor0 = valor0_encode;
     //var valor0 = JSON.parse(valor0_encode);

@@ -194,9 +194,9 @@ for ($c=1; $c<=$intervalo; $c++ )
 
            $title=number_format($rs["Presupuesto Tipo"],2).$rs["Clasificacion"]." € \n".$rs["Nombre Completo"]." (Exp: ".$rs["EXPEDIENTE"].")\n".$rs["Organismo"]."\n".$rs["Requisitos"]."\n".$rs["Observaciones"];
 		   ?>
-           <?php $color=str2color($rs["Estado"]) ;  echo "<span class='c_text' style='font-size:xx-small;color:$color;' > ({$rs["Estado"]})</span>" ;?> 
-               <A  class="btn btn-xs cc_calendar" target="_blank" href="../estudios/estudios_ficha.php?id_estudio=<?php  echo $rs["ID_ESTUDIO"];?>" 
-               title="<?php echo $title;?>" > <?php echo "{$rs["NUMERO"]}-".substr($rs["NOMBRE"],0,10)."<span class='c_text'>".substr($rs["NOMBRE"],10,100)."</span>";?> </A><br>
+           <?php $color=str2color($rs["Estado"]) ;  echo "<span class='d-none' style='font-size:xx-small;color:$color;' > ({$rs["Estado"]})</span>" ;?> 
+               <A  class="btn btn-xs" target="_blank" href="../estudios/estudios_ficha.php?id_estudio=<?php  echo $rs["ID_ESTUDIO"];?>" 
+               title="<?php echo $title;?>" > <?php echo "{$rs["NUMERO"]}-".substr($rs["NOMBRE"],0,10)."<span class='d-none'>".substr($rs["NOMBRE"],10,100)."</span>";?> </A><br>
            <?php  if (!($rs = $result->fetch_array()))
                     {
                       break;
