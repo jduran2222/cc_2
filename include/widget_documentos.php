@@ -255,7 +255,7 @@ if ($result_wd->num_rows > 0)
  
  ?>
 
-            <!-- PINTAMO EN HTML -->
+            <!-- PINTAMOS EN HTML -->
             <div class="card <?php echo $card_collapse ;?>">
               <div class="card-header border-0">
 

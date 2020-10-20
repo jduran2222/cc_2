@@ -694,6 +694,55 @@ if ($admin)
             <!--****************** ESPACIO CENTRAL  *****************-->
         </div>
         <!-- MENU container-fluid -->
+        
+        
+        <!-- PARTES DE HOY. MENU_APP_AJAX1.PHP -->
+      <hr size="2px" color="grey" />  
+      <div class="row">
+            <div class="col-sm-12 col-md-4 col-lg-3"> 
+                          <!-- PINTAMOS EN HTML -->
+            <div class="card ">
+              <div class="card-header border-0">
+
+                <h2 class="card-title">
+                  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse">
+                    <i class="far fa-calendar-alt"></i> Partes de hoy
+                  </button>
+                </h2>
+                <!-- tools card -->
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool btn-sm" data-card-widget="maximize"><i class="fas fa-expand"></i>
+                  </button>
+                  
+                  <button type="button" class="btn btn-tool btn-sm" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                  
+                </div>
+                <!-- /. tools -->
+              </div>
+              <!-- /.card-header -->
+              <div id='div_ajax'  class="card-body pt-0">
+                <!--The calendar -->
+<!--                <div id="calendar" style="width: 100%"></div>-->
+                <img src='../img/espere.gif' >
+                <script>
+                    carga_ajax('div_ajax','../menu/menu_app_ajax2.php');
+                </script>
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+  
+        </div>          
+    </div>  
+    <!-- FIN PARTES DE HOY -->
+        
+        
 <?php 
 
 //FIN

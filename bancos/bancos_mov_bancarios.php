@@ -349,8 +349,8 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
 
 //$where=$FECHA2==""? $where : $where . " AND FECHA <= STR_TO_DATE('$FECHA2','%Y-%m-%d') " ;
 
- $select= ($listado_global)? "id_cta_banco, tipo, Banco," : "" ;
- $select_global_totales= ($listado_global)? "'' as a34,'' as a23," : "" ;
+ $select= ($listado_global)? "id_cta_banco, tipo,path_logo, Banco," : "" ;
+ $select_global_totales= ($listado_global)? "'' as a34,'' as a23,'' as a29," : "" ;
  $col_sel="id_mov_banco" ;
 
  

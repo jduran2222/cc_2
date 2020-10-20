@@ -16,6 +16,26 @@ $SPAN = "'></span>";
 //}
 
 
+// funcion que nos permitirá convertir una fila (p. ej. de una tabla) a un content con un formato de HTML. sustituimos las cadenas @@CAMPO1@@ del $HTML por el valor de $rs["CAMPO1"]
+function cc_row_html($rs,$html)
+{
+  foreach ($rs as $clave => $valor)
+    {
+
+     if (substr($clave,0,4)=="HTML")    { $valor= urldecode($valor)  ; }  //los HTML vienen en formato urlencode
+//     if ($ext==".doc" OR $ext==".xls" ) { $valor=utf8_decode($valor);  }      // adecuamos los caracteres tilde y demás signos puntuación
+
+    $localizador='/@@'.$clave.'@@/i'  ;
+    //$html = str_replace($localizador, $valor, $html)  ;          // sustituyo cada posible localizador del HTML por su valor en la base de datos
+    $html = preg_replace($localizador, $valor, $html)  ;          // sustituyo cada posible localizador del HTML por su valor en la base de datos
+
+    //$html= str_replace('@@CIUDAD@@', 'Málaga', $html)  ;
+    //$html= str_replace('@@FECHA_LARGA@@', '26 de Febrero de 2.019', $html)  ;
+    } 
+  
+  return  $html ;
+}
+
 function registra_session($rs)
 {
    $_SESSION["email"]=$rs["email"] ;
@@ -1232,7 +1252,7 @@ switch ($format) {
                         $format_style=" style='text-align:center;' " ;
                         break;
             case "icon_produccion":
-                        $icono=" <i class='fa fa-hard-hat'></i> "  ;
+                        $icono=" <i class='fas fa-hard-hat'></i> "  ;
                         $valor = ($valor=="solo_icon") ? $icono : (($valor==0) ? "" : "$valor $icono" ) ;
                         $format_style=" style='text-align:center;' " ;
                         break;

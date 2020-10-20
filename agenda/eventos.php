@@ -89,8 +89,8 @@ $listado_global=$_SESSION['admin'] AND !isset($_GET["local"]) ;  // listado glob
   			<option value="10">10</option>
   			<option value="30" >30</option>
   			<option value="100" selected>100</option>
-  			<option value="300" selected>100</option>
-  			<option value="1000" selected>100</option>
+  			<option value="300" selected>300</option>
+  			<option value="1000" selected>1000</option>
   			<option value="999999999">todos</option>
 		</select>
                 <br>

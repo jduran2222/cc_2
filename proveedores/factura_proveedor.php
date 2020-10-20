@@ -9,7 +9,7 @@ $id_fra_prov=$_GET["id_fra_prov"];
 $sql="SELECT CONCAT(PROVEEDOR,'-',N_FRA) as id_titulo_pagina,   id_fra_prov AS Nid_fra_prov, ID_FRA_PROV,ID_PROVEEDORES,"
          . "'Metadatos factura' as EXPAND,  metadatos , '-' AS FIN_EXPAND,"
          . "N_FRA,FECHA,Base_Imponible,iva,IMPORTE_IVA  , grupo, Observaciones "
-         . ", 0 as Registrada,conc,importe_vales as importe_cargado,pdte_conciliar,pagada,importe_pagado,pdte_pago,id_fra_prov_abono,cobrada"
+         . ", 0 as Registrada,conc,importe_vales as importe_cargado,pdte_conciliar,pagada,importe_pagado,pdte_pago,id_fra_prov_abono,n_fra_prov_abono_ppal,id_fra_prov_abono_ppal,cobrada"
         . ",user,Fecha_Creacion, PROVEEDOR "
          . "FROM Fras_Prov_View WHERE id_fra_prov=$id_fra_prov AND $where_c_coste";
 
@@ -207,6 +207,17 @@ $selects["id_fra_prov_abono"]=["ID_FRA_PROV","N_FRA","Fras_Prov_Listado","../pro
  $selects[ "id_fra_prov_abono" ]["href"] =  "../proveedores/fra_prov_abono.php?id_fra_prov=$id_fra_prov"; 
 
 
+  
+//$links["id_fra_prov_abono_ppal"]=["ID_FRA_PROV","N_FRA","Fras_Prov_Listado"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+if ($rs["id_fra_prov_abono_ppal"]) {
+  $links["n_fra_prov_abono_ppal"]=["../proveedores/factura_proveedor.php?id_fra_prov=", "id_fra_prov_abono_ppal", "ver Factura donde se descuenta este abono", "formato_sub"] ;
+}else
+{
+  $ocultos[]= "n_fra_prov_abono_ppal" ;
+}    
+ 
+ 
+ 
 //  BOTON SPAN EN FICHA.PHP  INLINE   ULTIMA_VERSION
 $sql_span=encrypt2("UPDATE `$tabla_update` SET `iva` = 0   WHERE $id_update=$id_valor ; ") ;
 //$spans_html['iva'] = "<a class='btn-link noprint' target='_blank' title='cambia Iva al 0%' href='../include/sql.php?code=1&sql=$sql_span' >0%</a>" ;

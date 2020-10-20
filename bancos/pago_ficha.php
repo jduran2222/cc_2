@@ -282,7 +282,7 @@ echo  "<div class='right2_50' style='background-color:lightgreen' >" ;
        
            // MOV. BANCOS CONCILIABLES
         //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
-        $sql="SELECT id_mov_banco,id_cta_banco,Banco,fecha_banco,Concepto,cargo,ingreso,observaciones,fecha_creacion,user FROM MOV_BANCOS_View "
+        $sql="SELECT id_mov_banco,id_cta_banco,doc_logo,Banco,fecha_banco,Concepto,cargo,ingreso,observaciones,fecha_creacion,user FROM MOV_BANCOS_View "
                 . " WHERE conc=0 AND fecha_banco>='2017-01-01' AND ingreso='$ingreso' AND cargo='$importe' AND $where_c_coste ORDER BY fecha_banco DESC " ;
 
         //echo $sql;
@@ -343,7 +343,7 @@ echo  "<div class='right2_50' style='background-color:lightgreen' >" ;
 if ($id_mov_banco)
 {
     
-        $result=$Conn->query($sql="SELECT id_mov_banco,id_remesa,id_pago,id_cta_banco,numero,fecha_banco,Concepto,Concepto2,cargo,ingreso,observaciones,conc,fecha_creacion,user "
+        $result=$Conn->query($sql="SELECT id_mov_banco,id_remesa,id_pago,path_logo,id_cta_banco,numero,fecha_banco,Concepto,Concepto2,cargo,ingreso,observaciones,conc,fecha_creacion,user "
                     . " FROM MOV_BANCOS_View WHERE id_mov_banco=$id_mov_banco AND $where_c_coste");
         $rs = $result->fetch_array(MYSQLI_ASSOC) ;
 
@@ -461,297 +461,309 @@ if ($id_mov_banco)
         if (!$conciliado)
         {
 
-        // WIDGET DE PAGOS CONCILIABLES    
-        //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View "
-        //        . " WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND (importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ORDER BY f_vto DESC ";
+            echo "<div class='right2_50'  >" ;
+            echo "<h3>POSIBLES CONCILIACIONES<h3>" ;
+            
+            
+            // WIDGET DE PAGOS CONCILIABLES    
+            //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View "
+            //        . " WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND (importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ORDER BY f_vto DESC ";
 
-            // buscamos pagos en cualquier id_cta_banco y no solo en la del mov_banco en cuestion
-        $sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View "
-                . " WHERE  conc=0 AND (importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ORDER BY f_vto DESC ";
-        //echo $sql;
-        $result=$Conn->query($sql );
+                // buscamos pagos en cualquier id_cta_banco y no solo en la del mov_banco en cuestion
+            $sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View "
+                    . " WHERE  conc=0 AND (importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ORDER BY f_vto DESC ";
+            //echo $sql;
+            $result=$Conn->query($sql );
 
-        $updates=[];
-        //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
-        //  $tabla_update="Avales" ;
-        //  $id_update="ID_AVAL" ;
+            $updates=[];
+            //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
+            //  $tabla_update="Avales" ;
+            //  $id_update="ID_AVAL" ;
 
-        //$formats["f_vto"]='fecha';
-        $formats["importe"]='moneda';
-        $formats["ingreso"]='moneda';
+            //$formats["f_vto"]='fecha';
+            $formats["importe"]='moneda';
+            $formats["ingreso"]='moneda';
 
-        $links["observaciones"] = ["../bancos/pago_ficha.php?id_pago=", "id_pago"] ;
-        $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "id_proveedor"] ;
+            $links["observaciones"] = ["../bancos/pago_ficha.php?id_pago=", "id_pago"] ;
+            $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "id_proveedor"] ;
 
-        // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-        $onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-        //$onclick1_VARIABLE2_="" ;     // idem
+            // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
+            $onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+            //$onclick1_VARIABLE2_="" ;     // idem
 
-        // OBSOLETA TRAS EL CAMBIO DE BBDD ELIMINANDO PAGOS_MOV_BANCOS
-        //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-        //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
-        $sql_insert="UPDATE PAGOS SET id_mov_banco='$id_mov_banco' WHERE id_pago=_VARIABLE1_ ;"  ;
+            // OBSOLETA TRAS EL CAMBIO DE BBDD ELIMINANDO PAGOS_MOV_BANCOS
+            //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
+            //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
+            $sql_insert="UPDATE PAGOS SET id_mov_banco='$id_mov_banco' WHERE id_pago=_VARIABLE1_ ;"  ;
 
 
-         $sql_insert=encrypt2($sql_insert) ;
+             $sql_insert=encrypt2($sql_insert) ;
 
-        $href="../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_";
-        //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
-        $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con el Pago' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
-        $actions_row["id"]="id_pago";
+            $href="../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_";
+            //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
+            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con el Pago' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
+            $actions_row["id"]="id_pago";
 
 
-        //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
+            //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
-        //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-        //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
-        $titulo="PAGOS conciliables... ($result->num_rows)" ;
-        $msg_tabla_vacia="";
+            //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
+            //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
+            $num_pagos=$result->num_rows;
+            $tabla_expandida= ($num_pagos>0) ;
+            $titulo="PAGOS conciliables... ($num_pagos)" ;
+            $msg_tabla_vacia="";
 
-        //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
-        echo "<div class='right2_50'  >" ;
-        //echo "<div class='mainc'  >" ;
+            //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
+            //echo "<div class='mainc'  >" ;
 
-        //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
+            //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
 
-        require("../include/tabla.php"); echo $TABLE ; 
-        //echo "<br>"  ;
-        //echo "</div>" ;
+            require("../include/tabla.php"); echo $TABLE ; 
+            //echo "<br>"  ;
+            //echo "</div>" ;
 
-        // WIDGET DE REMESAS CONCILIABLES    
-        //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View "
-        //        . " WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND (importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ORDER BY f_vto DESC ";
+            // WIDGET DE REMESAS CONCILIABLES    
+            //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View "
+            //        . " WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND (importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ORDER BY f_vto DESC ";
 
-            // buscamos pagos en cualquier id_cta_banco y no solo en la del mov_banco en cuestion
-        //$sql="SELECT id_remesa,fecha_creacion,remesa,id_cta_banco,num_pagos FROM Remesas_View "
-        //        . " WHERE cobrada=0 AND id_cta_banco=$id_cta_banco AND firmada=1 AND importe='$importe' AND $where_c_coste ORDER BY fecha_creacion DESC ";
-        $sql="SELECT id_remesa,fecha_creacion,remesa,importe,id_cta_banco,num_pagos FROM Remesas_View "
-                . " WHERE cobrada=0 AND id_cta_banco=$id_cta_banco AND firmada=1 AND importe=$importe AND  $where_c_coste ORDER BY fecha_creacion DESC ";
-        //echo $sql;
-        $result=$Conn->query($sql );
+                // buscamos pagos en cualquier id_cta_banco y no solo en la del mov_banco en cuestion
+            //$sql="SELECT id_remesa,fecha_creacion,remesa,id_cta_banco,num_pagos FROM Remesas_View "
+            //        . " WHERE cobrada=0 AND id_cta_banco=$id_cta_banco AND firmada=1 AND importe='$importe' AND $where_c_coste ORDER BY fecha_creacion DESC ";
+            $sql="SELECT id_remesa,fecha_creacion,remesa,importe,id_cta_banco,num_pagos FROM Remesas_View "
+                    . " WHERE cobrada=0 AND id_cta_banco=$id_cta_banco AND firmada=1 AND importe=$importe AND  $where_c_coste ORDER BY fecha_creacion DESC ";
+            //echo $sql;
+            $result=$Conn->query($sql );
 
-        $updates=[];
-        //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
-        //  $tabla_update="Avales" ;
-        //  $id_update="ID_AVAL" ;
+            $updates=[];
+            //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
+            //  $tabla_update="Avales" ;
+            //  $id_update="ID_AVAL" ;
 
-        //$formats["f_vto"]='fecha';
-        //$formats["importe"]='moneda';
-        //$formats["ingreso"]='moneda';
+            //$formats["f_vto"]='fecha';
+            //$formats["importe"]='moneda';
+            //$formats["ingreso"]='moneda';
 
-        //$links["observaciones"] = ["../bancos/pago_ficha.php?id_pago=", "id_pago"] ;
-        $links["remesa"] = ["../bancos/remesa_ficha.php?id_remesa=", "id_remesa", "ver Remesa", "formato_sub"] ;
+            //$links["observaciones"] = ["../bancos/pago_ficha.php?id_pago=", "id_pago"] ;
+            $links["remesa"] = ["../bancos/remesa_ficha.php?id_remesa=", "id_remesa", "ver Remesa", "formato_sub"] ;
 
-        // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-        $onclick1_VARIABLE1_="id_remesa" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-        //$onclick1_VARIABLE2_="" ;     // idem
+            // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
+            $onclick1_VARIABLE1_="id_remesa" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+            //$onclick1_VARIABLE2_="" ;     // idem
 
-        // OBSOLETA TRAS EL CAMBIO DE BBDD ELIMINANDO PAGOS_MOV_BANCOS
-        //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-        //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
-        $sql_insert="UPDATE Remesas SET id_mov_banco_remesa='$id_mov_banco' WHERE id_remesa=_VARIABLE1_ ;"  ;
+            // OBSOLETA TRAS EL CAMBIO DE BBDD ELIMINANDO PAGOS_MOV_BANCOS
+            //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
+            //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
+            $sql_insert="UPDATE Remesas SET id_mov_banco_remesa='$id_mov_banco' WHERE id_remesa=_VARIABLE1_ ;"  ;
 
 
-         $sql_insert=encrypt2($sql_insert) ;
+             $sql_insert=encrypt2($sql_insert) ;
 
-        $href="../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_";
-        //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
-        $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con la Remesa' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
-        $actions_row["id"]="id_remesa";
+            $href="../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_";
+            //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
+            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con la Remesa' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
+            $actions_row["id"]="id_remesa";
 
 
-        //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
+            //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
-        //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-        //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
-        $titulo="REMESAS conciliables... ($result->num_rows)" ;
-        $msg_tabla_vacia="";
+            //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
+            //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
+            $num_remesas=$result->num_rows;
+            $tabla_expandida= ($num_remesas>0) ;        
+            $titulo="REMESAS conciliables... ($num_remesas)" ;
+            $msg_tabla_vacia="";
 
-        //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
-        //echo "<div class='mainc' style='background-color:lightgrey ;width:60%;' >" ;
-        //echo "<div class='mainc'  >" ;
+            //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
+            //echo "<div class='mainc' style='background-color:lightgrey ;width:60%;' >" ;
+            //echo "<div class='mainc'  >" ;
 
-        //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
+            //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
 
-        require("../include/tabla.php"); echo $TABLE ; 
-        //echo "<br>"  ;
-        //echo "</div>" ;
+            require("../include/tabla.php"); echo $TABLE ; 
+            //echo "<br>"  ;
+            //echo "</div>" ;
 
 
 
 
 
 
-        // WIDGET DE FACTURAS PROVEEDOR CONCILIABLES    
-        //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
-        $sql="SELECT ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,IMPORTE_IVA,Observaciones,conc,pagada "
-             . " FROM Fras_Prov_View WHERE pagada=0 AND $importe<>0 AND IMPORTE_IVA='$importe' AND $where_c_coste ORDER BY FECHA DESC " ;
+            // WIDGET DE FACTURAS PROVEEDOR CONCILIABLES    
+            //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
+            $sql="SELECT ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,IMPORTE_IVA,Observaciones,conc,pagada "
+                 . " FROM Fras_Prov_View WHERE pagada=0 AND $importe<>0 AND IMPORTE_IVA='$importe' AND $where_c_coste ORDER BY FECHA DESC " ;
 
-        //echo $sql;
-        $result=$Conn->query($sql );
+            //echo $sql;
+            $result=$Conn->query($sql );
 
-        $updates=[];
-        //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
-        //  $tabla_update="Avales" ;
-        //  $id_update="ID_AVAL" ;
+            $updates=[];
+            //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
+            //  $tabla_update="Avales" ;
+            //  $id_update="ID_AVAL" ;
 
-        //$formats["f_vto"]='fecha';
-        $formats["IMPORTE_IVA"]='moneda';
-        $formats["conc"]='boolean';
-        $formats["pagada"]='boolean';
+            //$formats["f_vto"]='fecha';
+            $formats["IMPORTE_IVA"]='moneda';
+            $formats["conc"]='boolean';
+            $formats["pagada"]='boolean';
 
-        $links["N_FRA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV"] ;
-        $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;
+            $links["N_FRA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV"] ;
+            $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;
 
 
-        // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-        $onclick1_VARIABLE1_="ID_FRA_PROV" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-        //$onclick1_VARIABLE2_="" ;     // idem
+            // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
+            $onclick1_VARIABLE1_="ID_FRA_PROV" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+            //$onclick1_VARIABLE2_="" ;     // idem
 
-        //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-        //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
+            //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
+            //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
 
-        //
+            //
 
-        $href="../bancos/mov_bancos_conciliar_selection_fras.php?id_mov_banco=$id_mov_banco&id_fra_prov=_VARIABLE1_";
-        //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
-        $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con la factura creando un id_pago' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
-        //
+            $href="../bancos/mov_bancos_conciliar_selection_fras.php?id_mov_banco=$id_mov_banco&id_fra_prov=_VARIABLE1_";
+            //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
+            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con la factura creando un id_pago' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
+            //
 
-        //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con la factura creando un id_pago ' "
-        //                  . "href=\"../bancos/mov_bancos_conciliar_selection_fras.php?id_mov_banco=$id_mov_banco&id_fra_prov=_VARIABLE1_ \" >conciliar</a> ";
-        $actions_row["id"]="ID_FRA_PROV";
+            //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con la factura creando un id_pago ' "
+            //                  . "href=\"../bancos/mov_bancos_conciliar_selection_fras.php?id_mov_banco=$id_mov_banco&id_fra_prov=_VARIABLE1_ \" >conciliar</a> ";
+            $actions_row["id"]="ID_FRA_PROV";
 
 
 
 
-        //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
+            //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
-        //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-        //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
-        $titulo="FACTURAS Proveedor conciliables...($result->num_rows) " ;
-        $msg_tabla_vacia="";
+            //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
+            //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
+            $num_fras_prov=$result->num_rows;
+            $tabla_expandida= ($num_fras_prov>0) ;
+            $titulo="FACTURAS Proveedor conciliables...($num_fras_prov) " ;
+            $msg_tabla_vacia="";
 
-        //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
-        //echo "<div class='mainc' style='background-color:lightgrey ;width:60%;' >" ;
+            //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
+            //echo "<div class='mainc' style='background-color:lightgrey ;width:60%;' >" ;
 
-        //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
+            //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
 
-        require("../include/tabla.php"); echo $TABLE ; 
-        //echo "<br>"  ;
-        //echo "</div>" ;
+            require("../include/tabla.php"); echo $TABLE ; 
+            //echo "<br>"  ;
+            //echo "</div>" ;
 
 
 
 
 
-        // WIDGET DE FACTURAS CLIENTES CONCILIABLES    
-        //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
-        $sql="SELECT ID_FRA,ID_OBRA,ID_CLIENTE,NOMBRE_OBRA,CLIENTE,N_FRA,FECHA_EMISION,CONCEPTO,IMPORTE_IVA,Cobrada,Observaciones "
-                . " FROM Facturas_View WHERE Cobrada=0 AND $ingreso<>0 AND IMPORTE_IVA='$ingreso' AND $where_c_coste ORDER BY FECHA_EMISION " ;
+            // WIDGET DE FACTURAS CLIENTES CONCILIABLES    
+            //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
+            $sql="SELECT ID_FRA,ID_OBRA,ID_CLIENTE,NOMBRE_OBRA,CLIENTE,N_FRA,FECHA_EMISION,CONCEPTO,IMPORTE_IVA,Cobrada,Observaciones "
+                    . " FROM Facturas_View WHERE Cobrada=0 AND $ingreso<>0 AND IMPORTE_IVA='$ingreso' AND $where_c_coste ORDER BY FECHA_EMISION " ;
 
-        //echo $sql;
-        $result=$Conn->query($sql);
+            //echo $sql;
+            $result=$Conn->query($sql);
 
-        $updates=[];
-        //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
-        //  $tabla_update="Avales" ;
-        //  $id_update="ID_AVAL" ;
+            $updates=[];
+            //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
+            //  $tabla_update="Avales" ;
+            //  $id_update="ID_AVAL" ;
 
-        //$formats["f_vto"]='fecha';
-        $formats["IMPORTE_IVA"]='moneda';
-        $formats["Cobrada"]='boolean';
-        $formats["pagada"]='boolean';
+            //$formats["f_vto"]='fecha';
+            $formats["IMPORTE_IVA"]='moneda';
+            $formats["Cobrada"]='boolean';
+            $formats["pagada"]='boolean';
 
-        $links["N_FRA"] = ["../clientes/factura_cliente.php?id_fra=", "ID_FRA", '', 'formato_sub'] ;
-        $links["FECHA_EMISION"] = ["../clientes/factura_cliente.php?id_fra=", "ID_FRA", '', 'formato_sub'] ;
-        $links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-        $links["CLIENTE"] = ["../clientes/clientes_ficha.php?id_cliente=", "ID_CLIENTE"] ;
+            $links["N_FRA"] = ["../clientes/factura_cliente.php?id_fra=", "ID_FRA", '', 'formato_sub'] ;
+            $links["FECHA_EMISION"] = ["../clientes/factura_cliente.php?id_fra=", "ID_FRA", '', 'formato_sub'] ;
+            $links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
+            $links["CLIENTE"] = ["../clientes/clientes_ficha.php?id_cliente=", "ID_CLIENTE"] ;
 
 
-        // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-        //$onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-        ////$onclick1_VARIABLE2_="" ;     // idem
-        //
-        //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-        //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );" ;
-        //
-        //$actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?sql=base64_encode($sql_insert) \" >conciliar</a> ";
-        //$actions_row["id"]="id_pago";
-        //  
+            // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
+            //$onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+            ////$onclick1_VARIABLE2_="" ;     // idem
+            //
+            //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
+            //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );" ;
+            //
+            //$actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?sql=base64_encode($sql_insert) \" >conciliar</a> ";
+            //$actions_row["id"]="id_pago";
+            //  
 
-        //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
+            //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
-        //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-        //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
-        $titulo="FACTURAS Clientes conciliables...($result->num_rows) " ;
-        $msg_tabla_vacia="";
+            //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
+            //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
+            $num_fras_cli=$result->num_rows;
+            $tabla_expandida= ($num_fras_cli>0) ;     
+            $titulo="FACTURAS Clientes conciliables...($num_fras_cli) " ;
+            $msg_tabla_vacia="";
 
-        //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
-        //echo "<div class='mainc' style='background-color:lightgrey ;width:60%;' >" ;
+            //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
+            //echo "<div class='mainc' style='background-color:lightgrey ;width:60%;' >" ;
 
-        //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
+            //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
 
-        require("../include/tabla.php"); echo $TABLE ; 
-        //echo "<br>"  ;
-        //echo "</div>" ;
+            require("../include/tabla.php"); echo $TABLE ; 
+            //echo "<br>"  ;
+            //echo "</div>" ;
 
 
 
-        // WIDGET DE TRASPASOS INTERNOS CONCILIABLES    
-        //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
-        $sql="SELECT id_mov_banco,id_cta_banco,Banco,fecha_banco,Concepto,cargo,ingreso,observaciones,fecha_creacion,user "
-                . " FROM MOV_BANCOS_View WHERE conc=0 AND ingreso='$importe' AND cargo='$ingreso' AND $where_c_coste ORDER BY fecha_banco DESC " ;
+            // WIDGET DE TRASPASOS INTERNOS CONCILIABLES    
+            //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
+            $sql="SELECT id_mov_banco,id_cta_banco,doc_logo,Banco,fecha_banco,Concepto,cargo,ingreso,observaciones,fecha_creacion,user "
+                    . " FROM MOV_BANCOS_View WHERE conc=0 AND ingreso='$importe' AND cargo='$ingreso' AND $where_c_coste ORDER BY fecha_banco DESC " ;
 
-        //echo $sql;
-        $result=$Conn->query($sql );
+            //echo $sql;
+            $result=$Conn->query($sql );
 
-        $updates=[];
-        //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
-        //  $tabla_update="Avales" ;
-        //  $id_update="ID_AVAL" ;
+            $updates=[];
+            //$updates=['MOTIVO', 'F_solicitud', 'Observaciones'] ;
+            //  $tabla_update="Avales" ;
+            //  $id_update="ID_AVAL" ;
 
-        //$formats["f_vto"]='fecha';
-        //$formats["IMPORTE_IVA"]='moneda';
-        //$formats["Cobrada"]='boolean';
-        //$formats["pagada"]='boolean';
-        $formats["cargo"]="moneda";
+            //$formats["f_vto"]='fecha';
+            //$formats["IMPORTE_IVA"]='moneda';
+            //$formats["Cobrada"]='boolean';
+            //$formats["pagada"]='boolean';
+            $formats["cargo"]="moneda";
 
 
-        $links["Banco"] = ["../bancos/bancos_mov_bancarios.php?id_cta_banco=", "id_cta_banco", "", "formato_sub"] ;
-        $links["Concepto"] = ["../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco","ver movimiento bancario" ,"formato_sub"] ;
-        $links["fecha_banco"] = ["../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco","ver movimiento bancario" ,"formato_sub"] ;
-        //$links["CLIENTE"] = ["../clientes/clientes_ficha.php?id_cliente=", "ID_CLIENTE"] ;
+            $links["Banco"] = ["../bancos/bancos_mov_bancarios.php?id_cta_banco=", "id_cta_banco", "", "formato_sub"] ;
+            $links["Concepto"] = ["../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco","ver movimiento bancario" ,"formato_sub"] ;
+            $links["fecha_banco"] = ["../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco","ver movimiento bancario" ,"formato_sub"] ;
+            //$links["CLIENTE"] = ["../clientes/clientes_ficha.php?id_cliente=", "ID_CLIENTE"] ;
 
 
-        // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-        $onclick1_VARIABLE1_="id_mov_banco" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-        //$onclick1_VARIABLE2_="" ;     // idem
+            // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
+            $onclick1_VARIABLE1_="id_mov_banco" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+            //$onclick1_VARIABLE2_="" ;     // idem
 
-        //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-        //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
+            //$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
+            //          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
 
 
-        $href="../bancos/mov_bancos_conciliar_traspaso.php?id_mov_banco1=$id_mov_banco&id_mov_banco2=_VARIABLE1_";
-        //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
-        $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco como TRASPASO INTERNO entre cuentas' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
+            $href="../bancos/mov_bancos_conciliar_traspaso.php?id_mov_banco1=$id_mov_banco&id_mov_banco2=_VARIABLE1_";
+            //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
+            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco como TRASPASO INTERNO entre cuentas' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
 
-        //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco como TRASPASO INTERNO entre cuentas ' "
-        //                  . "href=\"../bancos/mov_bancos_conciliar_traspaso.php?id_mov_banco1=$id_mov_banco&id_mov_banco2=_VARIABLE1_ \" >conciliar</a> ";
-        $actions_row["id"]="id_mov_banco";
+            //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco como TRASPASO INTERNO entre cuentas ' "
+            //                  . "href=\"../bancos/mov_bancos_conciliar_traspaso.php?id_mov_banco1=$id_mov_banco&id_mov_banco2=_VARIABLE1_ \" >conciliar</a> ";
+            $actions_row["id"]="id_mov_banco";
 
 
+            $num_traspasos=$result->num_rows;
+            $tabla_expandida= ($num_traspasos>0) ;
+            $titulo="TRASPASOS INTERNOS conciliables...($num_traspasos) " ;
+            $msg_tabla_vacia="";
 
-        $titulo="TRASPASOS INTERNOS conciliables...($result->num_rows) " ;
-        $msg_tabla_vacia="";
+            //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
+            //echo "<div class='mainc' style='background-color:lightgrey ;width:60%;' >" ;
 
-        //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
-        //echo "<div class='mainc' style='background-color:lightgrey ;width:60%;' >" ;
+            //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
 
-        //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
-
-        require("../include/tabla.php"); echo $TABLE ; 
-        //echo "<br>"  ;
+            require("../include/tabla.php"); echo $TABLE ; 
+            //echo "<br>"  ;
 
         }
     

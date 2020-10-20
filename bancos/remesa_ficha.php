@@ -39,7 +39,7 @@ $id_remesa=$_GET["id_remesa"];
   <?php              // DATOS   FICHA . PHP
  //echo "<pre>";
  $result=$Conn->query($sql="SELECT id_remesa,id_mov_banco_remesa,remesa, tipo_remesa,f_vto,Actualizar_f_vto,remesa_nominas,IF(id_mov_banco_remesa>0,'MOV.BANCO','') AS mov_banco "
-         . ",id_cta_banco,firmada, activa,Observaciones,importe,num_pagos, importe_cobros"
+         . ",doc_logo,id_cta_banco,firmada, activa,Observaciones,importe,num_pagos, importe_cobros"
          . ", num_cobros, cobrada, fecha_creacion FROM Remesas_View WHERE id_remesa=$id_remesa AND $where_c_coste");
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;
 //while ($a = $result->fetch_field()) {

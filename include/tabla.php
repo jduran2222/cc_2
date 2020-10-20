@@ -937,11 +937,18 @@ if (isset($result_T)  )   // Hay TOTALES?
 
            $is_update =( ( in_array($clave, $updates)  OR in_array("*", $updates) )  );
            
-           if ($is_doc_logo = ( $clave=='doc_logo'  ) AND $valor) // si hay campo DOC_LOGO y su valor no es cero, calculamos el path_archivo del id_documento
-           {             
+           if ($is_doc_logo = ( $clave=='doc_logo'  ))
+           {
+               if ($valor) // si hay campo DOC_LOGO y su valor no es cero, calculamos el path_archivo del id_documento
+               {             
                    $valor=Dfirst("path_archivo","Documentos"," id_documento=$valor ")  ;   //sustituimos el $valor por el path del archivo de id_documento = doc_logo
+                   $valor= ($valor==0) ? "eee" : $valor ; // para que no aparezca el CERO 
                    $formats[$clave]= "pdf_100_100" ;
-           }
+               }else
+               {
+                   $valor=  ""  ; // para que no aparezca el CERO 
+               }
+           }    
 
 
            // inicializamos codigo para doble click copiar a filtro'

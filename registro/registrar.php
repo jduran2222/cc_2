@@ -81,7 +81,8 @@ if (($num_empresas=$result->num_rows)>0)
                                }
                                else
                                {    
-                                 header( ($_SESSION['android'] ?  'Location: ../menu/menu_app.php' : 'Location: ../menu/pagina_inicio.php' )  );         // solo tenemos una empresa 
+//                                 header( ($_SESSION['android'] ?  'Location: ../menu/menu_app.php' : 'Location: ../menu/pagina_inicio.php' )  );         // solo tenemos una empresa 
+                                 header(  'Location: ../menu/pagina_inicio.php' )  ;         // solo tenemos una empresa 
                                }
 
                                

@@ -415,7 +415,9 @@ span.badge {
 
   }
 
- 
+ .c_text {
+        display: none;     
+    }  
   
 .nomobile {
 /*    text-align: center;*/

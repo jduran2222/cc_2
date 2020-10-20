@@ -363,9 +363,9 @@ function formato_estudio_costes()
  </div>  
    -->
     <!--<div class='row noprint' style='border-style: solid ; border-color:grey; margin-bottom: 5px; padding:10px'>-->
- 
+  <div class='div_ppal_expand'>
    <button data-toggle='collapse' class="btn btn-default btn-block btn-lg noprint" style="text-align:left" data-target='#div_filtro'><i class="fas fa-sliders-h"></i> SELECCION DATOS<i class="fas fa-chevron-down"></i></button>
-
+  </div>
    <div id='div_filtro' class='collapse'>
    <form class='noprint' action="../obras/obras_prod_detalle.php?id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" method="post" id="form1" name="form1">
     <div class='col-lg-4'>
@@ -385,9 +385,9 @@ function formato_estudio_costes()
      <h1>RELACION VALORADA - BUSQUEDA GLOBAL <i class='fas fa-globe-europe'></i></h1>
      
      <div class='row noprint' style='border-style: solid ; border-color:grey; margin-bottom: 5px; padding:10px'>
-  
+  <div class='div_ppal_expand'>
    <button data-toggle='collapse' class="btn btn-default btn-block btn-lg noprint" style="text-align:left" data-target='#div_filtro'>SELECCION DATOS <i class="fas fa-chevron-down"></i></button>
-
+  </div>
    <div id='div_filtro' class='collapse'>
 
 
@@ -411,8 +411,8 @@ function formato_estudio_costes()
 </TABLE></div><div class='col-lg-4'><TABLE> 
 
 
-<TR><TD>FECHA1     </TD><TD><INPUT  type="date" id="FECHA1" name="FECHA1" value="<?php echo $FECHA1;?>"><button type="button" onclick="document.getElementById('FECHA1').value='' ; ">*</button></TD></TR>
-<TR><TD>FECHA2     </TD><TD><INPUT type="date" id="FECHA2" name="FECHA2" value="<?php echo $FECHA2;?>"><button type="button" onclick="document.getElementById('FECHA2').value='' ; ">*</button></TD></TR>
+<TR><TD>Fecha desde</TD><TD><INPUT  type="date" id="FECHA1" name="FECHA1" value="<?php echo $FECHA1;?>"><button type="button" onclick="document.getElementById('FECHA1').value='' ; ">*</button></TD></TR>
+<TR><TD>Fecha hasta</TD><TD><INPUT type="date" id="FECHA2" name="FECHA2" value="<?php echo $FECHA2;?>"><button type="button" onclick="document.getElementById('FECHA2').value='' ; ">*</button></TD></TR>
 <TR><TD>Dia</TD><TD><INPUT   type="text" id="Dia" name="Dia" value="<?php echo $Dia;?>"><button type="button" onclick="document.getElementById('Dia').value='' ; ">*</button></TD></TR>
 <TR><TD>Semana</TD><TD><INPUT   type="text" id="Semana" name="Semana" value="<?php echo $Semana;?>"><button type="button" onclick="document.getElementById('Semana').value='' ; ">*</button></TD></TR>
 <TR><TD>Mes</TD><TD><INPUT   type="text" id="Mes" name="Mes" value="<?php echo $Mes;?>"><button type="button" onclick="document.getElementById('Mes').value='' ; ">*</button></TD></TR>
@@ -421,22 +421,24 @@ function formato_estudio_costes()
 
 </TABLE></div><div class='col-lg-4'><TABLE> 
 
-<TR><TD>SUBOBRA    </TD><TD><INPUT type="text" id="SUBOBRA" name="SUBOBRA" value="<?php echo $SUBOBRA;?>"><button type="button" onclick="document.getElementById('SUBOBRA').value='' ; ">*</button></TD></TR>
+<TR><TD>Subobra    </TD><TD><INPUT type="text" id="SUBOBRA" name="SUBOBRA" value="<?php echo $SUBOBRA;?>"><button type="button" onclick="document.getElementById('SUBOBRA').value='' ; ">*</button></TD></TR>
 <TR><TD>Detalle    </TD><TD><INPUT type="text" id="DETALLE" name="DETALLE" value="<?php echo $DETALLE;?>"><button type="button" onclick="document.getElementById('DETALLE').value='' ; ">*</button></TD></TR>
 
 <!--<TR><TD></TD><TD></TD></TR>-->
 
 
 </TABLE></div>
- </div>
      
 <input type="hidden"  id="agrupar"  name="agrupar" value="<?php echo $agrupar;?>"> 
 <input type="hidden"  id="agrupar"  name="crea_produccion" value="0"> 
 
-<div class='col-lg-12 noprint'>    
+<!--<div class='col-lg-12 noprint'>-->    
 <INPUT type="submit" class='btn btn-success btn-lg'  value="actualizar consulta" id="form1_submit" name="form1_submit">      
-</div>
-<div class='col-lg-12 noprint'>    
+<!--</div>-->
+
+ </div>
+
+<!--<div class='col-lg-12 noprint'>-->    
 
 
      
@@ -444,11 +446,14 @@ function formato_estudio_costes()
 <!--    <button data-toggle='collapse' style="text-align:left" class="btn btn-default btn-block btn-lg" data-target='#div_formato'>FORMATO <i class="fas fa-chevron-down"></i></button>
 
     <div id='div_formato' class='collapse in'>-->
-<small>
-<br>Modos:
-<a class="btn btn-link btn-xs noprint" title="formato para realizar un Estudio de costes de un Proyecto o Liciación" href=#  onclick="formato_estudio_costes();"><i class="fas fa-euro-sign"></i> modo Estudio de Costes</a>
-<a class="btn btn-link btn-xs noprint" title="formato de formulario para registrar Producciones de Obra" href=#  onclick="formato_prod_obra();"><i class="fas fa-hard-hat"></i> modo Producción Obra</a>
-<a class="btn btn-link btn-xs noprint" title="imprimir la producción con formato de Certificación sin costes, con texto_udo y con resumen" href=#  onclick="formato_certif();"><i class="fas fa-print"></i> modo Certificacion</a>
+<div class='div_ppal_expand'>
+<!--<button data-toggle='collapse' class="btn btn-default btn-block btn-lg noprint" style="text-align:left" data-target='#div_modos'><i class="fas fa-sliders-h"></i> MODOS DE USO<i class="fas fa-chevron-down"></i></button>-->
+</div>
+<!--<div id='div_modos' class='collapse'>-->
+    
+<br><a class="btn btn-link btn-xs noprint" title="formato para realizar un Estudio de costes de un Proyecto o Liciación" href=#  onclick="formato_estudio_costes();"><i class="fas fa-euro-sign"></i> modo Estudio de Costes</a>
+<br><a class="btn btn-link btn-xs noprint" title="formato de formulario para registrar Producciones de Obra" href=#  onclick="formato_prod_obra();"><i class="fas fa-hard-hat"></i> modo Producción Obra</a>
+<br><a class="btn btn-link btn-xs noprint" title="imprimir la producción con formato de Certificación sin costes, con texto_udo y con resumen" href=#  onclick="formato_certif();"><i class="fas fa-print"></i> modo Certificacion</a>
 
 <br>Modo personalizado: <br>
 <label title='permite seleccionar udos para operar con ellas'><INPUT type="checkbox" id="fmt_seleccion" name="fmt_seleccion" <?php echo $fmt_seleccion;?>  >&nbsp;Selección&nbsp;&nbsp;</label>
@@ -464,10 +469,10 @@ function formato_estudio_costes()
 <label title='Muestra todas las Subobras aunque no tengan Udos asignadas'><INPUT type="checkbox" id="fmt_subobras"  name="fmt_subobras" <?php echo $fmt_subobras;?>  >&nbsp;Subobras vacias&nbsp;&nbsp;</label>
 <label title='No muestra los capítulos con la etiqueta _NO_PRINT_ (ó simplificada _NP_ ), para poder imprimir certificaciones sin los capítulos auxiliares como p.ej. COSTES INDIRECTOS'><INPUT type="checkbox" id="fmt_no_print"  name="fmt_no_print" <?php echo $fmt_no_print;?>  >&nbsp;Quitar NP&nbsp;&nbsp;</label>
 
- </small>
 
 <!--</div>-->         
-</div>         
+ <!--</div>-->         
+<!--</div>-->         
          
 <?php  
 
@@ -653,25 +658,31 @@ $content_anadir_med="" ;
 if (!$listado_global)
 {    
 // contenedor selection por defecto
-     $content_sel.="<button data-toggle='collapse' class='btn btn-default btn-lg' data-target='#div_seleccion'>Operar con selección </button>"
+     $content_sel.="<div class='div_ppal_expand'>" ; 
+     $content_sel.="<button data-toggle='collapse' class='btn btn-default btn-lg' data-target='#div_seleccion'>Operar con selección <i class='fas fa-chevron-down'></i></button>"
+             . "</div>"
              . "<div id='div_seleccion' class='collapse in'>" ; 
 //     $content_sel.="<div style='border:1px solid grey;  ;'><h3>Operar con selección</h3>"  ;   // anulamos provionalmente el EXPAND
              
 
     if($agrupar=='detalle')  // borramos id detalles en otro caso borramos ID_UDO
     {    
-     $content_sel.="<a class='btn btn-danger btn-xs noprint ' href='#' onclick='sel_borrar_mediciones_detalle($id_produccion)'"
-             . " title='Vacía las mediciones de las Udo seleccionadas' ><i class='far fa-trash-alt'></i> Borrar mediciones Udos seleccionadas</a>" ;
+     $content_sel.="<div class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'><a class='btn btn-danger btn-xs noprint ' href='#' onclick='sel_borrar_mediciones_detalle($id_produccion)'"
+             . " title='Vacía las mediciones de las Udo seleccionadas' ><i class='far fa-trash-alt'></i> Borrar mediciones Udos seleccionadas</a></div>" ;
     }else 
-    { $content_sel.="<br><a class='btn btn-danger btn-xs noprint ' href='#' onclick='borrar_mediciones_udo($id_produccion)' "
-            . "title='Vacía las mediciones de las Udo seleccionadas' ><i class='far fa-trash-alt'></i> Borrar mediciones Udos seleccionadas</a>" ;
+    { $content_sel.="<div class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'><a class='btn btn-danger btn-xs noprint ' href='#' onclick='borrar_mediciones_udo($id_produccion)' "
+            . "title='Vacía las mediciones de las Udo seleccionadas' ><i class='far fa-trash-alt'></i> Borrar mediciones Udos seleccionadas</a></div>" ;
     }
     
-    
-      $content_sel.="  <a class='btn btn-warning btn-xs noprint ' href='#' onclick='prod_completa_udo($id_produccion)' "
-             . "title='Completa hasta Medicion de Proyecto (MED_PROYECTO) las Udos seleccionadas' >MED_PROYECTO a Udos seleccionadas</a>" ;
-     
-      $content_sel.= "<br><br><b>SUBOBRAS</b>. Asignar selección a Subobra: <select id='id_subobra' style='font-size: 15px; width: 20%;'>" ;
+   // boton MED A PROYECTO
+      $content_sel.="<div class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>"
+              . "<a class='btn btn-warning btn-xs noprint ' href='#' onclick='prod_completa_udo($id_produccion)' "
+             . "title='Completa hasta Medicion de Proyecto (MED_PROYECTO) las Udos seleccionadas' >MED_PROYECTO a Udos seleccionadas</a>"
+              . "</div>" ;
+   
+     // SUBOBRA
+      $content_sel.= "<div class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>"
+              . "<b>SUBOBRAS</b>. Asignar selección a Subobra: <select id='id_subobra' style='font-size: 15px; width: 20%;'>" ;
       $content_sel.= DOptions_sql("SELECT   Subobra_View.ID_SUBOBRA,  Subobra_View.SUBOBRA FROM Subobra_View  WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY SUBOBRA ") ;
       $content_sel.= "</select>"; 
       $href='../include/sql.php?sql=' . encrypt2("UPDATE Udos SET ID_SUBOBRA = _VARIABLE1_  WHERE ID_OBRA=$id_obra AND ID_UDO IN _VARIABLE2_ ")     ;
@@ -684,9 +695,11 @@ if (!$listado_global)
              . "title='abre la ficha de la SubObra' >ver SubObra</a>" ;
 
      $content_sel.="<a class='btn btn-link btn-xs noprint ' target='_blank' href='../obras/subobra_anadir.php?id_obra=$id_obra'  "
-             . "title='Crea nueva SubObra' ><i class='fas fa-plus-circle'></i> añadir SubObra</a>" ; 
-     
-      $content_sel.= "<br><br><b>POF</b>. añadir Udos a la POF: <select id='id_pof' style='font-size: 15px; width: 20%;'>" ;
+             . "title='Crea nueva SubObra' ><i class='fas fa-plus-circle'></i> añadir SubObra</a>"
+             . "</div>" ; 
+     // POF
+      $content_sel.= "<div class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>"
+              . "<b>POF</b>. añadir Udos a la POF: <select id='id_pof' style='font-size: 15px; width: 20%;'>" ;
       $content_sel.= DOptions_sql("SELECT  ID_POF,NUM_NOMBRE_POF FROM POF_lista  WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY NUMERO ") ;
       $content_sel.= "</select>"; 
       $sql_insert="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) " 
@@ -708,7 +721,8 @@ if (!$listado_global)
      $href="../pof/pof_anadir.php?id_obra=$id_obra&nombre_pof="   ;    
      $content_sel.="<a class='btn btn-link btn-xs noprint ' href='#' "
              . " onclick=\"js_href('$href' + window.prompt('Nombre de la POF: ' )  )\"   "
-             . "title='Añadir a  POF ' ><i class='fas fa-plus-circle'></i> añadir POF</a>" ;
+             . "title='Añadir a  POF ' ><i class='fas fa-plus-circle'></i> añadir POF</a>"
+             . "</div>" ;
      
      $content_sel.="</div>" ; 
      

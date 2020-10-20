@@ -136,6 +136,8 @@ $tooltips["ingreso"] = "Ingreso o cobro previsto" ;
 $tooltips["cobrado"] = "Importe realmente cobrado en banco" ;
 
 $links["f_vto"] = ["../bancos/pago_ficha.php?id_pago=", "id_pago", "", "formato_sub"] ;
+$links["Banco"] = ["../bancos/bancos_mov_bancarios.php?id_cta_banco=", "id_cta_banco", "", ""] ;
+
 //$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
 
 //$aligns["importe"] = "right" ;
@@ -245,7 +247,7 @@ $msg_tabla_vacia="No hay ";
  <div class="right2">
 
 <a class="btn btn-link" href=# target="_blank" title="crea una provisión de cobro de la factura cliente" 
-   onclick="js_href('../clientes/fra_cliente_generar_cobro_ajax.php?id_fra=<?php echo $id_fra ?>')">+ añadir provisión cobro (<?php echo cc_format($pdte_provision,'moneda') ?>)</a>
+   onclick="js_href('../clientes/fra_cliente_generar_cobro_ajax.php?id_fra=<?php echo $id_fra ?>')"><i class='fas fa-plus-circle'></i> añadir provisión cobro (<?php echo cc_format($pdte_provision,'moneda') ?>)</a>
 	
 <?php require("../include/tabla.php"); echo $TABLE ; ?>
      

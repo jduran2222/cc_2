@@ -53,5 +53,6 @@ $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
 
 //echo "<script languaje='javascript' type='text/javascript'>window.close();</script>"; 
 
-header(($_SESSION['android'] ?  'Location: ../menu/menu_app.php' : 'Location: ../menu/pagina_inicio.php' ));         // TODO OK-> Entramos a pagina_inicio.php   
+//header(($_SESSION['android'] ?  'Location: ../menu/menu_app.php' : 'Location: ../menu/pagina_inicio.php' ));         // TODO OK-> Entramos a pagina_inicio.php   
+header( 'Location: ../menu/pagina_inicio.php' );         // TODO OK-> Entramos a pagina_inicio.php   
 ?>

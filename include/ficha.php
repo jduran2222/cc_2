@@ -70,6 +70,7 @@ div.div_edit {
 .etiqueta {
     /*text-align: right;*/
     text-align: left;
+    vertical-align: top;
     /*background-color: #e9e7e7 ;*/
 /*    color:grey ;*/
     font-style:italic;
@@ -180,6 +181,7 @@ a:hover + .box_wiki,.box_wiki:hover{
   
   echo "</h2></p>" ;
 
+  echo "<hr size='2px' color='grey' />" ;
   
    $idtabla="tabla_".rand() ;           // genero un idtabla aleatorio
  
@@ -540,7 +542,7 @@ if ($result->num_rows > 0)
               // metemos la etiqueta en el mismo <TD> que el textarea
               
               $TD_etiqueta = "<span class='etiqueta' style='text-align: left;'><span  >$etiqueta_txt </span>$div_etiqueta_required $div_tooltip_html "
-                             . "$clave_db_editar_html $clave_db_nuevo_html</span>" ;   
+                             . "</span>" ;   
 
 //              // migracion a div contenteditable="true"
 //              // anterior version TEXTAREA
@@ -612,7 +614,7 @@ if ($result->num_rows > 0)
            }else       // campo UPDATE GENERAL          function(p) {  alert(p);}
            {                    
                     
-              $TD_valor =  "<div class='span_general' $format_style  style='cursor: pointer;'   onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' )\" id='p$cont_TD' title='editar' >$valor_txt </div>"
+              $TD_valor =  "<span class='span_general' $format_style  style='cursor: pointer;'   onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' )\" id='p$cont_TD' title='editar' >$valor_txt </span>"
                        . "<span  class='btn btn-xs btn-link noprint transparente'  onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' )\" title='editar' ><i class='fas fa-pencil-alt'></i></span>"
                       . "<span class='btn btn-xs btn-link noprint transparente' style='cursor:pointer;'   onclick=\" paste( function(nuevo_valor){  ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' , nuevo_valor ) ; } )\" "
                       . " id='p$cont_TD' title='paste from clipboard' > <i class='fas fa-paste'></i> </span>"
