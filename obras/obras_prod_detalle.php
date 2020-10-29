@@ -442,7 +442,7 @@ function formato_estudio_costes()
 
 
      
-<!--<div class='noprint'>-->
+<div class='noprint'>
 <!--    <button data-toggle='collapse' style="text-align:left" class="btn btn-default btn-block btn-lg" data-target='#div_formato'>FORMATO <i class="fas fa-chevron-down"></i></button>
 
     <div id='div_formato' class='collapse in'>-->
@@ -472,7 +472,7 @@ function formato_estudio_costes()
 
 <!--</div>-->         
  <!--</div>-->         
-<!--</div>-->         
+</div>         
          
 <?php  
 

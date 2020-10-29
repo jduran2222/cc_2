@@ -106,6 +106,7 @@ else { require_once("../estudios/estudios_menutop_r.php"); }
   $formats["URL_licitacion"]='textarea_30' ;
 
   $formats["Baja_final"]='porcentaje' ;
+  $formats["Baja Tecnica"]='porcentaje' ;
   $formats["Presupuesto Tipo"]='moneda' ;
   $formats["PLAZO ENTREGA"]='fecha' ;
   $formats['NO VAMOS']='boolean' ;
@@ -121,6 +122,7 @@ else { require_once("../estudios/estudios_menutop_r.php"); }
   $boton_cerrar=1 ;
   
   $nombre_estudio = $rs["NUMERO"]."-".substr($rs["NOMBRE"],0,100);
+  $baja_tecnica =  $rs["Baja Tecnica"] ;
   $baja_final =  $rs["Baja_final"] ;
     
   ?>
@@ -149,8 +151,11 @@ $tipo_entidad='estudios' ;
 $id_entidad=$id_estudio;
 $id_subdir=$id_estudio ;
 $size='100px' ;
+$entidad=$nombre_estudio ;
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php"); 
+
+
  ?>
 	 
 </div>
@@ -176,7 +181,7 @@ require("../include/widget_documentos.php");
 //$tipo_entidad='estudios' ;
 //$id_entidad=$id_estudio ;
 //$flags_firma = ($conc ? "Cargada " : "" ) . ($pagada ? "Pagada " : " " ) . ($cobrada ? "Cobrada" : "" ) ;
-$firma="Estudio $nombre_estudio (B.final ".cc_format($baja_final, 'porcentaje').") " ;
+$firma="Estudio $nombre_estudio (B.Técnica ".cc_format($baja_tecnica, 'porcentaje').") " ;
 
 //$id_subdir=$id_proveedor ;
 //$size='400px' ;

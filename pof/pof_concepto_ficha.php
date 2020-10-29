@@ -102,7 +102,7 @@ $tipo_entidad='pof_concepto' ;
 $id_entidad=$id;
 $id_subdir=$id_pof ;
 $size='100px' ;
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
  ?>
 	 

@@ -113,7 +113,7 @@ $id_entidad=$id_obra;
 $id_subdir=$id_obra ;
 $size='200px' ;
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
 // require("../include/tabla.php"); echo $TABLE ; ?>
 	

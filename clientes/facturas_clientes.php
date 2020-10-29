@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo = 'Fras. Cliente';
+$titulo = 'FRAS. CLIENTES';
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');

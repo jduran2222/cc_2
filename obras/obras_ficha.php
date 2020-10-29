@@ -252,7 +252,7 @@ $id_subdir=$id_obra ;
 $size='200px' ;
 $resolucion='_medium.jpg'  ;
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
 // require("../include/tabla.php"); echo $TABLE ; ?>
 	

@@ -189,6 +189,7 @@ function entidad_link($entidad)
     $array_links["rel_valorada"]="../obras/obras_prod_detalle.php?id_produccion=";
     $array_links["rel_valorada_nueva"]="../obras/obras_prod_detalle.php?id_produccion=";
     $array_links["prod_det"]="../obras/obras_prod_detalle.php?id_produccion=";
+    $array_links["usub"]="../proveedores/usub_ficha.php?id=";
     $array_links["subcontrato"]="";
     $array_links["subcontrato"]="";
     $array_links["subcontrato"]=""; 
@@ -211,8 +212,18 @@ $num_fra_ultima = $num_fra_ultima ? $num_fra_ultima : Dfirst("MAX(N_FRA)", "Fras
     
 if ($num_fra_ultima)
 {  //siguiente del año en curso
-      $n_fra_contador = str_replace($serie_fra, "", $num_fra_ultima) + 1  ;
+      $n_fra_contador_txt = str_replace($serie_fra, "", $num_fra_ultima) + 1  ;
+      $n_fra_contador = $n_fra_contador_txt + 1  ;
       $n_fra_nuevo = $serie_fra . sprintf("%03d", $n_fra_contador) ; 
+//      echo $num_fra_ultima;
+//      echo "<br>";
+//      echo $n_fra_contador_txt;
+//      echo "<br>";
+//      echo $n_fra_contador;
+//            echo "<br>";
+//
+//      echo $n_fra_nuevo; 
+      
 }else
 {  //primera factua cliente del año en curso
       $n_fra_nuevo=  $serie_fra . "001" ; // primera factura del año
@@ -832,7 +843,7 @@ function tipo_dato($valor)
     return $ret;
 }
 
-function tipo_formato_por_clave($clave)
+function cc_formato_auto($clave)
 {
     $format='';
     if (strtoupper(substr($clave,0,14))=="FECHA_CREACION")
@@ -858,10 +869,10 @@ function tipo_formato_por_clave($clave)
     { $format='fijo0' ; }          ///, &$valor , &$format_style)
     elseif (strtoupper(substr($clave,0,6))=="TAMANO")
     { $format='mb' ; }        ///, &$valor , &$format_style)
-    elseif ((strtoupper(substr($clave,0,5))=="TEXTO") OR (strtoupper(substr($clave,0,3))=="OBS"))
+    elseif (preg_match("/^TEXTO|^OBS/i", $clave))
     { $format='text_edit' ; }         ///, &$valor , &$format_style)
-    elseif ((strtoupper(substr($clave,0,9))=="PATH_LOGO"))
-    { $format='pdf_100_400' ; }       //formato provisional para Empresas_View
+    elseif (preg_match("/^PATH_/i", $clave))
+    { $format='pdf_100_100' ; }       //formato provisional para Empresas_View 
     elseif (preg_match("/^tipo_remesa|^tipo_pago/i", $clave))
     { $format='tipo_pago' ; }       ///, &$valor , &$format_style)
 
@@ -967,7 +978,7 @@ function cc_format($valor , $format="" , &$format_style="", $clave="")     ///, 
       {
 //           preg_match () ;
          //  $format=/\d\d\d\d-\d\d-\d\d/.test(text)  ;
-        $format=tipo_formato_por_clave($clave) ;        // miramos el nombre del campo para determinar el formato
+        $format=cc_formato_auto($clave) ;        // miramos el nombre del campo para determinar el formato
       }
   elseif (substr($format,0,8)=="boolean_")                 // formato boolean_txt
      {  $txt=substr($format,8)   ;

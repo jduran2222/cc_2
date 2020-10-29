@@ -245,7 +245,7 @@ $tipo_entidad='albaran' ;
 $id_entidad=$id_vale ;
 $id_subdir=$id_proveedor ;
 $size='200px' ;
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 echo "</div>" ;
 
  

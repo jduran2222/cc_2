@@ -86,7 +86,7 @@ $where=' 1=1 ';
 $where=$activos==""? $where : $where . " AND Activo=$activos " ;
 
 
-$sql="SELECT id_cta_banco,Activo,doc_logo, Banco,Saldo,fecha_ult_mov,DATEDIFF(CURDATE(),fecha_ult_mov) AS num_dias_sa ,num_movs,fecha_primer_mov,tipo as Tipo_Cuenta, "
+$sql="SELECT id_cta_banco,Activo,path_archivo, Banco,Saldo,fecha_ult_mov,DATEDIFF(CURDATE(),fecha_ult_mov) AS num_dias_sa ,num_movs,fecha_primer_mov,tipo as Tipo_Cuenta, "
         . " N_Cta, if(Linea_Dto,'X','') as Linea_Dto , Limite_Dto,Credito_disponible,	Condiciones "
         . "	FROM bancos_saldos WHERE (filtro LIKE '%$filtro%') AND $where_c_coste AND $where  ORDER BY banco LIMIT $limite" ;
 

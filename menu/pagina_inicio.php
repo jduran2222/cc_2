@@ -111,10 +111,10 @@ if ($_SESSION["is_desarrollo"]) {
                 <!--****************** ESPACIO LATERAL  *****************
                 <div class="col-12 col-md-4 col-lg-3">
                     <!-- <img width="150" src="../img/construcloud64.svg" >        -->
-                </div>
+                <!--</div>-->
 
                 <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 col-lg-6 bg-light text-center">
+                <div class="col-12 col-md-4 bg-light text-center">
                     <div style='margin: 20px;'><img style='max-width:400px; max-height:200px;' src='<?php echo $path_logo_empresa;?>_large.jpg' 
                                                     title='Para cambiar el logo ir a Herramientas->Mi Empresa y Subir un Doc. con el logo y hacerlo documento Predeterminado' >
                     </div>
@@ -131,11 +131,10 @@ if ($_SESSION["is_desarrollo"]) {
                         </h2>
                     </form>
                 </div>
+                </div>
                 
                 <!--****************** ENLACES Y SALIDA  *****************-->
-                <div class="col-12 col-md-4 col-lg-3 text-center">
-                 <div>   
-                 <div>   
+                <!--<div class="col-12 col-md-4 col-lg-2 text-center">-->
 
 <?php
 
@@ -184,13 +183,12 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
 
 ?>
 
-                </div>
-            </div>
-        </div>
+              
+        <!--</div>-->
 
 
         <!-- MENU container-fluid -->
-        <div class="container-fluid mt-5">   
+        <!--<div class="container-fluid mt-5">-->   
 
             <!--****************** M E N U   P R I N C I P A L  *****************-->
 
@@ -202,7 +200,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                 <!--****************** ESPACIO LATERAL  *****************
 
                 <!--****************** ESPACIO CENTRAL  *****************-->
-                <div class="col-12 col-md-8 col-lg-9">
+                <!--<div class="col-12 col-md-8 col-lg-9">-->
 <?php      
        
         if($_SESSION["permiso_licitacion"])
@@ -210,13 +208,13 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
              ?>
 
             <!--****************** #LICITACIONES  *****************-->
-                <div class="col-sm-12 col-md-4 col-lg-3 float-left"> 
+                <div class="col-sm-12 col-md-4 col-lg-2 float-left"> 
                     <div class='div_ppal_expand'>
                              
                    
                         <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_estudios'>
-                           <i class="far fa-calendar-alt"></i>
-                            Licitaciones y Presupuestos <i class="fa fa-angle-down" aria-hidden="true"></i>
+                           <i class="fas fa-copy"></i>
+                            Licitaciones/Presupuestos <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
                     <div id='div_estudios' class='collapse in small'>
@@ -245,10 +243,10 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
              ?>
             
                 <!------------------------#OBRAS---------------------->    
-                <div class="col-sm-12 col-md-4 col-lg-3 float-left">
+                <div class="col-sm-12 col-md-4 col-lg-2 float-left">
                     <div class='div_ppal_expand'>
                         <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_obras'>
-                                   <i class="fas fa-hard-hat"></i> Obras o Proyectos <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                   <i class="fas fa-hard-hat"></i> Obras/Proyectos <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
                     <div id='div_obras' class='collapse in small'>
@@ -288,7 +286,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
        { 
              ?>
 
-                <div class="col-sm-12 col-md-4 col-lg-3 float-left"> 
+                <div class="col-sm-12 col-md-4 col-lg-2 float-left"> 
                     <!------------------------#ADMINISTRACION---------------------->    
 
                     <div class='div_ppal_expand'>
@@ -417,114 +415,13 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
           }
           ?>
               
-                <!------------------------CLIENTES---------------------->    
-
-<!--                <div class="col-sm-12 col-md-4 col-lg-3 float-left">
-
-                    <div class='div_ppal_expand'><a target="_blank" class="btn btn-info btn-block btn-lg"  href="../clientes/clientes_buscar.php" >
-                            <i class="fas fa-briefcase"></i> Clientes <?php // echo "($num_clientes/{$limites["clientes"]})"; ?></a></div>
-                    <div class='div_boton_expand small'><button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_clientes'>
-                    <small>
-                    <small>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                    </small>
-                    </small>
-                    </button>
-                    </div>   
-                    <div id='div_clientes' class='collapse in small'>
-
-                        <br><a target="_blank" class="btn btn-link text-info text-left" href="../clientes/facturas_clientes.php?fecha1=<?php echo $fecha_inicio; ?>"  >Facturas de Clientes <?php echo "($num_fras_cli)"; ?></a>
-                        <br><a target="_blank" class="btn btn-link text-info text-left" href="../clientes/clientes_anadir_form.php"  ><i class="fas fa-plus-circle"></i> Añadir Cliente</a>
-                       <br><a target="_blank" class="btn btn-link text-info text-left" href="../clientes/clientes_importar_clientes.php" ><span class="glyphicon glyphicon-open-file"></span> Importar Clientes de XLS (pdte)</a>
-                     <br><a target="_blank" class="btn btn-link text-info text-left" href="../clientes/clientes_importar_fras_clientes.php" ><span class="glyphicon glyphicon-open-file"></span> Importar fra Clientes de XLS (pdte)</a>
-
-                    </div>
-                </div>    -->
-                <!-- ----------------------#MAQUINARIA-------------------- -->
-
-<!--                <div class="col-sm-12 col-md-4 col-lg-3 float-left">
-                    <div class='div_ppal_expand'><a target="_blank" class="btn btn-info btn-block btn-lg"  href="../maquinaria/maquinaria_buscar.php?_m=<?php echo $_m; ?>&tipo_subcentro=M" >
-                            <i class="fas fa-truck-pickup"></i> Maquinaria <?php echo "($num_maquinaria)"; ?></a></div>
-                    <div class='div_boton_expand small'><button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_maquinaria'>
-                    <small>
-                    <small>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                    </small>
-                    </small>
-                    </button>
-                    </div>   
-                    <div id='div_maquinaria' class='collapse in small'>
-
-                        <br><a target="_blank" class="btn btn-link text-info text-left" href="../obras/obras_buscar.php?_m=<?php echo $_m; ?>&tipo_subcentro=M" >Maquinaria <?php echo "($num_maquinaria)"; ?></a>                     PDTE MODIFICAR obras_buscar 
-                          <br><a target="_blank" class="btn btn-link text-info text-left" href="../maquinaria/cuadro_maquinas.php" >Presencia_Mensual(pdte)</a>
-                        <br><a target="_blank" class="btn btn-link text-info text-left" href="../explomaquinas.php" >Explomaquinas(pdte)</a>
-                    </div>
-                </div>    -->
-                <!-- ----------------------#PERSONAL-------------------- -->
-<!--
-                <div class="col-sm-12 col-md-4 col-lg-3 float-left">
-                    <div class='div_ppal_expand'><a target="_blank" class="btn btn-info btn-block btn-lg"  href="../personal/partes.php" >
-                            <i class="far fa-user"></i> Partes y Personal <?php echo "($num_empleados/{$limites["empleados"]})"; ?></a></div>   
-                    <div class='div_boton_expand small'><button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_personal'>
-                    <small>
-                    <small>
-                    <i class="fa fa-angle-down" aria-hidden="true"></i>
-                    </small>
-                    </small>
-                    </button>
-                    </div>   
-                    <div id='div_personal' class='collapse in small'>
-                        <br><a target="_blank" class="btn btn-link text-info text-left" href="../personal/personal_listado.php?baja=BAJA=0" ><i class="far fa-calendar-alt"></i> Listado de Personal</a>
-                        <br><a target="_blank" class="btn btn-link text-info text-left" href="../personal/personal_anadir.php" ><i class='fas fa-plus-circle'></i> Añadir Personal (empleado)</a>
-
-                           <br><a target="_blank" class="btn btn-link text-info text-left" href="../personal/nominas.php" >Nóminas (pdte)</a>
-                        <br><a target="_blank" class="btn btn-link text-info text-left" href="../personal/anuario_bajas.php" >Anuario Bajas (pdte)</a>
-                              <br><a target="_blank" class="btn btn-link text-info text-left" href="../personal/personal_importar_personal.php" ><span class="glyphicon glyphicon-open-file"></span> Importar listado Personal de XLS (pdte)</a>
-
-                    </div>
-                </div>
-            </div>-->
-            <!------------------------ GASTOS GENERALES ---------------------->    
-
-
-            <!--div_#FINANZAS-->  
-            <!--  <div class="row">
-
-            <div class="col-sm-12 col-md-4 col-lg-3 float-left">
-                <div class='div_ppal_expand'><a target="_blank" class="btn btn-info btn-block btn-lg" 
-                                                href="../obras/obras_buscar.php?_m=<?php echo $_m; ?>&tipo_subcentro=G" ><i class="fas fa-hard-hat"></i> Gastos Generales</a></div>
-                <div class='div_boton_expand small'><button data-toggle='collapse' class="btn btn-block btn-lg" data-target='#div_gastos_generales'>
-                <small>
-                <small>
-                <i class="fa fa-angle-down" aria-hidden="true"></i>
-                </small>
-                </small>
-                </button>
-                </div>   
-                <div id='div_gastos_generales' class='collapse in small'>
-                    <br><a target="_blank" class="btn btn-link text-info text-left" title='Centro de coste GASTOS GENERALES donde se cargarán todos los gastos generales de la empresa. Alquileres oficinas, asesorías, telefonía, electricidad,  ' href="../obras/obras_ficha.php?_m=<?php echo $_m; ?>&id_obra=<?php echo $id_obra_gg; ?>"  ><?php echo $nombre_obra_gg; ?></a>
-                    <br><a target="_blank" class="btn btn-link text-info text-left" title='Centro de coste MANO DE OBRA donde se cargarán todos los gastos del Personal (nóminas, Seg. Social, Finiquitos...) y se abonará a este centro lo cargado por Personal Propio a las obras a través de los Partes Diarios' href="../obras/obras_ficha.php?_m=<?php echo $_m; ?>&id_obra=<?php echo $id_obra_mo; ?>"  ><?php echo $nombre_obra_mo; ?></a>
-                    <br><a target="_blank" class="btn btn-link text-info text-left" href="../obras/obras_anadir_form.php"  ><i class="fas fa-plus-circle"></i> Añadir Obra</a>
-                    <br><a target="_blank" class="btn btn-link text-info text-left" href="../obras/obras_buscar.php?_m=<?php echo $_m; ?>&tipo_subcentro=O"  ><i class="fas fa-search"></i> Buscar Obra</a>
-                          <br><a target="_blank" class="btn btn-link text-info text-left" href="../obras/almacen_obras.php"  >Almacenes de obra</a>
-                            <br><a target="_blank" class="btn btn-link text-info text-left" href="../obras/obras_buscar.php?_m=<?php echo $_m; ?>&tipo_subcentro=O" >Obras</a>
-                           <br><a target="_blank" class="btn btn-link text-info text-left" href="../pof/menu_pof.php" >Peticion_Ofertas</a>
-                           <br><a target="_blank" class="btn btn-link text-info text-left" href="../obras/gastos.php" ><i class="fas fa-shopping-cart"></i> Gastos de Obra</a>
-                           <br><a target="_blank" class="btn btn-link text-info text-left" href="../subcontratos.php" ><span class="glyphicon glyphicon-folder-open"></span> Subcontratos(pdte)</a>
-                    <br><a target="_blank" class="btn btn-link text-info text-left" href="../obras/obras_fotos.php" ><span class="glyphicon glyphicon-camera"></span> Fotos</a>
-                    <br><a target="_blank" class="btn btn-link text-info text-left" href="../obras/obras_prod_detalle.php?_m=<?php echo $_m; ?>&OBRA=SIN_OBRA" title='Permite buscar cualquier unidad de obra de Proyecto de cualquier obra ' >Unidades de Obra</a>
-
-                           <br><a target="_blank" class="btn btn-link text-info text-left" href="../o_prod_gasto.php" >Obras_Prod_Gasto</a>
-                          <br><a target="_blank" class="btn btn-link text-info text-left" href="file:\\server\cw\cw_ingenop\multi\diagrama_construwin.jpg"  >diagrama_construwin</a>
-                          <br><a target="_blank" class="btn btn-link text-info text-left" href="\\server\cw\cw_ingenop\multi\prueba.pdf" target="_blank" >prueba.pdf</a>
-                </div>
-            </div>-->
-
-            <!--div_#FINANZAS-->  
+           
 
                 <!--     MENU   #HERRAMIENTAS/CONFIGURACION-->
 
-                <div class="col-sm-12 col-md-4 col-lg-3 float-left">
+                <div class="col-sm-12 col-md-4 col-lg-2 float-left">
+                 </div>
+               <div class="col-sm-12 col-md-4 col-lg-2 float-left">  
                     <div class='div_ppal_expand'>
 
                         <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_configuracion'>
@@ -643,15 +540,15 @@ if ($admin)
                 </div>
                 
                 <!--          SALTA LINEA POR CUMPLIR CON 4 COLs           -->
-                <div class="clearfix"></div>
+                <!--<div class="clearfix"></div>--> 
                 <!--          SALTA LINEA POR CUMPLIR CON 4 COLs           -->
                 
                 <!--          #AYUDA           -->
-                <div class="col-sm-12 col-md-4 col-lg-3 float-left">
+                <div class="col-sm-12 col-md-4 col-lg-2 float-left">
                     <div class='div_ppal_expand'>
                       
                         <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_ayuda'>
-                            <span class="glyphicon glyphicon-question-sign"></span>
+                            <i class="fa fa-question"></i>
                             Ayuda <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
@@ -690,7 +587,7 @@ if ($admin)
                 </div>  
 
                     
-            </div>
+            <!--</div>-->
             <!--****************** ESPACIO CENTRAL  *****************-->
         </div>
         <!-- MENU container-fluid -->
@@ -699,7 +596,12 @@ if ($admin)
         <!-- PARTES DE HOY. MENU_APP_AJAX1.PHP -->
       <hr size="2px" color="grey" />  
       <div class="row">
-            <div class="col-sm-12 col-md-4 col-lg-3"> 
+            <!--<div class="col-sm-12 col-md-4 col-lg-3">--> 
+            <div class="col-sm-12 col-md-4"> 
+              <?php require("../menu/widget_LRU.php");?>
+  
+            </div>    
+            <div class="col-sm-12 col-md-4"> 
                           <!-- PINTAMOS EN HTML -->
             <div class="card ">
               <div class="card-header border-0">

@@ -134,7 +134,7 @@ $sql="SELECT * FROM Conceptos_View WHERE ID_CONCEPTO=$id_concepto AND $where_c_c
   $id_entidad=$id_concepto;
   $id_subdir=$rs["ID_PROVEEDOR"] ;
 
-  require("../include/widget_documentos.php");
+  require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
  
  ?>

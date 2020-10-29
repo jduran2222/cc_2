@@ -136,7 +136,7 @@ $id_entidad=$id_proveedor;
 $id_subdir=$id_proveedor ;
 $size='400px' ;
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
 //$sql="SELECT id_documento, documento FROM Documentos  WHERE tipo_entidad='proveedor_doc' AND id_entidad=$id_proveedor AND $where_c_coste ORDER BY id_documento DESC LIMIT 5 ";
 //

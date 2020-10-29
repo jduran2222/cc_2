@@ -34,106 +34,6 @@ a:hover + .box_wiki,.box_wiki:hover{
     z-index: 100;
 }
 
-/*a.dentro_tabla {
-    
-  background: #eee; 
-  color: grey; 
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 5px 0 5px;
-  position: relative;
-  margin: 0 5px 5px 0;
-  text-decoration: none;
-  -webkit-transition: color 0.2s;
-  font-size: 7px ;
-}
-a.dentro_tabla_grande {
-    
-  background: #eee; 
-  color: grey; 
-  display: inline-block;
-  height: 40px;
-  line-height: 20px;
-  padding: 0 5px 0 5px;
-  position: relative;
-  margin: 0 5px 5px 0;
-  text-decoration: none;
-  -webkit-transition: color 0.2s;
-  font-size: 14px ;
-}
-a.dentro_tabla_ppal {
-    
-  background: #eee; 
-  color: blue; 
-  display: inline-block;
-  height: 20px;
-  line-height: 20px;
-  padding: 0 5px 0 5px;
-  position: relative;
-  margin: 0 5px 5px 0;
-  text-decoration: none;
-  -webkit-transition: color 0.2s;
-  font-size: 7px ;
-}*/
-
-
-/*
-a.dentro_tabla:hover {
-  background-color: lightblue;
-  color: white;
-}*/
-   
-/* INICIO TOOLTIPS  */
-/* table th a {
-    border-bottom: 1px dotted #aaa;
-    color: #333;
-    position: relative;
-    text-decoration: none;
-    border-bottom: 1px dotted white;
-	
-}
- 
-table th a:hover:before,
-table th a:hover:after,
-table th a:active:before,
-table th a:active:after {
-    opacity: 1;
-}
- 
-table th a:before,
-table th a:after {
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    transition: all 200ms ease-in;
-}
- 
-table th a:before {
-    background-color: #eee; 
-    border-radius: 3px;
-    bottom: 100%;
-    content: attr(title);
-    font-size: 18px;
-    left: 100%;
-    padding: .5em 1em;
-    white-space: nowrap;
-}
- 
-table th a:after {
-    border: 5px solid;
-    border-color: #eee transparent transparent #eee;
-    content: '';
-    left: calc(100% + 3px);
-    top: -3px;
-    transform: rotate(20deg);
-}
-	*/
-	
-	
-/* FIN TOOLTIPS  */
-	
-	
 	
 	
 table {
@@ -159,14 +59,7 @@ td.nowrap{
 
 }
 
-/*formato de filas dentro de la TABLE, anulado dic19, juand*/	
-/*table   tr:nth-child(odd) {
-    background-color:#f2f2f2;
-}
-table   tr:nth-child(even) {
-    background-color:#ffffff;
-}*/
- 
+
  table  tr:hover {background-color: #ddd;}
 
 
@@ -269,11 +162,7 @@ table th {
             /*font-size: 8pt ;*/
             /*font-family:arial;*/
         }
-/*   table   {
-      margin-top:8cm;
-      margin-bottom:8cm;
-       padding-top: 500px ;
-        }*/
+
 } 
 
  
@@ -388,6 +277,8 @@ $tabla_footer=isset($tabla_footer) ? $tabla_footer : '' ;     // por defecto vac
 // chart_ocultos
 $chart_ocultos=isset($chart_ocultos) ? $chart_ocultos : [] ;     // por defecto vacia
 
+$table_button=isset($table_button) ? $table_button : True ;     // botones de graficos. Por defecto SI
+$chart_button=isset($chart_button) ? $chart_button : True ;     // botones de graficos. Por defecto SI
 
 
 $add_link_html= (isset($add_link_html)) ? $add_link_html :
@@ -568,7 +459,7 @@ if (isset($result_T)  )   // Hay TOTALES?
 
   //  ******************************************* BOTONES SOBRE TABLA   ****************
 
-  if (!isset($print_pdf))   // en las páginas para imprimir a PDF quitamos los botones
+  if (!isset($print_pdf) AND $table_button)   // en las páginas para imprimir a PDF quitamos los botones
   {  
     $sql_encrypt= encrypt2($sql) ;
 //    $titulo= isset($titulo) ? $titulo : 'tabla' ;
@@ -616,6 +507,9 @@ if (isset($result_T)  )   // Hay TOTALES?
 //    $TABLE .= "<div id='chart_HIDE$idtabla' ><button onclick='(\"#chart_div$idtabla\").hide();alert();'>HIDE</button></div>" ;
    // boton para ocultar gráfico
     // div que contiene el gráfico
+   
+   if($chart_button)
+   {    
     $TABLE .= "<button type='button' id='chart_button$idtabla' class='btn btn-link btn-lg noprint transparente'  title='ver Gráficos (en PRUEBAS)' "
             . " onclick=\"$('#chart_div$idtabla').toggle('fast');"
                        . "$('#chart_HIDE$idtabla').toggle('fast');"
@@ -635,8 +529,11 @@ if (isset($result_T)  )   // Hay TOTALES?
      $TABLE .=  "</div>" ;
      
     $TABLE .= "<div id='chart_div$idtabla' style='display:none;'></div>" ;  // div para el gráfico
-  
-   $TABLE .= "<div><table  id=\"$idtabla\" $tabla_style >";
+   } 
+    
+    
+   // INICIAMOS LA TABLE
+   $TABLE .= "<div><table  id=\"$idtabla\" $tabla_style >";   
     
    if (isset($chart_ON) AND $chart_ON )
    { echo "<script> $(document).ready(function(){ $('#chart_button$idtabla').click();})</script>" ; }
@@ -714,7 +611,7 @@ if (isset($result_T)  )   // Hay TOTALES?
 //              $json_cols_chart.= (isset($cols_chart[$clave]))? " $comma_cols { id: '$clave' , label : '{$cols_chart[$clave][0]}' , type : '{$cols_chart[$clave][1]}' } " : "" ;
 //              $comma_cols=',' ;
               
-               $tipo_formato_por_clave=tipo_formato_por_clave($clave) ;
+               $tipo_formato_por_clave=cc_formato_auto($clave) ;
                $cont_TD++;      // a cada posible iteracion incrementamos el contador para garanizar en cualquier intante un id diferente
  
 //               $is_visible si empieza por ID_ o es igual a ID
@@ -741,7 +638,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                    // SI QUEREMOS HEREDAR EL FORMATO HAY QUE HACERLO MANUALMENTE
                    if($exist_clave_db AND !$clave_db_heredada AND $claves_db["formato"]){ $formats[$clave]=$claves_db["formato"] ; }
                    //si no se asigna formato por clave_db y tampoco trae lo estimamos
-                   $format[$clave]= isset($format[$clave])? $format[$clave] : tipo_formato_por_clave($clave) ;
+                   $format[$clave]= isset($format[$clave])? $format[$clave] : cc_formato_auto($clave) ;
                    
                    //compatibilidad con nuevo fotmato $etiquetas[clave]= [ etiqueta , tooltip ] ;
                    if (isset($etiquetas[$clave]) AND is_array($etiquetas[$clave]))
@@ -914,7 +811,7 @@ if (isset($result_T)  )   // Hay TOTALES?
       // RECORREMOS LOS VALORES DE NUESTRA FILA
       foreach ($rst as $clave => $valor)  //  ******** VALORES ***************** VALORES ******************
        {
-          $tipo_formato_por_clave=tipo_formato_por_clave($clave);
+          $tipo_formato_por_clave=cc_formato_auto($clave);
           
           //deshacemos el guardado en HEX
            if(preg_match("/__HEX__/", $valor) ){ $valor = hex2bin ( preg_replace("/__HEX__/", "", $valor)) ; }
@@ -942,8 +839,8 @@ if (isset($result_T)  )   // Hay TOTALES?
                if ($valor) // si hay campo DOC_LOGO y su valor no es cero, calculamos el path_archivo del id_documento
                {             
                    $valor=Dfirst("path_archivo","Documentos"," id_documento=$valor ")  ;   //sustituimos el $valor por el path del archivo de id_documento = doc_logo
-                   $valor= ($valor==0) ? "eee" : $valor ; // para que no aparezca el CERO 
-                   $formats[$clave]= "pdf_100_100" ;
+                   $valor= ($valor==0) ? "" : $valor ; // para que no aparezca el CERO 
+                   $formats[$clave]= "pdf_100_100" ; 
                }else
                {
                    $valor=  ""  ; // para que no aparezca el CERO 
@@ -1048,7 +945,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                
                // FORMATEAMOS EL VALOR
                 $format_style=" style='text-align:left;' ";   // por defecto left DEBUG
-                $formato_valor= (isset($formats[$clave])) ? $formats[$clave] :  tipo_formato_por_clave($clave) ;  // el formato es el definido o por defecto según su clave
+                $formato_valor= (isset($formats[$clave])) ? $formats[$clave] :  cc_formato_auto($clave) ;  // el formato es el definido o por defecto según su clave
                 $valor_txt=cc_format( $valor, $formato_valor , $format_style, $clave ) ;    // formateamos el valor
                 $tipo_dato= preg_match('/moneda|porcentaje|fijo|text_moneda/i', $formato_valor) ? 'num' :
                              (preg_match('/semaforo|semaforo_not|boolean/i', $formato_valor) ? 'boolean' : '') ;
@@ -1073,7 +970,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                  $div_extras_html .= $dblclick_div ;                          
                                             
                //fabricamos un span que no se pinta pero que permitirá ordenar la tabla     
-                $is_numero =    is_format_numero(  isset($formats[$clave]) ? $formats[$clave] :  tipo_formato_por_clave($clave) ) ;                    
+                $is_numero =    is_format_numero(  isset($formats[$clave]) ? $formats[$clave] :  cc_formato_auto($clave) ) ;                    
                 $span_sort= $is_numero ?  "<span style='opacity : 0 ; font-size: 0px ;' >"
                                 .str_pad(number_format(10000000000000+$valor,3,".",""),20," ", STR_PAD_LEFT)."</span>"   : "<span style='opacity : 0 ; font-size: 0px ;'>".$valor."</span>" ;
                 

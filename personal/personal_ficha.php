@@ -109,7 +109,7 @@ $id_entidad=$id_personal;
 $id_subdir=$id_personal ;
 $size='400px';
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
  ?>
 	 

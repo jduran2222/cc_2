@@ -78,7 +78,7 @@ $id_entidad=$id_cliente;
 $id_subdir=$id_cliente ;
 $size='100px' ;
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
 ?>
 

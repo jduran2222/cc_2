@@ -168,7 +168,7 @@ if ($id_parte_anterior)
   $id_entidad=$id_parte;
   $id_subdir=$rs["ID_OBRA"] ;
 
-  require("../include/widget_documentos.php");
+  require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
  
  ?>

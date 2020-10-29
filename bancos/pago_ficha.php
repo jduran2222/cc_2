@@ -407,7 +407,7 @@ if ($id_mov_banco)
         //$id_subdir=$id_cliente ;
         $id_subdir=0 ;
         $size='200px' ;
-        require("../include/widget_documentos.php");
+        require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
          ?>
 

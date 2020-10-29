@@ -115,7 +115,7 @@ $sql="SELECT * FROM Procedimientos WHERE id_procedimiento=$id_procedimiento AND 
   $id_entidad=$id_procedimiento;
   $id_subdir=0 ;
 
-  require("../include/widget_documentos.php");
+  require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
  
  ?>
 	 

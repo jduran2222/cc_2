@@ -112,7 +112,7 @@ $sql="SELECT * FROM Tareas_View WHERE id=$id AND $where_c_coste";
   $id_entidad=$id;
   $id_subdir=0 ;
 
-  require("../include/widget_documentos.php");
+  require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
  
  ?>
 	 

@@ -181,7 +181,7 @@ $rs["metadatos"] = preg_replace($patrones,$replaces,$rs["metadatos"]);
 ////$id_subdir=$id_cliente ;
 //$id_subdir=0 ;
 //$size='400px' ;
-//require("../include/widget_documentos.php");
+//require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
 
 //        $id_imagen="img_" . $rs["id_documento"] ;

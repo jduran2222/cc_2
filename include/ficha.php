@@ -157,7 +157,8 @@ a:hover + .box_wiki,.box_wiki:hover{
  
  echo "<p align='left'><h2 style='text-align:left;' >$titulo    " ;
   
-    
+$titulo_sin_html= strip_tags($titulo)   ;
+   
  if (isset($delete_boton ))
  {
    if ($delete_boton )
@@ -173,7 +174,7 @@ a:hover + .box_wiki,.box_wiki:hover{
            $disabled_delete_txt="" ;  
            $delete_title=isset($delete_title)? $delete_title : "Elimina la ficha actual" ;
        } 
-       $titulo_sin_html= strip_tags($titulo)   ;
+//       $titulo_sin_html= strip_tags($titulo)   ;
        echo "<button class='btn btn-danger btn-lg noprint transparente' $disabled_delete_txt title='$delete_title'  onclick=\"ficha_delete('$cadena_link', '$titulo_sin_html')\"><i class='far fa-trash-alt'></i></button> "; 
      
    }  
@@ -273,7 +274,7 @@ if ($result->num_rows > 0)
        // Primero miramos el formato por Clave , luego por array , luego por nombre de la $clave
        // si no trae formato lo ponemos por defecto según nombre de campo ($clave)
        $formats[$clave] = ($exist_clave_db AND $claves_db["formato"]) ?   $claves_db["formato"] 
-                            : ( isset($formats[$clave])? $formats[$clave] : tipo_formato_por_clave($clave) );    
+                            : ( isset($formats[$clave])? $formats[$clave] : cc_formato_auto($clave) );    
 
        // el campo es UPDATE , EDITABLE $update
        $no_updates= isset($no_updates) ? $no_updates : []  ;       // el array $no_updates contiene los campos NO EDITABLES

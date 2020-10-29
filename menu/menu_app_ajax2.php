@@ -25,22 +25,22 @@ require_once("../include/funciones.php");
     {
         while ($rs = $result->fetch_array(MYSQLI_ASSOC))
         {
-            $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 18px;width:62%; height:60px;' href='../personal/parte.php?id_parte={$rs["ID_PARTE"]}' title='ver Parte Diario' "
+            $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 16px;width:62%; height:60px;' href='../personal/parte.php?id_parte={$rs["ID_PARTE"]}' title='ver Parte Diario' "
                     . " target='_blank' >{$rs["NOMBRE_OBRA"]}"
-                    ."<div style='font-size: 18px'>". cc_format($rs["NumP"], 'icon_usuarios')
+                    ."<div style='font-size: 16px'>". cc_format($rs["NumP"], 'icon_usuarios')
                     . cc_format($rs["Num_otros_alb"], 'icon_albaranes')
                     . cc_format($rs["fotos"], 'icon_fotos')
                     . cc_format($rs["NumProd"], 'icon_produccion')
                     . "{$rs["no_cargado"]}</div></a>  ";
 
                     //../proveedores/albaran_anadir.php?id_obra='+id_obra+'&id_proveedor='+id_proveedor+'&fecha='+fecha+'&ref='+ref+'&importe='+importe+'&add_foto='+add_foto
-            $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 25px;width:12%; height:60px;' title='añadir Albarán al Parte Diario' "
+            $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 20px;width:12%; height:60px;' title='añadir Albarán al Parte Diario' "
                     . " href='../proveedores/albaran_anadir.php?id_obra={$rs["ID_OBRA"]}&fecha=$fecha&add_foto=1' "
                     . " target='_blank' ><i class='fas fa-tags'></i></a>";
-            $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 25px;width:12%; height:60px;' title='subir foto al Parte diario' "
+            $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 20px;width:12%; height:60px;' title='subir foto al Parte diario' "
                     . " href='../documentos/doc_upload_multiple_form.php?tipo_entidad=obra_foto&id_entidad={$rs["ID_OBRA"]}&fecha_doc=$fecha' "
                     . " target='_blank' ><i class='fas fa-camera'></i></a>";
-            $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 25px;width:12%; height:60px;' title='ver obra'"
+            $partes_hoy_html .= "<a class='btn btn-default' style='font-size: 20px;width:12%; height:60px;' title='ver obra'"
                     . " href='../obras/obras_ficha.php?id_obra={$rs["ID_OBRA"]}' "
                     . " target='_blank' ><i class='fas fa-hard-hat'></i></a>";
             $partes_hoy_html .= "<br>";

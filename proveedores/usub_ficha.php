@@ -122,7 +122,7 @@ $links["subcontrato"]=["../obras/subcontrato.php?id_subcontrato=", "id_subcontra
   $id_entidad=$id;
   $id_subdir=$rs["id_subcontrato"] ;
 
-  require("../include/widget_documentos.php");
+  require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
  
  ?>

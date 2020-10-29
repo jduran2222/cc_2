@@ -109,7 +109,7 @@ $id_entidad=$id_fra ;
 $id_subdir=0 ;
 $size='200px' ;
 $size_sec='100px' ;
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
  ?>
 	 

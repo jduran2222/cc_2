@@ -811,7 +811,7 @@ function tipo_dato($valor)
     return $ret;
 }
 
-function tipo_formato_por_clave($clave)
+function cc_formato_auto($clave)
 {
     $format='';
     if (strtoupper(substr($clave,0,14))=="FECHA_CREACION")
@@ -946,7 +946,7 @@ function cc_format($valor , $format="" , &$format_style="", $clave="")     ///, 
       {
 //           preg_match () ;
          //  $format=/\d\d\d\d-\d\d-\d\d/.test(text)  ;
-        $format=tipo_formato_por_clave($clave) ;        // miramos el nombre del campo para determinar el formato
+        $format=cc_formato_auto($clave) ;        // miramos el nombre del campo para determinar el formato
       }
   elseif (substr($format,0,8)=="boolean_")                 // formato boolean_txt
      {  $txt=substr($format,8)   ;

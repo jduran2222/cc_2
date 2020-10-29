@@ -117,7 +117,7 @@ $id_entidad=$id_udo;
 $id_subdir=0 ;
 $size='400px' ;
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
  ?>
 	 
 </div>     

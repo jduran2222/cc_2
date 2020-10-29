@@ -763,7 +763,7 @@ $id_subdir=$id_proveedor ;
 $size='400px' ;
 $tabla_expandida=1 ;     // en facturas mostramos los documentos por defecto
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 echo "</div>" ;
 
 

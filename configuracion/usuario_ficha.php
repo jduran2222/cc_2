@@ -150,7 +150,7 @@ include_once('../templates/_inc_privado2_navbar.php');
   $id_entidad=$id_usuario;
   $id_subdir=1 ;
 
-  require("../include/widget_documentos.php");
+  require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
  
  ?>

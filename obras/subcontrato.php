@@ -107,7 +107,7 @@ $id_entidad=$id_subcontrato;
 $id_subdir=$id_obra ;
 $size='100px' ;
 
-require("../include/widget_documentos.php");
+require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
  ?>
 	 
 </div>
