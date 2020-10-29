@@ -4,8 +4,8 @@
 
 
 
-$result=$Conn->query($sql="SELECT *,CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=',id_entidad) as id_entidad_link FROM LRU_entidad WHERE  id_usuario={$_SESSION["id_usuario"]} AND $where_c_coste "
-                          . "ORDER BY   fecha_creacion DESC LIMIT 30");
+$result=$Conn->query($sql="SELECT id_entidad, tipo_entidad, entidad, MAX(fecha_creacion) AS fecha, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=',id_entidad) as id_entidad_link FROM LRU_entidad WHERE  id_usuario={$_SESSION["id_usuario"]} AND $where_c_coste "
+                          . " GROUP BY tipo_entidad , id_entidad  ORDER BY   fecha DESC LIMIT 30");
 
 $updates=[] ;
 
@@ -16,7 +16,8 @@ $links["entidad"] =["../include/ficha_entidad.php?", "id_entidad_link", "ver ent
 
 //$formats["Terminada"]='boolean' ;
 //$formats["Texto"]='text_edit' ;
-$formats["fecha_creacion"]='fecha_friendly' ;
+//$formats["fecha_creacion"]='fecha_friendly' ;
+$formats["fecha"]='fecha_friendly' ;
 //$formats["no_conforme"]='semaforo_not' ;
 
 //$tabla_update="Tareas" ;
