@@ -521,6 +521,7 @@ $num_vales_sin_conc= $result->num_rows;
 </div>
 	
 <!--              FIN vales   -->
+<!--             FIRMAS   -->
 <div class="right2_50 ">
 	
 <?php 
@@ -538,7 +539,20 @@ require("../include/widget_firmas.php");          // FIRMAS
  ?>
 	 
 </div>	
+<!--             TAREAS   -->
 
+  <div class="right2_50">
+	
+  <?php 
+
+//$tipo_entidad='obra_doc' ;
+//$id_entidad=$id_obra;
+
+  require("../agenda/widget_tareas.php");
+ 
+ ?>
+	 
+  </div>
 
 
 <div class="right2_50" style="background-color: #ffcc99"> 

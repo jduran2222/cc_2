@@ -16,14 +16,14 @@ $id_cta_banco= isset($_GET["id_cta_banco"]) ? $_GET["id_cta_banco"] : 0 ;
 if ($id_pago=fra_cliente_generar_cobro($id_fra))          // genero el COBRO en la cuenta banco por defecto
    {  
     
-    if ($id_mov_banco)
+    if ($id_mov_banco)   // vamos a conciliar el ID_PAGO con un id_mov_banco
     {
       // comprobacion seguridad
       if (Dfirst('id_pago','Pagos_View', " $where_c_coste AND id_pago=$id_pago ") AND Dfirst('id_mov_banco','MOV_BANCOS_View', " $where_c_coste AND id_mov_banco=$id_mov_banco ") )   
               {$Conn->query("UPDATE `PAGOS` SET `id_mov_banco` = $id_mov_banco WHERE  id_pago=$id_pago" );
               }
       
-    }elseif ($id_cta_banco)   
+    }elseif ($id_cta_banco)   // vamos a crear y conciliarle al ID_PAGO un mov.banco
     {
 //        logs('entramos en id_cta_banco');
       $guid =  guid(); 

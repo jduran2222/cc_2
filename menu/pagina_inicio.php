@@ -598,10 +598,6 @@ if ($admin)
       <div class="row">
             <!--<div class="col-sm-12 col-md-4 col-lg-3">--> 
             <div class="col-sm-12 col-md-4"> 
-              <?php require("../menu/widget_LRU.php");?>
-  
-            </div>    
-            <div class="col-sm-12 col-md-4"> 
                           <!-- PINTAMOS EN HTML -->
             <div class="card ">
               <div class="card-header border-0">
@@ -627,7 +623,7 @@ if ($admin)
                 <!-- /. tools -->
               </div>
               <!-- /.card-header -->
-              <div id='div_ajax'  class="card-body pt-0">
+              <div id='div_ajax'  class="card-body pt-0" >
                 <!--The calendar -->
 <!--                <div id="calendar" style="width: 100%"></div>-->
                 <img src='../img/espere.gif' >
@@ -640,7 +636,14 @@ if ($admin)
             </div>
             <!-- /.card -->
   
-        </div>          
+        </div>  
+            
+         <!--lista actividad-->
+        <div class="col-sm-12 col-md-4"> 
+           <?php require("../menu/widget_LRU.php");?>
+  
+        </div>    
+
     </div>  
     <!-- FIN PARTES DE HOY -->
         

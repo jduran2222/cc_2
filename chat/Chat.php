@@ -195,8 +195,6 @@ class Chat{
                     
                     
                    $soporte_txt = $soporte ? "(soporte)" : "" ;
-//                      if ($email_admin_chat=Dfirst('email','Usuarios',"id_usuario='$reciever_userid' AND admin_chat>0" ) )
-//                   if ($email_admin_chat=Dfirst('email','Usuarios',"id_usuario='$reciever_userid' " ) )  // mandamos los emails a todos los usuarios
                    $rs_rec_user=DRow('Usuarios',"id_usuario='$reciever_userid' " ) ; // mandamos los emails a todos los usuarios
                    
                    $empresa_user=Dfirst("CONCAT(empresa,'/', usuario )","Usuarios_View",   "id_usuario='$user_id' " ) ;

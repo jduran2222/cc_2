@@ -39,9 +39,11 @@ if (!empty($email)) {
       $mail = new phpmailer();
       $mail->CharSet = "UTF-8";
       $mail->Mailer = "smtp";
-      $mail->Host = "sw24.es";
+//      $mail->Host = "sw24.es";
+      $mail->Host = "construcloud.es";
       $mail->SMTPAuth = true;
-      $mail->Username = "admin@sw24.es"; 
+//      $mail->Username = "admin@sw24.es"; 
+      $mail->Username = "soporte@construcloud.es"; 
       $mail->Password = clave_mail();
 
       $mail->From = "no-reply@construcloud.es"; 
@@ -49,19 +51,20 @@ if (!empty($email)) {
 
       $mail->AddAddress($email);
 
-      $mail->ConfirmReadingTo = "juanduran@ingenop.com";
+      $mail->ConfirmReadingTo = "soporte@construcloud.es"; 
 
       $mail->Subject = "ConstruCloud.es restablecimiento de password";
       $mail->Body = "<b>Se ha solicitado el restablecimiento del password de acceso a <a  href='http://www.construcloud.es/web' >ConstruCloud.es</a></b><br>"
-                    . "<br><br><br>Por favor, acceda de nuevo con el nuevo password y proceda a cambiarlo si o desea."
-                    . "<br><br>Empresa: $empresa "
-                    . "<br>Usuario: $usuario"
+                    . "<br><br><br>Por favor, acceda de nuevo con el nuevo password y proceda a cambiarlo si lo desea."
+//                    . "<br><br>Empresa: $empresa "
+//                    . "<br>Usuario: $usuario"
                     . "<br>Nuevo password: $new_password"
                     . "<br><br><br>Acceder con nuevo password <a  href='http://www.construcloud.es/web' > a login construcloud.es</a>"
                     . "<br>Saludos"
                     . "<br><a  href='http://www.construcloud.es'>ConstruCloud.es</a>";
 
-      $mail->AltBody ="Se ha solicitado el restablecimiento del password de acceso. Utilice Empresa: $empresa , Usuario: $usuario, Nuevo password: $new_password" ;
+//      $mail->AltBody ="Se ha solicitado el restablecimiento del password de acceso. Utilice Empresa: $empresa , Usuario: $usuario, Nuevo password: $new_password" ;
+      $mail->AltBody ="Se ha solicitado el restablecimiento del password de acceso. Utilice nuevo password: $new_password" ;
 
       $mail->SMTPOptions = array(
                                   'ssl' => array(

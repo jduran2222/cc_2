@@ -25,7 +25,7 @@ require_once("../include/funciones.php");
 
               $mail->Mailer = "smtp";
 
-              $mail->Host = "sw24.es";
+              $mail->Host = "construcloud.es";
             //  $mail->Host = "smtp.serviciodecorreo.es";
               //Le indicamos que el servidor smtp requiere autenticación
               $mail->SMTPAuth = true;
@@ -40,7 +40,7 @@ require_once("../include/funciones.php");
 
               //Indicamos cual es la dirección de destino del correo
               $mail->AddAddress($sendto);
-              $mail->AddReplyTo($replyto, 'Reply to name');
+              $mail->AddReplyTo($replyto, 'Reply to name');   // direción para respuesta
 
 //              $mail->AddAddress("juanduran@ingenop.com");
             //  $mail->AddAddress("jduran2222@gmail.com");
@@ -52,7 +52,7 @@ require_once("../include/funciones.php");
               $mail->ConfirmReadingTo = "juanduran@ingenop.com";
 
               $mail->Subject = $asunto;
-              $mail->Body = $mensaje . " " ;                          // el Body vacío DA ERROR y no lo envía, añadimos un espacio al final
+              $mail->Body = $mensaje ."<br>https://www.construcloud.es  ERP Construcloud - Gestión integral para la Construcción". " " ;                          // el Body vacío DA ERROR y no lo envía, añadimos un espacio al final
               $mail->AltBody = strip_tags($mensaje) ;     // msg sin tags html
 
               // JUAND

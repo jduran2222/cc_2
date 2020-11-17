@@ -164,8 +164,10 @@ function entidad_link($entidad)
     $array_links["albaran"]="../proveedores/albaran_proveedor.php?id_vale=";
     $array_links["empresa"]="../configuracion/empresa_ficha.php";
     $array_links["estudios"]="../estudios/estudios_ficha.php?id_estudio=";
+    $array_links["estud_obra"]="../estudios/estudios_ficha.php?id_estudio=";
     $array_links["l_avales"]="";
-    $array_links["oferta_cli"]="";
+    $array_links["oferta_cli"]="../estudios/oferta_cliente.php?id_oferta=";
+    $array_links["presup_cli"]="../estudios/oferta_cliente.php?id_oferta=";
     $array_links["parte"]="../personal/parte.php?id_parte=";
     $array_links["personal"]="../personal/personal_ficha.php?id_personal=";
     $array_links["pof"]="../pof/pof.php?id_pof=";
@@ -182,6 +184,7 @@ function entidad_link($entidad)
     $array_links["cliente"]="../clientes/factura_cliente.php?id_fra=";
     $array_links["cuenta"]="../bancos/pagos_y_cobros.php?cuenta=";
     $array_links["pago"]="../bancos/pago_ficha.php?id_pago=";
+    $array_links["pago_nuevo"]="../bancos/pago_ficha.php?id_pago=";
     $array_links["mov_banco"]="../bancos/pago_ficha.php?id_mov_banco=";
     $array_links["banco"]="../bancos/bancos_mov_bancarios.php?id_cta_banco=";
     $array_links["procedimiento"]="../agenda/procedimiento_ficha.php?id_procedimiento=";
@@ -212,7 +215,7 @@ $num_fra_ultima = $num_fra_ultima ? $num_fra_ultima : Dfirst("MAX(N_FRA)", "Fras
     
 if ($num_fra_ultima)
 {  //siguiente del año en curso
-      $n_fra_contador_txt = str_replace($serie_fra, "", $num_fra_ultima) + 1  ;
+      $n_fra_contador_txt = str_replace($serie_fra, "", $num_fra_ultima)  ;
       $n_fra_contador = $n_fra_contador_txt + 1  ;
       $n_fra_nuevo = $serie_fra . sprintf("%03d", $n_fra_contador) ; 
 //      echo $num_fra_ultima;
@@ -498,8 +501,7 @@ function fra_cliente_generar_cobro($id_fra)
 //  
 //$id_fra_prov=$_GET["id_fra_prov"]  ;	
 
-//$id_cta_banco=  getVar('id_cta_banco_auto')  ;	                               // previamente habría que consultar si existe la variable y en caso negativo, crearla cta_banco CAJA_METALICO y la variable
-$id_cta_banco=  getVar('id_cta_banco_auto')  ;	                               // previamente habría que consultar si existe la variable y en caso negativo, crearla cta_banco CAJA_METALICO y la variable
+$id_cta_banco=  getVar('id_cta_banco_auto')  ;  // previamente habría que consultar si existe la variable y en caso negativo, crearla cta_banco CAJA_METALICO y la variable
 $importe=round(Dfirst("IMPORTE_IVA-IFNULL(Cobro_Prov,0)","Facturas_View", "ID_FRA=$id_fra"),2) ;	
 $fecha_banco=Dfirst("FECHA_EMISION","Facturas_View", "ID_FRA=$id_fra") ;	
 $concepto=Dfirst( "CONCAT(CLIENTE,' ',NOMBRE_OBRA,' ',CONCEPTO )","Facturas_View", "ID_FRA=$id_fra") ;	

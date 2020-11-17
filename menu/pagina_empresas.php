@@ -19,18 +19,18 @@ if ($_SESSION["email"]) {
     $result=$Conn->query($sql);
 
     $templateItemList = '
-          <a href="{{url}}" class="row mb-3">
-            <div class="col-12 col-sm-2">
+          <a href="{{url}}" class="row mb-6">
+            <div class="col-12 col-sm-4">
                 <img class="img-fluid" src="{{imagen}}" alt="logo empresa {{empresa}}"/>
             </div>
             <div class="col-12 col-sm-3 text-center">
-                <strong class="h3"> {{empresa}} </strong>
+                <strong > {{empresa}} </strong>
             </div>
-            <div class="col-12 col-sm-4 text-center">
+            <div class="col-12 col-sm-3 text-center">
                 {{usuario}}
             </div>
-            <div class="col-12 col-sm-3 text-right small">
-                {{autorizado}}
+            <div class="col-12 col-sm-2 text-center xx-small ">
+                <small>{{autorizado}}</small>
             </div>
           </a>';
     $url = '../registro/login_as.php?id_usuario=';

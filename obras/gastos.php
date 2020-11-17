@@ -542,7 +542,7 @@ $dblclicks["TIPO_GASTO"]="TIPO_GASTO" ;
 $dblclicks["REF"]="REF" ;
 $dblclicks["SUBOBRA"]="SUBOBRA" ;
 $dblclicks["tipo_subcentro"]="tipo_subcentro" ;
-$dblclicks["CUENTA"]="CUENTA" ;
+$dblclicks["CUENTA_TEXTO"]="CUENTA" ;
 
 $dblclicks["Dia"]="Dia" ;
 $dblclicks["Semana"]="Semana" ;

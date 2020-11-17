@@ -1047,11 +1047,35 @@ if (isset($result_T)  )   // Hay TOTALES?
                                if ($is_boolean)  
                                {
                                  $checked= $valor ? 'checked' : '' ;
-                                 $background_color= ($formato_valor=='semaforo')? ($valor ? "background-color:green;" : "background-color:red;" ) 
-                                                  : ( ($formato_valor=='semaforo_not')? ($valor ? "background-color:red;" : "background-color:green;" ) : '' )  ;
-                                 $TABLE .=   "<td>$span_sort<p><label id='label_$cont_TD'  class='btn btn-primary' style='$background_color' for='chk_$cont_TD'>"
-                                       . "<input type='checkbox' id='chk_$cont_TD' name='chk_$cont_TD'  $checked onchange=\"tabla_update_onchange('$cadena_link',this.checked,'$tipo_dato','','label_$cont_TD' )\" >"
-                                       . "</label></p>{$div_extras_html}</td>"  ;
+//                                 $valor_txt= $valor ? '1' : '0' ;
+                                 $display= $valor ? 'display:inline;' : 'display:none;'  ;  //pintamos o no pitamos el check OK
+                                 $background_color= ($formato_valor=='semaforo')?     ($valor ? "background-color:green;" : "background-color:red;" ) 
+                                                  : (($formato_valor=='semaforo_not')? ( $valor ? "background-color:red;" : "background-color:green;")
+                                                  : ( $valor ? "background-color:royalblue;" : "background-color:white;") )  ;
+                                 
+//                                 $TABLE .=   "<td style='text-align:center;'>$span_sort<label id='label_$cont_TD'   style='$background_color' for='chk_$cont_TD'>"
+//                                       . "<input type='checkbox' id='chk_$cont_TD' name='chk_$cont_TD'  $checked "
+//                                         . " onchange=\"tabla_update_onchange('$cadena_link',this.checked,'$tipo_dato','','label_$cont_TD' )\" >"
+//                                       . "</label>{$div_extras_html}</td>"  ;
+
+//                                 $TABLE .=   "<td style='text-align:center;$background_color' id='td_$cont_TD' name='$checked'   "
+//                                         .    "onclick=\"document.getElementById('chk_$cont_TD').click(); \"  >"
+//                                         . "$span_sort"
+//                                       . "<input  type='checkbox' id='chk_$cont_TD' name='chk_$cont_TD'  $checked "
+//                                         . " onchange=\"tabla_update_onchange('$cadena_link',this.checked,'$tipo_dato','','td_$cont_TD' )\" >"
+//                                       . "{$div_extras_html}</td>"  ;
+
+//                                 $TABLE .=   "<td style='text-align:center;$background_color' id='td_$cont_TD' value='$checked'   "
+//                                         .    "onclick=\"tabla_update_onchange('$cadena_link',document.getElementById('span_$cont_TD').text,'$tipo_dato','span_$cont_TD','td_$cont_TD' )\"  >"
+//                                         . "$span_sort"
+//                                         . "<span id='span_$cont_TD' >$valor_txt</span>"
+//                                       . "{$div_extras_html}</td>"  ;
+
+                                 $TABLE .=   "<td style='cursor: pointer;text-align:center;$background_color' id='td_$cont_TD' value='$checked'   "
+                                         .    "onclick=\"tabla_update_onchange('$cadena_link',document.getElementById('span_$cont_TD').style.display,'$tipo_dato','span_$cont_TD','td_$cont_TD' )\"  >"
+                                         . "$span_sort"
+                                         . "<span id='span_$cont_TD' style='$display' ><i class='fas fa-check'></i></span>"
+                                       . "{$div_extras_html}</td>"  ;
 
  
 
@@ -1320,11 +1344,12 @@ EOT;
 // echo $TABLE ;
 //$TABLE .=  " </div>" ;
 
-  // TERMINAMOS LA TABLA_DIV
+  // TERMINAMOS LA TABLA_DIV  
         
 //echo "{ $json_cols_chart , $json_rows_chart } " ;        
         
-?> 	
+?>
+ 
  <script>
 
 //$(document).ready(function(){
@@ -1345,12 +1370,21 @@ function tabla_update_onchange(cadena_link, nuevo_valor, tipo_dato , elementId ,
 // if (tipo_dato=='semaforo' || tipo_dato=='semaforo_not' || tipo_dato=='boolean')
  if (tipo_dato=='boolean')
  {
-        nuevo_valor= nuevo_valor ? 1 : 0  ;
+//        nuevo_valor= nuevo_valor ? 1 : 0  ;
+        nuevo_valor= (nuevo_valor=='none') ? 1 : 0  ; // CAMBIO EL VALOR
+        
+        var display = (nuevo_valor) ? 'inline' : 'none'  ; // si es valor es 1 (true) 
+        document.getElementById(elementId).style.display = display ;
+       
     //    alert(document.getElementById(idlabel_chk).style.backgroundColor ) ;          //style.backgroundColor = "red"
         if (document.getElementById(idlabel_chk).style.backgroundColor == 'red')        // si es rojo lo pasamos a verde y al reves
             {document.getElementById(idlabel_chk).style.backgroundColor='green' ;}  
             else if (document.getElementById(idlabel_chk).style.backgroundColor=='green')
             { document.getElementById(idlabel_chk).style.backgroundColor='red' ;}   
+            else if (document.getElementById(idlabel_chk).style.backgroundColor=='royalblue')
+            { document.getElementById(idlabel_chk).style.backgroundColor='white' ;}   
+            else if (document.getElementById(idlabel_chk).style.backgroundColor=='white')
+            { document.getElementById(idlabel_chk).style.backgroundColor='royalblue' ;}   
  }
  else if (tipo_dato=='num')
  {
@@ -1377,9 +1411,16 @@ nuevo_valor=encodeURIComponent(nuevo_valor) ;
 //                   alert(this.responseText) ;     //debug
                     if (elementId)
                     {
-//                        alert('dentro') ; 
+                      if (tipo_dato=='boolean'){
+                          // repintamos el OK con el valor de la BD que ya hemos cambiado al inicio de la función
+                        display = (this.responseText=='1') ? 'inline' : 'none'  ; // si es valor es 1 (true) 
+                        document.getElementById(elementId).style.display = display ;
+   
+                      }else{
+  //                        alert('dentro') ; 
                         document.getElementById(elementId).innerHTML = this.responseText ;
                         document.getElementById(elementId).value = this.responseText ;
+                        }
                     }
                     if (refrescar)
                     {location.reload();

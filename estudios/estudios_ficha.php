@@ -160,7 +160,6 @@ require("../menu/LRU_registro.php"); require("../include/widget_documentos.php")
 	 
 </div>
         
-<!--  TAREAS ANULADO PROVISIONALMENTE MIENTRAS TAREAS NO ESTÉN VINCULADAS A ENTIDADES, juand mayo20-->
   <div class="right2">
 	
   <?php 

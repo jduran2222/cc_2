@@ -109,11 +109,11 @@ $array_plantilla["FECHA_TXT"]=  cc_format($rs["FECHA"], "fecha_es") ; // ponemos
 
 
 // preparamos la TABLA para Generar el presupuesto
-$sql="SELECT id,n_linea,CANTIDAD,UDO,PRECIO, CANTIDAD*PRECIO AS IMPORTE"
+$sql="SELECT id,CANTIDAD,UDO,PRECIO, CANTIDAD*PRECIO AS IMPORTE"
         . " FROM OFERTAS_DETALLES WHERE ID_OFERTA=$id_oferta  ORDER BY n_linea,id" ;
-$sql_T="SELECT '' as a,'' as a1,'Suma' as a11,'' as a111,SUM(CANTIDAD*PRECIO) AS IMPORTE"
+$sql_T="SELECT '' as a1,'Suma' as a11,'' as a111,SUM(CANTIDAD*PRECIO) AS IMPORTE"
         . " FROM OFERTAS_DETALLES WHERE ID_OFERTA=$id_oferta " ;
-$sql_T2="SELECT '' as a,'' as a1,'Iva Incluido  ($iva_txt)' as a11,'' as ad ,SUM(CANTIDAD*PRECIO)*$iva_factor AS IMPORTE"
+$sql_T2="SELECT '' as a1,'Iva Incluido  ($iva_txt)' as a11,'' as ad ,SUM(CANTIDAD*PRECIO)*$iva_factor AS IMPORTE"
         . " FROM OFERTAS_DETALLES WHERE ID_OFERTA=$id_oferta " ;
 //echo $sql ;
 
@@ -145,7 +145,7 @@ $formats["PRECIO"]="text_moneda";
 $result=$Conn->query( $sql );
 $result_T=$Conn->query( $sql_T );
 $result_T2=$Conn->query( $sql_T2 );
-$titulo='';
+$titulo='CONCEPTOS';
 $msg_tabla_vacia="No hay";
 require("../include/tabla.php");
 
@@ -158,7 +158,7 @@ $rs_emp = $result_emp->fetch_array(MYSQLI_ASSOC) ;
 $array_plantilla = array_merge($array_plantilla,$rs_emp) ;
 
 //  WIDGET DOCUMENTOS 
-$tipo_entidad='oferta_cli' ;
+$tipo_entidad='presupuesto_cli' ;
 $id_entidad=$id_oferta ;
 //$id_subdir=$id_cliente ;
 $id_subdir=0 ;
@@ -170,6 +170,8 @@ echo "</div>" ;
 
 //echo $TABLE ; 
 
+
+// ANULADO, cogemos el $array_plantilla_json del generado en widget_documentos.php previamente
 //$array_plantilla_json= urlencode(json_encode($array_plantilla)) ;        // pasamos el array a JSON
 
 
@@ -179,9 +181,9 @@ echo "</div>" ;
 <!--<a class="btn btn-primary" target="_blank" href="../documentos/generar_PDF.php?plantilla_html=oferta_cliente.html&array_plantilla_json=
     <?php // echo $array_plantilla_json; ?>" title="ver presupuesto en pantalla">ver Presupuesto</a>-->
 
-<form action='../documentos/generar_PDF.php?plantilla_html=oferta_cliente.html' method='post' id='form_generar' name='form_generar' target='_blank'>
+<form action='../documentos/generar_PDF.php?plantilla_html=oferta_cliente.html&printdirect=1' method='post' id='form_generar' name='form_generar' target='_blank'>
 <input type='hidden'  id='array_plantilla_json'  name='array_plantilla_json' value='<?php echo $array_plantilla_json; ?>'>
-<input type='submit' class='btn btn-primary  noprint' title='imprimir Presupuesto'  id='submit' name='submit' value='imprimir Presupuesto' >
+<input type='submit' class='btn btn-link  noprint' title='imprimir Presupuesto'  id='submit' name='submit' value='imprimir Presupuesto' >
 </form>
     
 <?php

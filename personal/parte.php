@@ -66,6 +66,8 @@ $id_parte=$_GET["id_parte"];
     
   $id_obra=$rs["ID_OBRA"] ;
   $fecha=$rs["Fecha"] ;
+  $nombre_obra=$rs["NOMBRE_OBRA"] ;
+  $fecha_txt = date_format(date_create($fecha),"d/m/Y");
   
   $delete_boton=1;
 
@@ -168,6 +170,7 @@ if ($id_parte_anterior)
   $id_entidad=$id_parte;
   $id_subdir=$rs["ID_OBRA"] ;
 
+  $entidad="Parte de $nombre_obra ($fecha_txt)" ;
   require("../menu/LRU_registro.php"); require("../include/widget_documentos.php");  
 
  

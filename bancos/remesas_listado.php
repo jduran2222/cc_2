@@ -111,7 +111,7 @@ $result_T=$Conn->query($sql_T) ;
 $links["remesa"] = ["../bancos/remesa_ficha.php?id_remesa=", "id_remesa", "ver remesa completa", "formato_sub"] ;
 //$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
 
- $updates=['firmada', 'activa','Observaciones']  ;
+ $updates=['', 'activa','Observaciones']  ;
   $tabla_update="Remesas" ;
   $id_update="id_remesa" ;
     $actions_row=[];

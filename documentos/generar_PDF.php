@@ -27,7 +27,10 @@ header("Expires: 0");
 elseif ($ext==".pdf" )          // imprimimos directamente con un window.print(); 
 {
 echo "<script>window.print();</script>" ;     
-}
+}elseif (isset($_GET["printdirect"]))
+{
+echo "<script>window.print();</script>" ;     
+}    
 
  
 

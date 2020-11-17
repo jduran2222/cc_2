@@ -174,11 +174,11 @@ $fmt_facturacion = isset($_GET["fmt_facturacion"]) ?
     <div class='row noprint' style='border-style: solid ; border-color:grey; margin-bottom: 5px; padding:10px'>
  
    
-   <form class='noprint' action="../obras/obras_view.php" method="post" id='form1' name='form1' >
-      <INPUT type='hidden' id='fecha_cal' name='fecha_cal' value='<?php echo $fecha_cal;?>'>
        
-    <div class='col-lg-4'>
-           
+    <div class='col-lg-4' >
+    <form class='noprint' action="../obras/obras_view.php" method="post" id='form1' name='form1' >
+      <INPUT type='hidden' id='fecha_cal' name='fecha_cal' value='<?php echo $fecha_cal;?>'>
+          
 <TABLE class="noprint">
 <!--    <TR><TD color=red colspan=2 bgcolor=PapayaWhip align=center>
             
@@ -223,7 +223,7 @@ echo "<TR><TD>Activas</td><td>"
 
 <input type="hidden"  id="agrupar"  name="agrupar" value="<?php echo $agrupar;?>"> 
 
-</TABLE></div></div>
+    </TABLE></div><div class='col-lg-4' ></div></div>
 
 
 <div class='noprint'>
@@ -252,7 +252,7 @@ $btnt['obras']=['Datos generales','', ''] ;
 $btnt['vacio']=['','',''] ;
 $btnt['situacion']=['Estado actual','', ''] ;
 $btnt['vacio3']=['','',''] ;
-$btnt['prod_gasto_obras']=['PRODUCCION-Obras','Produccion de Obra - Gastos',''] ;
+$btnt['prod_gasto_obras']=['Obras','Produccion de Obra - Gastos',''] ;
 $btnt['prod_gasto_dias']=['dias','',''] ;
 $btnt['prod_gasto_semanas']=['semanas','',''] ;
 $btnt['prod_gasto_meses']=['meses','',''] ;
@@ -424,8 +424,8 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
    break;
    case "prod_gasto_obras":
        
-       $select_PPAL=" ID_OBRA ,id_produccion_obra, NOMBRE_OBRA , " ;
-       $select_PPAL_Union=" ID_OBRA ,id_produccion_obra, NOMBRE_OBRA , " ;
+       $select_PPAL=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA , " ;
+       $select_PPAL_Union=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA , " ;
        
        // produccion a origen
        $select_prod_origen = $fmt_prod_origen ? " 0 as prod_origen, 0 as gastos_origen," : "" ;
@@ -632,7 +632,7 @@ if (like($agrupar,'prod_gasto%'))
              . " FROM (" . $sql1 ." UNION ALL ". $sql2 ." UNION ALL ". $sql3 . $union_all_sql4 ."  ) X $group_order" ; 
      
 //        echo $sql ;
-     $sql_T= "SELECT '' as ID_OBRA, 'Suma...' , SUM(importe_prod) as importe_prod "
+     $sql_T= "SELECT '' as activa2, '' as ID_OBRA, 'Suma...' , SUM(importe_prod) as importe_prod "
              . ", SUM(gasto_real) AS gasto_real,SUM(importe_prod)- SUM(gasto_real) AS benef_real , 1-SUM(gasto_real)/SUM(importe_prod) as margen_real "
              . ",$select_prod_origen_Union_T SUM( gasto_est) AS gasto_est ,SUM(benef_est) AS benef_est ,  1- SUM(gasto_est)/SUM(importe_prod) as margen_est ,"
              . "  SUM(PLAN) AS PLAN, SUM(VENTAS) AS VENTAS, SUM(GASTOS_EX) AS GASTOS_EX,  SUM(VENTAS)-SUM(GASTOS_EX) AS Beneficio, (SUM(VENTAS)-SUM(GASTOS_EX))/SUM(VENTAS) as Margen   "

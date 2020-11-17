@@ -5,7 +5,7 @@
 
 
 $result=$Conn->query($sql="SELECT id_entidad, tipo_entidad, entidad, MAX(fecha_creacion) AS fecha, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=',id_entidad) as id_entidad_link FROM LRU_entidad WHERE  id_usuario={$_SESSION["id_usuario"]} AND $where_c_coste "
-                          . " GROUP BY tipo_entidad , id_entidad  ORDER BY   fecha DESC LIMIT 30");
+                          . " GROUP BY tipo_entidad , id_entidad  ORDER BY   fecha DESC LIMIT 15");
 
 $updates=[] ;
 

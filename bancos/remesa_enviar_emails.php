@@ -70,33 +70,49 @@ if ($result2->num_rows > 0)
    
   //Indicamos cual es nuestra dirección de correo y el nombre que 
   //queremos que vea el usuario que lee nuestro correo
-  $mail->From = "juanduran@ingenop.com"; 
-  $mail->FromName = "INGENOP";
+  $mail->From = "no-reply@construcloud.es"; 
+  $mail->FromName = "ERP ConstruCloud.es";
+  
+//  $mail->From = "juanduran@ingenop.com"; 
+//  $mail->FromName = "INGENOP";
 
   //Indicamos cual es la dirección de destino del correo
   $mail->AddAddress($email_pagos);
-  $mail->AddAddress("juanduran@ingenop.com");
+  $mail->AddAddress($_SESSION["email"]);
+//  $mail->AddAddress("juanduran@ingenop.com");
 //  $mail->AddAddress("jduran2222@gmail.com");
+  
+   $mail->AddReplyTo($_SESSION["email"], 'Reply to name');   // direción para respuesta
+
 
   //Asignamos asunto y cuerpo del mensaje
   //El cuerpo del mensaje lo ponemos en formato html, haciendo 
   //que se vea en negrita
   
-  $mail->ConfirmReadingTo = "juanduran@ingenop.com";
+  $mail->ConfirmReadingTo = $_SESSION["email"];
 
-  $mail->Subject = "Información de pago de Ingenop";
-  $mail->Body = "<b>Les comunicamos que se ha ordenado la siguiente transferencia, la cual se hará efectiva en unas horas:</b><br>"
+  $mail->Subject = "Información de pago de remesa de {$_SESSION["empresa"]} a $proveedor";
+  $mail->Body = "Les comunicamos que se ha firmado una remesa con la siguiente transferencia:"
           . "<br>"
+          . "<br>Cliente:<b> {$_SESSION["empresa"]} </b>"
           . "<br>Proveedor: $proveedor "
           . "<br>Pago: $observaciones"
           . "<br>IBAN de abono: $iban"
           . "<br>Importe: <b>$importe</b>"
           . "<br>"
           . "<br>Saludos"
-          . "<br>INGENOP";
+          . "<br>{$_SESSION["empresa"]}"
+          . "<br>"
+          . "<br>"
+          . "<br>"
+          . "<a href='https://www.construcloud.es' ><img width='100' src='https://www.construcloud.es/web/img/construcloud64.svg' ><br><h2>www.construcloud.es</h2></a> ERP Construcloud 2.0 - Gestión integral para la Construcción"; 
 
-  //Definimos AltBody por si el destinatario del correo no admite email con formato html 
-  $mail->AltBody ="Se ha realizado el pago al Proveedor: $proveedor,  Pago: $observaciones, Importe: $importe" ;
+          
+          
+          
+          
+                  //Definimos AltBody por si el destinatario del correo no admite email con formato html 
+  $mail->AltBody ="{$_SESSION["empresa"]} ha realizado el pago al Proveedor: $proveedor,  Pago: $observaciones, Importe: $importe" ;
        
   // JUAND
 //  $mail->SMTPDebug = 2;
