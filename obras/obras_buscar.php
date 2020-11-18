@@ -53,14 +53,14 @@ $subcentro= like($tipo_subcentro , '%o%' )?  "OBRA" : (like($tipo_subcentro , '%
  
                                     <!--align-content: center; align-items: center     class="mainc"-->
 	
-<div id="main"  ><h1 style='font-size: 90px'><i class="fas fa-hard-hat"></i> <?php echo $subcentro ."S" ; ?><br></h1>
+<div id="main"  ><h1 ><i class="fas fa-hard-hat"></i> <?php echo $subcentro ."S" ; ?><br></h1>
 	
-    <a class="btn btn-link btn-lg" style='text-align: left;font-size: 40px' href= 'obras_anadir_form.php' ><i class="fas fa-plus-circle"></i> Añadir <?php echo strtolower($subcentro) ; ?></a>
+    <a class="btn btn-link btn-lg" style='text-align: left;' href= 'obras_anadir_form.php' ><i class="fas fa-plus-circle"></i> Añadir <?php echo strtolower($subcentro) ; ?></a>
     
 	<FORM action="../obras/obras_buscar.php?tipo_subcentro=<?php echo $tipo_subcentro ; ?>" method="post" id="form1"  name="form1">
             <table>
-            <tr><td><INPUT  style='font-size:50px; width:100%; height:150px;' id="filtro" name="filtro"  onkeyup="showHint(this.value,'<?php echo $tipo_subcentro ;?>' )" placeholder="buscar..." value="<?php echo $filtro;?>" >
-           <button type="submit"  style="font-size: 80px;" class="btn btn-info btn-lg"><i class="fas fa-search"></i> Buscar </button>
+            <tr><td><INPUT   id="filtro" name="filtro"  onkeyup="showHint(this.value,'<?php echo $tipo_subcentro ;?>' )" placeholder="buscar..." value="<?php echo $filtro;?>" >
+           <button type="submit"   class="btn btn-info btn-lg"><i class="fas fa-search"></i> Buscar </button>
             </tr><tr><td><div class="sugerir" id="sugerir"></div>
                 </td></tr>
                   </table>
@@ -136,7 +136,7 @@ $result = $Conn->query($sql);
 	  $id_obra=$rs["ID_OBRA"]; 
 	?>
  
-	<tr style='border: 1px solid grey; height:200px'><td><a style="font-size: 60px;" href= "../obras/obras_ficha.php?id_obra=<?php echo $id_obra;?>&nombre_obra=<?php echo $nombre_obra;?>" ><?php echo $nombre_obra;?></a></td></tr>
+	<tr style='border: 1px solid grey;'><td><a href= "../obras/obras_ficha.php?id_obra=<?php echo $id_obra;?>&nombre_obra=<?php echo $nombre_obra;?>" ><?php echo $nombre_obra;?></a></td></tr>
 	
 <?php
 	}

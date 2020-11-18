@@ -429,7 +429,22 @@ span.badge {
     font-size: 6vw;
 } 
 
- h1,h2,h3,h4
+ .h1, h1
+{
+    /*text-align: center;*/
+    font-size: 12vw;
+} 
+ .h2,h2
+{
+    /*text-align: center;*/
+    font-size: 10vw;
+} 
+.h3,h3
+{
+    /*text-align: center;*/
+    font-size: 8vw;
+} 
+.h4,h4
 {
     /*text-align: center;*/
     font-size: 6vw;

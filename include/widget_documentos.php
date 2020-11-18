@@ -185,14 +185,14 @@ if ($result_wd->num_rows > 0)
         $id_imagen="img_" . $id_documento ;
         $content_wd .= "<br><button type='button' class='btn btn-link btn-xs noprint transparente' onclick=down_img_size(document.getElementById('$id_imagen'))  title='disminuir tamaño imagen'><i class='fas fa-search-minus'></i></button>" ;
         $content_wd .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=up_img_size(document.getElementById('$id_imagen')) title='aumentar tamaño imagen' ><i class='fas fa-search-plus'></i></button>" ;
-        $content_wd .= "<a class='btn btn-primary noprint transparente' href=\"$path_archivo\" target='_blank' title='descargar PDF'><i class='fas fa-cloud-download-alt'></i></a>" ;
+        $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href=\"$path_archivo\" target='_blank' title='descargar PDF'><i class='fas fa-cloud-download-alt'></i></a>" ;
 //        $content_wd .= "<a class='btn btn-link noprint transparente' href='https://api.whatsapp.com/send?text={$dir_raiz}documentos/documento_ficha.php?id_documento=$id_documento' target='_blank' title='compartir link por WhassApp'><img src='../img/whassapp.jpg'></a>" ;
 //        $content_wd .= "<a class='btn btn-link noprint transparente' href='https://api.whatsapp.com/send?text={$link_pdf}' target='_blank' title='compartir link por WhassApp'><img width='30'  src='../img/whassapp.jpg'></a>" ;
 //        $content_wd .= "<a class='btn btn-link noprint transparente' href='https://api.whatsapp.com/send?text={$link_pdf}' target='_blank' title='compartir link por WhassApp'><i class='fab fa-whatsapp'></i></a>" ;
-        $content_wd .= "<a class='btn btn-link noprint transparente' href='https://wa.me/?text={$link_pdf}' target='_blank' title='compartir link por WhassApp'><i class='fab fa-whatsapp'></i></a>" ;
+        $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href='https://wa.me/?text={$link_pdf}' target='_blank' title='compartir link por WhassApp'><i class='fab fa-whatsapp'></i></a>" ;
         $content_wd .= isset($whassapp_envio) ?  "<a class='btn btn-link noprint transparente' href='https://wa.me/$whassapp_envio?text={$link_pdf}' target='_blank' title='compartir link por WhassApp al INTERESADO'><i class='fab fa-whatsapp'></i>Int</a>" :"" ;
-        $content_wd .= "<a class='btn btn-link noprint transparente' href='../documentos/documento_ficha.php?_m=$_m&id_documento=$id_documento' target='_blank' title='ficha del documento'><i class='far fa-calendar-alt'></i></a>" ;
-        $content_wd .= "<a class='btn btn-link noprint transparente' href=# onclick=\"copyToClipboard( '$link_pdf' )\"  title='copy a portapapeles el link del documento'>"
+        $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href='../documentos/documento_ficha.php?_m=$_m&id_documento=$id_documento' target='_blank' title='ficha del documento'><i class='far fa-calendar-alt'></i></a>" ;
+        $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href=# onclick=\"copyToClipboard( '$link_pdf' )\"  title='copy a portapapeles el link del documento'>"
                 . "<i class='far fa-copy'></i></i></a>" ;
         // ROTACIONES    //anulado, innecesario aquí, juand jun20
 //        $href_90="../documentos/doc_rotar_ajax.php?id_documento=$id_documento&path_archivo=$path_archivo&grados=90" ;
@@ -208,7 +208,7 @@ if ($result_wd->num_rows > 0)
          // marcar como PREDETERMINADO el primer documento que se suba si existe el campo DOC_LOGO
         
         
-        // vemos si existe el campo 'doc_logo' para hacer predeterminada la imagen en la entidad
+        // vemos si existe el campo 'doc_logo' para poder hacer predeterminada la imagen en la entidad
        if (isset($rs["doc_logo"])) 
        {  
          $sql_update= "UPDATE `$tabla_update` SET doc_logo='$id_documento'  WHERE  $id_update='$id_valor'  ; "  ;        
@@ -218,12 +218,12 @@ if ($result_wd->num_rows > 0)
 //                $pdte_doc_logo=False ;
 //            }  
         $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;         
-        $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href=# onclick=\"js_href('$href' ,'1' )\"   title='hace este documento como imagen predeterminada de la entidad'>predet.</a> "; 
+        $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href=# onclick=\"js_href('$href' ,'1' )\"   title='hace este documento como imagen predeterminada de la entidad'>Predet.</a> "; 
        }
 //        $links["nid_documento"] = ["../documentos/documento_ficha.php?id_documento=", "id_documento", "ver ficha documento", 'ppal'] ;
 
         //BOTON DELETE
-        $content_wd .= "<a class='btn btn-danger noprint transparente' href=# onclick=\"delete_doc( $id_documento ,'$path_archivo')\"  title='eliminar documento'><i class='far fa-trash-alt'></i></a> "; 
+        $content_wd .= "<a class='btn btn-link btn-xs noprint transparente' href=# onclick=\"delete_doc( $id_documento ,'$path_archivo')\"  title='eliminar documento'><i class='far fa-trash-alt'></i></a> "; 
         
 //        $links["nid_documento"] = ["../documentos/documento_ficha.php?id_documento=", "id_documento", "ver ficha documento", 'ppal'] ;
 	
