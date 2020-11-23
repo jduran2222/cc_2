@@ -60,7 +60,7 @@ $subcentro= like($tipo_subcentro , '%o%' )?  "OBRA" : (like($tipo_subcentro , '%
 	<FORM action="../obras/obras_buscar.php?tipo_subcentro=<?php echo $tipo_subcentro ; ?>" method="post" id="form1"  name="form1">
             <table>
             <tr><td><INPUT   id="filtro" name="filtro"  onkeyup="showHint(this.value,'<?php echo $tipo_subcentro ;?>' )" placeholder="buscar..." value="<?php echo $filtro;?>" >
-           <button type="submit"   class="btn btn-info btn-lg"><i class="fas fa-search"></i> Buscar </button>
+           <button type="submit"   class="btn btn-info btn-sm"><i class="fas fa-search"></i> Buscar </button>
             </tr><tr><td><div class="sugerir" id="sugerir"></div>
                 </td></tr>
                   </table>
@@ -105,15 +105,15 @@ window.location="../obras/obras_ficha.php?id_obra="+id_obra+"&nombre_obra="+nomb
 
 
 if ($filtro)      // pdte cambiar la primera sql por LRU Where id_c_coste and id_user, tipolru='obra'
-  { $sql="Select  ID_OBRA,NOMBRE_OBRA FROM OBRAS WHERE  NOMBRE_OBRA LIKE '%$filtro%' AND $where_c_coste ORDER BY activa DESC, NOMBRE_OBRA DESC $limit" ;}
+  { $sql="Select  ID_OBRA,tipo_subcentro,NOMBRE_OBRA FROM OBRAS WHERE  NOMBRE_OBRA LIKE '%$filtro%' AND $where_c_coste ORDER BY activa DESC, NOMBRE_OBRA DESC $limit" ;}
  else
-  { $sql="Select  ID_OBRA,NOMBRE_OBRA FROM OBRAS WHERE  LOCATE(tipo_subcentro,'$tipo_subcentro')>0 AND  activa AND $where_c_coste ORDER BY NOMBRE_OBRA  " ;}	
+  { $sql="Select  ID_OBRA,tipo_subcentro,NOMBRE_OBRA FROM OBRAS WHERE  LOCATE(tipo_subcentro,'$tipo_subcentro')>0 AND  activa AND $where_c_coste ORDER BY NOMBRE_OBRA  " ;}	
  
 //echo $sql;
 $result = $Conn->query($sql);
 ?>
 
-<h1><?php echo "Listado de ".strtolower($subcentro)."s" ; ?><br></h1>
+<h2><?php echo "Listado de ".strtolower($subcentro)."s" .($filtro?  " encontradas" : " activas" )   ; ?><br></h2>
 
 <?php $cuenta=0;?>
 <?php 
@@ -129,6 +129,8 @@ $result = $Conn->query($sql);
   }
    else
    { echo "<table style='border: 1px solid grey'> " ;
+    echo "<tr style='border: 1px solid grey;'><td style='border: 1px solid grey;'>Tipo</td><td style='border: 1px solid grey;text-align:center;'>Nombre Obra</td></tr>";
+
     while($rs = $result->fetch_array())
     {
 	  $cuenta=$cuenta+1;
@@ -136,7 +138,8 @@ $result = $Conn->query($sql);
 	  $id_obra=$rs["ID_OBRA"]; 
 	?>
  
-	<tr style='border: 1px solid grey;'><td><a href= "../obras/obras_ficha.php?id_obra=<?php echo $id_obra;?>&nombre_obra=<?php echo $nombre_obra;?>" ><?php echo $nombre_obra;?></a></td></tr>
+	<tr style='border: 1px solid grey;'><td style='border: 1px solid grey;text-align:center;'><?php echo $rs["tipo_subcentro"];?></td>
+        <td style='border: 1px solid grey;'><a href= "../obras/obras_ficha.php?id_obra=<?php echo $id_obra;?>&nombre_obra=<?php echo $nombre_obra;?>" ><?php echo $nombre_obra;?></a></td></tr>
 	
 <?php
 	}
@@ -156,7 +159,7 @@ $result = $Conn->query($sql);
    }
 
     else
-	{echo "<br>".$cuenta . " " . strtolower($subcentro);
+	{echo "<br>".$cuenta . " " . strtolower($subcentro)."s";
 	}
 
 $Conn->close();

@@ -605,7 +605,7 @@ if ($result->num_rows > 0)
            }elseif ($is_EMAIL)  // UPDATE EMAIL 
            {    
 
-               $TD_valor = "<span  $format_style  class='btn btn-lg btn-link noprint'   style='cursor: pointer;'  onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' )\" id='p$cont_TD' title='editar email' >{$valor_txt}</span>"
+               $TD_valor = "<span  $format_style  class='btn btn-sm btn-link noprint'   style='cursor: pointer;'  onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' )\" id='p$cont_TD' title='editar email' >{$valor_txt}</span>"
                            . "<span class='btn btn-xs btn-link noprint transparente' onclick=\"paste( function(nuevo_valor){ ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD', nuevo_valor ); } ) \"  "
                                    . " title='copia desde Clipboard' > <i class='fas fa-paste'></i> </span>"
 //                           . "<span style='cursor: pointer;'  onclick=\"paste(   function(p) {prueba(p);} )\" title='copia desde Clipboard' > PASTE </span>"

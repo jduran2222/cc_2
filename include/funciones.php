@@ -1643,7 +1643,7 @@ function getVar2($variable)
 }
 
 
-function getVar($variable)
+function getVar($variable, $msg_error=1)
 {    // Sintax:  devolvemos el valor de una variable de entorno `vars`y si no existe devuelvo 0
     
     if (!isset($GLOBALS["Conn"]))
@@ -1668,7 +1668,8 @@ function getVar($variable)
     } else
     {
 //        echo "RETURN DEL SELECT:" . $result->num_rows ;
-        echo "<script>var error='ERROR EN GETVAR: $variable Avise a ADMINISTRADOR'; alert(error); console.log(error);</script>" ;
+        echo $msg_error? "<script>var error='ERROR EN GETVAR: $variable Avise a ADMINISTRADOR'; alert(error); console.log(error);</script>" 
+                :"<script>var error='ERROR EN GETVAR: $variable Avise a ADMINISTRADOR'; console.log(error);</script>";
         $return = 0;           // devuelvo 0 si no encuentro nada
     }
     
