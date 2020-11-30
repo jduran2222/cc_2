@@ -6,20 +6,24 @@ $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
 require_once("../../conexion.php"); 
 require_once("../include/funciones.php"); 
 
+
+$apellidos_nombre= isset($_GET["variable1"]) ? $_GET["variable1"] : "apellidos, nombre (nuevo)"  ;
 		
 $id_concepto_mo= getVar('id_concepto_hora_estandar');
 $fecha=date('Y-m-d');
 
-$sql="INSERT INTO `PERSONAL` ( `id_c_coste`,id_concepto_mo,NOMBRE,F_ALTA,`user` )    VALUES (  '{$_SESSION["id_c_coste"]}', '$id_concepto_mo','Apellidos, Nombre (nuevo)' ,'$fecha', '{$_SESSION["user"]}' );" ;
+$sql="INSERT INTO `PERSONAL` ( `id_c_coste`,id_concepto_mo,NOMBRE,F_ALTA,`user` )    VALUES (  '{$_SESSION["id_c_coste"]}', '$id_concepto_mo','$apellidos_nombre' ,'$fecha', '{$_SESSION["user"]}' );" ;
 // echo ($sql);
 $result=$Conn->query($sql);
           
  if ($result) //compruebo si se ha creado la obra
              { 	$id_personal=Dfirst( "MAX(ID_PERSONAL)", "PERSONAL", "id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
+             
+               
 	        // TODO OK-> Entramos a pagina_inicio.php
 //	       echo "ficha personal creada satisfactoriamente." ;
 //		echo  "Ir a ficha personal <a href=\"../personal/personal_ficha.php?id_personal=$id_personal\" title='ver ficha'> $id_personal</a>" ;
-                echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../personal/personal_ficha.php?id_personal=$id_personal'>" ;
+                echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../proveedores/proveedores_anadir.php?id_personal=$id_personal&proveedor=$apellidos_nombre'>" ;
 
 	     }
 	       else

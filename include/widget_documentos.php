@@ -100,10 +100,10 @@ $content_wd .="<div class='div_boton_expand'>"
             . "<div id='div_generar_doc' class='collapse in'  style='border:1px solid silver;'>" ;
 
 
-$content_wd .=  "<form action='../documentos/generar_PDF.php' method='post' id='form_generar' name='form_generar' target='_blank'>"    ;
+$content_form_generar =  "<form action='../documentos/generar_PDF.php' method='post' id='form_generar' name='form_generar' target='_blank'>"    ;
  
 $plantillas=scandir("../plantillas") ;
-$select_plantillas= "<select class='btn btn-xs btn-default noprint'  name='plantilla_html'  id='plantilla_html' style='width: 40%; '>"
+$select_plantillas= "<select class='btn btn-xs btn-default noprint'  name='plantilla_html'  id='plantilla_html' >"
         . "<option value='0'>Plantilla</option>" ;
 
 foreach ($plantillas as $valor)
@@ -111,11 +111,11 @@ foreach ($plantillas as $valor)
     $select_plantillas.= ($valor<>"." AND $valor<>"..") ?  "<option value='$valor'>$valor</option>" : "" ;             
 }
 $select_plantillas.= "  </select>" ;   
-$content_wd .= $select_plantillas ;
+$content_form_generar .= $select_plantillas ;
 
 $array_plantilla = isset($array_plantilla) ? $array_plantilla : "" ;
 $array_plantilla_json= json_encode($array_plantilla) ;        // pasamos el array a JSON
-$content_wd .= "<input type='hidden'  id='array_plantilla_json'  name='array_plantilla_json' value='$array_plantilla_json'>"   ;
+$content_form_generar .= "<input type='hidden'  id='array_plantilla_json'  name='array_plantilla_json' value='$array_plantilla_json'>"   ;
 
 //$href='../documentos/generar_PDF.php?plantilla=_VARIABLE1_ ' ;    
 
@@ -123,7 +123,7 @@ $content_wd .= "<input type='hidden'  id='array_plantilla_json'  name='array_pla
 
 
 // elección de EXT
-$content_wd .= ""
+$content_form_generar .= ""
  . "<div class='btn-group btn-xs' data-toggle='buttons'>"
  . "<label class='btn btn-default btn-xs active'><input type='radio' id='ext' name='ext' value='' checked />ver     </label> "
  . "<label class='btn btn-default btn-xs  '><input type='radio' id='ext' name='ext' value='.pdf'   />pdf</label>"
@@ -134,9 +134,13 @@ $content_wd .= ""
 
 
 
-$content_wd .= "<input type='submit' class='btn btn-link btn-xs noprint'"
-     . " title='Genera documento PDF desde plantilla y con datos de la ficha'  id='submit' name='submit' value='Generar doc' >" ;
-$content_wd .= "</form></div>" ;
+$content_form_generar .= "<input type='submit' style='float:right;' class='btn btn-primary btn-xs noprint'"
+     . " title='Genera un documento nuevo con la plantilla seleccionada y datos de la entidad'  id='submit' name='submit' value='generar doc' >" ;
+$content_form_generar .= "</form>" ;
+
+$content_wd .= $content_form_generar ;
+
+$content_wd .= "</div>" ;
 
 
 //$content_wd .= "<a class='btn btn-link btn-xs noprint btn_topbar' href='#'  "
@@ -272,11 +276,11 @@ if ($result_wd->num_rows > 0)
                       <i class="fas fa-bars"></i></button>
                     <div class="dropdown-menu" role="menu">
                        
-                      <a href="<?php echo $href_subir_doc ;?>" target='_blank' class="dropdown-item" title='Sube un documento asociado a esta entidad'><i class='fas fa-cloud-upload-alt'></i> Subir doc</a>
-                      <a href="#" onclick="<?php echo $onclick_anadir_link ;?>" title='anexar documento por su link (URL, Dropbox, Google Drive, ...)' target='_blank' class="dropdown-item"><i class='fas fa-link'></i> Añadir link </a>
-                      <a href="#" onclick="<?php echo $onclick_importar_doc ;?>" title='Importar documento existente y pendiente de Clasificar a esta entidad. Indicar número de ID_DOCUMENTO' target='_blank' class="dropdown-item"><i class='fas fa-file-import'></i> Importar doc</a>
-<!--                      <div class="dropdown-divider"></div>
-                      <a href="#" class="dropdown-item">View calendar</a>-->
+                          <a href="<?php echo $href_subir_doc ;?>" target='_blank' class="dropdown-item small" title='Sube un documento asociado a esta entidad'><i class='fas fa-cloud-upload-alt'></i> Subir doc</a>
+                          <a href="#" onclick="<?php echo $onclick_anadir_link ;?>" title='anexar documento por su link (URL, Dropbox, Google Drive, ...)' target='_blank' class="dropdown-item small"><i class='fas fa-link'></i> Añadir link </a>
+                          <a href="#" onclick="<?php echo $onclick_importar_doc ;?>" title='Importar documento existente y pendiente de Clasificar a esta entidad. Indicar número de ID_DOCUMENTO' target='_blank' class="dropdown-item small"><i class='fas fa-file-import'></i> Importar doc</a>
+                      <div class="dropdown-divider"></div>
+                          <?php echo $content_form_generar ;?>
                     </div>
                   </div>
                   <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse">

@@ -16,6 +16,16 @@ $SPAN = "'></span>";
 //}
 
 
+// funcion devuelve el HTML de una pagina de error
+function cc_page_error($msg)
+{
+  $html= "<center><br><br><br><br><br><img width='256px' src='../img/logo_cc.svg' alt='Logo ConstruCloud 2.0'/>"
+          .  " <h2 style='text-align:center;'><br><br><br><br>$msg</h2>"
+          . "<BR><BR><BR><BR><button style='font-size:200%;background-color:orange;' onclick='javascript:window.close();' title='cerrar'>CERRAR</button></center>" ;
+  
+  return  $html ;
+}
+
 // funcion que nos permitirá convertir una fila (p. ej. de una tabla) a un content con un formato de HTML. sustituimos las cadenas @@CAMPO1@@ del $HTML por el valor de $rs["CAMPO1"]
 function cc_row_html($rs,$html)
 {
@@ -150,7 +160,7 @@ function texto_a_html_hex($chat_message)
 //    return  "__HEX__".bin2hex($chat_message);
     return  $chat_message ;
 }
-
+            
 
 
 function entidad_link($entidad)
@@ -172,8 +182,8 @@ function entidad_link($entidad)
     $array_links["personal"]="../personal/personal_ficha.php?id_personal=";
     $array_links["pof"]="../pof/pof.php?id_pof=";
     $array_links["pof_nueva"]="../pof/pof.php?id_pof=";
+    $array_links["pof_doc"]="../pof/pof.php?id_pof=";
     $array_links["pof_concepto"]="../pof/pof_concepto_ficha.php?id=";
-    $array_links["pof_doc"]="";
     $array_links["pof_prov"]="../pof/pof_proveedor_ficha.php?id=";
     $array_links["proveedores"]="../proveedores/proveedores_ficha.php?id_proveedor=";
     $array_links["subcontrato"]="../obras/subcontrato.php?id_subcontrato=";
@@ -189,6 +199,7 @@ function entidad_link($entidad)
     $array_links["banco"]="../bancos/bancos_mov_bancarios.php?id_cta_banco=";
     $array_links["procedimiento"]="../agenda/procedimiento_ficha.php?id_procedimiento=";
     $array_links["doc_nuevo"]="../documentos/documento_ficha.php?id_documento=";
+//    $array_links["pdte_clasif"]="../documentos/documento_ficha.php?id_documento=";
     $array_links["rel_valorada"]="../obras/obras_prod_detalle.php?id_produccion=";
     $array_links["rel_valorada_nueva"]="../obras/obras_prod_detalle.php?id_produccion=";
     $array_links["prod_det"]="../obras/obras_prod_detalle.php?id_produccion=";
@@ -1317,9 +1328,8 @@ switch ($format) {
                         break;
             case "pdf":
                 // mostramos solo el medium sin link ni aumentar
-//                        if ($valor) $valor = "<img src='{$valor}_medium.jpg'  width='$pdf_size' >" ;
                         $valor_file= (file_exists( $valor . '_medium.jpg') ) ? $valor . '_medium.jpg' : $valor ;  // si existe el _medium.jpg lo mostramos, si no (ej. un link) mostramos el doc directo
-                        if ($valor) $valor = "<img src='$valor_file'  width='$pdf_size' >" ;
+                        if ($valor) $valor = "<img src='$valor_file'  width='$pdf_size' alt='imagen no encontrada' >" ;
                         $format_style=" style='text-align:center;' " ;        
                         break;
             case "pdf_":
@@ -1334,7 +1344,7 @@ switch ($format) {
 //                         $valor= "<a style='font-size:0px'   href=\"{$valor}_large.jpg\" target='_blank' >"
                         $valor_file= (file_exists( $valor . '_medium.jpg') ) ? $valor . '_medium.jpg' : $valor ;  // si existe el _medium.jpg lo mostramos, si no (ej. un link) mostramos el doc directo
                         $valor= "<a style='font-size:0px'   href=\"{$valor}\" target='_blank' >" 
-                        . "<img style='border: 10px solid white;' src=\"$valor_file\"  "
+                        . "<img style='border: 10px solid white;' src=\"$valor_file\" alt='imagen no encontrada' "
                         . "onmouseover='this.style.borderImageWidth=\"20px 30px\";this.width=\"$pdf_size2\";' "
                                 . "onmouseout='this.style.borderImageWidth=20 ;this.width=\"$pdf_size\";' width='$pdf_size'  >"
                                 . "</a>" ;
@@ -1346,14 +1356,11 @@ switch ($format) {
                         if ($valor)
                         {  
                          $pdf_size2=  (isset($pdf_size2) AND $pdf_size2 ) ?  $pdf_size2  :  $pdf_size*2 ;   
-                   	$valor= "<img style='border: 10px solid white;' src=\"{$valor}_large.jpg\"  onmouseover='this.style.borderImageWidth=\"20px 30px\";this.width=\"$pdf_size2\";' onmouseout='this.style.borderImageWidth=20 ;this.width=\"$pdf_size\";' width='$pdf_size'  >" ;
+                   	$valor= "<img style='border: 10px solid white;' src=\"{$valor}_large.jpg\"       alt='imagen no encontrada' "
+                        . " onmouseover='this.style.borderImageWidth=\"20px 30px\";this.width=\"$pdf_size2\";' onmouseout='this.style.borderImageWidth=20 ;this.width=\"$pdf_size\";' width='$pdf_size'  >" ;
                         }
                         $format_style=" style='text-align:center;' " ;        
                         break;
-//            case "pdf_100":
-//                        if ($valor) $valor = "<img src='{$valor}_large.jpg' onmouseover='this.width=500;' onmouseout='this.width=100;' width='100' >" ;
-//                        $format_style=" style='text-align:center;' " ;        
-//                        break;
             case "pdfDdownload":
                 
                         if ($valor) $valor ="<a class='btn btn-link noprint' href=\"$valor\" target='_blank' title='descargar PDF'><i class='fas fa-cloud-download-alt'></i></a>" ;

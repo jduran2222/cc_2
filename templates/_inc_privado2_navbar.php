@@ -115,7 +115,7 @@ include_once('../include/funciones_js.php');
         </a>
       </li>
       <li class="nav-item d-inline-block">
-        <a id="btn_empresa" href="../chat/chat_index.php" class="px-1 px-sm-2 btn btn-link" title="Abrir Chat">
+        <a id="btn_empresa" href="../chat/chat_index.php" class="px-1 px-sm-2 btn btn-link" title="Abrir Chat" target='_blank'>
           <i class="far fa-comments"></i>
           <span class="d-none d-sm-inline">Chat</span> 
           <?php 

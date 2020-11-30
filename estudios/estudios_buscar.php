@@ -57,16 +57,6 @@ if (!empty($_POST))
 <?php 
 
 
-	
-
-?>
-
-Numero lineas= <?php   echo $num_max ;?> <BR>
-filtro= <?php echo $filtro;?>
-	
-
-	
- <?php 
 
    require ("../../conexion.php");
 

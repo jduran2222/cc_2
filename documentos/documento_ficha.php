@@ -35,7 +35,8 @@ $id_documento=$_GET["id_documento"];
 
   <?php              // DATOS   FICHA . PHP
  //echo "<pre>";
- $result=$Conn->query($sql="SELECT id_documento,tipo_entidad,id_subdir,id_entidad,fecha_doc,documento,nombre_archivo,path_archivo,metadatos,tamano"
+ $result=$Conn->query($sql="SELECT id_documento,tipo_entidad,id_subdir,id_entidad,fecha_doc,documento,nombre_archivo,path_archivo "
+         . ", 'METADATOS_OCR' as EXPAND_iocr ,metadatos, '' as FIN_EXPAND2,  tamano"
          . ",Observaciones,orden,'INFO IMAGEN' as EXPAND_info ,info_imagen, '' as FIN_EXPAND,user,fecha_creacion"
          . " FROM Documentos WHERE id_documento=$id_documento AND $where_c_coste");
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;
@@ -44,7 +45,6 @@ $id_documento=$_GET["id_documento"];
 //print_r ($rs);
 //}
 //echo "</pre>";
-  $titulo="DOCUMENTO" ;
  
   
 $links["tipo_entidad"] =["../include/ficha_entidad.php?tipo_entidad={$rs["tipo_entidad"]}&id_entidad=", "id_entidad", "ver entidad asociada al documento (Factura, albarán, ...)", 'formato_sub'] ;
@@ -74,7 +74,7 @@ $links["tipo_entidad"] =["../include/ficha_entidad.php?tipo_entidad={$rs["tipo_e
 //echo '</pre>';
 //echo 'var_dump <br>';
 //echo gettype ($rs["info_imagen"])."<br>" ;
-echo strlen($rs["info_imagen"])."<br>" ;
+//echo strlen($rs["info_imagen"])."<br>" ;
 //echo gettype ($info_imagen)."<br>" ;
 //echo json_last_error_msg() ;
 
@@ -95,6 +95,8 @@ echo strlen($rs["info_imagen"])."<br>" ;
  
  $visibles=["id_documento"] ;
  $etiquetas["id_documento"]="ID_DOCUMENTO" ;
+ $tooltips["metadatos"]="Metadatos extraidos de un OCR de la imagen" ;
+ $tooltips["METADATOS_OCR"]="Metadatos extraidos de un OCR de la imagen" ;
  $tooltips["id_documento"]="El ID_DOCUMENTO puede utilizarse para importar un documento a una Entidad" ;
  $formats["info_imagen"]="array_pre" ;
  
@@ -111,11 +113,13 @@ $href_90="../documentos/doc_rotar_ajax.php?id_documento=$id_documento&path_archi
 $href_270="../documentos/doc_rotar_ajax.php?id_documento=$id_documento&path_archivo=$path_archivo&grados=270" ;
 $href_OCR="../documentos/doc_texto_ocr.php?id_documento=$id_documento" ;
 //        echo "<a class='btn btn-primary' href='$href' target='_blank'><span class='glyphicon glyphicon-trash' ></span> GIRAR 90G22</a> "; 
-echo "<br><br><br><br><br><br><a class='btn btn-primary' href=# onclick=\"js_href( '$href_270'  )\"><i class='fas fa-undo'></i> GIRAR -90º</a> "; 
-echo "<a class='btn btn-primary' href=# onclick=\"js_href( '$href_90'  )\"><i class='fas fa-redo'></i> GIRAR 90º</a> "; 
+$content_botontes = "<br><br><br><br><br><br><a class='btn btn-primary btn-xs noprint' href=# onclick=\"js_href( '$href_270'  )\"><i class='fas fa-undo'></i> GIRAR -90º</a> "; 
+$content_botontes .= "<a class='btn btn-primary btn-xs noprint' href=# onclick=\"js_href( '$href_90'  )\"><i class='fas fa-redo'></i> GIRAR 90º</a> "; 
 //echo "<a class='btn btn-primary' href=# onclick=\"js_href( '$href_OCR'  )\">OCR</a> "; 
-echo "<a class='btn btn-primary' target='_blank' href='../documentos/doc_texto_ocr.php?id_documento=$id_documento'>OCR</a> "; 
-echo "<a class='btn btn-danger' href=# onclick=\"delete_doc( {$rs["id_documento"]} ,'{$rs["path_archivo"]}')\"><i class='far fa-trash-alt'></i> ELIMINAR DOCUMENTO</a> "; 
+$content_botontes .= "<a class='btn btn-primary btn-xs noprint' target='_blank'   title='Hace un OCR a la imagen y muestra el texto encontrado. Ver previamente el campo METADATOS OCR' "
+                   . " href='../documentos/doc_texto_ocr.php?id_documento=$id_documento'>OCR</a> "; 
+$content_eliminar_doc = "<a class='btn btn-danger btn-xs noprint' href=#   title='Elimina el documento de la base de datos' "
+                       . " onclick=\"delete_doc( {$rs["id_documento"]} ,'{$rs["path_archivo"]}')\"><i class='far fa-trash-alt'></i></a> "; 
  
  // proceso METADATOS
   
@@ -148,6 +152,7 @@ $rs["metadatos"] = preg_replace($patrones,$replaces,$rs["metadatos"]);
   
 // fin metadatos  
  
+  $titulo="DOCUMENTO ".$content_eliminar_doc ;
 
   
   ?>
@@ -161,6 +166,7 @@ $rs["metadatos"] = preg_replace($patrones,$replaces,$rs["metadatos"]);
    
       <!--// FIN     **********    FICHA.PHP-->
  </div>
+ 
       
  <!--<div class="right2">-->
  
@@ -169,6 +175,8 @@ $rs["metadatos"] = preg_replace($patrones,$replaces,$rs["metadatos"]);
 
 	
 <?php 
+
+echo $content_botontes          ;
 
 
 //header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
@@ -206,35 +214,34 @@ $rs["metadatos"] = preg_replace($patrones,$replaces,$rs["metadatos"]);
 //        echo "<br><a href=\"{$rs["path_archivo"]}\" target='_blank' ><img id='small' style='border:3px solid red;' src=\"{$rs["path_archivo"]}_small.jpg\"></a>" ;
 
 //        $tamano=number_format(filesize("{$rs["path_archivo"]}_medium.jpg")/1024,1,".",",") ;
-        $tamano=cc_format(filesize("{$rs["path_archivo"]}_medium.jpg"),"kb") ;
-        
-        echo "<br><br><h3>Tamaño Medium ($tamano)</h3>" ;        
-        echo "<button type='button' class='btn btn-default btn-sm' onclick=down_img_size(document.getElementById('medium'))  title='disminuir tamaño imagen'><i class='fas fa-search-minus'></i></button>" ;
-        echo "<button type='button' class='btn btn-default btn-sm' onclick=up_img_size(document.getElementById('medium')) title='aumentar tamaño imagen' ><i class='fas fa-search-plus'></i></button>" ;
-	echo "<br><a href=\"{$rs["path_archivo"]}_medium.jpg\" target='_blank' ><img id='medium'  style='border:3px solid red;'  src=\"{$rs["path_archivo"]}_medium.jpg\"></a>" ;
-        
-        
-//        $tamano=number_format(filesize("{$rs["path_archivo"]}_large.jpg")/1024,1,".",",") ;
-        $tamano=cc_format(filesize("{$rs["path_archivo"]}_large.jpg"),"kb") ;
-        echo "<br><br><h3>Tamaño Large ($tamano)</h3>" ;                
-        echo "<button type='button' class='btn btn-default btn-sm' onclick=down_img_size(document.getElementById('large'))  title='disminuir tamaño imagen'><i class='fas fa-search-minus'></i></button>" ;
-        echo "<button type='button' class='btn btn-default btn-sm' onclick=up_img_size(document.getElementById('large')) title='aumentar tamaño imagen' ><i class='fas fa-search-plus'></i></button>" ;
-	echo "<br><a href=\"{$rs["path_archivo"]}_large.jpg\" target='_blank' ><img id='large'  style='border:3px solid red;'  src=\"{$rs["path_archivo"]}_large.jpg\"></a>" ;
+$tamano=cc_format(filesize("{$rs["path_archivo"]}_medium.jpg"),"kb") ;
 
-        if (file_exists($rs["path_archivo"]))
-        {    
-            $tamano=cc_format(filesize("{$rs["path_archivo"]}"),"kb") ;
-            echo "<br><br><h3>Tamaño Original ($tamano) </h3>" ;
-            echo "<button type='button' class='btn btn-default btn-sm' onclick=down_img_size(document.getElementById('original'))  title='disminuir tamaño imagen'><i class='fas fa-search-minus'></i></button>" ;
-            echo "<button type='button' class='btn btn-default btn-sm' onclick=up_img_size(document.getElementById('original')) title='aumentar tamaño imagen' ><i class='fas fa-search-plus'></i></button>" ;
-            echo "<button type='button' class='btn btn-danger btn-sm' onclick=js_href('../documentos/doc_borrar_original_ajax.php?id_documentos=$id_documento') title='borrar solo Original dejando las copias reducidas.\n Sirve para ahorrar espacio.' >Borrar solo Original</button>" ;
-            echo "<br><a href=\"{$rs["path_archivo"]}\" target='_blank' ><img id='original'  style='border:3px solid red;'  src=\"{$rs["path_archivo"]}\"></a>" ;
-        }
-        else{
-            echo "<br><br><h3> ORIGINAL NO ARCHIVADO </h3>" ;
-        }
+echo "<br><br><h3>Tamaño Medium ($tamano)</h3>" ;        
+echo "<button type='button' class='btn btn-default btn-sm' onclick=down_img_size(document.getElementById('medium'))  title='disminuir tamaño imagen'><i class='fas fa-search-minus'></i></button>" ;
+echo "<button type='button' class='btn btn-default btn-sm' onclick=up_img_size(document.getElementById('medium')) title='aumentar tamaño imagen' ><i class='fas fa-search-plus'></i></button>" ;
+echo "<br><a href=\"{$rs["path_archivo"]}_medium.jpg\" target='_blank' ><img id='medium'  style='border:3px solid red;'  src=\"{$rs["path_archivo"]}_medium.jpg\"></a>" ;
+
+
+//        $tamano=number_format(filesize("{$rs["path_archivo"]}_large.jpg")/1024,1,".",",") ;
+$tamano=cc_format(filesize("{$rs["path_archivo"]}_large.jpg"),"kb") ;
+echo "<br><br><h3>Tamaño Large ($tamano)</h3>" ;                
+echo "<button type='button' class='btn btn-default btn-sm' onclick=down_img_size(document.getElementById('large'))  title='disminuir tamaño imagen'><i class='fas fa-search-minus'></i></button>" ;
+echo "<button type='button' class='btn btn-default btn-sm' onclick=up_img_size(document.getElementById('large')) title='aumentar tamaño imagen' ><i class='fas fa-search-plus'></i></button>" ;
+echo "<br><a href=\"{$rs["path_archivo"]}_large.jpg\" target='_blank' ><img id='large'  style='border:3px solid red;'  src=\"{$rs["path_archivo"]}_large.jpg\"></a>" ;
+
+if (file_exists($rs["path_archivo"]))
+{    
+    $tamano=cc_format(filesize("{$rs["path_archivo"]}"),"kb") ;
+    echo "<br><br><h3>Tamaño Original ($tamano) </h3>" ;
+    echo "<button type='button' class='btn btn-default btn-sm' onclick=down_img_size(document.getElementById('original'))  title='disminuir tamaño imagen'><i class='fas fa-search-minus'></i></button>" ;
+    echo "<button type='button' class='btn btn-default btn-sm' onclick=up_img_size(document.getElementById('original')) title='aumentar tamaño imagen' ><i class='fas fa-search-plus'></i></button>" ;
+    echo "<button type='button' class='btn btn-danger btn-sm' onclick=js_href('../documentos/doc_borrar_original_ajax.php?id_documentos=$id_documento') title='borrar solo Original dejando las copias reducidas.\n Sirve para ahorrar espacio.' >Borrar solo Original</button>" ;
+    echo "<br><a href=\"{$rs["path_archivo"]}\" target='_blank' ><img id='original'  style='border:3px solid red;'  src=\"{$rs["path_archivo"]}\"></a>" ;
+}
+else{
+    echo "<br><br><h3> ORIGINAL NO ARCHIVADO </h3>" ;
+}
             
-        
 
 
  ?>

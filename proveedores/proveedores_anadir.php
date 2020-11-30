@@ -49,7 +49,7 @@ $sql="INSERT INTO `Proveedores` ( `id_c_coste`,proveedor, CIF,tipo_prov, `user` 
 $result=$Conn->query($sql);
           
  if ($result) //compruebo si se ha creado el cliente
-           {   $id_proveedor=Dfirst( "MAX(ID_PROVEEDORES)", "Proveedores", "id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
+           {   $id_proveedor=Dfirst( "MAX(ID_PROVEEDORES)", "Proveedores", " $where_c_coste " ) ; 
            
                 // creamos el CONCEPTO POR DEFECTO
                 $id_obra_gg = getVar("id_obra_gg") ;
@@ -75,7 +75,7 @@ $result=$Conn->query($sql);
                }
                // si venimos de la ficha de PERSONAL le cambiamos el proveedor aL ID_PERSONAL
                 if ($id_personal) {
-                $result_UPDATE=$Conn->query("UPDATE `PERSONAL` SET `id_proveedor_nomina` = $id_proveedor WHERE ID_PERSONAL=$id_personal" );
+                $result_UPDATE=$Conn->query("UPDATE `PERSONAL` SET `id_proveedor_nomina` = $id_proveedor WHERE ID_PERSONAL=$id_personal  AND $where_c_coste" );
                }
                // si venimos de la ficha de POF PROVEEDOR le cambiamos el proveedor aL ID_PERSONAL
                 if ($id_pof_proveedor) {
@@ -84,8 +84,12 @@ $result=$Conn->query($sql);
 
                 
 //	       echo  "Ir al proveedor <a href='../proveedores/proveedores_ficha.php?id_proveedor=$id_proveedor' title='ver proveedor'> $proveedor</a>" ;
-               echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../proveedores/proveedores_ficha.php?id_proveedor=$id_proveedor'>" ;
-                   
+                if ($id_personal) {
+                    echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../personal/personal_ficha.php?id_personal=$id_personal'>" ;
+                }
+                else {
+                    echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../proveedores/proveedores_ficha.php?id_proveedor=$id_proveedor'>" ;
+                }   
 	   }
 	    else
 	   {

@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo = 'Personal listado';
+$titulo = 'PERSONAL LISTADO';
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
@@ -109,7 +109,11 @@ $formats["BAJA"] = "boolean" ;
 //$tooltips["conc"] = "Indica si el mov. bancario está conciliado" ;
 //$tooltips["Banco_Neg"] = "Indica el banco o línea de descuento donde está negociada" ;
 
-echo   "<a class='btn btn-link btn-lg' href='../personal/personal_anadir.php' target='_blank' ><i class='fas fa-plus-circle'></i> Añadir Personal (empleado)</a>" ; // BOTON AÑADIR FACTURA
+
+
+//echo   "<a class='btn btn-link btn-lg' href='../personal/personal_anadir.php' target='_blank' ><i class='fas fa-plus-circle'></i> Añadir Personal OLD (empleado)</a>" ; // BOTON AÑADIR FACTURA
+
+echo   "<a class='btn btn-link btn-lg' href='#' onclick=\" js_href2( '../personal/personal_anadir.php?v=1',1,'' ,'PROMPT_Apellidos y Nombre','' , '',''  ) \" ><i class='fas fa-plus-circle'></i> Añadir Personal (empleado)</a>" ; // BOTON AÑADIR FACTURA
 
 $titulo="PERSONAL CONTRATADO ({$result->num_rows})";
 $msg_tabla_vacia="No hay.";

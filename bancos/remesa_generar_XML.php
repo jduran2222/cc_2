@@ -34,7 +34,7 @@ if ($rs=DRow("Remesas_View","id_remesa=$id_remesa AND $where_c_coste"))
     $f_vto=$rs["f_vto"];   
     
     
-    // firmamos de forma uatomática la Remesa para evitar duplicar pagos por error
+    // firmamos de forma automática la Remesa para evitar duplicar pagos por error
      $sql_update= "UPDATE `Remesas` SET firmada='1'  WHERE  id_remesa=$id_remesa  ; "  ;
      $Conn->query($sql_update) ;
 

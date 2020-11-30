@@ -234,6 +234,7 @@ if ($listado_global)
 } 
 ?>
 <button   onclick="getElementById('agrupar').value = 'conceptos'; document.getElementById('form1').submit();">conceptos</button>
+<button   onclick="getElementById('agrupar').value = 'conceptos2'; document.getElementById('form1').submit();">concepto2</button>
 <button   onclick="getElementById('agrupar').value = 'meses'; document.getElementById('form1').submit();">meses</button>
 <button   onclick="getElementById('agrupar').value = 'trimestres'; document.getElementById('form1').submit();">trimestres</button>
 <button   onclick="getElementById('agrupar').value = 'annos'; document.getElementById('form1').submit();">años</button>
@@ -367,11 +368,11 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
     break;
     case "movimientos":
      if ($listado_global)                // Estamos en pantalla de LISTADO GLOBAL (todas las cuentas CCC )
-      { $sql="SELECT $select numero,id_mov_banco ,id_remesa,id_nota_gastos ,fecha_banco,Concepto,cargo,ingreso,conc,observaciones,"
+      { $sql="SELECT $select numero,id_mov_banco ,id_remesa,id_nota_gastos ,fecha_banco,Concepto,Concepto2,cargo,ingreso,conc,observaciones,"
               . " id_proveedor,ID_CLIENTE, PROVEEDOR,ID_FRA_PROV,N_FRA_PROV,CLIENTE,ID_FRA_CLI,N_FRA_CLI,remesa, cuenta "
               . " FROM MOV_BANCOS_View WHERE $where  ORDER BY fecha_banco ,numero  " ;}
       else
-      { $sql="SELECT $select numero,id_mov_banco ,id_remesa,id_nota_gastos ,fecha_banco,Concepto,cargo,ingreso,conc,observaciones,"
+      { $sql="SELECT $select numero,id_mov_banco ,id_remesa,id_nota_gastos ,fecha_banco,Concepto,Concepto2,cargo,ingreso,conc,observaciones,"
               . "id_proveedor,ID_CLIENTE, PROVEEDOR,ID_FRA_PROV,N_FRA_PROV,CLIENTE,ID_FRA_CLI,N_FRA_CLI,remesa, cuenta "
               . " FROM MOV_BANCOS_View WHERE $where  ORDER BY fecha_banco ,numero  " ;}    
       
@@ -379,10 +380,10 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
       $actions_row["delete_link"]="1";
 
     break;
-    case "bancos":
+    case "bancos": 
      $sql="SELECT  id_cta_banco,id_mov_banco,numero,fecha_banco,Concepto,cargo ,ingreso,observaciones,conc FROM MOV_BANCOS_View WHERE $where  ORDER BY  id_cta_banco,fecha_banco  " ;      
      //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
-     $sql_T="SELECT 'Suma' as a,'' as b,,'' as b1, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
+     $sql_T="SELECT 'Suma' as a,'' as b1, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
      $sql_S="SELECT id_cta_banco,tipo,banco, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where  GROUP BY id_cta_banco ORDER BY banco  " ;      
      $id_agrupamiento="id_cta_banco" ;
      break;
@@ -399,6 +400,13 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
      break;
     case "conceptos":
      $sql="SELECT  id_mov_banco, Concepto,count(id_mov_banco) as movs, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso FROM MOV_BANCOS_View WHERE $where  GROUP BY Concepto ORDER BY Concepto  " ;      
+     //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
+     $sql_T="SELECT '' as b, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
+//     $sql_S="SELECT id_cta_banco,banco, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where  GROUP BY Concepto ORDER BY Concepto  " ;      
+//     $id_agrupamiento="Concepto" ; 
+     break;
+    case "conceptos2":
+     $sql="SELECT  id_mov_banco, Concepto2,count(id_mov_banco) as movs, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso FROM MOV_BANCOS_View WHERE $where  GROUP BY Concepto2 ORDER BY Concepto2  " ;      
      //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
      $sql_T="SELECT '' as b, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
 //     $sql_S="SELECT id_cta_banco,banco, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where  GROUP BY Concepto ORDER BY Concepto  " ;      

@@ -237,7 +237,7 @@ readfile($file_xsig);
     
 }else
 {
-  echo  "ERROR. NO EXISTEN LOS FICHEROS .PEM DE CLAVE PRIVADA Y CLAVE PUBLICA" ;
+  echo cc_page_error( "ERROR. NO EXISTEN LOS FICHEROS .PEM DE CLAVE PRIVADA Y CLAVE PUBLICA<br>Vaya a 'Mi empresa' suba los ficheros PEM y asignelos a los campos 'doc clave privada' y 'doc clave publica'") ;
 }
 
 

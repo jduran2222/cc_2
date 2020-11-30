@@ -268,7 +268,7 @@ if (!$listado_global)
  
  <a class="btn btn-link btn-xs noprint" title="va al listado de relaciones valoradas de la Obra" href="../obras/obras_prod.php?_m=$_m&id_obra=<?php echo $id_obra;?>" ><span class="glyphicon glyphicon-arrow-left"></span> Volver a Producciones</a>    
  <a class="btn btn-link btn-xs noprint" title="imprimir" href=#  onclick="window.print();"><i class="fas fa-print"></i> Imprimir pantalla</a>
- <a class="btn btn-link btn-xs noprint" title="ver datos generales de la Produccion actual" target='_blank' href="../obras/prod_ficha.php?_m=$_m&id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><span class="glyphicon glyphicon-th-list"></span> ficha Produccion</a>    
+ <a class="btn btn-link btn-xs noprint" title="ver datos generales de la Relacion Valorada actual" target='_blank' href="../obras/prod_ficha.php?_m=$_m&id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><i class="far fa-calendar-alt"></i> ficha Rel. Valorada</a>    
  <a class="btn btn-link btn-xs noprint" title="Crea una Certificación con el importe de esta Relación Valorada" href="#" onclick="js_href('<?php echo $href; ?>' )" > Certificar la RV</a>    
  
 <script>

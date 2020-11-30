@@ -343,8 +343,10 @@ if ($id_fra_prov_duplicada)
 <?php            // ----- div VALES CONCILIADOS Y CARGOS A OBRA tabla.php   -----
 
 // <div de CARGAR A OBRA y otros DIV una vez rellena la factura_prov
-if ($factura_registrada )     // si ID_PROVEEDOR es diferente a <proveedor pted definir> pintamos el DIV CARGAR A OBRA
+if (!$factura_registrada )     // si ID_PROVEEDOR es diferente a <proveedor pted definir> pintamos el DIV CARGAR A OBRA
 {    
+    echo "<h1 style='color:red;'>FACTURA NO REGISTRADA</h1> " ;
+}    
 
 
 $sql="SELECT ID_VALE,FECHA, ID_OBRA, NOMBRE_OBRA, REF,importe,path_archivo as pdf , Observaciones FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ORDER BY FECHA ";
@@ -360,7 +362,7 @@ $formats["importe"]='moneda';
 $formats["pdf"]='pdf_50';
 
 $links["FECHA"] = ["albaran_proveedor.php?id_vale=", "ID_VALE", "ver Albarán", "formato_sub"] ;
-$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
+$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA", "ver Obra"] ;
 
 $aligns["importe"] = "right" ;
 $aligns["Pdte_conciliar"] = "right" ;
@@ -487,7 +489,7 @@ $formats["pdf"]='pdf_50';
 
 
 $links["FECHA"] = ["albaran_proveedor.php?id_vale=", "ID_VALE", "ver vale", "formato_sub"] ;
-$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA", '', 'formato_sub'] ;
+$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA", 'ver Obra', 'formato_sub'] ;
 
 $aligns["importe"] = "right" ;
 $aligns["Pdte_conciliar"] = "right" ;
@@ -500,10 +502,14 @@ $onclick1_VARIABLE1_="ID_VALE" ;           // paso de variables para dar instruc
          ."WHERE  ID_VALE=_VARIABLE1_ ; " ;
 
   $sql_update=encrypt2($sql_update) ;
-
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el ALBARAN  a la factura' href=\"../include/sql.php?code=1&variable1=_VARIABLE1_&sql=$sql_update \" >conciliar</a> ";
-$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el ALBARAN  a la factura' onclick='js_href(\"../include/sql.php?code=1&variable1=_VARIABLE1_&sql=$sql_update \" )' >conciliar</a> ";
-$actions_row["id"]="ID_VALE";
+  
+  
+$tabla_update="VALES" ;
+$id_update="ID_VALE" ;
+$actions_row=[];
+$actions_row["id"]="ID_VALE"; 
+$actions_row["delete_link"]="1";
+$actions_row["onclick1_link"]="<br><a class='btn btn-warning btn-xs' target='_blank' title='concilia el ALBARAN  a la factura' onclick='js_href(\"../include/sql.php?code=1&variable1=_VARIABLE1_&sql=$sql_update \" )' >conciliar</a> ";
   
 $num_vales_sin_conc= $result->num_rows;
 
@@ -741,17 +747,7 @@ $tabla_expandida= 0;
  require("../include/tabla.php"); echo $TABLE ;  // PAGOS
  
  ?>
-	
 
-<?php
-
-}       // FIN DEL IF QUE NO PINTA <DIVs> SI NO ESTA ACTUALIZADO AL PROVEEDOR DE LA FACTURA
-else
-{
-    echo "<h1 style='color:red;'>FACTURA NO REGISTRADA</h1> " ;
-}    
-
-?>
 </div>	 
 
 

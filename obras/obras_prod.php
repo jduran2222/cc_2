@@ -43,7 +43,7 @@ require_once("../obras/obras_menutop_r.php");
 
 <script>
 function add_produccion(id_obra) {
-    var nuevo_valor=window.prompt("Producción nueva: " );
+    var nuevo_valor=window.prompt("Título de la Rev. Valorada nueva: " );
 //    alert("el nuevo valor es: "+valor) ;
    if (!(nuevo_valor === null || nuevo_valor === ""))
    { 
@@ -304,6 +304,9 @@ $Conn->close();
 ?>
 </div>
                 </div>
+     <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

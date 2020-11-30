@@ -527,9 +527,16 @@ $(document).ready(function() {
     
 function ver_udo() {
     
-var id_concepto=document.getElementById("id_udo").value ;
- 
+var id_udo=document.getElementById("id_udo").value ;
+
+if (!(id_udo==0)) 
+{
 window.open('../obras/udo_prod.php?id_udo='+id_udo, '_blank');
+}
+else
+{
+   alert("Seleccione una Unidad de obra (UDO) de la lista desplegable previamente") 
+}   
 
 return ;
  }
@@ -559,7 +566,7 @@ return ;
       <input type="text" id="observaciones_mq" size="10" value="" placeholder="Observaciones"  /> -->
       
       <a class='btn btn-link btn-lg' href='#' onclick='pof_add_subobra(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir conceptos de la SubObra</a>
-      <a class='btn btn-link btn-lg' href='#' onclick="window.open('../obras/subobra_ficha.php?id_subobra='+document.getElementById('id_subobra').value); "> ir a SubObra</a>
+      <a class='btn btn-link btn-xs' href='#' onclick="window.open('../obras/subobra_ficha.php?id_subobra='+document.getElementById('id_subobra').value); "> ver SubObra</a>
     </div>
 
 

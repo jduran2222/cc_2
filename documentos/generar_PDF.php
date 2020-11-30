@@ -9,6 +9,8 @@ $array_plantilla_json=isset($_GET["array_plantilla_json"])?  $_GET["array_planti
 $array_plantilla=json_decode($array_plantilla_json, true) ;        // decodificamos el JSON 
 
 
+if(!$plantilla_html){  die(cc_page_error("ERROR PLANTILA NO SELECCIONADA")) ;}
+
 $ext=isset($_GET["ext"])? $_GET["ext"] : (isset($_POST["ext"])? $_POST["ext"] : "");
 $tipo=isset($_GET["tipo"])? $_GET["tipo"] : (($ext=='.doc')?  "word" : (($ext=='.xls')?  "excel" : "" ) );
 //$tipo=$_GET["tipo"];

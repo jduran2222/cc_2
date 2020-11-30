@@ -101,7 +101,7 @@ if ($filtro<>"")
  
   
  // buscamos PROVEEDORES
- $result=$Conn->query("SELECT ID_PROVEEDORES AS ID,PROVEEDOR AS TEXTO1, RAZON_SOCIAL AS TEXTO2,CIF AS TEXTO3  FROM Proveedores WHERE  CONCAT_WS(' - ','PROVEEDOR' ,PROVEEDOR,RAZON_SOCIAL, CIF) LIKE '%$filtro%' AND $where_c_coste ORDER BY ID_PROVEEDORES DESC LIMIT $limite");
+ $result=$Conn->query("SELECT ID_PROVEEDORES AS ID,PROVEEDOR AS TEXTO1, RAZON_SOCIAL AS TEXTO2,CIF AS TEXTO3  FROM Proveedores WHERE  CONCAT_WS(' - ','@PROVEEDOR' ,PROVEEDOR,RAZON_SOCIAL, CIF) LIKE '%$filtro%' AND $where_c_coste ORDER BY ID_PROVEEDORES DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -119,7 +119,7 @@ if ($filtro<>"")
 // buscamos Estudios_de_Obra 
 if ($_SESSION["permiso_licitacion"])    
 {
-    $result=$Conn->query("SELECT ID_ESTUDIO,NUMERO,NOMBRE,`PLAZO ENTREGA` FROM Estudios_view WHERE  CONCAT('ESTUDIO.',NUMERO,'-',NOMBRE,COALESCE(`Nombre Completo`,'')) LIKE '%$filtro%' AND $where_c_coste ORDER BY NUMERO DESC LIMIT $limite");
+    $result=$Conn->query("SELECT ID_ESTUDIO,NUMERO,NOMBRE,`PLAZO ENTREGA` FROM Estudios_view WHERE  CONCAT('@ESTUDIO',NUMERO,'-',NOMBRE,COALESCE(`Nombre Completo`,'')) LIKE '%$filtro%' AND $where_c_coste ORDER BY NUMERO DESC LIMIT $limite");
  if ($result->num_rows > 0)
  {  
      $c=0 ;
@@ -154,7 +154,7 @@ if ($_SESSION["permiso_licitacion"])
 if ($_SESSION["permiso_obras"])    
 {
  $result=$Conn->query("SELECT ID_OBRA AS ID,'' AS NUMERO, NOMBRE_OBRA AS NOMBRE,FECHA_INICIO AS FECHA  FROM OBRAS "
-         . " WHERE (tipo_subcentro='O' OR tipo_subcentro='M' OR tipo_subcentro='G') AND  CONCAT('OBRA.',NOMBRE_OBRA,COALESCE(NOMBRE_COMPLETO,'')) LIKE '%$filtro%' "
+         . " WHERE (tipo_subcentro='O' OR tipo_subcentro='M' OR tipo_subcentro='G') AND  CONCAT('@OBRA.',NOMBRE_OBRA,COALESCE(NOMBRE_COMPLETO,'')) LIKE '%$filtro%' "
          . " AND $where_c_coste ORDER BY NOMBRE_OBRA DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
@@ -201,7 +201,7 @@ if ($_SESSION["permiso_obras"])
     
  }
  // buscamos OBRAS -> POF 
- $result=$Conn->query("SELECT *  FROM POF_lista WHERE CONCAT('pof',NOMBRE_OBRA,'-',NUMERO,'-',NOMBRE_POF) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
+ $result=$Conn->query("SELECT *  FROM POF_lista WHERE CONCAT('@pof',NOMBRE_OBRA,'-',NUMERO,'-',NOMBRE_POF) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -218,7 +218,7 @@ if ($_SESSION["permiso_obras"])
 
  // buscamos OBRAS -> POF -> PROVEEDOR
  $result=$Conn->query("SELECT *,CONCAT('<b>',NOMBRE_OBRA,'</b> pof:<b> ',NUMERO,'-',NOMBRE_POF,' </b>prov: <b>',NUM,'-',PROVEEDOR,'</b>') AS filtro  "
-         . " FROM POF_prov_View WHERE CONCAT('pof_prov',NOMBRE_OBRA,NUMERO,'-',NOMBRE_POF,'PROVEEDOR',NUM,'-',PROVEEDOR) LIKE '%$filtro%' AND $where_c_coste "
+         . " FROM POF_prov_View WHERE CONCAT('@pof_prov',NOMBRE_OBRA,NUMERO,'-',NOMBRE_POF,'PROVEEDOR',NUM,'-',PROVEEDOR) LIKE '%$filtro%' AND $where_c_coste "
          . " ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
@@ -235,7 +235,7 @@ if ($_SESSION["permiso_obras"])
     
  }
  // buscamos OBRAS -> SUBCONTRATOS 
- $result=$Conn->query("SELECT *,CONCAT('subcontrato ',NOMBRE_OBRA,'/',subcontrato,'/',PROVEEDOR) AS leyenda  FROM Subcontratos_todos_View WHERE CONCAT('subcontrato ',NOMBRE_OBRA,'/',subcontrato,'/',PROVEEDOR) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
+ $result=$Conn->query("SELECT *,CONCAT('@subcontrato ',NOMBRE_OBRA,'/',subcontrato,'/',PROVEEDOR) AS leyenda  FROM Subcontratos_todos_View WHERE CONCAT('@subcontrato ',NOMBRE_OBRA,'/',subcontrato,'/',PROVEEDOR) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -250,8 +250,8 @@ if ($_SESSION["permiso_obras"])
     
  }
 // buscamos UDOS
- $result=$Conn->query("SELECT ID_UDO,CONCAT_WS(' - ',MID(NOMBRE_OBRA,1,12),CAPITULO,PRECIO,' € <b>',UDO,'</b>','</td></tr><tr><td>',TEXTO_UDO) AS filtro "
-         . "FROM Udos_View WHERE CONCAT(NOMBRE_OBRA,UDO,IFNULL(TEXTO_UDO,'')) LIKE '%$filtro%' AND $where_c_coste ORDER BY ID_OBRA DESC LIMIT $limite");
+ $result=$Conn->query("SELECT ID_UDO,CONCAT_WS(' - ','@udo',MID(NOMBRE_OBRA,1,12),CAPITULO,PRECIO,' € <b>',UDO,'</b>','</td></tr><tr><td>',TEXTO_UDO) AS filtro "
+         . "FROM Udos_View WHERE CONCAT('@udo',NOMBRE_OBRA,UDO,IFNULL(TEXTO_UDO,'')) LIKE '%$filtro%' AND $where_c_coste ORDER BY ID_OBRA DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -270,7 +270,7 @@ if ($_SESSION["permiso_obras"])
 if ($_SESSION["permiso_administracion"])    
 {
 // buscamos REMESAS DE PAGOS
- $result=$Conn->query("SELECT *  FROM Remesas_View WHERE CONCAT('REMESA ',remesa) LIKE '%$filtro%' AND $where_c_coste ORDER BY fecha_creacion DESC LIMIT $limite");
+ $result=$Conn->query("SELECT *  FROM Remesas_View WHERE CONCAT('@REMESA ',remesa) LIKE '%$filtro%' AND $where_c_coste ORDER BY fecha_creacion DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -285,7 +285,7 @@ if ($_SESSION["permiso_administracion"])
     
  }
   // buscamos CLIENTES
- $result=$Conn->query("SELECT ID_CLIENTE AS ID,CLIENTE AS TEXTO1, NOMBRE_FISCAL AS TEXTO2,CIF AS TEXTO3  FROM Clientes WHERE  CONCAT_WS(' - ' ,'CLIENTE',CLIENTE,NOMBRE_FISCAL, CIF) LIKE '%$filtro%' AND $where_c_coste ORDER BY ID_CLIENTE DESC LIMIT $limite");
+ $result=$Conn->query("SELECT ID_CLIENTE AS ID,CLIENTE AS TEXTO1, NOMBRE_FISCAL AS TEXTO2,CIF AS TEXTO3  FROM Clientes WHERE  CONCAT_WS(' - ' ,'@CLIENTE',CLIENTE,NOMBRE_FISCAL, CIF) LIKE '%$filtro%' AND $where_c_coste ORDER BY ID_CLIENTE DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -301,8 +301,8 @@ if ($_SESSION["permiso_administracion"])
  }
  
  // buscamos FRAS CLIENTES
- $result=$Conn->query("SELECT ID_FRA AS ID,CONCAT_WS(' - ','fra_cli' ,NOMBRE_OBRA,CLIENTE,N_FRA,IMPORTE_IVA) AS TEXTO1, CLIENTE AS TEXTO2,CONCEPTO AS TEXTO3"
-         . "  FROM Facturas_View WHERE  CONCAT_WS(' - ','fra_cli' ,NOMBRE_OBRA,CLIENTE,N_FRA,IMPORTE_IVA) LIKE '%$filtro%' AND $where_c_coste ORDER BY fecha_emision DESC LIMIT $limite");
+ $result=$Conn->query("SELECT ID_FRA AS ID,CONCAT_WS(' - ','@fra_cli' ,NOMBRE_OBRA,CLIENTE,N_FRA,IMPORTE_IVA) AS TEXTO1, CLIENTE AS TEXTO2,CONCEPTO AS TEXTO3"
+         . "  FROM Facturas_View WHERE  CONCAT_WS(' - ','@fra_cli' ,NOMBRE_OBRA,CLIENTE,N_FRA,IMPORTE_IVA) LIKE '%$filtro%' AND $where_c_coste ORDER BY fecha_emision DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -320,7 +320,7 @@ if ($_SESSION["permiso_administracion"])
  if ($_SESSION["permiso_bancos"])    
 {
  // buscamos BANCOS
- $result=$Conn->query("SELECT id_cta_banco AS ID,Banco AS TEXTO1, N_Cta AS TEXTO2,f_vto AS TEXTO3  FROM ctas_bancos WHERE  CONCAT_WS(' - ','CCC IBAN' ,Banco,N_Cta) LIKE '%$filtro%' AND $where_c_coste ORDER BY Banco LIMIT $limite");
+ $result=$Conn->query("SELECT id_cta_banco AS ID,Banco AS TEXTO1, N_Cta AS TEXTO2,f_vto AS TEXTO3  FROM ctas_bancos WHERE  CONCAT_WS(' - ','@banco' ,Banco,N_Cta) LIKE '%$filtro%' AND $where_c_coste ORDER BY Banco LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -336,7 +336,7 @@ if ($_SESSION["permiso_administracion"])
  }
 } 
  // buscamos PERSONAL
- $result=$Conn->query("SELECT ID_PERSONAL AS ID,NOMBRE AS TEXTO1, DNI AS TEXTO2,F_ALTA AS TEXTO3  FROM PERSONAL WHERE  CONCAT_WS(' - ','PERSONAL' ,NOMBRE,DNI) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE LIMIT $limite");
+ $result=$Conn->query("SELECT ID_PERSONAL AS ID,NOMBRE AS TEXTO1, DNI AS TEXTO2,F_ALTA AS TEXTO3  FROM PERSONAL WHERE  CONCAT_WS(' - ','@PERSONAL' ,NOMBRE,DNI) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -372,7 +372,7 @@ if ($_SESSION["permiso_administracion"])
  
 
  // buscamos Proveedores BD
- $result=$Conn->query("SELECT ID_PROVEEDOR AS ID,NOMBRE AS TEXTO1,Localidad  AS TEXTO3,TIPO AS TEXTO2  FROM ProveedoresBD WHERE  CONCAT_WS(' - ' ,NOMBRE,TIPO,Localidad) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE LIMIT $limite");
+ $result=$Conn->query("SELECT ID_PROVEEDOR AS ID,NOMBRE AS TEXTO1,Localidad  AS TEXTO3,TIPO AS TEXTO2  FROM ProveedoresBD WHERE  CONCAT_WS(' - ' ,'@bdproveedor',NOMBRE,TIPO,Localidad) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -389,13 +389,10 @@ if ($_SESSION["permiso_administracion"])
  
  
 // buscamos CONCEPTOS  , CONCEPTO PROVEEDOR -> Concepto
- $result=$Conn->query("SELECT ID_CONCEPTO,CONCAT('CONCEPTO ',MID(PROVEEDOR,1,12),' ',COSTE,' € <b>',CONCEPTO,'</b> ',MID(NOMBRE_OBRA,1,12),' (',FORMAT(SUM(IMPORTE),0),'€ en total)') AS filtro, "
-         . "YEAR(Fecha_Creacion) as Anno  FROM ConsultaGastos_View WHERE CONCAT_WS('.','CONCEPTO',PROVEEDOR,CONCEPTO) LIKE '%$filtro%' AND $where_c_coste GROUP BY ID_CONCEPTO ORDER BY Fecha_Creacion DESC LIMIT $limite");
+ $result=$Conn->query("SELECT ID_CONCEPTO,CONCAT('@CONCEPTO ',MID(PROVEEDOR,1,12),' ',COSTE,' € <b>',CONCEPTO,'</b> ',MID(NOMBRE_OBRA,1,12),' (',FORMAT(SUM(IMPORTE),0),'€ en total)') AS filtro, "
+         . "YEAR(Fecha_Creacion) as Anno  FROM ConsultaGastos_View WHERE CONCAT_WS('.','@CONCEPTO',PROVEEDOR,CONCEPTO) LIKE '%$filtro%' AND $where_c_coste GROUP BY ID_CONCEPTO ORDER BY Fecha_Creacion DESC LIMIT $limite");
  
-// $result=$Conn->query("SELECT ID_CONCEPTO,CONCAT('CONCEPTO ',MID(PROVEEDOR,1,12),' ',COSTE,' € <b>',CONCEPTO,'</b> ',MID(NOMBRE_OBRA,1,12),' (',FORMAT(SUM(IMPORTE),0),'€ en total)') AS filtro, "
-//         . "YEAR(Fecha_Creacion) as anno  FROM ConsultaGastos_View WHERE "
-//         . " CONCAT_WS('.','CONCEPTO',PROVEEDOR,CONCEPTO) REGEXP  '(pvc)|(315)' AND $where_c_coste GROUP BY ID_CONCEPTO ORDER BY Fecha_Creacion DESC LIMIT $limite");
-   
+
  if ($result->num_rows > 0)
  {  
      $c=0 ;
@@ -411,8 +408,8 @@ if ($_SESSION["permiso_administracion"])
  }
 
 // buscamos DOCUMENTOS
- $result=$Conn->query("SELECT id_documento,CONCAT_WS(' - ',tipo_entidad,nombre_archivo,documento) AS filtro "
-         . "FROM Documentos WHERE CONCAT_WS(' - ',tipo_entidad,nombre_archivo,documento) LIKE '%$filtro%' AND $where_c_coste ORDER BY fecha_creacion DESC LIMIT $limite");
+ $result=$Conn->query("SELECT id_documento,CONCAT_WS(' - ','@documento',tipo_entidad,nombre_archivo,documento) AS filtro "
+         . "FROM Documentos WHERE CONCAT_WS(' - ','@documento',tipo_entidad,nombre_archivo,documento) LIKE '%$filtro%' AND $where_c_coste ORDER BY fecha_creacion DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -429,7 +426,7 @@ if ($_SESSION["permiso_administracion"])
  }
 
  // buscamos VEHICULOS
- $result=$Conn->query("SELECT ID_VEHICULO AS ID,MATRICULA AS TEXTO1, MODELO AS TEXTO2,RENTACAR AS TEXTO3  FROM VEHICULOS WHERE  CONCAT_WS(' - ' ,MATRICULA,MODELO,RENTACAR) LIKE '%$filtro%' AND $where_c_coste ORDER BY MATRICULA LIMIT $limite");
+ $result=$Conn->query("SELECT ID_VEHICULO AS ID,MATRICULA AS TEXTO1, MODELO AS TEXTO2,RENTACAR AS TEXTO3  FROM VEHICULOS WHERE  CONCAT_WS(' - ' ,'@vehiculo',MATRICULA,MODELO,RENTACAR) LIKE '%$filtro%' AND $where_c_coste ORDER BY MATRICULA LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  

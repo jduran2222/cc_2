@@ -323,8 +323,8 @@ if ($result->num_rows > 0)
            }
            else
            {
-              echo "<tr><td>ERROR EN PROYECTO </td><td style='color:red;font-weight: bold;' title='Diferencia entre el Presupuesto del proyecto y en del Contrato'>".cc_format($importe-$pec_proyecto_iva, 'moneda'). "</td></tr>" ;                  
-              echo "<tr><td>RATIO EN PROYECTO </td><td>".cc_format( $pec_proyecto_iva? ($importe/$pec_proyecto_iva) : 0, 'porcentaje'). "</td></tr>" ;                  
+              echo "<tr><td>ERROR EN PROYECTO <small>(Diferencia entre el Presupuesto del proyecto y en del Contrato)</small></td><td style='color:red;font-weight: bold;' title='Diferencia entre el Presupuesto del proyecto y en del Contrato'>".cc_format($importe-$pec_proyecto_iva, 'moneda'). "</td></tr>" ;                  
+              echo "<tr><td>PORCENTAJE DE ERROR EN PROYECTO </td><td>".cc_format( $pec_proyecto_iva? ($importe/$pec_proyecto_iva) : 0, 'porcentaje'). "</td></tr>" ;                  
            }
                
               echo "</table>" ;                  

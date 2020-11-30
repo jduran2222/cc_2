@@ -140,6 +140,26 @@ else { require_once("../estudios/estudios_menutop_r.php"); }
       
       
 	
+	<!--  BOTONES ACCIONES  -->
+	
+<div class="right2">
+	
+
+<?php 
+
+
+// Actualización tipo obra
+$disable_adjudicar= $id_obra ? "": "disabled" ;
+
+$sql_update= "UPDATE `OBRAS` SET tipo_subcentro='O'  WHERE ID_OBRA=$id_obra AND $where_c_coste ; "  ;
+$href='../include/sql.php?sql=' . encrypt2($sql_update)  ;    
+echo "<br><a class='btn btn-primary btn-xs noprint' href='#'  "
+     . " onclick=\"js_href('$href' ,'1' )\"   title='Adjudica la licitación actual, pasando a subcentro tipo ESTUDIO a tipo OBRA'>Adjudicar la licitación</a>" ;
+      
+
+ ?>
+	 
+</div>
 	<!--  fin ficha estudio  -->
 	
 <div class="right2">

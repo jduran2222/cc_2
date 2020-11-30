@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo_pagina="PROD. " . Dfirst("PRODUCCION","Prod_view", "ID_PRODUCCION={$_GET["id_produccion"]} AND $where_c_coste"  ) ;
+$titulo_pagina="RV ficha. " . Dfirst("PRODUCCION","Prod_view", "ID_PRODUCCION={$_GET["id_produccion"]} AND $where_c_coste"  ) ;
 $titulo = $titulo_pagina;
 
 //INICIO
@@ -53,8 +53,8 @@ echo '<br><br><br><br><br>';
   $titulo="RELACIÓN VALORADA" ;
   
 
-
-$tooltips["OPC_DEDUCIR"] = "OPCIÓN 1: Se deduce la producción CERT_ANTERIOR en el resumen de Certificación\nOPCIÓN 2: Se deduce el importe del campo A_DEDUCIR" ;
+// usamos el sistema claves_db para este tooltips
+//$tooltips["OPC_DEDUCIR"] = "OPCIÓN 1: Se deduce la Rel. valorada CERT_ANTERIOR en el resumen de Certificación   &#10;  \r\n OPCIÓN 2: Se deduce el importe del campo A_DEDUCIR" ;
 
   
 $selects["CERT_ANTERIOR"]=["ID_PRODUCCION","PRODUCCION","Prod_view","../obras/prod_anadir_form.php","../obras/obras_prod_detalle.php?id_obra=$id_obra&id_produccion=","CERT_ANTERIOR","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea
@@ -122,6 +122,9 @@ $Conn->close();
 </div>
 
                 </div>
+                      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

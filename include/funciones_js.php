@@ -78,15 +78,16 @@ function carga_ajax(id,href)
 
 
  
- // hacmos un href SIN AJAX 
+ // hacemos un href SIN AJAX 
 function js_href2( href,reload, msg, var1, var2 , var1_prompt_default, var2_prompt_default  ) { 
    //valores por defecto
-     reload = reload || 1  ;   // por defecto refrescamos
-     msg = msg || ""     ;        // por defecto no hay msg
-     var1 = var1 || ""   ;             // var 1  VARIABLE a incorporar al link
-     var2 = var2 || ""   ;        // var 2
-     var1_prompt_default = var1_prompt_default || ""   ;             // var 1  VARIABLE a incorporar al link
-     var2_prompt_default = var2_prompt_default || ""   ;        // var 2
+   // href  :  link a realizar con window.open()
+     reload = reload || 1  ;   // 0 o 1 indica si hay que REFRESCAR. por defecto refrescamos
+     msg = msg || ""     ;        // Mensaje informando por defecto no hay msg
+     var1 = var1 || ""   ;             // var1  VARIABLE a incorporar al link, si empieza por PROMPT_MSG pregunta al usuario
+     var2 = var2 || ""   ;        // var2         IDEM
+     var1_prompt_default = var1_prompt_default || ""   ;             // var1 valor por defecto a mostrar en el PROMPT
+     var2_prompt_default = var2_prompt_default || ""   ;        //   IDEM
      
 // ANULAMOS ESTE SISTEMA confuso. usamos la sustitucion de _VARIABLEX_ en el propio javascript
         // 

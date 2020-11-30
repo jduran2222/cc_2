@@ -81,9 +81,9 @@ $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
   $etiquetas["BAJA"]= ["Baja laboral","indica si el trabajador está de Alta o Baja actualmente en la empresa"] ;
 //  $etiqueta["BAJA"]="Baja laboral" ;
 
-  
+  if ($result->num_rows > 0) {                        // hacemos el if para evitar mostrar un error si la ficha o la consulta NO EXISTE
   $plantilla_get_url= "&" . http_build_query($rs) ;
-  
+  }
   ?>
   
                   
