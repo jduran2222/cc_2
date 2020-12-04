@@ -2,7 +2,6 @@
 require_once("../include/session.php"); 
 $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
 
- //echo "El filtro es:{$_GET["filtro"]}";
 
 $id_obra=$_GET["id_obra"]  ;
 $id_produccion=$_GET["id_produccion"]  ;
@@ -10,8 +9,6 @@ $id_produccion=$_GET["id_produccion"]  ;
 require_once("../../conexion.php");
 require_once("../include/funciones.php");
  
-
-//echo "JUAN DURAN";
 
 if ($id_produccion=Dfirst("ID_PRODUCCION", 'Prod_view', "ID_OBRA=$id_obra AND ID_PRODUCCION=$id_produccion AND $where_c_coste")) // confirm COHERENCIA d DATOS
 {

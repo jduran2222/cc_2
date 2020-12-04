@@ -41,7 +41,7 @@ $content_wd = "" ; // inicializo el contenedor de todo el widget
 
 
 $result_wd=$Conn->query($sql="SELECT id_documento, documento,nombre_archivo, path_archivo FROM Documentos "
-        . " WHERE tipo_entidad='$tipo_entidad' AND id_entidad=$id_entidad AND $where_c_coste ORDER BY orden, id_documento");
+        . " WHERE tipo_entidad='$tipo_entidad' AND id_entidad='$id_entidad' AND $where_c_coste ORDER BY orden, id_documento");
 
 //$content_wd .= "<h2>Documentos ({$result_wd->num_rows})</h2>" ;
 

@@ -53,7 +53,7 @@ require_once("../include/funciones.php");
 
 
 
-   $partes_hoy_html .="<br><a target='_blank' class='btn btn-link' style='font-size: 20px;width:100%; height:60px;' "
+   $partes_hoy_html .="<br><a target='_blank' class='btn btn-link btn-xs'  "
                    . "  href='../personal/parte_anadir_form_app.php'  ><i class='fas fa-plus-circle'></i> añadir Parte</a>"
                       . "" ;
 

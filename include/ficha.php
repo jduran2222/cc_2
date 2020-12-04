@@ -150,6 +150,13 @@ a:hover + .box_wiki,.box_wiki:hover{
  require_once("../include/funciones_js.php");
  logs("Inicio ficha.php  sql: $sql") ;
  
+ 
+ 
+// primero comprobamos que la Consulta SQL dio resultados    
+if ($result->num_rows > 0)
+{
+  
+ 
  $ficha_collapse= isset($ficha_expandida) ? ($ficha_expandida ?  '' : 'collapsed-card') : ''  ;   // por defecto  EXPANDIDA
 
  
@@ -174,8 +181,9 @@ $titulo_sin_html= strip_tags($titulo)   ;
            $disabled_delete_txt="" ;  
            $delete_title=isset($delete_title)? $delete_title : "Elimina la ficha actual" ;
        } 
-//       $titulo_sin_html= strip_tags($titulo)   ;
-       echo "<button class='btn btn-danger btn-lg noprint transparente' $disabled_delete_txt title='$delete_title'  onclick=\"ficha_delete('$cadena_link', '$titulo_sin_html')\"><i class='far fa-trash-alt'></i></button> "; 
+
+       $js_delete_codigo= isset($js_delete_codigo) ? $js_delete_codigo : "" ;
+       echo "<button class='btn btn-danger btn-lg noprint transparente' $disabled_delete_txt title='$delete_title'  onclick=\" ficha_delete('$cadena_link', '$titulo_sin_html')\"><i class='far fa-trash-alt'></i></button> "; 
      
    }  
  }
@@ -194,10 +202,10 @@ $titulo_sin_html= strip_tags($titulo)   ;
 //  echo "<table id='$idtabla' class='tabla_ficha2' >" ;
   
     
-   
-if ($result->num_rows > 0)
-{
-   // INICIALIZAMOS LAS VARIABLES
+//   
+//if ($result->num_rows > 0)
+//{
+//   // INICIALIZAMOS LAS VARIABLES
    $cont_TD= mt_rand (1,1000000)  ;           // inicializamos el contador con rand() para evitar que se solapen los TD y otros elementos de diferentes tablas
    $id_info_admin=($_SESSION["admin"]) ? "solo admin:" :"" ; 
    $id_info_user="creación: " ; 
@@ -755,7 +763,7 @@ if ($result->num_rows > 0)
 }
 else
 {
-die ("<tr><td><h1>ERROR, FICHA NO ENCONTRADA</h1></td></tr>" );         // FICHA NO ENCONTRADA. ABORTAMOS LA PAGINA
+cc_die("ERROR, FICHA NO ENCONTRADA" );         // FICHA NO ENCONTRADA. ABORTAMOS LA PAGINA
 //echo "<tr><td><h1>ERROR, FICHA NO ENCONTRADA</h1></td></tr>" ;
 
 }
@@ -1357,6 +1365,8 @@ function ficha_delete(cadena_link, titulo) {
 //    alert("el nuevo valor es: "+valor) ;
    if (!(nuevo_valor === null) && nuevo_valor)
    { 
+       
+       <?php echo $js_delete_codigo ; ?>         //incorporamos código a ejecutar previo a la eliminación de la ficha
        
        var xhttp = new XMLHttpRequest();
      xhttp.onreadystatechange = function() {

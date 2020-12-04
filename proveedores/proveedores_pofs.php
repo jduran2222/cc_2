@@ -25,7 +25,7 @@ include_once('../templates/_inc_privado2_navbar.php');
 <?php
 
 // cogemos el parámetro GET comprobando su coherencia con el id_c_coste
-if (!($id_proveedor=Dfirst( "ID_PROVEEDORES" ,"Proveedores"," $where_c_coste AND ID_PROVEEDORES={$_GET['id_proveedor']} " ))) {die("<br><br><br><br><h1>ERROR PROVEEDOR NO ENCONTRADO</h1>");}
+if (!($id_proveedor=Dfirst( "ID_PROVEEDORES" ,"Proveedores"," $where_c_coste AND ID_PROVEEDORES={$_GET['id_proveedor']} " ))) {cc_die("ERROR PROVEEDOR NO ENCONTRADO");}
 
 require_once("proveedores_menutop_r.php");
 

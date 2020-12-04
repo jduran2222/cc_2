@@ -214,7 +214,7 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                    
                         <button data-toggle='collapse' class="btn btn-info btn-block btn-lg" data-target='#div_estudios'>
                            <i class="fas fa-copy"></i>
-                            Licitaciones/Presupuestos <i class="fa fa-angle-down" aria-hidden="true"></i>
+                            Licit. y Presupuestos <i class="fa fa-angle-down" aria-hidden="true"></i>
                         </button>
                     </div>   
                     <div id='div_estudios' class='collapse in small'>

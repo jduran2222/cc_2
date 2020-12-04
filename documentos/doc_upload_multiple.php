@@ -94,7 +94,7 @@ if ($file["name"][0])     // comprobamos que en ese $_FILE[] se han depositado f
          
          }
      else
-     { die("<h1>  ERROR AL AÑADIR LICITACION XML</h1> {$f["name"]}") ; }  
+     { cc_die("<h1>  ERROR AL AÑADIR LICITACION XML</h1> {$f["name"]}") ; }  
 
    }
    else   // otros tipos de fichero (fotos, albaranes, fras_prov...)
@@ -131,7 +131,7 @@ if ($file["name"][0])     // comprobamos que en ese $_FILE[] se han depositado f
                           else
                           { 
                 //              echo "<h1>  ERROR AL AÑADIR FACTURA</h1>" ; 
-                          die("ERROR AL AÑADIR FACTURA");
+                          cc_die("ERROR AL AÑADIR FACTURA");
                           }  
                      }
                      elseif($tipo_entidad=='albaran' AND $id_entidad)  // los documentos subidos son facturas no creadas aún, procedemos a crear la entidad factura_proveedor y linkarle su documento
@@ -153,7 +153,7 @@ if ($file["name"][0])     // comprobamos que en ese $_FILE[] se han depositado f
    else
    {
 //     echo  "<br>ERROR EN FICHERO: $value" ; // lo quitamos provisionalmente
-//     die(  "<br>ERROR EN FICHERO: $value" ) ;
+//     cc_die(  "<br>ERROR EN FICHERO: $value" ) ;
    }
    
    $c++ ;

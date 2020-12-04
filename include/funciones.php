@@ -7,13 +7,60 @@ define ("ICON_NUEVO", "<i class='fas fa-plus-circle'></i>");
 $ICON = "<span class='glyphicon glyphicon" ;
 $SPAN = "'></span>";
 
-// <i class='fas fa-plus-circle'></i>
 
 
-//function is_picture($path_archivo)
-//{
-//    return  in_array( pathinfo($path_archivo,PATHINFO_EXTENSION ) , ['jpg','jpeg','bmp','gif','tif','tiff','png']   );
-//}
+// Actualiza , si procede, la RV ESTUDIO D COSTES
+function cc_actualiza_ESTUDIO_COSTE( $id_obra )
+{
+  //extract($GLOBALS);
+      if (!isset($GLOBALS["Conn"]))
+    {                          // si no hay conexion abierta la abro yo
+        require_once("../../conexion.php");
+        $nueva_conn = true;
+    } else
+    {
+        $Conn = $GLOBALS["Conn"];
+        $nueva_conn = false;
+    }
+    
+  $fecha=date('Y-m-d');
+
+ // calculamos nosotros el ID_PRODUCCION y confirmamos que la $id_obra es del id_c_coste actual
+$id_produccion=Dfirst("id_prod_estudio_costes", "OBRAS", "ID_OBRA=$id_obra AND id_c_coste={$_SESSION["id_c_coste"]}  ")  ;
+
+$sql2 = "DELETE FROM PRODUCCIONES_DETALLE WHERE ID_PRODUCCION=$id_produccion ; " ;
+
+$Conn->query($sql2);
+
+$sql2 = "INSERT INTO PRODUCCIONES_DETALLE ( ID_PRODUCCION, Fecha, ID_UDO, MEDICION ) "
+        . "SELECT $id_produccion as ID_PRODUCCION, '$fecha' AS Fecha, ID_UDO, MED_PROYECTO AS MEDICION "
+           . " FROM Udos WHERE ID_OBRA=$id_obra "  ;
+
+$result = $Conn->query($sql2);
+  
+return $result;
+} 
+
+
+// consulta si ESTUDIO COSTE es una Relación Valorada IDENTICA al PROYECTO (mismas udos y mismas mediciones)
+function cc_is_ESTUDIO_COSTE_actualizado( $id_obra, $id_prod_estudio_costes=0 )
+{
+
+$desfase=1.234   ; // usamos el desfse para evitar que nuevas UDOs son MED_PROYECTO igual a cero no varíen el $hash_proyecto
+
+$id_prod_estudio_costes=$id_prod_estudio_costes? $id_prod_estudio_costes : Dfirst("id_prod_estudio_costes", "OBRAS", "ID_OBRA=$id_obra AND id_c_coste={$_SESSION["id_c_coste"]} ")  ;
+
+$hash_proyecto=Dfirst("SUM(ID_UDO*(MED_PROYECTO+$desfase))", "Udos", "ID_OBRA=$id_obra")  ;
+$hash_estudio_costes=Dfirst("SUM(ID_UDO*(MEDICION+$desfase))", "PRODUCCIONES_DETALLE", "ID_PRODUCCION=$id_prod_estudio_costes")  ;
+
+  
+return ($hash_proyecto==$hash_estudio_costes);
+} 
+
+
+
+
+
 
 
 // funcion devuelve el HTML de una pagina de error
@@ -24,6 +71,15 @@ function cc_page_error($msg)
           . "<BR><BR><BR><BR><button style='font-size:200%;background-color:orange;' onclick='javascript:window.close();' title='cerrar'>CERRAR</button></center>" ;
   
   return  $html ;
+}
+
+// funcion devuelve el HTML de una pagina de error
+function cc_die($msg)
+{
+    
+  die(cc_page_error($msg));
+    
+  return  ;
 }
 
 // funcion que nos permitirá convertir una fila (p. ej. de una tabla) a un content con un formato de HTML. sustituimos las cadenas @@CAMPO1@@ del $HTML por el valor de $rs["CAMPO1"]
@@ -1249,6 +1305,15 @@ switch ($format) {
                         if ($valor<>"") $valor = "<span style='opacity : 0 ; font-size: 0px ;'>".date_format($fecha,"Y-m")."-01"."</span>"." ".$mes_txt;
 
                         $format_style=" style='text-align:left;' " ;
+                        break;        
+            case "mes_txt":                                                     // formato de fecha como base de datos
+                        setlocale(LC_TIME, "es_ES");
+                        $fecha=date_create($valor);          //primero de mes de la fecha0
+                        $mes_txt=ucwords(utf8_encode(strftime( '%B-%Y' , $fecha->getTimestamp() ))) ;
+//                        if ($valor<>"") $valor = "<span style='opacity : 0 ; font-size: 0px ;'>".date_format($fecha,"Y-m")."</span>"." ".date_format($fecha,"F-Y");
+                        if ($valor<>"") $valor = $mes_txt;
+
+//                        $format_style=" style='text-align:left;' " ;
                         break;        
             case "boolean":
                         $valor = $valor ? "X" : "" ;

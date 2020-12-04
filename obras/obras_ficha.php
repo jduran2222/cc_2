@@ -46,10 +46,10 @@ require_once("../obras/obras_menutop_r.php");
 
 
  <?php              // DATOS   FICHA . PHP
- //echo "<pre>";
 
-// echo $JUANILLO ;
-
+// comprobamos si id_prod_estudio_coste está actualizado y en caso negativo lo actualizamos (hacemos un clon del Proyecto en la RV Estudio de Coste)
+if (!cc_is_ESTUDIO_COSTE_actualizado($id_obra))  {  cc_actualiza_ESTUDIO_COSTE($id_obra); }
+ 
  
 if ($tipo_subcentro=='O')     // consulta para las OBRAS
 {
@@ -261,7 +261,8 @@ require("../menu/LRU_registro.php"); require("../include/widget_documentos.php")
 	
 <?php   // Iniciamos tabla_div  de ************ PRODUCCIONES *************
 
-$sql="SELECT ID_PRODUCCION, PRODUCCION, Ej_Material  from prod_PEM_f_view WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY PRODUCCION LIMIT 7 ";
+//$sql="SELECT ID_PRODUCCION, PRODUCCION, Ej_Material  from prod_PEM_f_view WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY PRODUCCION LIMIT 7 ";  //sustituimos por la de abajo para ahorrar cálculos
+$sql="SELECT ID_PRODUCCION, PRODUCCION   from PRODUCCIONES WHERE ID_OBRA=$id_obra  ORDER BY PRODUCCION LIMIT 7 ";
 //$sql_T="SELECT '' AS AA, SUM(Ej_Material)  from prod_PEM_f_view WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY PRODUCCION LIMIT 7 ";
 
 $formats["Ej_Material"]='moneda' ;

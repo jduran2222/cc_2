@@ -43,7 +43,7 @@ $_SESSION["email"]=$email ;
 
 
 // comprobación de datos frente a BOTS 
-if(!$email OR empty(trim($_POST["password"]))) { die( "ERROR EN DATOS DE REGISTRO") ;}
+if(!$email OR empty(trim($_POST["password"]))) { cc_die( "ERROR EN DATOS DE REGISTRO") ;}
 
 
 //if (($codigo==='CC_33_2019'))   // CONFIMARMOS CODIGO PROMOCIONAL DE ACCESO

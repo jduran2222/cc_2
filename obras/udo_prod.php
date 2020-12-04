@@ -69,8 +69,17 @@ $updates=['ID_CAPITULO','ID_SUBOBRA','UDO','COD_PROYECTO','ud','TEXTO_UDO', 'PRE
 $id_udo=$rs["ID_UDO"] ;
 //$udo=$rs["UDO"] ;
 $tabla_update="Udos" ;
-$id_update="id_udo" ;
+$id_update="ID_UDO" ;
 $id_valor=$id_udo ;
+
+
+// codigo a ejecutar antes de la eliminación de la entidad UDO. Borramos todas las PRODUCCIONES_DETALLE de esta UDO
+$sql_delete= "DELETE FROM `PRODUCCIONES_DETALLE` WHERE  ID_UDO=$id_udo ; "  ;
+$href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
+$js_delete_codigo = "js_href('$href' ,0 ); " ;
+
+$delete_boton=1 ;
+
 
 $array_udo=$rs ;
 
@@ -367,6 +376,9 @@ function add_udo_prod(id_udo,id_produccion) {
     	
                 </div>
                 
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>                
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>                
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>                
                 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>                
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>

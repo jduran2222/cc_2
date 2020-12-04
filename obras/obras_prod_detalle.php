@@ -9,7 +9,7 @@ $id_c_coste = $_SESSION['id_c_coste'];
 if ($_GET["id_produccion"]=="PRODUCCION_OBRA" OR $_GET["id_produccion"]=="ESTUDIO_COSTES")
 {
     if (!isset($_GET["id_obra"])) 
-        {die("ERROR EN ID_PRODUCCION");}
+        {die(cc_page_error( "ERROR EN ID_PRODUCCION"));}
         else 
             {
              $id_obra=$_GET["id_obra"] ;
@@ -83,8 +83,10 @@ if (!$listado_global)
      $iva_obra=$rs_Obra["iva_obra"];
      $IMPORTE_contrato_iva=$rs_Obra["IMPORTE"];
      $Pie_CERTIFCACION=$rs_Obra["Pie_CERTIFCACION"];
+     $id_prod_estudio_costes=$rs_Obra["id_prod_estudio_costes"];
 
- 
+     // si estamos en $id_prod_estudio_costes le clonamos el PPROYECTO
+     if (!cc_is_ESTUDIO_COSTE_actualizado($id_obra, $id_prod_estudio_costes))  {      cc_actualiza_ESTUDIO_COSTE($id_obra); }
  
  require_once("../obras/obras_menutop_r.php");
 // require_once("../menu/menu_migas.php");

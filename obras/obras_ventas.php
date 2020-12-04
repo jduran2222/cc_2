@@ -160,8 +160,6 @@ $actions_row["id"]="id";
 $actions_row["delete_link"]="1";
 
 $onclick1_VARIABLE1_="id" ;
-//$actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' target='_blank' title='Crea una factura de la Certificación' "
-//        . " href=\"../clientes/factura_cliente_anadir.php?id_certificacion=_VARIABLE1_ \" >Facturar</a> ";
 $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' target='_blank' title='Crea una factura de la Certificación' "
         . " onclick= \" js_href('../clientes/factura_cliente_anadir.php?id_certificacion=_VARIABLE1_' ) \" >Facturar</a> ";
 

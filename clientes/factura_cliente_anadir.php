@@ -14,11 +14,28 @@ if (isset($_GET["id_certificacion"]))
     $id_certificacion=$_GET["id_certificacion"] ;
     $rs = $Conn->query("SELECT * FROM Certificaciones_View WHERE id=$id_certificacion AND $where_c_coste ")->fetch_array();
 
+    $id_certificacion=$rs["id"]  ;        // SEGURIDAD 
     $id_obra=  $rs["ID_OBRA"] ;
     $id_cliente=  $rs["ID_CLIENTE"] ;
-    $concepto= $rs["CONCEPTO"] ;
     $importe_iva=  $rs["IMPORTE"] ;
     $iva=  $rs["iva_obra"] ;
+
+    // si el concepto es vacío lo rellenamos por defecto con los datos de la certificación y actualizamos el Concepto en la BBDD
+    if (!$rs["CONCEPTO"])
+    {
+       $mes_txt= cc_format($rs["FECHA"], 'mes_txt') ;
+       $concepto= "Certificación Nº{$rs["NUM"]} $mes_txt ";
+//       $concepto= "Certificación  Nº{$rs["NUM"]}  Octubre-2020";
+//       logs("CONCEPTO: $concepto");
+       $result2=$Conn->query("UPDATE `CERTIFICACIONES` SET CONCEPTO='$concepto'   WHERE id='$id_certificacion'  AND ID_OBRA='$id_obra'  ; " );
+//        logs("RESULT UPDATE CONCEPTO $result2")         ;
+
+    }else
+    {
+       $concepto= $rs["CONCEPTO"] ;
+    }  
+    
+    
 
 }    
 else    
@@ -35,29 +52,14 @@ $fecha=date('Y-m-d');
 
 
 // CALCULO NUMERO NUEVA FACTURA
-
-//$serie_fra=date('Y')."-";
-//$num_fra_ultima=Dfirst("MAX(N_FRA)", "Fras_Cli_Listado", "N_FRA LIKE '$serie_fra%' AND  $where_c_coste ") ;
-
-//
-//
-//
-//if ($num_fra_ultima)
-//{  //siguiente del año en curso
-//  $n_fra_contador = str_replace($serie_fra, "", $num_fra_ultima) + 1  ;
-//  $n_fra_nuevo = $serie_fra . sprintf("%03d", $n_fra_contador) ; // primera factura del año 
-//}else
-//{  //primera factua cliente del año en curso
-//  $n_fra_nuevo=  $serie_fra . "001" ; // primera factura del año
-//}   
-
 $n_fra_nuevo=siguiente_n_fra() ;
 
 $sql="INSERT INTO `FRAS_CLI` ( `ID_CLIENTE`,ID_OBRA,N_FRA,FECHA_EMISION,CONCEPTO,id_cta_banco,`user` )".
      "VALUES (  '$id_cliente','$id_obra','$n_fra_nuevo' ,'$fecha' ,'$concepto' ,'$id_cta_banco', '{$_SESSION["user"]}' );" ;
 // echo ($sql);
 $result=$Conn->query($sql);
-          
+ logs("RESULT INSERT FRAS_CLI $result")         ;
+ 
  if ($result) //compruebo si se ha creado la obra
              { 	
               $id_fra=Dfirst( "MAX(ID_FRA)", "Fras_Cli_Listado", " ID_CLIENTE=$id_cliente AND $where_c_coste" ) ;  

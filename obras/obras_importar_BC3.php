@@ -427,6 +427,10 @@ if (isset($_FILES["file_BC3"]))         //
 
  }
  
+ // actualizamos la RV llamada ESTUDIO DE COSTE de la obra
+ 
+ cc_actualiza_ESTUDIO_COSTE( $id_obra );
+ 
   echo "<br><br><br><br><br><button  class='btn btn-warning btn-lg noprint' style='font-size:80px;'  onclick=\"window.close()\"/><i class='far fa-window-close'></i> cerrar ventana</button>" ;
   echo "<br><br><br><br><br>" ;
 
@@ -439,6 +443,12 @@ $Conn->close();
 
         
                 </div>
+                
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>                
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>                
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>                
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>                
+                
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

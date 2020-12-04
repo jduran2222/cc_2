@@ -53,11 +53,12 @@ $fecha=$rs["FECHA"];
 //$id_subobra= getVar("id_subobra_si") ;
 $id_subobra= $rs["id_subobra_auto"] ?  $rs["id_subobra_auto"]   : getVar("id_subobra_si") ;     // la segunda opcion palia las obras antiguas que no tengan id_subobra_auto
   
- if($id_parte=Dfirst("ID_PARTE", "PARTES", " ID_OBRA=$id_obra AND Fecha='$fecha' "))
+ if($id_parte=Dfirst("ID_PARTE", "PARTES", " ID_OBRA='$id_obra' AND Fecha='$fecha' "))
  {
   echo "<a class='btn btn-link' href= '../personal/parte.php?_m=$_m&id_parte=$id_parte' >Ver PARTE DIARIO</a><br>" ;
  }      
 
+$content_crear_factura='';  //inicializo 
 if (!$rs["conciliado"]) 
 {
 $guid =  guid(); // guid CASERO para localizar la nueva factura creada
@@ -65,9 +66,9 @@ $guid =  guid(); // guid CASERO para localizar la nueva factura creada
 //$guid =  "__PRUEBA_JUAN_DURAN__2"; // guid CASERO para localizar la nueva factura creada
 $sql_insert_documento="" ;
 
-if ($path_archivo=Dfirst("path_archivo", "Documentos", " $where_c_coste AND tipo_entidad='albaran' AND id_entidad=$id_vale "))
+if ($path_archivo=Dfirst("path_archivo", "Documentos", " $where_c_coste AND tipo_entidad='albaran' AND id_entidad='$id_vale' "))
 {
-   $metadatos=Dfirst("metadatos", "Documentos", " $where_c_coste AND tipo_entidad='albaran' AND id_entidad=$id_vale ") ;
+   $metadatos=Dfirst("metadatos", "Documentos", " $where_c_coste AND tipo_entidad='albaran' AND id_entidad='$id_vale' ") ;
    $sql_insert_documento= "INSERT INTO `Documentos` (`id_c_coste`, `tipo_entidad`, `id_entidad`,`id_subdir`, `documento`, `metadatos`,   `path_archivo`, `tamano`, `Observaciones` , user) "
         . "VALUES ( '{$_SESSION['id_c_coste']}', 'fra_prov', (select ID_FRA_PROV from FACTURAS_PROV where guid='$guid' ), '0', 'link', '$metadatos','$path_archivo', '0', '', '{$_SESSION['user']}' );"   ;
 }        
@@ -82,9 +83,11 @@ $sql_facturar= "INSERT INTO FACTURAS_PROV ( ID_PROVEEDORES,N_FRA,FECHA,IMPORTE_I
         . "$sql_insert_documento "  ;
         
 $href='../include/sql.php?sql=' . encrypt2($sql_facturar)  ;    
-echo "<a class='btn btn-link btn-lg noprint ' href='#' "
-     . " onclick=\"js_href('$href')\"   "
-     . "title='Crea una factura sobre este Albarán' > Crear factura</a>" ;
+$content_crear_factura= "<div class='right2'>"
+                            . "<a class='btn btn-primary btn-xs noprint ' href='#' "
+                         . " onclick=\"js_href('$href')\"   "
+                         . "title='Crea una factura de este Albarán' > Crear factura</a>"
+                       . "</div>" ;
       
 }
 
@@ -127,7 +130,14 @@ $id_parte=$rs["ID_PARTE"] ;
  $selects["ID_OBRA"]=["ID_OBRA","NOMBRE_OBRA","OBRAS","../obras/obras_anadir_form.php","../obras/obras_ficha.php?id_obra=","ID_OBRA"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
  $etiquetas["ID_OBRA"]='NOMBRE OBRA' ;
  
- $delete_boton=1;
+ 
+ // codigo a ejecutar antes de la eliminación de la entidad UDO. Borramos todas las PRODUCCIONES_DETALLE de esta UDO
+//$sql_delete= "DELETE FROM `GASTOS_T` WHERE  ID_VALE=$id_vale ; "  ;
+//$href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
+//$js_delete_codigo = "js_href('$href' ,0 ); " ;
+
+$delete_boton=1 ;
+
   
  
 //  if (!$rs["importe"])    //  NO HAY DETALLES, podemos cambiar de Proveedor o borrrar el Vale (CAMBIAR A Dcount(id detalles)
@@ -164,6 +174,8 @@ $id_parte=$rs["ID_PARTE"] ;
   
   <?php
   
+ echo $content_crear_factura ;
+ 
   // es un Vale de Parte diario?
 // if($id_parte=Dfirst("ID_PARTE", "Partes_View", " ID_VALE=$id_vale AND $where_c_coste "))
  if($id_parte)

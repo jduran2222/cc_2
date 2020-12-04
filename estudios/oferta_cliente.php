@@ -29,7 +29,7 @@ include_once('../templates/_inc_privado2_navbar.php');
 while (!($id_oferta=isset($_GET["id_oferta"])? $_GET["id_oferta"] : Dfirst("ID_OFERTA","Ofertas_View","$where_c_coste AND guid='{$_GET["guid"]}' ")) AND $count_error<50)
 {$count_error++ ;}   
 
-if (!$id_oferta) { die("<BR><BR><BR><BR><BR><BR><BR>ERROR EN CREACION DE PRESUPUESTO"); }
+if (!$id_oferta) { cc_die("ERROR EN CREACION DE PRESUPUESTO"); }
 
 
 //echo "<BR><BR><BR><BR><BR><BR><BR>ID_OFERTA:" . $id_oferta ;

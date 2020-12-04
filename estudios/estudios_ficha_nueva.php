@@ -63,7 +63,7 @@ require_once("../documentos/doc_function.php");
 
             $target_text = file_get_contents($xml_url_file, false, stream_context_create($arrContextOptions));
 
-            //  die()  ;
+            //  cc_die()  ;
             //    $target_text= file_get_contents_curl($_POST["xml_url_file"]) ;
             //  echo  $target_text; 
 
@@ -81,7 +81,7 @@ require_once("../documentos/doc_function.php");
              move_uploaded_file($_FILES["xml_file"]["tmp_name"], $target_file);
 
              echo "$target_file<BR>";
-            //        $xml=simplexml_load_file($target_file) or die("Error: No se puede crear Objeto (juand)");
+            //        $xml=simplexml_load_file($target_file) or cc_die("Error: No se puede crear Objeto (juand)");
 
 
             //         $xml= simplexml_load_file($target_file);        // funcion original de PHP 
@@ -105,7 +105,7 @@ require_once("../documentos/doc_function.php");
            $xml= simplexml_load_string(str_replace("c:","c_",  $target_text));       // funcin que evita los ns     simplexml_load_string_nons
 
             //          $xml= simplexml_load_file("https://contrataciondelestado.es/wps/wcm/connect/PLACE_es/Site/area/docAccCmpnt?srv=cmpnt&cmpntname=GetDocumentsById&source=library&DocumentIdParam=0b7d00fa-8fc3-4ee2-ad3f-8023f9ea7ede");
-            //        $xml=simplexml_load_file('https://www.w3schools.com/xml/simplexsl.xml') or die("Error: No se puede crear Objeto (juand)");
+            //        $xml=simplexml_load_file('https://www.w3schools.com/xml/simplexsl.xml') or cc_die("Error: No se puede crear Objeto (juand)");
 
                  // DEBUG
             //        echo "<pre>";

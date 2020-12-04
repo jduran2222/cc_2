@@ -29,7 +29,7 @@ else   //
          setVar("id_linea_avales_auto", $id_linea_avales) ;        // cre3amos la nueva variable 'id_linea_avales_auto' 
         }
       else
-       {die('ERROR CREANDO LINEA DE AVALES');
+       {cc_die('ERROR CREANDO LINEA DE AVALES');
        }
   }
 }   

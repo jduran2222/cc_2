@@ -73,10 +73,10 @@ $sql="SELECT * FROM Conceptos_View WHERE ID_CONCEPTO=$id_concepto AND $where_c_c
   
   
   $delete_boton=1;
-  if (Dfirst("ID_VALE","GASTOS_T","ID_CONCEPTO=$id_concepto"))
+  if (Dfirst("ID_VALE","GASTOS_T","ID_CONCEPTO='$id_concepto'"))
   {        
     $disabled_delete=1;
-    $delete_title="Para eliminar el Concepto debe de asegurarse que no está incluido en ningún Vale" ;
+    $delete_title="Por seguridad, para eliminar el Concepto debe de asegurarse que no está incluido en ningún Albarán" ;
   }
     
 //  $id_obra=$rs["ID_OBRA"] ;
@@ -192,7 +192,7 @@ $formats["facturado"]='boolean_factura';
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
 $titulo="" ;
-$msg_tabla_vacia="No hay vales";
+$msg_tabla_vacia="No hay Albaranes";
 
 ?>
 
@@ -202,7 +202,7 @@ $msg_tabla_vacia="No hay vales";
 
 
  <div class="container">
-  <h2>Vales donde aparece el Concepto</h2>
+  <h2>Líneas de albaranes donde aparece el Concepto</h2>
 
 </div>
 

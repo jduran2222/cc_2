@@ -57,7 +57,7 @@ if (!$id_vale)
     if ($result)
     {$id_vale=Dfirst( "MAX(ID_VALE)", "VALES", "ID_PROVEEDORES=$id_proveedor" ) ; }    // ID_VALE del albaran nuevo
     else
-    { die("ERROR al crear albaran nuevo") ;}    
+    { cc_die("ERROR al crear albaran nuevo") ;}    
 }
 
 // ID_CONCEPTO : Si no se indica el ID_CONCEPTO, entonces, o lo creamos si hay concepto_nuevo o usamos el id_concepto_auto del Proveedor
@@ -73,7 +73,7 @@ if (!$id_concepto)
     if ($result)
         {$id_concepto=Dfirst( "MAX(ID_CONCEPTO)", "CONCEPTOS", "ID_PROVEEDOR=$id_proveedor" ) ;  logs("ID_CONCEPTO=$id_concepto"); }    // ID_VALE del albaran nuevo
         else
-        { die("ERROR al crear concepto nuevo") ;}    
+        { cc_die("ERROR al crear concepto nuevo") ;}    
     
     }
     else  // cogemos el id_copncepto_auto del proveedor
@@ -99,7 +99,7 @@ if (!$id_concepto)
   $sql="INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) VALUES ( '$id_vale' , '$id_concepto', '$cantidad'  ,   '$id_subobra_si' );" ;
 //                 echo ($sql);
   logs($sql);  
-  if (!$result=$Conn->query($sql)) { logs("ERROR EN:$sql"); die("ERROR: $sql") ;};
+  if (!$result=$Conn->query($sql)) { logs("ERROR EN:$sql"); cc_die("ERROR: $sql") ;};
  }
 
  if ($add_foto)         // valoramos el Vale

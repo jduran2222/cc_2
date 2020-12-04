@@ -25,8 +25,9 @@ $sql="SELECT CONCAT(PROVEEDOR,'-',N_FRA) as id_titulo_pagina,   id_fra_prov AS N
 //$sql="SELECT * FROM Fras_Prov_View WHERE id_fra_prov=$id_fra_prov AND $where_c_coste";
  
 //echo $sql;
-$result=$Conn->query($sql);
-$rs = $result->fetch_array(MYSQLI_ASSOC) ; 
+$result=$Conn->query($sql) ;
+
+if (!($rs = $result->fetch_array(MYSQLI_ASSOC))) {die( cc_page_error( "ERROR FACTURA PROVEEDOR NO ENCONTRADA" )) ;}        
 
 $titulo_pagina="Fra. " . $rs["id_titulo_pagina"] ;
 
@@ -362,7 +363,7 @@ $formats["importe"]='moneda';
 $formats["pdf"]='pdf_50';
 
 $links["FECHA"] = ["albaran_proveedor.php?id_vale=", "ID_VALE", "ver Albarán", "formato_sub"] ;
-$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA", "ver Obra"] ;
+$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA", "ver Obra", 'formato_sub'] ;
 
 $aligns["importe"] = "right" ;
 $aligns["Pdte_conciliar"] = "right" ;
@@ -488,7 +489,7 @@ $formats["importe"]='moneda';
 $formats["pdf"]='pdf_50';
 
 
-$links["FECHA"] = ["albaran_proveedor.php?id_vale=", "ID_VALE", "ver vale", "formato_sub"] ;
+$links["FECHA"] = ["albaran_proveedor.php?id_vale=", "ID_VALE", "ver Albarán", "formato_sub"] ;
 $links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA", 'ver Obra', 'formato_sub'] ;
 
 $aligns["importe"] = "right" ;

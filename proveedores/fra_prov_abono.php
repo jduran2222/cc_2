@@ -24,9 +24,9 @@ $rs_abono=Drow("Fras_Prov_View","$where_c_coste AND ID_FRA_PROV={$rs["id_fra_pro
 $id_fra_prov_abono = $rs["id_fra_prov_abono"];    // lo cogemos del campo id_fra_prov_abono
 
 // comprobaciones varias
-if(!$rs OR !$rs_abono)  {die('ERROR ENLAZANDO FACTURA DE ABONO A FACTURA PRINCIPAL');}
-if($rs["ID_PROVEEDORES"]<>$rs_abono["ID_PROVEEDORES"])  {die('ERROR ENLAZANDO FACTURA DE ABONO A FACTURA PRINCIPAL\n DIFERENTES PROVEEDORES');}
-if($rs_abono["IMPORTE_IVA"]>=0)  {die('ERROR: El Abono es positivo o de importe cero');}
+if(!$rs OR !$rs_abono)  {cc_die('ERROR ENLAZANDO FACTURA DE ABONO A FACTURA PRINCIPAL');}
+if($rs["ID_PROVEEDORES"]<>$rs_abono["ID_PROVEEDORES"])  {cc_die('ERROR ENLAZANDO FACTURA DE ABONO A FACTURA PRINCIPAL\n DIFERENTES PROVEEDORES');}
+if($rs_abono["IMPORTE_IVA"]>=0)  {cc_die('ERROR: El Abono es positivo o de importe cero');}
 
 logs("FRA_PROV_ABONO.PHP: pasamos los filtros no imprescindibles");
 
@@ -191,7 +191,7 @@ logs("FRA_PROV_ABONO.PHP: creamos los VALES. resultado:". ($result2? "CORRECTO" 
 	     }
 	       else
 	     {
-		die( "Error al CREAR VALES DE ABONO, inténtelo de nuevo ") ;
+		cc_die( "Error al CREAR VALES DE ABONO, inténtelo de nuevo ") ;
 //		echo  "<a href='javascript:history.back(-1);' title='Ir la página anterior'>Volver</a>" ;
 	     }
   

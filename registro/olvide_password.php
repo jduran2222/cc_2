@@ -90,12 +90,12 @@ if (!empty($email)) {
       } 
     }
     else {
-      // die("ERROR EN RESTABLECIMIENTO DE PASSWORD");
+      // cc_die("ERROR EN RESTABLECIMIENTO DE PASSWORD");
       $htmlAlert = '<div class="alert alert-danger small" role="alert">Se ha producido un error. Por favor, verifique el email y/o inténtelo de nuevo más tarde.</div>';
     }
   }
   else {
-    // die("¡¡email no encontrado!!");
+    // cc_die("¡¡email no encontrado!!");
     $htmlAlert = '<div class="alert alert-danger small" role="alert">Se ha producido un error. Por favor, verifique el email y/o inténtelo de nuevo más tarde.</div>';
   }
 }

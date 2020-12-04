@@ -31,7 +31,7 @@ $id_cliente=$_GET["id_cliente"];
 $result=$Conn->query($sql="SELECT * FROM Clientes WHERE id_cliente=$id_cliente AND $where_c_coste");
 $rs = $result->fetch_array(MYSQLI_ASSOC);
 
-if ($id_cliente!=$rs["ID_CLIENTE"]) die("ERROR EN DATOS. EL CLIENTE NO ES DE ESTA EMPRESA") ;
+if ($id_cliente!=$rs["ID_CLIENTE"]) cc_die("ERROR EN DATOS. EL CLIENTE NO ES DE ESTA EMPRESA") ;
 
 $sql_format_CIF=encrypt2("UPDATE `Clientes` SET `CIF` = REPLACE(REPLACE(REPLACE(CIF,' ',''),'-',''),'\n','')  "
         . " WHERE $where_c_coste AND ID_CLIENTE=$id_cliente ; ") ;

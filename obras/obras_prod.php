@@ -86,6 +86,12 @@ function add_produccion(id_obra) {
 
 
 <?php 
+
+// comprobamos si id_prod_estudio_coste está actualizado y en caso negativo lo actualizamos (hacemos un clon del Proyecto en la RV Estudio de Coste)
+if (!cc_is_ESTUDIO_COSTE_actualizado($id_obra))  {  cc_actualiza_ESTUDIO_COSTE($id_obra); }
+
+
+
 $result=$Conn->query($sql="SELECT * from prod_PEM_f_view WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY PRODUCCION " );
 
 
@@ -220,7 +226,7 @@ function add_proyecto(id_obra,id_produccion) {
             location.reload(true); }  // refresco la pantalla tras editar Producción
       }
   };
-  xhttp.open("GET", "../obras/prod_add_proy_ajax.php?id_obra="+id_obra+"&id_produccion="+id_produccion+"&fecha="+nuevo_valor+"&factor="+factor, true);
+  xhttp.open("GET", "../obras/prod_add_proy_ajaax.php?id_obra="+id_obra+"&id_produccion="+id_produccion+"&fecha="+nuevo_valor+"&factor="+factor, true);
   xhttp.send();   
    }
    else

@@ -33,7 +33,7 @@ $id_proveedor=$_GET["id_proveedor"];
 $result=$Conn->query($sql="SELECT * FROM Proveedores_View WHERE id_proveedores=$id_proveedor AND $where_c_coste");
 $rs = $result->fetch_array(MYSQLI_ASSOC) ;
 	
- $titulo= $rs["ID_PERSONAL"] ? "FICHA PROVEEDOR-NOMINA:<br>{$rs["PROVEEDOR"]}" : "PROVEEDOR:<b>{$rs["PROVEEDOR"]}</b>" ;
+ $titulo= $rs["ID_PERSONAL"] ? "FICHA PROVEEDOR-NOMINA:<br>{$rs["PROVEEDOR"]}" : "PROVEEDOR: <b>{$rs["PROVEEDOR"]}</b>" ;
   //$updates=['NOMBRE_OBRA','NOMBRE_COMPLETO','GRUPOS','EXPEDIENTE', 'NOMBRE' ,'Nombre Completo', 'LUGAR', 'PROVINCIA', 'Presupuesto Tipo', 'Plazo Proyecto' ,'Observaciones']  ;
   $updates=["*"] ;
   $selects["ID_CLIENTE"]=["ID_CLIENTE","CLIENTE","Clientes"] ;   // datos para clave foránea
@@ -52,20 +52,25 @@ $etiquetas["NOMBRE"]= ["Nombre del Personal","Ficha de Proveedor-Nómina. Está 
 if (($rs["ID_PROVEEDORES"] == getVar("id_proveedor_auto")) AND !$admin)
 { $updates=[] ;          // ANULA LA EDICION PARA QUE ESTE PROVEEDOR NO PUEDA SER CAMBIADO POR ERROR
 }
-  
+
 //$id_obra=$rs["ID_PROVEEDORES"] ;
-  $id_proveedor=$rs["ID_PROVEEDORES"] ;
+$id_proveedor=$rs["ID_PROVEEDORES"] ;
+
+// si no existe el proveedor ABORTAMOS
+if (!$id_proveedor) 
+{ cc_die("ERROR, PROVEEDOR NO ENCONTRADO" );         // FICHA NO ENCONTRADA. ABORTAMOS LA PAGINA
+}
   
-  // si no existe el proveedor ABORTAMOS
-  if (!$id_proveedor) 
-  {die ("<BR><BR><BR><BR><h1>ERROR, PROVEEDOR NO ENCONTRADO</h1>" );         // FICHA NO ENCONTRADA. ABORTAMOS LA PAGINA
-  }
+$tabla_update="Proveedores" ;
+$id_update="ID_PROVEEDORES" ;
+$id_valor= $id_proveedor  ;
   
-  $tabla_update="Proveedores" ;
-  $id_update="ID_PROVEEDORES" ;
-  $id_valor= $id_proveedor  ;
-  
-  $delete_boton=1;
+// codigo a ejecutar antes de la eliminación de la entidad UDO. Borramos todas las PRODUCCIONES_DETALLE de esta UDO
+$sql_delete= "DELETE FROM `CONCEPTOS` WHERE  ID_PROVEEDOR=$id_proveedor ; "  ;
+$href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
+$js_delete_codigo = "js_href('$href' ,0 ); " ;
+
+$delete_boton=1 ;
   
 $links["TEL1"]=["tel:{$rs['TEL1']}", "","LLAMAR","html","<span class='glyphicon glyphicon-earphone'></span>"] ;
 
@@ -107,13 +112,18 @@ $spans_html['BIC'] = "<a class='btn-link'  href='#'  onclick=\"js_href('../inclu
     $delete_title="No es posible eliminar un proveedor que tenga facturas" ;
   }
    
-echo   "<br><br><br><br><br><a class='btn btn-link noprint' href='../proveedores/concepto_anadir.php?id_proveedor=$id_proveedor' target='_blank' title='Crea un Concepto o artículo nuevo de este proveedor'>"
-        . "<i class='fas fa-plus-circle'></i> Concepto/artículo nuevo</a>" ; // BOTON AÑADIR CONCEPTO
+$content_botonera =   "<div class='right2'>"
+        . "<a class='btn btn-primary btn-xs noprint' href='../proveedores/albaran_anadir.php?id_proveedor=$id_proveedor' target='_blank' title='Crea un nuevo albarán de este proveedor'>"
+        . "<i class='fas fa-plus-circle'></i> Albarán nuevo</a>" ; // BOTON AÑADIR ALBARAN
+    
+$content_botonera .=   "<br><a class='btn btn-primary btn-xs noprint' href='../proveedores/concepto_anadir.php?id_proveedor=$id_proveedor' target='_blank' title='Crea un Concepto o artículo nuevo de este proveedor'>"
+        . "<i class='fas fa-plus-circle'></i> Concepto/artículo nuevo</a>"
+        . "</div>" ; // BOTON AÑADIR CONCEPTO
     
   ?>
   
                   
-                    
+<BR><BR><BR>                  
   <div style="overflow:visible">	   
   <div id="main" class="mainc_50"> 
       <!--<a target="_blank" class="btn btn-link btn-xs"  href="../include/tabla_general.php?url_enc=<?php echo encrypt2("sql=select DISTINCT  SUBSTR( IBAN, 5,4) AS COD,  BIC from Proveedores WHERE BIC<>'' ORDER BY COD"); ?>" >Codigos Bancos/BIC</a>-->
@@ -126,6 +136,9 @@ echo   "<br><br><br><br><br><a class='btn btn-link noprint' href='../proveedores
    
       <!--// FIN     **********    FICHA.PHP-->
  </div>
+ 
+<?php echo $content_botonera ; ?>      
+      
  <div class="right2">
 	
 <?php            //  div documentos  

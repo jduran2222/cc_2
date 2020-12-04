@@ -21,7 +21,7 @@ require_once("../../conexion.php");
 require_once("../include/funciones.php"); 
 
 
-if (!($id_remesa=Dfirst("id_remesa","Remesas_View", " $where_c_coste AND id_remesa={$_GET["id_remesa"]} " ))){die("ERROR INCOHERENCIA EN DATOS");} 
+if (!($id_remesa=Dfirst("id_remesa","Remesas_View", " $where_c_coste AND id_remesa={$_GET["id_remesa"]} " ))){cc_die("ERROR INCOHERENCIA EN DATOS");} 
 
 
 

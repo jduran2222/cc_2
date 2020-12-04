@@ -39,7 +39,7 @@ include_once('../templates/_inc_privado2_navbar.php');
 	
 <?php 
 
-if (!$admin){ die("ERROR USUARIO NO AUTORIZADO");}   // medida de seguridad para evitar HACKEOS
+if (!$admin){ cc_die("ERROR USUARIO NO AUTORIZADO");}   // medida de seguridad para evitar HACKEOS
 
 if (isset($_GET['url_enc']))         // venimos ENCRYPTADOS, desencriptamos, juntamos las dos url y metemos en GET las variables
 {    

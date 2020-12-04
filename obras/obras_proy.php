@@ -104,27 +104,25 @@ function corregir_precios_proyecto(sql)
 function delete_proyecto(id_obra)
  { 
 
-    var nuevo_valor=window.confirm("¿Borrar el proyecto completo? \n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto ");
-//    alert("el nuevo valor es: "+valor) ;
-   if (!(nuevo_valor === null) && nuevo_valor)
-   { 
-//       window.open("../obras/obras_proy_delete.php?id_obra="+id_obra , '_blank') ;
-       var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200)
-//    {              
-//           delete_capitulos(id_obra) ; 
-//      }
-//  };
-  
-////  $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rs["$id_update"] ; 
+// cambiamos a uso de js_href2( href,reload, msg, var1, var2 , var1_prompt_default, var2_prompt_default  ) , juand, dic-2020
+
+js_href( "../obras/obras_proy_delete.php?id_obra=" + id_obra ,1, "¿Borrar el proyecto completo? \n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto "  ) 
+
+
+// anulamos todo al usar js_href2, juand, dic-2020
+//      var nuevo_valor=window.confirm("¿Borrar el proyecto completo? \n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto ");
+// if (!(nuevo_valor === null) && nuevo_valor)
+//   { 
+//       var xhttp = new XMLHttpRequest();
 //
-  xhttp.open("GET", "../obras/obras_proy_delete.php?id_obra=" + id_obra , true);
-  xhttp.send();   
-   location.reload();
-   }
-   else
-   {return;}
+//  xhttp.open("GET", "../obras/obras_proy_delete.php?id_obra=" + id_obra , true);
+//  xhttp.send();   
+//   location.reload();
+//   }
+// else
+// {return;}
+
+return;
  
 }
 function delete_capitulos(id_obra)

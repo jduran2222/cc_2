@@ -59,7 +59,7 @@ function copyToClipboard(e) {
 }
 
 
-
+// carga en el innerHTML del elemento 'id' el resultado de ejecutar href.php  vía AJAX
 function carga_ajax(id,href)
 {
  var xhttp = new XMLHttpRequest();
@@ -81,7 +81,7 @@ function carga_ajax(id,href)
  // hacemos un href SIN AJAX 
 function js_href2( href,reload, msg, var1, var2 , var1_prompt_default, var2_prompt_default  ) { 
    //valores por defecto
-   // href  :  link a realizar con window.open()
+                                // href  :  link a realizar con window.open()
      reload = reload || 1  ;   // 0 o 1 indica si hay que REFRESCAR. por defecto refrescamos
      msg = msg || ""     ;        // Mensaje informando por defecto no hay msg
      var1 = var1 || ""   ;             // var1  VARIABLE a incorporar al link, si empieza por PROMPT_MSG pregunta al usuario
@@ -89,26 +89,6 @@ function js_href2( href,reload, msg, var1, var2 , var1_prompt_default, var2_prom
      var1_prompt_default = var1_prompt_default || ""   ;             // var1 valor por defecto a mostrar en el PROMPT
      var2_prompt_default = var2_prompt_default || ""   ;        //   IDEM
      
-// ANULAMOS ESTE SISTEMA confuso. usamos la sustitucion de _VARIABLEX_ en el propio javascript
-        // 
-// por si usamos la modalidad de nombre de variable de URL
-//     var1_name = var1_name || "variable1"   ;        // var 2
-//     var2_name = var2_name || "variable2"   ;        // var 2
-// 
-//     var var1_url = "&" + var1_name + "="   ;        // var 2
-//     var var2_url = "&" + var2_name + "="   ;        // var 2
- 
- 
- 
- 
-//     var2 = var2 || ""   ;        // var 2
-//     prompt = prompt || ''   ;        // var 2
-// 
-// 
-// var nuevo_valor='' ;
-    
-//    alert("href: "+href) ;
-
 
 //INICIALIZAMOS VARIABLES
 var ejecutar= 1  ;  // por defecto ejecutamos el href
