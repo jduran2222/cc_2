@@ -113,48 +113,52 @@ $patrones['iban']="~(ES\d\d)\s?[-]?\s?(\d{4})\s?[-]?\s?(\d{4})\s?[-]?\s?(\d{4})\
 //$patrones['iban']="~(ES\d\d)\s?(\d{4})\s?(\d{4})\s?(\d{2})\s?(\d{10})~"       ;
 $patrones['tel']= "~\s(\d{9})\s|\s(\d{3})\s?([- .])\s?(\d{3})\s?([- .])\s?(\d{3})\s|\s(\d{3})\s?([- .])\s?(\d{2})\s?([- .])\s?(\d{2})\s?([- .])\s?(\d{2})\s~";
 
- 
+
+$echo_SOLO_ADMIN='';
 if (!$factura_registrada AND $_SESSION["admin"])
 //if (1)
 {
-    echo 'SOLO ADMIN:<BR>';
+    $echo_SOLO_ADMIN.= 'SOLO ADMIN:<BR>';
     $a_cif=[] ;
     preg_match_all($patrones['cif'], $rs["metadatos"], $a_cif) ;
-    echo 'CIF encontrados<br><pre>';
+    $echo_SOLO_ADMIN.= 'CIF encontrados<br><pre>';
     print_r($a_cif[0]);
-    echo '</pre>';
+    $echo_SOLO_ADMIN.= '</pre>';
 
     $a_fechas=[] ;
     preg_match_all($patrones['fecha'], $rs["metadatos"], $a_fechas) ;
-    echo 'fechas encontrados<br><pre>';
+    $echo_SOLO_ADMIN.= 'fechas encontrados<br><pre>';
     print_r($a_fechas[0]);
-    echo '</pre>';
+    $echo_SOLO_ADMIN.= '</pre>';
     
     $a_importes=[] ;
     preg_match_all( $patrones['importe'], $rs["metadatos"], $a_importes) ;
-    echo 'importes encontrados<br><pre>';
+    $echo_SOLO_ADMIN.= 'importes encontrados<br><pre>';
     print_r($a_importes[0]);
-    echo '</pre>';
+    $echo_SOLO_ADMIN.= '</pre>';
     
     $a_emails=[] ;
     preg_match_all($patrones['email'], $rs["metadatos"], $a_emails) ;
-    echo 'email encontrados<br><pre>';
+    $echo_SOLO_ADMIN.= 'email encontrados<br><pre>';
     print_r($a_emails[0]);
-    echo '</pre>';
+    $echo_SOLO_ADMIN.= '</pre>';
     
     $a_ibans=[] ;
     preg_match_all($patrones['iban'], $rs["metadatos"], $a_ibans) ;
-    echo 'iban encontrados<br><pre>';
+    $echo_SOLO_ADMIN.= 'iban encontrados<br><pre>';
     print_r($a_ibans[0]);
-    echo '</pre>';
+    $echo_SOLO_ADMIN.= '</pre>';
     
     $a_tels=[] ;
     preg_match_all($patrones['tel'], $rs["metadatos"], $a_tels) ;
-    echo 'Tels encontrados<br><pre>';
+    $echo_SOLO_ADMIN.= 'Tels encontrados<br><pre>';
     print_r($a_tels[0]);
-    echo '</pre>';
+    $echo_SOLO_ADMIN.= '</pre>';
     
 }
+
+echo $echo_SOLO_ADMIN  ;
+
 
 // proceso METADATOS
   
@@ -711,7 +715,7 @@ if (1)     // antiguo else
     $link_conciliar.="  </select>" ;    
     $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='mov_bancos_conciliar_fras_cta($id_fra_prov);' "
                     . " title='Crea Pago nuevo, crea un mov. bancario en la cta.banco seleccionada y los concilia \n Ej. Cuando se paga con Caja Metálico, pagos hechos a cargo de Notas de Gastos de empleados, cuando hay compensaciones de facturas o abonos...' >"
-                    . "<i class='fas fa-plus-circle'></i><i class='fas fa-link'></i> Crear Pago, crea mov.banco y concilia ($pdte_pago_txt)</a>" 
+                    . "<i class='fas fa-plus-circle'></i><i class='fas fa-link'></i> Crear Pago, crea mov.banco y concilia $pdte_pago_txt</a>" 
                     .""
                      . " <a class='btn btn-link btn-xs noprint' style='opacity:0.3;'  href='#' onclick=\"window.open('../bancos/bancos_mov_bancarios.php?id_cta_banco='+document.getElementById('id_cta_banco').value ) \"    "
                     ." title='Ver cuenta bancaria' >ver cta bancaria</a>" ;
@@ -720,7 +724,7 @@ if (1)     // antiguo else
     
     // crea pago nuevo 
     $link_conciliar.="<div  class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
-    $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='fra_prov_crear_pago($id_fra_prov);' title='Crea un Pago nuevo en la cta banco por defecto. Se usa cuando vamos a emitir un pago. \n Ej. Pagarés, pagos fraccionados,... '><i class='fas fa-plus-circle'></i> Crear Pago nuevo ($pdte_pago_txt)</a>" ;    
+    $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='fra_prov_crear_pago($id_fra_prov);' title='Crea un Pago nuevo en la cta banco por defecto. Se usa cuando vamos a emitir un pago. \n Ej. Pagarés, pagos fraccionados,... '><i class='fas fa-plus-circle'></i> Crear Pago nuevo $pdte_pago_txt</a>" ;    
     $link_conciliar.="</div>" ;
 
     //

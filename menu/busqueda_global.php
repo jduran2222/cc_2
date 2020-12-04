@@ -153,10 +153,11 @@ if ($_SESSION["permiso_licitacion"])
  // buscamos OBRAS
 if ($_SESSION["permiso_obras"])    
 {
+    
  $result=$Conn->query("SELECT ID_OBRA AS ID,'' AS NUMERO, NOMBRE_OBRA AS NOMBRE,FECHA_INICIO AS FECHA  FROM OBRAS "
-         . " WHERE (tipo_subcentro='O' OR tipo_subcentro='M' OR tipo_subcentro='G') AND  CONCAT('@OBRA.',NOMBRE_OBRA,COALESCE(NOMBRE_COMPLETO,'')) LIKE '%$filtro%' "
+         . " WHERE   CONCAT('@OBRA.',NOMBRE_OBRA,COALESCE(NOMBRE_COMPLETO,'')) LIKE '%$filtro%' "
          . " AND $where_c_coste ORDER BY NOMBRE_OBRA DESC LIMIT $limite");
- 
+ //(tipo_subcentro='O' OR tipo_subcentro='M' OR tipo_subcentro='G') AND
  if ($result->num_rows > 0)
  {  
      $c=0 ;

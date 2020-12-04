@@ -1007,12 +1007,12 @@ if (isset($result_T)  )   // Hay TOTALES?
                                      // hay formato especial de link
                                      if ($tipo_formato_link=='formato_sub')   // FORMATO TRADICIONAL DE SUBRRAYADO (es incompatible con sortTable (ordenar tabla))
                                      {
-//                                         $valor_txt_final=$valor_txt? $valor_txt : 'ver'  ;  // evitamos que un valor vacio impida hacer el link
-                                         $valor_txt_final=$valor_txt? $valor_txt : ''  ;  // No mostramos 'ver' en caso de valor vacio, juand, dic-2020
+                                         $valor_txt_final=$valor_txt? $valor_txt : 'ver'  ;  // evitamos que un valor vacio impida hacer el link
+//                                         $valor_txt_final=$valor_txt? $valor_txt : ''  ;  // No mostramos 'ver' en caso de valor vacio, juand, dic-2020
                                          $TABLE .= "<td $class_hide_id   $format_style $dblclick_ondblclick >$span_sort<span id='div$cont_TD'  ><a href='$href_link' title='$title' "
                                                  . " target='_blank'>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}</td>";        
 
-                                     }elseif ($tipo_formato_link=='formato_sub_vacio')   // FORMATO TRADICIONAL DE SUBRRAYADO (es incompatible con sortTable (ordenar tabla))
+                                     }elseif ($tipo_formato_link=='formato_sub_vacio')   // FORMATO TRADICIONAL DE SUBRRAYADO (es incompatible con sortTable (ordenar tabla)) pero son poner "ver"
                                      {
                                          $valor_txt_final=$valor_txt? $valor_txt : ''  ;  // evitamos que un valor vacio permita hacer el link
                                          $TABLE .= "<td $class_hide_id   $format_style $dblclick_ondblclick >$span_sort<span id='div$cont_TD'  ><a href='$href_link' title='$title' "
