@@ -322,7 +322,6 @@ $onclick1_VARIABLE1_="ID_FRA_PROV" ;           // paso de variables para dar ins
 //
 
 $href="../bancos/mov_bancos_conciliar_selection_fras.php?id_mov_banco=$id_mov_banco&id_fra_prov=_VARIABLE1_";
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
 $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con la factura creando un id_pago' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
 //
 

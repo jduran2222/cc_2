@@ -79,7 +79,9 @@ $importe_iva = $rs["importe"] * 1.21  ; // estimamos un IVA del 21% en 2019
 //        . "     VALUES ( '{$rs["ID_PROVEEDORES"]}' ,'{$rs["REF"]}' ,'{$rs["FECHA"]}' ,'$importe_iva' ,'$guid' ,'{$_SESSION["user"]}'  );"
 $sql_facturar= "INSERT INTO FACTURAS_PROV ( ID_PROVEEDORES,N_FRA,FECHA,IMPORTE_IVA,guid, user ) "
         . "     VALUES ( '{$rs["ID_PROVEEDORES"]}' ,'factura de albaran' ,'{$rs["FECHA"]}' ,'$importe_iva' ,'$guid' ,'{$_SESSION["user"]}'  );"
-        . "UPDATE `VALES` SET `ID_FRA_PROV` = (select ID_FRA_PROV from FACTURAS_PROV where guid='$guid' )  WHERE ID_VALE={$rs["ID_VALE"]}; "
+        . " _CC_NEW_SQL_ "
+         . "UPDATE `VALES` SET `ID_FRA_PROV` = (select ID_FRA_PROV from FACTURAS_PROV where guid='$guid' )  WHERE ID_VALE={$rs["ID_VALE"]}; "
+        . "  _CC_NEW_SQL_  "
         . "$sql_insert_documento "  ;
         
 $href='../include/sql.php?sql=' . encrypt2($sql_facturar)  ;    
@@ -131,10 +133,6 @@ $id_parte=$rs["ID_PARTE"] ;
  $etiquetas["ID_OBRA"]='NOMBRE OBRA' ;
  
  
- // codigo a ejecutar antes de la eliminación de la entidad UDO. Borramos todas las PRODUCCIONES_DETALLE de esta UDO
-//$sql_delete= "DELETE FROM `GASTOS_T` WHERE  ID_VALE=$id_vale ; "  ;
-//$href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
-//$js_delete_codigo = "js_href('$href' ,0 ); " ;
 
 $delete_boton=1 ;
 

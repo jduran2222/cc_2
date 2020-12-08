@@ -147,13 +147,18 @@ logs('tipo dato:'.$tipo_dato)  ;
           {                             // NO COINCIDEN EL VALOR ENVIADO CON EL CONSULTADO (Acortamiento de campo, cambio de character especial, erroes en puntos decimales...)
            //echo "___ERROR___" ;        //mando mensaje de ERROR, el valor de la BD tras el UPDATE no es el esperado
            echo "ERROR en valor de BBDD $nuevo_valor diferente a $valor_bd ,<br> SQL: $sql" ;
+           $id_log_db= logs_db( "ERROR en UPDATE_AJAX.PHP. valor de BBDD $nuevo_valor diferente a $valor_bd ,SQL:  $sql" , 'cc_error');
+           echo $_SESSION["admin"] ? "ERROR en UPDATE_AJAX.PHP. valor de BBDD $nuevo_valor diferente a $valor_bd ,id_log_db: $id_log_d, SQL:  $sql" : "ERROR en UPDATE_AJAX.PHP  valor de BBDD $nuevo_valor diferente a $valor_bd  avise administrador. LOG_DB $id_log_db" ;
+           
           }	
        
   }  
    else
    { 
        //echo "___ERROR___" ;                           // mando mensaje de error posiblemente la sentencia UPDATE está errónea
-       echo "ERROR en UPDATE: $sql" ;
+       $id_log_db= logs_db( "ERROR en UPDATE_AJAX.PHP: $sql" , 'cc_error');
+       echo $_SESSION["admin"] ? "ERROR en UPDATE_AJAX.PHP: id_log_db: $id_log_db, SQL: $sql" : "ERROR en UPDATE_AJAX.PHP avise administrador. LOG_DB $id_log_db" ;
+      
    }	  
  $Conn->close();
 

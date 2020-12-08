@@ -461,7 +461,7 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 
             $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
 //            $sql_insert="UPDATE VENTAS SET PLAN=999999 WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
-            $sql_insert.="INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
+            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
                       " VALUES ( '_VARIABLE1_', '$fecha_ventas','_VARIABLE2_','_VARIABLE3_'  );"  ;
 
             $sql_insert=encrypt2($sql_insert) ;
@@ -525,7 +525,7 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 
             $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA=$id_obra_unica AND FECHA='_VARIABLE1_-01' ;"  ;
 //            $sql_insert="UPDATE VENTAS SET PLAN=999999 WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
-            $sql_insert.="INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
+            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
                       " VALUES ( '$id_obra_unica', '_VARIABLE1_-01','_VARIABLE2_','_VARIABLE3_'  );"  ;
 
             $sql_insert=encrypt2($sql_insert) ;

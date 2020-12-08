@@ -88,7 +88,7 @@ if ($id_parte_anterior)
 {
     $sql_insert="INSERT INTO PARTES_PERSONAL (ID_PARTE,ID_PERSONAL,HO,HX,MD,DC,Plus,PC,id_por_cuenta,ejecutado_pc,id_subobra,Observaciones)"
             . " SELECT '$id_parte',ID_PERSONAL,HO,HX,MD,DC,Plus,PC,id_por_cuenta,ejecutado_pc,id_subobra,Observaciones FROM  PARTES_PERSONAL WHERE ID_PARTE=$id_parte_anterior ;" ;
-    $sql_insert.="INSERT INTO Partes_Maquinas (ID_PARTE,id_obra,cantidad,id_subobra,Observaciones)"
+    $sql_insert.=" _CC_NEW_SQL_ INSERT INTO Partes_Maquinas (ID_PARTE,id_obra,cantidad,id_subobra,Observaciones)"
             . " SELECT '$id_parte',id_obra,cantidad,id_subobra,Observaciones FROM  Partes_Maquinas WHERE ID_PARTE=$id_parte_anterior ;" ;
 
     $href='../include/sql.php?sql=' . encrypt2($sql_insert)     ;

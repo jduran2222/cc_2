@@ -509,8 +509,10 @@ $titulo_sin_html= strip_tags($titulo)   ;
            // campos UPDATE , EDITABLE   
          }elseif ($is_update)   // el campo es actualizable (UPDATES) 
          {
-           // formateo $valor a $valor_encode para evitar problemas con el window.prompt()
+           // formateo $valor a $valor_encode para evitar problemas con el window.prompt(). OJO !! si se update el prompt por defecto se grabará el valor_encode que ya no tiene comillas ni \r\n
            $valor_encode=str_replace("\r\n"," ",$valor) ;  // sustituyo los saltos de línea por espacios para que funcione el 'prompt' del javascript         
+           $valor_encode= str_replace('"', '', $valor_encode)   ;  // quitamos las comillas dobles '"' para pasar el texto como parámetro a javascript, puede dar problemas al modificar el texto prompt por defecto y tener quitadas las comillas dobles
+                                                               
        
            
            // vemos los posibles tipos de campos       
@@ -601,13 +603,14 @@ $titulo_sin_html= strip_tags($titulo)   ;
 //                       . " width='600' height='450' frameborder='0' style='border:0;' allowfullscreen='' aria-hidden='false' tabindex='0'>"
 //                       . "</iframe></span>";
                
-               $iframe_url="<span><iframe src='$valor' width = '300px' height = '100px'></iframe></span>";
+               $iframe_url="<div><iframe src='$valor' width = '300px' height = '100px'></iframe></div>";
                
-               $TD_valor = "<span class='float_left' $format_style ><a class='btn btn-link btn-xs'  href= '$valor' title='ir a URL' target='_blank'>{$valor_txt}</a></span>"
-                           . "<br><span class='float_left noprint transparente'   onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' ,'','')\"  title='editar Url'><i class='fas fa-pencil-alt'></i></span>"
+               
+               $TD_valor = "<span $format_style ><a class='btn btn-link btn-xs'  href= '$valor' title='$valor' target='_blank'>{$valor_txt}</a></span>"
+                           . "<span class='btn btn-xs btn-link noprint transparente'   onclick=\"ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' ,'','')\"  title='editar Url'><i class='fas fa-pencil-alt'></i></span>"
                            . "<span class='btn btn-xs btn-link noprint transparente'   onclick=\"paste( function(nuevo_valor){ ficha_update_str('$cadena_link','$clave','$valor_encode','p$cont_TD' , nuevo_valor ); } ) ;location.reload(); \" "
                        . " title='paste from clipboard'> <i class='fas fa-paste'></i> </span>"
-                       . "$spans_html_txt $add_link_url_valor_null $iframe_url $spans_html_txt";        
+                       . "$spans_html_txt $add_link_url_valor_null $iframe_url";        
 
                 
            }elseif ($is_EMAIL)  // UPDATE EMAIL 
@@ -642,7 +645,7 @@ $titulo_sin_html= strip_tags($titulo)   ;
 
                 $link_href= $valor ;       // el link es a la propia URL_
                 $valor_campo_id = '' ;     // no se añade valor de ningún campo
-                $title= "Ir a URL" ;      
+                $title= "Abrir a URL en nueva página" ;      
                 $link_formato='formato_sub' ;  // formato subrayado
                 
 //                $div_valor_sec+=
@@ -682,7 +685,7 @@ $titulo_sin_html= strip_tags($titulo)   ;
             else   // el LINK en modo GENERAL con pequeña 'ver' tras pintar el $valor_txt
             {    
                $TD_valor = "<div style=' float:left;'><p id='p$cont_TD'>$valor_txt</p></div>"
-                       . "<div style=' float:left;'><a class='btn btn-xs transparente noprint' href= {$link_href}{$valor_campo_id} target='_blank'>ver</a></div>"
+                       . "<div style=' float:left;'><a class='btn btn-xs btn-link transparente noprint' href= {$link_href}{$valor_campo_id} target='_blank'>ver</a></div>"
                        . "$spans_html_txt";
             }// fin 
          

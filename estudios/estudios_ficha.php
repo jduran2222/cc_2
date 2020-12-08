@@ -61,10 +61,8 @@ else { require_once("../estudios/estudios_menutop_r.php"); }
       ,'URL_licitacion','PLAZO ENTREGA','NO VAMOS','Fecha Apertura','EXPEDIENTE', 'NOMBRE' ,'Nombre Completo', 'LUGAR'
       , 'Organismo', 'Presupuesto Tipo', 'Plazo Proyecto' ,'Observaciones', 'hora_entrega', 'URL_Google_Maps','Presentada' ]  ;
   
-//  $visibles=['id_produccion_obra'] ;
-//  $id_estudio=$rs["ID_ESTUDIO"] ;
 //  $tabla_update="Estudios_de_Obra" ;
-  $tabla_update="Estudios_de_Obra" ;
+  $tabla_update="Estudios_listado" ;
   $id_update="ID_ESTUDIO" ;
   $id_valor=$id_estudio ;
   

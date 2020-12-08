@@ -425,8 +425,7 @@ $actions_row["delete_link"]="1";
 $onclick1_VARIABLE1_="ID_VALE" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
 //$onclick1_VARIABLE2_="" ;     // idem
 
- $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = NULL  " 
-         ."WHERE  ID_VALE=_VARIABLE1_ ; " ;
+ $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = NULL  WHERE  ID_VALE=_VARIABLE1_ ; " ;
  
  $sql_update=encrypt2($sql_update) ;
  
@@ -456,7 +455,6 @@ $msg_tabla_vacia="No hay albaranes cargados a obra en esta factura";
 //$tabla_expandida  =  (!($conc AND ($num_vales>0)))  ;  
 
  $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov' WHERE  ID_VALE IN _VARIABLE1_ ; " ;
-//$sql_delete= "DELETE FROM `PAGOS` WHERE  id_pago IN _VARIABLE1_ ; "  ;
  
 $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;    
 
@@ -503,8 +501,7 @@ $aligns["Pdte_conciliar"] = "right" ;
 $onclick1_VARIABLE1_="ID_VALE" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
 //$onclick1_VARIABLE2_="" ;     // idem
 
- $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov'  " 
-         ."WHERE  ID_VALE=_VARIABLE1_ ; " ;
+ $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov'  WHERE  ID_VALE=_VARIABLE1_ ; " ;
 
   $sql_update=encrypt2($sql_update) ;
   
@@ -627,8 +624,7 @@ $onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instruc
 // $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = NULL  " 
 //         ."WHERE  ID_VALE=_VARIABLE1_ ; " ;
 
- $sql_delete="DELETE FROM `FRAS_PROV_PAGOS`  " 
-         ."WHERE id_fra_prov=$id_fra_prov AND id_pago=_VARIABLE1_ ; " ;
+ $sql_delete="DELETE FROM `FRAS_PROV_PAGOS`  WHERE id_fra_prov=$id_fra_prov AND id_pago=_VARIABLE1_ ; " ;
  
  $sql_delete=encrypt2($sql_delete) ;
         

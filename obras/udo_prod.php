@@ -168,7 +168,7 @@ $msg_tabla_vacia="No hay";
 $guid =  guid(); 
 $sql_insert="INSERT INTO `PETICION_DE_OFERTAS` ( ID_OBRA,NUMERO,NOMBRE_POF,`user`,guid )    VALUES (  '$id_obra',0, '{$array_udo["UDO"]}' , '{$_SESSION["user"]}' ,'$guid' );" ;
 
-$sql_insert.="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) VALUES " 
+$sql_insert.=" _CC_NEW_SQL_ INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) VALUES " 
       ."( (SELECT ID_POF FROM PETICION_DE_OFERTAS WHERE guid='$guid' ),'$id_udo', '{$array_udo["MED_PROYECTO"]}', '{$array_udo["UDO"]}', '{$array_udo["TEXTO_UDO"]}' "
       . " , '{$array_udo["Precio_Cobro"]}' , '{$_SESSION["user"]}' )  " ;
 

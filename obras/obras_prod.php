@@ -131,7 +131,7 @@ while($rs = $result->fetch_array())
    
  <tr>
    <td align=center><?php   echo $id_produccion;?></td>
-    <td><a class="enlaceTabla" target="_blank" title="ver Mediciones y relación valorada de la Producción" 
+    <td><a class="enlaceTabla"  title="ver Mediciones y relación valorada de la Producción" 
          href= "obras_prod_detalle.php?_m=<?php echo $_m;?>&id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><?php echo $produccion;?></a></td>
   <td align=right><?php   echo $Ej_Material;?></td>
   <td align=right><?php   echo $Valoracion;?></td>

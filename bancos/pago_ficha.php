@@ -263,7 +263,7 @@ echo  "<div class='right2_50' style='background-color:lightgreen' >" ;
       echo "<h3><font color='green'>$titulo_txt CONCILIADO</font></h3>" ;  //"../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco"
 //      echo "<a class='btn btn-link' href='../bancos/pago_ficha.php?_m=$_m&id_mov_banco=$id_mov_banco' target='_blank'>ver mov. banco</a>" ;
 
-                       $sql="UPDATE PAGOS SET id_mov_banco='$id_mov_banco' WHERE id_pago=$id_pago ;"  ;
+      $sql="UPDATE PAGOS SET id_mov_banco='$id_mov_banco' WHERE id_pago=$id_pago ;"  ;
 
       $sql_desconcilia_mov_banco=encrypt2("UPDATE PAGOS SET id_mov_banco=0 WHERE id_pago=$id_pago ; ") ;
       $href="../include/sql.php?code=1&sql=$sql_desconcilia_mov_banco ";
@@ -744,7 +744,6 @@ if ($id_mov_banco)
 
 
             $href="../bancos/mov_bancos_conciliar_traspaso.php?id_mov_banco1=$id_mov_banco&id_mov_banco2=_VARIABLE1_";
-            //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
             $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco como TRASPASO INTERNO entre cuentas' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
 
             //$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco como TRASPASO INTERNO entre cuentas ' "

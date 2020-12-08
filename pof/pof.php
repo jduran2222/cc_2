@@ -86,11 +86,11 @@ echo "<a target='_blank' class='btn btn-link btn-xs noprint' href='../pof/pof_PD
 $guid =  guid(); 
 
 $sql_insert= "SELECT @numero:=(MAX(NUMERO)+1) FROM PETICION_DE_OFERTAS WHERE ID_OBRA=$id_obra ;" ;
-$sql_insert.= "INSERT INTO `PETICION_DE_OFERTAS` (`ID_OBRA`, `NUMERO`, `NOMBRE_POF`,  `guid` ,user)" 
+$sql_insert.= " _CC_NEW_SQL_ INSERT INTO `PETICION_DE_OFERTAS` (`ID_OBRA`, `NUMERO`, `NOMBRE_POF`,  `guid` ,user)" 
              ." VALUES (  '$id_obra',@numero, '{$rs["NOMBRE_POF"]} - (Copia)' ,'$guid' , '{$_SESSION['user']}');" ;    
              
-$sql_insert.= "SELECT @id_pof:=ID_POF FROM PETICION_DE_OFERTAS WHERE guid='$guid'  ;" ;
-$sql_insert.= "INSERT INTO `POF_CONCEPTOS` (`ID_POF`, `id_udo`,  `Ocultar` ,  `CANTIDAD` , `CONCEPTO` , `DESCRIPCION` ,`Precio_Cobro` ,user)" 
+$sql_insert.= " _CC_NEW_SQL_ SELECT @id_pof:=ID_POF FROM PETICION_DE_OFERTAS WHERE guid='$guid'  ;" ;
+$sql_insert.= " _CC_NEW_SQL_ INSERT INTO `POF_CONCEPTOS` (`ID_POF`, `id_udo`,  `Ocultar` ,  `CANTIDAD` , `CONCEPTO` , `DESCRIPCION` ,`Precio_Cobro` ,user)" 
          ."                       SELECT @id_pof, id_udo, Ocultar, CANTIDAD, CONCEPTO, DESCRIPCION, Precio_Cobro, '{$_SESSION['user']}' "
          . " FROM POF_CONCEPTOS WHERE ID_POF=$id_pof ;" ;    
 $sql_insert= encrypt2($sql_insert) ;

@@ -5,7 +5,7 @@
 define ("ICON_NUEVO", "<i class='fas fa-plus-circle'></i>");
 
 $ICON = "<span class='glyphicon glyphicon" ;
-$SPAN = "'></span>";
+$SPAN = "'></span>"; 
 
 
 
@@ -427,11 +427,11 @@ $user  = isset($_SESSION["user"]) ? $_SESSION["user"] : 'user' ;
 $email  = isset($_SESSION["email"]) ? $_SESSION["email"] : 'email' ;   
 $empresa  = isset($_SESSION["empresa"]) ? $_SESSION["empresa"] : 'empresa' ;   
     
-$exito= DInsert_into('logs_db', "(id_c_coste,user,email,file_php,msg, tipo, empresa, parametros)"
+$id_log_db= DInsert_into('logs_db', "(id_c_coste,user,email,file_php,msg, tipo, empresa, parametros)"
      . " ", "( '$id_c_coste', '$user','$email','$file  $line','$msg' ,'$tipo' ,'$empresa'  ,'$parametros' )" ,'' , '', '', 0  ) ;
      
- if($exito)
-  { return $msg ;}
+ if($id_log_db)
+  { return $id_log_db ;}                  // devuelvo el $id_log_db de la tabla logs_db para localizar el ERROR
  else
   { return "ERROR:". $msg ;}  
     
@@ -2010,26 +2010,28 @@ function Dfirst($field, $select, $where = 1, $order_by = 0)
 //    logs_db( " Dfirst: $sql2") ;
 //    echo "<br><br><br>$sql2" ;
     $result2 = $Conn->query($sql2);  
-    if ($result2->num_rows > 0)
-    {
-        $rs2 = $result2->fetch_array();   // cogemos el primer valor
-        $return = $rs2[0];                 // devolvemos el primer campo
-        logs( " Resultado Dfirst: correcto $return") ;
-
-    } else
-    {
-//        echo "<br>VALOR NO ENCONTRADO" ;                            //debug   
-        $return = 0;           // devuelvo 0 si no encuentro nada
-        logs( " Resultado Dfirst: error") ;
-
-    }
-
-//    if ($nueva_conn)
-//    {
-//      //  $Conn->close();     // cierro Conn si lo he abierto aquí
-//    }
     
-//    logs( " Resultado Dfirst: $return") ;
+    if (isset($result2->num_rows))
+    {
+        if ($result2->num_rows > 0)
+        {
+            $rs2 = $result2->fetch_array();   // cogemos el primer valor
+            $return = $rs2[0];                 // devolvemos el primer campo
+            logs( " Resultado Dfirst: correcto, esultado:  $return") ;
+
+        } else
+        {
+            $return = 0;           // devuelvo 0 si no encuentro nada
+            logs( " Resultado Dfirst: sin resultados (return=0)") ; 
+
+        }
+    }else 
+    {
+            logs( " Resultado Dfirst: ERROR EN CONSULTA: $sql2") ;
+        
+    }   
+
+
 
     return $return;
 }
