@@ -35,32 +35,37 @@ include_once('../templates/_inc_privado2_navbar.php');
 //echo '<br>' ;
 
  
-  $id_usuario_get =isset($_GET["id_usuario"]) ? $_GET["id_usuario"]  : $_SESSION["id_usuario"] ;
+  $id_usuario_perfil =isset($_GET["id_usuario"]) ? $_GET["id_usuario"]  : $_SESSION["id_usuario"] ;
 
-  $cambio_password=1;
+  $cambio_password=1;   // indica si mostramos el bton para cambiar la password del usuario_perfil
+  $invitar_usuario=0;  //indica si mostramos el boton para mandar invitación al usuario
+  $anadir_usuario=0;  //indica si mostramos el boton para mandar invitación al usuario
   $href_get='';
  
  if ( $_SESSION["admin"]  )  // admin puee ver TODO de cualquier usuario
  {
-     $id_usuario = $id_usuario_get ;
+     $id_usuario = $id_usuario_perfil ;
      // el administrador ver el perfil completo de cualquier usuario
      $sql=  "SELECT * FROM Usuarios  WHERE id_usuario=$id_usuario " ; // AND $where_c_coste" 
      
      $href_get="?id_usuario=$id_usuario";
-     
+     $invitar_usuario=1;
+     $anadir_usuario=1;
 
  }    
  elseif($_SESSION["autorizado"]  )
  {  
-       $id_empresa_get = Dfirst('id_c_coste','Usuarios' , " id_usuario=$id_usuario_get " ) ;
+       $id_empresa_get = Dfirst('id_c_coste','Usuarios' , " id_usuario=$id_usuario_perfil " ) ;
        $id_empresa_autorizado = Dfirst('id_c_coste','Usuarios' , " id_usuario={$_SESSION["id_usuario"]} " ) ;
-       
-       if ($id_empresa_get == $id_empresa_autorizado )
+       $anadir_usuario=1;
+
+     if ($id_empresa_get == $id_empresa_autorizado )
        {
-            $id_usuario = $id_usuario_get ;   // es autorizado de su misma empresa
+            $id_usuario = $id_usuario_perfil ;   // es autorizado de su misma empresa
             // el autorizado ve el perfil restringido de un usuario de su empresa y puede cambiar sus PERMISOS
             $sql=   "SELECT  id_usuario,usuario,email,nombre_completo,autorizado,activo,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos, fecha_creacion FROM Usuarios  WHERE id_usuario=$id_usuario AND $where_c_coste" ;  // autorizando viendo perfil de administrado            
              $href_get="?id_usuario=$id_usuario";
+             $invitar_usuario=1;
 //            $cambio_password=0;  // anulado, el autorizado puede cambiar el password de sus usuarios
        }
        else
@@ -104,7 +109,7 @@ include_once('../templates/_inc_privado2_navbar.php');
   $tabla_update="Usuarios" ;
   $id_update="id_usuario" ;
   $id_valor=$id_usuario ;
-  
+   
   $formats["password_hash"]='textarea_30' ;
   $formats["admin"]='boolean' ;
   $formats["autorizado"]='boolean' ;
@@ -127,11 +132,19 @@ include_once('../templates/_inc_privado2_navbar.php');
   
   require("../include/ficha.php"); ?>
    
-      <!--// FIN     **********    FICHA.PHP-->
+      <!--// FIN     **********    FICHA.PHP--> 
   </div>
       
     <div class="right2">
-      <?php     
+      <?php    
+
+        echo  $anadir_usuario ? "<br><a class='btn btn-primary noprint' href='../configuracion/usuario_anadir.php' target='_blank' "
+                             . "title='Envía email al usuario con nuevo password invitándolo a acceder a Construcloud.es' >"
+                         . "<i class='fas fa-user-plus'></i> Añadir usuario</a>" : ""; // BOTON CAMBIO PASSWORD
+      
+        echo  $invitar_usuario ? "<br><a class='btn btn-primary noprint' href='../registro/invitar_nuevo_usuario.php{$href_get}' target='_blank' "
+                             . "title='Envía email al usuario con nuevo password invitándolo a acceder a Construcloud.es' >"
+                         . " Enviar invitación a usuario</a>" : ""; // BOTON CAMBIO PASSWORD
         echo  $cambio_password ? "<br><a class='btn btn-primary noprint' href='../registro/cambiar_password.php{$href_get}' target='_blank' >"
                          . " Cambiar password</a>" : ""; // BOTON CAMBIO PASSWORD
         echo   "<br><a class='btn btn-primary noprint' href='../registro/generar_link_autologin.php' target='_blank' >"

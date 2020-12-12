@@ -37,14 +37,13 @@ $id_pof=$_GET["id_pof"];
 <?php   // Iniciamos variables para ficha.php  background-color:#B4045
 
 
-// LOGO
-if (!$path_logo_empresa = Dfirst("path_logo", "Empresas_Listado", "$where_c_coste"))
-  {   $path_logo_empresa = "../img/no_image.jpg";}
+// LOGO  (ANULAMOS, se calcula en los header  , juand, dic-2020
+//if (!$path_logo_empresa = Dfirst("path_logo", "Empresas_Listado", "$where_c_coste"))
+//  {   $path_logo_empresa = "../img/no_image.jpg";}
 
  echo "<br><a class='btn btn-link noprint' title='imprimir' href=#  onclick='window.print();'>"
   . "<i class='fas fa-print'></i> Imprimir</a>" ; 
 
-//echo "<div ><img width='300' src='{$path_logo_empresa}_large.jpg' > </div>" ;   
 
 // DATOS GENERALES
 
@@ -55,7 +54,7 @@ $rs1 = $result->fetch_array(MYSQLI_ASSOC) ;
 $html= file_get_contents( '../plantillas/pof.html' ) ;
 //$html= file_get_contents( '../plantillas/p.html' ) ;
 
-$rs1['LOGO_EMPRESA']=$path_logo_empresa ;
+$rs1['LOGO_EMPRESA']=$path_logo_empresa ."_large.jpg" ;
 
 
 

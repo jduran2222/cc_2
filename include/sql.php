@@ -77,7 +77,10 @@ foreach ($array_sql as $sql_item) {
    { 
        //echo "___ERROR___" ;                           // mando mensaje de error
 //       echo "ERROR : $sql" ;
-       echo $error_txt ;
+      $id_log_db= logs_db( "ERROR en SQL.PHP: $error_txt" , 'cc_error');
+       echo $_SESSION["admin"] ? "ERROR en SQL.PHP: id_log_db: $id_log_db, SQL: $error_txt" : "ERROR en SQL.PHP avise administrador. LOG_DB $id_log_db" ;
+
+//       echo $error_txt ;
    }	  
  $Conn->close();
 

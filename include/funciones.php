@@ -44,7 +44,7 @@ return $result;
 
 // consulta si ESTUDIO COSTE es una Relación Valorada IDENTICA al PROYECTO (mismas udos y mismas mediciones)
 function cc_is_ESTUDIO_COSTE_actualizado( $id_obra, $id_prod_estudio_costes=0 )
-{
+{ 
 
 $desfase=1.234   ; // usamos el desfse para evitar que nuevas UDOs son MED_PROYECTO igual a cero no varíen el $hash_proyecto
 
@@ -373,7 +373,7 @@ function dateformat_friendly($datetime1)
 
     elseif($dias >= 2 AND $dias < 8){
 //      $return = date_format( date_create($datetime1),  'l - H:i');
-      $return=$dia_demana_hora ;         //  $fecha->format('F-Y')
+      $return=$dia_demana_hora ;         //  $fecha->format('F-Y') 
 
     }
 
@@ -393,12 +393,18 @@ function dateformat_friendly($datetime1)
 }
 
 
-
+            
 
 function badge($number, $tipo='danger')
 {  //badge badge-danger navbar-badge
    return (($number) ?  "<span  class='rounded-circle navbar-badge badge badge-$tipo'>$number</span>" : "") ;
 //   return (($number) ?  "<span  class='badge badge-$tipo navbar-badge'>$number</span>" : "") ;
+
+}
+
+function badge_sup($number, $tipo='danger')
+{  //badge badge-danger navbar-badge
+   return (($number) ? "<div style='float:right;'><sup class='small px-0 px-sm-1'>". badge($number,$tipo)  ."</sup></div>": "") ;
 
 }
 
