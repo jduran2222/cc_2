@@ -30,6 +30,7 @@ $id_udo=$_GET["id_udo"];
 $id_produccion= isset($_GET["id_produccion"]) ? $_GET["id_produccion"] : '';
 
 // require("../obras/obras_menutop_r.php");
+//require("../include/funciones_js.php");
 
 
  
@@ -55,8 +56,14 @@ $boton_recalcular= "<button class='btn-warning'  onclick=eval_coste($id_udo); ti
  
 $id_obra=$rs["ID_OBRA"];
 
+
+$href_anadir_capitulo="javascript:js_href( '../obras/add_capitulo_ajax.php?id_obra=$id_obra&id_udo=$id_udo&capitulo=_VARIABLE1_',1, '', 'PROMPT_Nombre de Capítulo nuevo?', '' , 'capitulo nuevo', ''  ) ;" ;
+//$href_anadir_capitulo="javascript:alert('hola') ;" ;
+
 $selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
-$selects["ID_CAPITULO"]=["ID_CAPITULO","CAPITULO","Capitulos_View","../obras/add_capitulo_ajax.php?no_ajax=1&id_obra=$id_obra&id_udo=$id_udo" 
+//$selects["ID_CAPITULO"]=["ID_CAPITULO","CAPITULO","Capitulos_View","../obras/add_capitulo_ajax.php?no_ajax=1&id_obra=$id_obra&id_udo=$id_udo" 
+//        ,"../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=","ID_CAPITULO","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+$selects["ID_CAPITULO"]=["ID_CAPITULO","CAPITULO","Capitulos_View",$href_anadir_capitulo 
         ,"../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=","ID_CAPITULO","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 
 //$links["N_Cta"] = ["../include/ficha_general.php?tabla=ctas_bancos&id_update=id_cta_banco&id_valor=", "id_cta_banco", 'icon'] ;

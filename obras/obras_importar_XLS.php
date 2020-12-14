@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo = 'Importar XLS';
+$titulo = 'Proyecto. Importar XLS';
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
@@ -27,8 +27,8 @@ include_once('../templates/_inc_privado2_navbar.php');
         ?>
 
 
-        <div id="main" class="mainc">
-<?php require("obras_menutop_r.php"); ?>	
+        <div id="main" class="mainc_100">
+<?php require("../obras/obras_menutop_r.php"); ?>	
                     <br><br><br>
 
             <h1>IMPORTAR PROYECTO DESDE .XLS</h1>
@@ -48,7 +48,7 @@ include_once('../templates/_inc_privado2_navbar.php');
 
             <center>
 
-                <form action="obras_importar_XLS.php?id_obra=<?php echo $id_obra; ?>" method="POST" enctype="multipart/form-data">
+                <form action="../obras/obras_importar_XLS.php?id_obra=<?php echo $id_obra; ?>" id="form1" name="form1" method="POST" enctype="multipart/form-data">
 
 <!--    <input type="checkbox" id="borrar_proyecto" name="borrar_proyecto" value="OFF"  />
  Borrar proyecto actual<br>-->  
@@ -56,7 +56,7 @@ include_once('../templates/_inc_privado2_navbar.php');
                         <tr><td colspan='7'><p>Copia/pega las celdas del XLS donde está el proyecto al area de texto con el formato de columnas de abajo.</p>
                                 <p>No hay que copiar el encabezado, solo las celdas</p>
                                 <p>Eliminar columnas o filas de subtotales o celdas agrupadas para evitar conflictos</p>
-                                <p>Una vez copiado y pegado pulsa 'Importar'2</p> 
+                                <p>Una vez copiado y pegado pulsa 'Importar'23</p> 
                             </td></tr>
 
                         <tr ><td >CAPITULO</td><td>CODIGO</td><td>UD</td><td>UNIDAD DE OBRA (UDO)</td><td>TEXTO UDO</td><td>MEDICION</td><td>PRECIO</td></tr>
@@ -290,6 +290,10 @@ if (isset($_POST["file_XLS"]))         //
 
 
                 </div>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

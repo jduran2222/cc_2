@@ -458,15 +458,15 @@ function formato_estudio_costes()
 <br><a class="btn btn-link btn-xs noprint" title="imprimir la producción con formato de Certificación sin costes, con texto_udo y con resumen" href=#  onclick="formato_certif();"><i class="fas fa-print"></i> modo Certificacion</a>
 
 <br>Modo personalizado: <br>
-<label title='permite seleccionar udos para operar con ellas'><INPUT type="checkbox" id="fmt_seleccion" name="fmt_seleccion" <?php echo $fmt_seleccion;?>  >&nbsp;Selección&nbsp;&nbsp;</label>
-<label title='añade una columna de Costes Estimados de cada Udo'><INPUT type="checkbox" id="fmt_costes" name="fmt_costes" <?php echo $fmt_costes;?>  >&nbsp;Costes Est.&nbsp;&nbsp;</label>
+<label title='Permite seleccionar udos para operar con ellas'><INPUT type="checkbox" id="fmt_seleccion" name="fmt_seleccion" <?php echo $fmt_seleccion;?>  >&nbsp;Selección&nbsp;&nbsp;</label>
+<label title='Añade una columna de Costes Estimados de cada Udo'><INPUT type="checkbox" id="fmt_costes" name="fmt_costes" <?php echo $fmt_costes;?>  >&nbsp;Costes Est.&nbsp;&nbsp;</label>
 <label title='Agrupa el listado de Udos por capítulos'><INPUT type="checkbox" id="fmt_agrupar_cap" name="fmt_agrupar_cap" <?php echo $fmt_agrupar_cap;?>  >&nbsp;Agrupar Capitulos&nbsp;&nbsp;</label>
 <label title='Muestra el texto completo de la Udo'><INPUT type="checkbox" id="fmt_texto_udo" name="fmt_texto_udo" <?php echo $fmt_texto_udo;?>  >&nbsp;Texto udo&nbsp;&nbsp;</label>
 <label title='Muestra la Medición de Proyecto'><INPUT type="checkbox" id="fmt_med_proyecto" name="fmt_med_proyecto" <?php echo $fmt_med_proyecto;?>  >&nbsp;MED_PROYECTO&nbsp;&nbsp;</label>
 <label title='Añade un Resumen de Capítulos al final de la Relación Valorada'><INPUT type="checkbox" id="fmt_resumen_cap" name="fmt_resumen_cap" <?php echo $fmt_resumen_cap;?>  >&nbsp;Resumen capitulos&nbsp;&nbsp;</label>
 <label title='Desglosa en meses de Enero a Diciembre la Relación Valorada\n Se aconseja filtrar un año para evitar solapar meses de diferentes años'><INPUT type="checkbox" id="fmt_mensual" name="fmt_mensual" <?php echo $fmt_mensual;?>  >&nbsp;Desglose mensual&nbsp;&nbsp;</label>
-<label title='añade una columna donde poder añadir mediciones'><INPUT type="checkbox" id="fmt_anadir_med" name="fmt_anadir_med" <?php echo $fmt_anadir_med;?>  >&nbsp;Columna Añadir Med.&nbsp;&nbsp;</label>
-<label title='imprime el logo de la empresa'><INPUT type="checkbox" id="fmt_logo" name="fmt_logo" <?php echo $fmt_logo;?>  >&nbsp;Logo&nbsp;&nbsp;</label>
+<label title='Añade una columna donde poder añadir mediciones. Agrupe por MODO EDICION'><INPUT type="checkbox" id="fmt_anadir_med" name="fmt_anadir_med" <?php echo $fmt_anadir_med;?>  >&nbsp;Columna Añadir Med.&nbsp;&nbsp;</label>
+<label title='Imprime el logo de la empresa'><INPUT type="checkbox" id="fmt_logo" name="fmt_logo" <?php echo $fmt_logo;?>  >&nbsp;Logo&nbsp;&nbsp;</label>
 <label title='Muestra los documentos , pdf, jpg... asociados a una Udo'><INPUT type="checkbox" id="fmt_doc" title='Muestra los documentos , pdf, jpg... asociados a una Udo' name="fmt_doc" <?php echo $fmt_doc;?>  >&nbsp;Doc. udo&nbsp;&nbsp;</label>
 <label title='Muestra todas las Subobras aunque no tengan Udos asignadas'><INPUT type="checkbox" id="fmt_subobras"  name="fmt_subobras" <?php echo $fmt_subobras;?>  >&nbsp;Subobras vacias&nbsp;&nbsp;</label>
 <label title='No muestra los capítulos con la etiqueta _NO_PRINT_ (ó simplificada _NP_ ), para poder imprimir certificaciones sin los capítulos auxiliares como p.ej. COSTES INDIRECTOS'><INPUT type="checkbox" id="fmt_no_print"  name="fmt_no_print" <?php echo $fmt_no_print;?>  >&nbsp;Quitar NP&nbsp;&nbsp;</label>
@@ -729,7 +729,8 @@ if (!$listado_global)
      $content_sel.="</div>" ; 
      
     if ($fmt_anadir_med) $content_anadir_med="  <a class='btn btn-warning btn-xs noprint ' href='#' onclick='prod_anade_med_udo($id_produccion)' title='Añade a cada unidad de obra la medición de la columna Añadir Med' >añade columna de mediciones </a>" ;
-
+    $print_anadir_med=false ;
+    
     $where_urlencode=base64_encode($where) ;
 //    $where_urlencode=$where ;
     
@@ -830,6 +831,7 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
      $sql="SELECT $select_global ID_OBRA,ID_CAPITULO, $select_agrupar_CAPITULO ID_UDO,cod_proyecto, ud $select_UDO $select_doc $select_MED_PROYECTO,SUM(MEDICION) as MEDICION"
            . " $select_anadir_med , PRECIO, SUM(IMPORTE) as importe $select_COSTE_EST $select_costes  FROM ConsultaProd WHERE $where  GROUP BY ID_UDO ORDER BY CAPITULO,ID_UDO " ;
 
+   $print_anadir_med=true ;
 
 //     $sql_T="SELECT $select_global_T $select_agrupar_CAPITULO_T '' as a31 $select_anadir_med, '' as a14  $select_MED_PROYECTO_hueco,'TOTAL ' $select_SUMA_MEDICION , SUM(IMPORTE) as importe $select_COSTE_EST_T $select_costes  FROM ConsultaProd WHERE $where    " ;
 
@@ -880,6 +882,9 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
      $sql="SELECT $select_global ID_OBRA,ID_CAPITULO, ID_UDO,ud $select_UDO $select_doc  $select_MED_PROYECTO "
            . " ,SUM(MEDICION) as MEDICION $select_anadir_med, PRECIO,SUM(IMPORTE) as importe $select_COSTE_EST $select_costes "
            . "FROM ConsultaProd WHERE $where  GROUP BY ID_UDO ORDER BY CAPITULO,ID_UDO " ;
+       
+     $print_anadir_med=true ;
+  
 //     echo $sql;
      $sql_T=$sql_T_resumen ;
      $sql_T2=$sql_T2_resumen ;
@@ -983,6 +988,7 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
    $sql="SELECT Udos_View.ID_UDO , CAPITULO,COD_PROYECTO AS Cod, ud $select_UDO, MED_PROYECTO, suma_medicion AS MEDICION $select_anadir_med_Udos_View,PRECIO $select_COSTE_EST, suma_medicion*PRECIO AS importe"
         . " FROM Udos_View LEFT JOIN ($sql0)  AS SQL0 ON Udos_View.ID_UDO=SQL0.ID_UDO    WHERE ID_OBRA=$id_obra AND $where " ;        
    
+   $print_anadir_med=true ;
 //   echo $sql ;
 //   $sql_T="SELECT '' as a122,'' as a112,'' as a12,'' as a31,'' as a39,'' as a14,'' as a15,'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE ID_PRODUCCION=$id_produccion  " ;
    $sql_T="SELECT '' as a122,'' as a112,'' as a12,'' as a31,'' as a39,'' as a14 $select_COSTE_EST_T,'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE ID_PRODUCCION=$id_produccion AND $where  " ;
@@ -1170,7 +1176,7 @@ $styles["importe"] = "vertical-align: bottom;" ;
 $msg_tabla_vacia="No hay.";
 
 if (isset($col_sel))  echo $content_sel ;           // si hay columna de SELECTION pinto el div con los botones acciones de selection
-if (isset($fmt_anadir_med))  echo $content_anadir_med ;           // si hay columna de SELECTION pinto el div con los botones acciones de selection
+if (isset($fmt_anadir_med) AND $print_anadir_med)  echo $content_anadir_med ;   // si hay columna de añadir medicion el div con los botones acciones de selection
 
 $tabla_expandible=0;
 

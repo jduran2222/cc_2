@@ -225,6 +225,9 @@ function add_udo_prod(id_udo,id_produccion) {
               	
 	
                 </div>
+                
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>              
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>              
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

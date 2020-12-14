@@ -38,19 +38,27 @@ foreach ($filas as $fila)
    $id_udo = $c[0] ;
    $medicion=$c[1] ;
    
-   $sql3 = "INSERT INTO PRODUCCIONES_DETALLE ( ID_PRODUCCION, Fecha, ID_UDO, MEDICION,Observaciones,user ) "
+   $sql = "INSERT INTO PRODUCCIONES_DETALLE ( ID_PRODUCCION, Fecha, ID_UDO, MEDICION,Observaciones,user ) "
         . "VALUES ( $id_produccion , '$fecha' , $id_udo , '$medicion', '$observaciones', '{$_SESSION["user"]}' ) " ;
    
-  if ($Conn->query($sql3))
-    { 
-//      echo "$sql3" ; 
-      	echo "<script languaje='javascript' type='text/javascript'>window.close();</script>";	
+   if ($id_udo)
+   {
+       if ($Conn->query($sql))
+        { 
+    //      echo "$sql3" ; 
+            echo "<script languaje='javascript' type='text/javascript'>window.close();</script>";	
 
-      
-    }
-     else
-    {  echo "ERROR: $sql3" ; }
+
+        }
+         else
+        {  
+            $id_log_db= logs_db( "ERROR en prod_add_detalle_ajax.php  SQL: $sql" , 'cc_error');
+            echo $_SESSION["admin"] ? "ERROR en prod_add_detalle_ajax.php  SQL: $sql id_log_db: $id_log_db" : "ERROR en prod_add_detalle_ajax.PHP avise administrador. LOG_DB $id_log_db" ;
     
+//             echo "ERROR: $sql3" ; 
+             
+        }
+   }
 }    
         
        

@@ -417,12 +417,15 @@ $titulo_sin_html= strip_tags($titulo)   ;
               $link_ver = isset($selects[$clave][4]) ? $selects[$clave][4] : "" ;
               $id_campo = isset($selects[$clave][5]) ? $selects[$clave][5] : "" ;
               $otro_where=isset($selects[$clave][6]) ? $selects[$clave][6] : "" ;   // solo sirve para el UPDATE y la nueva búsqueda
-              
               $no_where_c_coste = isset($selects[$clave][7]) ? $selects[$clave][7] : "" ;
+
+
               $where_c_coste_txt = $no_where_c_coste ? "" : " AND $where_c_coste " ;
               $otro_where .= $where_c_coste_txt ;  
 
               $campo_mostrado=isset($selects[$clave][8]) ? $selects[$clave][8] : $campo_texto ;   // solo sirve pintar un valor diferente al de búsqueda
+
+              $link_nuevo_target_blank = preg_match("/^javascript/i", $link_nuevo) ? '' : "target='_blank'" ;
              
               // calculamos el nombre del ID_ corespondiente, por ej. PROVEEDOR o NOMBRE_OBRA
 //              $valor_txt_sel= ($valor<>"") ?  Dfirst($campo_texto,$tabla_select,"$campo_ID=$valor") : ""  ;   //evitamos un error en Dfirst si $valor es NULL     
@@ -439,7 +442,7 @@ $titulo_sin_html= strip_tags($titulo)   ;
               if ($is_update)
               {
         //              LINKS EN CASO DE SER EDITABLE (UPDATES)
-                      $add_link_select= $link_nuevo ? "<a class='btn btn-xs btn-link noprint transparente' href='$link_nuevo' target='_blank' title='nuevo'>"
+                      $add_link_select= $link_nuevo ? "<a class='btn btn-xs btn-link noprint transparente' href=\"$link_nuevo\"   $link_nuevo_target_blank    title='nuevo'>"
                                                           . "<i class='fas fa-plus-circle'></i></a>" : "" ;
 
                       
