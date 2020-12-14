@@ -355,17 +355,21 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
     $content_TH_ppal="<tr>";
      $c=0 ;
     if (isset($col_sel)) $content_TH_ppal.="<th width='1%'><input onclick=\"selection_todo();\" type=\"checkbox\" id=\"selection_todo\" value=\"0\"></th>" ;
-     
-   foreach ($tabla_subgrupo[0] as $clave => $valor) //  encabezados
-   {
-      $not_id_var= (strtoupper(substr($clave,0,2))<>"ID") ;
-     
-      if ($not_id_var)                                     // descartamos los encabezados de campos ID
-	  { 
-          $content_TH_ppal.="<th width='{$anchos_ppal[$c]}%'>{$clave}</th>";    // añadimos cada encabezado
-          $c++ ;
-	  }   
-   } 
+   
+    if (is_array($tabla_subgrupo[0]))
+    {     
+           foreach ($tabla_subgrupo[0] as $clave => $valor) //  encabezados
+           {
+              $not_id_var= (strtoupper(substr($clave,0,2))<>"ID") ;
+
+              if ($not_id_var)                                     // descartamos los encabezados de campos ID
+                  { 
+                  $content_TH_ppal.="<th width='{$anchos_ppal[$c]}%'>{$clave}</th>";    // añadimos cada encabezado
+                  $c++ ;
+                  }   
+           } 
+    }     
+   
 //   $content_TH_ppal.="<th width='{$anchos_ppal[$c]}%'></th></tr>";	  // este es el <TH> del expand que hemos anulado
    //  fin ENCABEZADOS PRINCIPAL
    

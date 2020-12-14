@@ -465,7 +465,7 @@ function formato_estudio_costes()
 <label title='Muestra la Medición de Proyecto'><INPUT type="checkbox" id="fmt_med_proyecto" name="fmt_med_proyecto" <?php echo $fmt_med_proyecto;?>  >&nbsp;MED_PROYECTO&nbsp;&nbsp;</label>
 <label title='Añade un Resumen de Capítulos al final de la Relación Valorada'><INPUT type="checkbox" id="fmt_resumen_cap" name="fmt_resumen_cap" <?php echo $fmt_resumen_cap;?>  >&nbsp;Resumen capitulos&nbsp;&nbsp;</label>
 <label title='Desglosa en meses de Enero a Diciembre la Relación Valorada\n Se aconseja filtrar un año para evitar solapar meses de diferentes años'><INPUT type="checkbox" id="fmt_mensual" name="fmt_mensual" <?php echo $fmt_mensual;?>  >&nbsp;Desglose mensual&nbsp;&nbsp;</label>
-<label title='Añade una columna donde poder añadir mediciones. Agrupe por MODO EDICION'><INPUT type="checkbox" id="fmt_anadir_med" name="fmt_anadir_med" <?php echo $fmt_anadir_med;?>  >&nbsp;Columna Añadir Med.&nbsp;&nbsp;</label>
+<label title='Añade una columna donde poder añadir mediciones. Agrupe por cap-udos, udos, subobra-udos o MODO EDICION'><INPUT type="checkbox" id="fmt_anadir_med" name="fmt_anadir_med" <?php echo $fmt_anadir_med;?>  >&nbsp;Columna Añadir Med.&nbsp;&nbsp;</label>
 <label title='Imprime el logo de la empresa'><INPUT type="checkbox" id="fmt_logo" name="fmt_logo" <?php echo $fmt_logo;?>  >&nbsp;Logo&nbsp;&nbsp;</label>
 <label title='Muestra los documentos , pdf, jpg... asociados a una Udo'><INPUT type="checkbox" id="fmt_doc" title='Muestra los documentos , pdf, jpg... asociados a una Udo' name="fmt_doc" <?php echo $fmt_doc;?>  >&nbsp;Doc. udo&nbsp;&nbsp;</label>
 <label title='Muestra todas las Subobras aunque no tengan Udos asignadas'><INPUT type="checkbox" id="fmt_subobras"  name="fmt_subobras" <?php echo $fmt_subobras;?>  >&nbsp;Subobras vacias&nbsp;&nbsp;</label>
@@ -920,6 +920,7 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
      $sql_T2=$sql_T2_resumen ;
      $sql_T3=$sql_T3_resumen ;
  
+     $print_anadir_med=true ;
 
      $sql_S="SELECT  ID_SUBOBRA, SUBOBRA  , SUM(IMPORTE) as importe   FROM "
            . " ConsultaProd "
