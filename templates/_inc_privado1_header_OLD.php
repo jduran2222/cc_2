@@ -33,23 +33,16 @@ else {
 }
 
 // juand, agosto 2020
-//if ( preg_match("/ingenop|www2/i", $_SERVER['HTTP_HOST'])) {
-if ( $_SESSION["is_desarrollo"] )  {
-  //$_SESSION["is_desarrollo"]=1 ;
-  error_reporting(E_ALL);
-}
-//-- juand, agosto 2020
+//if ( preg_match("/ingenop|www2/i", $_SERVER['HTTP_HOST'])  ) 
+if ( $_SESSION["is_desarrollo"] ) 
+        {
+//        $_SESSION["is_desarrollo"]=1 ;
+        error_reporting(E_ALL);
+        
+        }
 
 //Limites de memoria:
 ini_set('memory_limit', '256M');
-
-
-
-// [FJSL 2020-12-05]: inclusión de fragmentos HTML
-//Incluir los elementos de generación de gragmentos HTML
-include_once('../include/formatosHTML.php');
-// [FJSL 2020-12-05]: FIN inclusión de fragmentos HTML
-
 
 
 //Importantísimo que no se haya escrito nada antes de todo este código por temas de sesiones y redirecciones 
