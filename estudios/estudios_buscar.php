@@ -90,7 +90,7 @@ $formats["NO VAMOS"]='boolean' ;
 //
 //$links["Banco"] = ["../bancos/bancos_mov_bancarios.php?id_cta_banco=", "id_cta_banco", "", "formato_sub"] ;
 ////$links["N_Cta"] = $links["Banco"] ;
-$links["NOMBRE"] = ["../estudios/estudios_ficha.php?&id_estudio=", "ID_ESTUDIO", '', 'formato_sub'] ;
+$links["NOMBRE"] = ["../estudios/estudios_ficha.php?&id_estudio=", "ID_ESTUDIO", '', 'formato_sub', ''] ;
 
 
 //$links["Tipo_Cuenta"] = $links["Banco"] ;

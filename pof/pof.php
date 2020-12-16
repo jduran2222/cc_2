@@ -455,14 +455,14 @@ $actions_row["delete_link"]="1";
 
 <div style='background-color: white' class="mainc" >
 
-<button type='button' class='btn btn-default noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'><h3>Añadir Conceptos a la POF  <i class="fa fa-angle-down" aria-hidden="true"></i></h3></button>
+<button type='button' class='btn btn-link btn-sm noprint' id='exp_seleccion' data-toggle='collapse' data-target='#div_seleccion'><i class="fas fa-plus-circle"></i>Añadir Conceptos a la POF  <i class="fa fa-angle-down" aria-hidden="true"></i></button>
 <div  id='div_seleccion' class='collapse'>
     
   <div class='border' style='background-color: white; border-color: grey'>    
-   <p><b>Concepto vacio</b></p>
+   <p>Concepto vacio:</p>
 
    <!--<a class='btn btn-link btn-lg' href='../pof/pof_concepto_anadir.php?id_pof=<?php // echo $id_pof;?>'  ><i class='fas fa-plus-circle'></i> Añadir concepto vacio</a>-->
-   <a class='btn btn-link btn-lg'  href=# <?php echo "onclick=\"add_pof_concepto($id_pof)\" " ;?> ><i class="fas fa-plus-circle"></i> Añadir concepto vacio</a>
+   <a class='btn btn-link btn-xs noprint'  href=# <?php echo "onclick=\"add_pof_concepto($id_pof)\" " ;?> ><i class="fas fa-plus-circle"></i> Añadir concepto vacio</a>
 
   </div>
 
@@ -470,8 +470,8 @@ $actions_row["delete_link"]="1";
       <!--<label for="id_personal">Selecciona personal:</label>-->
     
 
-      <p><b>Unidad de Obra (UDO)</b></p>
-      <input type="text" id="filtro" size="7" value="" style="text-align:right;" placeholder="busca Udo..." />
+      <p>Unidad de Obra (UDO):</p>
+      <input type="text" id="filtro" size="3" value="" style="text-align:right;" placeholder="busca Udo..." />
       <i class="fas fa-search"></i>
       <!--<select class="form-control" id="id_personal" style="width: 30%;">-->
       <select id="id_udo"  onblur='this.size=1;' onchange='this.size=1; this.blur();' style="font-size: 15px; width: 50%;" size="1">
@@ -489,8 +489,8 @@ $actions_row["delete_link"]="1";
  	
       </select>
       <!--<input type="text" id="cantidad" size="3" value="0" style="text-align:right;" />-->
-      <a id='anadir_concepto'  class='btn btn-link btn-lg' href='#'  onclick='pof_add_udo(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir concepto de UDO</a>
-      <a class='btn btn-link btn-xs' href='#'  onclick='ver_udo();'>ver Udo</a>
+      <a id='anadir_concepto'  class='btn btn-link btn-xs noprint' href='#'  onclick='pof_add_udo(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir concepto de UDO</a>
+      <a class='btn btn-link btn-xs noprint transparente' href='#'  onclick='ver_udo();'>ver Udo</a>
       <!--<a class='btn btn-link btn-xs' href='../proveedores/concepto_anadir.php?_m=$_m&id_proveedor=<?php // echo $id_proveedor  ; ?>&id_obra=<?php // echo $id_obra  ; ?>' target='_blank' ><i class='fas fa-plus-circle'></i> Nuevo concepto</a>-->
 
       
@@ -541,32 +541,49 @@ else
 return ;
  }
 
+function ver_capitulo() {
+    
+var id_capitulo=document.getElementById("id_capitulo").value ;
+
+if (!(id_capitulo==0)) 
+{
+window.open('../include/ficha_general.php?url_enc=<?php echo encrypt2("tabla=Capitulos&id_update=ID_CAPITULO"); ?>&id_valor='+id_capitulo, '_blank');
+}
+else
+{
+   alert("Seleccione un Capítulo de la lista desplegable previamente") 
+}   
+
+return ;
+ }
+
 
 
 </script>
  
 
     <div class='border' style='border-color: grey'>
-        <p><b>CAPITULO</b></p>
+        <p>Capítulo:</p>
       <select  id="id_capitulo" style="font-size: 15px; width: 20%;">
        <?php echo DOptions_sql("SELECT ID_CAPITULO,CAPITULO FROM Capitulos WHERE ID_OBRA=$id_obra  ORDER BY CAPITULO ", "Selecciona Capítulo...") ?>
       </select>
 <!--      <input type="text" id="cantidad_mq" size="3" value="0" style="font-size: 20px; text-align:right;" /> ud       
       <input type="text" id="observaciones_mq" size="10" value="" placeholder="Observaciones"  /> -->
       
-      <a class='btn btn-link btn-lg' href='#'  onclick='pof_add_capitulo(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir conceptos del Capítulo</a>
+      <a class='btn btn-link btn-xs noprint' href='#'  onclick='pof_add_capitulo(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir conceptos del Capítulo</a>
+      <a class='btn btn-link btn-xs noprint transparente' href='#'  onclick='ver_capitulo();'>ver Capítulo</a>
     </div>
 
     <div class='border' style='border-color: grey'>
-        <p><b>SUBOBRA</b></p>
+        <p>SubObra:</p>
       <select  id="id_subobra" style="font-size: 15px; width: 20%;">
        <?php echo DOptions_sql("SELECT ID_SUBOBRA,SUBOBRA FROM Subobra_View WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY SUBOBRA ", "Selecciona SubObra...") ?>
       </select>
 <!--      <input type="text" id="cantidad_mq" size="3" value="0" style="font-size: 20px; text-align:right;" /> ud       
       <input type="text" id="observaciones_mq" size="10" value="" placeholder="Observaciones"  /> -->
       
-      <a class='btn btn-link btn-lg' href='#' onclick='pof_add_subobra(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir conceptos de la SubObra</a>
-      <a class='btn btn-link btn-xs' href='#' onclick="window.open('../obras/subobra_ficha.php?id_subobra='+document.getElementById('id_subobra').value); "> ver SubObra</a>
+      <a class='btn btn-link btn-xs noprint' href='#' onclick='pof_add_subobra(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir conceptos de la SubObra</a>
+      <a class='btn btn-link btn-xs noprint transparente' href='#' onclick="window.open('../obras/subobra_ficha.php?id_subobra='+document.getElementById('id_subobra').value); "> ver SubObra</a>
     </div>
 
 

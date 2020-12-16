@@ -318,6 +318,9 @@ echo "</div>" ;
 
 
 // BOTONERA DE AGRUPAMIENTO
+echo "<br><font size=1 color=grey>Agrupar por : $agrupar  </font> " ;
+
+
 echo "<div id='myDIV' class='noprint'>" ;
 
 $btnt['ultimas_fras_reg']=['ultimas registradas','muestra las últimas facturas registradas'] ;
@@ -404,7 +407,7 @@ $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%
   
 <div class="noprint" style="border-width:1px; border-style:solid;">
   <b>Acciones a realizar con facturas seleccionadas:</b>
-    <div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>
+    <div style='width:100% ; border-style:solid;border-width:2px; border-color:silver; padding: 10px;'>
       <!--<label for="id_personal">Selecciona personal:</label>-->
       Añadir a remesa de pagos
       <!--<select class="form-control" id="id_personal" style="width: 30%;">-->
@@ -415,7 +418,7 @@ $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%
       <a class='btn btn-warning btn-xs' href='#' onclick="genera_remesa()" title='Añade/Genera remesa con las facturas seleccionadas' >Añadir a remesa</a>
       <a class='btn btn-link btn-xs' href='#' onclick="window.open('../bancos/remesa_ficha.php?id_remesa='+document.getElementById('id_remesa').value ) " title='abre la remesa seleccionada' >ver remesa</a>
     </div>
-      <div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>
+      <div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ; padding: 10px;'>
       <!--<label for="id_personal">Selecciona personal:</label>-->
       Cargar a obra
       <!--<select class="form-control" id="id_personal" style="width: 30%;">-->
@@ -424,14 +427,15 @@ $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%
       </select>
       <a class='btn btn-warning btn-xs' href='#' onclick="cargar_a_obra_sel_href()" title='Carga las facturas seleccionadas a una obra' >cargar</a>
     </div>
-      <div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>
+      <div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ; padding: 10px;'>
       <!--<label for="id_personal">Selecciona personal:</label>-->
       Registrar como pago en metálico
       <a class='btn btn-warning btn-xs' href='#' onclick="mov_bancos_conciliar_fras_caja_metalico ()" title='Registra las facturas como pagadas en metálico. Crea id_pago y un mov.banco en la Cuenta Metalico' >pagar con CAJA METALICO</a>
+    </div>
 
      <?php   
           // pago con cuenta a seleccionar
-   echo "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
+   echo "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ; padding: 10px;'>" ;
    echo "Pagar con cuenta: <select  id='id_cta_banco' style='width: 40%; '>" ;
    echo DOptions_sql("SELECT id_cta_banco, Banco FROM ctas_bancos WHERE Activo AND $where_c_coste ORDER BY Banco  ") ;
    echo "  </select>" ;    
@@ -439,10 +443,10 @@ $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%
    echo "</div>" ;
     
           // cambiar GRUPO
-   echo "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
+   echo "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ; padding: 10px;'>" ;
     $sql_update= "UPDATE `FACTURAS_PROV` SET grupo='_VARIABLE1_' WHERE  ID_FRA_PROV IN _VARIABLE2_ ; "  ;
     $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;    
-echo "Cambiar el grupo de las facturas seleccionadas: <a class='btn btn-warning btn-xs noprint ' href='#' "
+   echo "Cambiar el grupo de las facturas seleccionadas: <a class='btn btn-warning btn-xs noprint ' href='#' "
      . " onclick=\"js_href('$href' ,'1','', 'PROMPT_Nombre_nuevo_grupo' ,'table_selection_IN()' )\"   "
      . "title='Cambia a otro grupo las facturas seleccionadas' > cambiar grupo</a>" ;
 
@@ -455,7 +459,7 @@ echo "Cambiar el grupo de las facturas seleccionadas: <a class='btn btn-warning 
     </div>
 
 </div>
-</div>
+<!--</div>-->
 <!--FIN ACCIONES EXPAND  -->   
 <!--INICIO EXPAND DE RESUMENES  -->   
 
@@ -618,9 +622,7 @@ $actions_row["delete_link"]="1";
 //echo   "<a class='btn btn-primary' href='#' onclick=\"genera_remesa()\" title='Genera remesa con las facturas seleccionadas' >Generar Remesa Nueva</a>" ; // BOTON AÑADIR FACTURA
 //echo   "<a class='btn btn-primary' href='#' onclick=\"cargar_a_obra()\" title='Carga las facturas seleccionadas a una obra' >Cargar fras a obra</a>" ; 
 
-
-echo "<br><font size=2 color=grey>Agrupar por : $agrupar "
-        . "<br> {$result->num_rows} filas </font> " ;
+echo "<br><font size=1 color=grey> {$result->num_rows} filas </font> " ;
 
 $dblclicks=[];
 $dblclicks["PROVEEDOR"]="proveedor" ;

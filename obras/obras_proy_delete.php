@@ -27,7 +27,7 @@ if ($id_obra=Dfirst("ID_OBRA", 'OBRAS', "ID_OBRA=$id_obra AND $where_c_coste"))
 }
 else
 {
-    echo cc_page_error( 'ERROR: incoherencia en datos al tratar de borrar PROYECTO') ;
+    echo cc_page_error( 'ERROR: Obra no encontrada al tratar de borrar PROYECTO') ;
 }   
 //echo "<script languaje='javascript' type='text/javascript'>window.close();</script>"; 
 

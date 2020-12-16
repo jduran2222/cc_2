@@ -238,14 +238,14 @@ else if (var1.startsWith("PROMPT"))     /// comprobamos si var1 es PROMPT
 {
      nuevo_valor= var1_prompt_default?    window.prompt(var1,var1_prompt_default) :  window.prompt(var1)   ;
      var1_link =  "&variable1=" + nuevo_valor ;
-     var ejecutar = (!(nuevo_valor === null)) ; 
+     ejecutar = (!(nuevo_valor === null)) ; 
 
      // comprobamos  tambien la var2 es PROMPT
      if (var2.startsWith("PROMPT"))     // hay que preguntar el valor a pasar al link
      {
          nuevo_valor=window.prompt(var2)   ;
          var2_link =  "&variable2=" + nuevo_valor ;
-         var ejecutar = (!(nuevo_valor === null)) ; 
+         ejecutar = (!(nuevo_valor === null)) ; 
      }
 
 }else if (var2.startsWith("PROMPT"))     // comprobamos si var2 es PROMPT 

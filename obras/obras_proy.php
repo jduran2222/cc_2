@@ -50,6 +50,15 @@ $id_obra=$_GET["id_obra"];
 $result=$Conn->query($sql="SELECT * from Proyecto_View WHERE ID_OBRA=".$id_obra);
 
 $sql_update_precio = encrypt2("UPDATE Udos  SET  PRECIO=ROUND(PRECIO*_VARIABLE1_ , 2)  WHERE  ID_OBRA=".$id_obra ) ;
+$sql_update_precio_desde_coste_est = encrypt2("UPDATE Udos  SET  PRECIO=ROUND(COSTE_EST , 2)  WHERE  ID_OBRA=".$id_obra ) ;
+
+//function js_href( href,reload, msg, var1, var2 , var1_prompt_default, var2_prompt_default  ) { 
+
+$href="../include/sql.php?code=1&sql=$sql_update_precio" ;
+$href_prompt_update_precio= "PROMPT_¿Factor a multiplicar a cada PRECIO? \n "
+                          . "¡¡ATENCIÓN!! Esta operación modificará todos los precios del proyecto \n y todas las Relaciones Valoradas que existan ";
+$href_prompt_update_precio= "PROMPT_¿Factor a multiplicar a cada PRECIO?";
+$js_href="js_href( '$href', 1, '', '$href_prompt_update_precio', '', 1, '')"
 
 ?>
 
@@ -59,23 +68,28 @@ $sql_update_precio = encrypt2("UPDATE Udos  SET  PRECIO=ROUND(PRECIO*_VARIABLE1_
 <a class="btn btn-primary" title="Importar fichero formato XLS"  href="obras_importar_XLS.php?_m=<?php echo $_m;?>&id_obra=<?php echo $id_obra;?>" >importar .XLS</a>
 <a class="btn btn-primary" title="Crear capítulo de COSTES INDIRECTOS" target="_blank"
           href=# onclick='js_href("../obras/obras_proy_add_CI.php?id_obra=<?php echo $id_obra;?>" )'><i class="fas fa-plus-circle"></i> Cap. Costes Indirectos</a>
-<a class="btn btn-primary" title="Corregir precios con factor multiplicador. se redondearán a 2 decimales" target="_blank"
-          href=# onclick='corregir_precios_proyecto("<?php echo $sql_update_precio;?>" )'>Corregir precios con factor</a>
+
+<a class="btn btn-primary" title="Corregir precios con factor multiplicador. Se redondearán a 2 decimales. Se modificarán todos los precios de las Relaciones Valoradas" target="_blank"
+          href=# onclick="<?php echo $js_href;?>">Corregir precios con factor</a>
+
+<a class="btn btn-primary" title="Copia el Coste Estimado al campo Precio, permite hacer un presupuesto detallado de cada UDO" target="_blank"
+          href=# onclick='corregir_precios_proyecto_desde_coste_est("<?php echo $sql_update_precio_desde_coste_est;?>" )'>Copiar Coste Estimado a Precio</a>
 <a class="btn btn-primary" title="imprimir proyecto" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=" target="_blank">imprimir</a>
 <a class="btn btn-primary" title="exportar proyecto a PDF" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=pdf">pdf</a>
 <a class="btn btn-primary" title="exportar proyecto a XLS" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=xls">xls</a>
 <a class="btn btn-primary" title="exportar proyecto a DOC" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=doc">doc</a>
-<a class="btn btn-danger" title="Borrar proyecto completo" href=# <?php echo "onclick=\"delete_proyecto($id_obra)\" " ;?> >Borrar proyecto</a><br>
+<a class="btn btn-danger" title="Borrar proyecto completo" href=# onclick="js_href( '../obras/obras_proy_delete.php?id_obra=<?php echo $id_obra;?>'  ,1, '¿Borrar el proyecto completo? \n\n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto '  );"  >Borrar proyecto</a><br>
 <br><br>
 
   
- <script>
-function corregir_precios_proyecto(sql)
+<script>
+
+function corregir_precios_proyecto_desde_coste_est(sql)
  { 
 
-    var variable1=window.prompt("¿Factor a multiplicar a cada PRECIO? \n ¡¡ATENCIÓN!! Esta operación modificará todos los precios del proyecto \n y todas las Relaciones Valoradas que existan ",1);
+    var variable1=window.confirm("¿Copiar cada COSTE ESTIMADO de cada Unidad de Obra a PRECIO? \n ¡¡ATENCIÓN!! Esta operación modificará todos los precios del proyecto \n y todas las Relaciones Valoradas que existan ");
 //    alert(sql) ;
-   if (!(variable1 === null) && variable1)
+   if (variable1 ) 
    { 
 //         alert(dbNumero(variable1)) ;
   
@@ -91,7 +105,7 @@ function corregir_precios_proyecto(sql)
         }
      };  // fin de la función
   
-  xhttp.open("GET", "../include/sql.php?code=1&sql=" + sql+"&variable1="+dbNumero(variable1) , true);
+  xhttp.open("GET", "../include/sql.php?code=1&sql=" + sql , true);
   xhttp.send(); 
 //  alert("../include/sql.php?code=1&sql=" + sql+"&variable1="+dbNumero(variable1));
 //  window.open("../include/sql.php?code=1&sql=" + sql+"&variable1="+dbNumero(variable1), '_blank');
@@ -101,30 +115,8 @@ function corregir_precios_proyecto(sql)
    {return;}
  
 }
-function delete_proyecto(id_obra)
- { 
-
-// cambiamos a uso de js_href2( href,reload, msg, var1, var2 , var1_prompt_default, var2_prompt_default  ) , juand, dic-2020
-
-js_href( "../obras/obras_proy_delete.php?id_obra=" + id_obra ,1, "¿Borrar el proyecto completo? \n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto "  ) 
 
 
-// anulamos todo al usar js_href2, juand, dic-2020
-//      var nuevo_valor=window.confirm("¿Borrar el proyecto completo? \n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto ");
-// if (!(nuevo_valor === null) && nuevo_valor)
-//   { 
-//       var xhttp = new XMLHttpRequest();
-//
-//  xhttp.open("GET", "../obras/obras_proy_delete.php?id_obra=" + id_obra , true);
-//  xhttp.send();   
-//   location.reload();
-//   }
-// else
-// {return;}
-
-return;
- 
-}
 function delete_capitulos(id_obra)
  { 
 
@@ -251,8 +243,9 @@ if ($result->num_rows > 0)
 	   <TD style="background-color:lightgreen;color:grey;font-size:14px;" > SubObra </TD>
 	</TR>
 	<TR >
-          <TD colspan="7">CAPITULO<b> <?php echo "<a target='_blank'  href='../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=$firstIdCapitulo'  >{$rs["CAPITULO"]}</a>";?></b>
-              <a class="btn btn-link btn-xs" title="añadir unidad de obra al Capitulo" href=# <?php echo "onclick=\"add_udo({$rs["ID_CAPITULO"]},$id_obra)\" " ;?>  >  añadir udo</a></TD>
+          <TD colspan="7">CAPITULO<b> <?php echo "<a target='_blank'  href='../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=$firstIdCapitulo' "
+                                        . "title='abrir ficha de Capítulo' >{$rs["CAPITULO"]}</a>";?></b>
+              <a class="btn btn-link btn-xs noprint transparente" title="añadir Unidad de Obra (UdO) al Capitulo" href=# <?php echo "onclick=\"add_udo({$rs["ID_CAPITULO"]},$id_obra)\" " ;?>  > <i class="fas fa-plus-circle"></i> UdO</a></TD>
 	</TR>
 	
   <?php   } ?>
@@ -341,3 +334,5 @@ $Conn->close();
 
 //FIN
 include_once('../templates/_inc_privado3_footer.php');
+
+?>

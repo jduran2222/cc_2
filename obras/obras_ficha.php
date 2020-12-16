@@ -65,6 +65,17 @@ if ($tipo_subcentro=='O')     // consulta para las OBRAS
          . ", VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
          . ", Facturado,Facturado_iva,Cobrado,Pdte_Cobro"
          . ",'' AS FIN_EXPAND_2,'Datos certificaciones' as EXPAND_3, id_subobra_auto,D_OBRA ,Pie_CERTIFCACION,'' AS FIN_EXPAND_3, user,fecha_creacion FROM Obras_View WHERE ID_OBRA=$id_obra AND $where_c_coste";
+ // PROVISIONALMENTE USAMOS ESTE SQL MENOS CARGADO PARA AGILIZAR LA CARGA.
+ // HABRIA QUE CARGAR POR AJAX LA PARTE ECONOMICA QUE HAY EN OBRAS_VIEW
+ $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,NOMBRE_COMPLETO,EXPEDIENTE,ID_CLIENTE,TIPO_LICITACION,IMPORTE,BAJA,COEF_BAJA,iva_obra"
+         . " ,GG_BI,ID_ESTUDIO,id_prod_estudio_costes,id_produccion_obra"
+         . " ,Plazo,Situacion,URL_Google_Maps ,Agenda_Obra, Observaciones "
+         . " ,F_Contrato,Fecha_Plan_SS,F_Aper_C_Trabajo "
+         . " ,F_Acta_Rep,F_Fin_Plazo"
+         . " ,F_A_Recepcion"
+         . " ,user,fecha_creacion FROM OBRAS WHERE ID_OBRA=$id_obra AND $where_c_coste";
+ 
+// $sql="SELECT * FROM OBRAS WHERE ID_OBRA=$id_obra AND $where_c_coste";
  
 }elseif($tipo_subcentro=='E')  // consulta para las OBRA-ESTUDIO
 {

@@ -183,7 +183,7 @@ $titulo_sin_html= strip_tags($titulo)   ;
        } 
 
        $js_delete_codigo= isset($js_delete_codigo) ? $js_delete_codigo : "" ;
-       echo "<button class='btn btn-danger btn-lg noprint transparente' $disabled_delete_txt title='$delete_title'  onclick=\" ficha_delete('$cadena_link', '$titulo_sin_html')\"><i class='far fa-trash-alt'></i></button> "; 
+       echo "<button class='btn btn-danger btn-xs noprint transparente' $disabled_delete_txt title='$delete_title'  onclick=\" ficha_delete('$cadena_link', '$titulo_sin_html')\"><i class='far fa-trash-alt'></i></button> "; 
      
    }  
  }

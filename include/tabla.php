@@ -1002,6 +1002,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                                          ((isset($links[$clave][2]))? "{$links[$clave][2]}": "ver ficha" );
                                  
                                  $tipo_formato_link= isset($links[$clave][3]) ? $links[$clave][3]   :  "SIN FORMATO"   ;
+                                 $link_target_blank= isset($links[$clave][4]) ? ($links[$clave][4]? "target='_blank'" : "")   :  "target='_blank'"   ; //parametro 4,default es target blank
                                  if ($tipo_formato_link)  // tiene formato de link
                                  { 
                                      // hay formato especial de link
@@ -1010,20 +1011,20 @@ if (isset($result_T)  )   // Hay TOTALES?
                                          $valor_txt_final=$valor_txt? $valor_txt : 'ver'  ;  // evitamos que un valor vacio impida hacer el link
 //                                         $valor_txt_final=$valor_txt? $valor_txt : ''  ;  // No mostramos 'ver' en caso de valor vacio, juand, dic-2020
                                          $TABLE .= "<td $class_hide_id   $format_style $dblclick_ondblclick >$span_sort<span id='div$cont_TD'  ><a href='$href_link' title='$title' "
-                                                 . " target='_blank'>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}</td>";        
+                                                 . " $link_target_blank>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}</td>";        
 
                                      }elseif ($tipo_formato_link=='formato_sub_vacio')   // FORMATO TRADICIONAL DE SUBRRAYADO (es incompatible con sortTable (ordenar tabla)) pero son poner "ver"
                                      {
                                          $valor_txt_final=$valor_txt? $valor_txt : ''  ;  // evitamos que un valor vacio permita hacer el link
                                          $TABLE .= "<td $class_hide_id   $format_style $dblclick_ondblclick >$span_sort<span id='div$cont_TD'  ><a href='$href_link' title='$title' "
-                                                 . " target='_blank'>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}</td>";        
+                                                 . " $link_target_blank>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}</td>";        
 
                                      }else              //if ($tipo_formato_link=='icon')     // FORMATO link principal
                                      {   
                                          $TABLE .= "<td $class_hide_id  $format_style $dblclick_ondblclick   >"
                                                  . "$span_sort<span id='div$cont_TD' style='float:left;width:90%' >{$valor_txt}</span>"    
                                                  . "{$update_pencil_div}<a class='btn btn-link btn-xs noprint transparente' id='a$cont'  href=\"$href_link\"   "
-                                                 . "  title='$title' target='_blank'> <i class='fas fa-external-link-alt'></i>"
+                                                 . "  title='$title' $link_target_blank> <i class='fas fa-external-link-alt'></i>"
                                                  . "</a>{$update_onclick}{$div_extras_html}</td>";  
 
                                       }
@@ -1032,7 +1033,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                                  { 
                                  
                                     $link_div= "<a class='btn btn-link btn-xs noprint transparente' href='$href_link' title='$title'"
-                                               . " target='_blank'> <i class='fas fa-external-link-alt'></i></a>" ;
+                                               . " $link_target_blank> <i class='fas fa-external-link-alt'></i></a>" ;
                                     $style_max_width_90 = ($update_pencil_div OR $dblclick_div )? "max-width:90% ;"   :  ""   ;
                                     $TABLE .= "<td $class_hide_id $format_style  ' >"
                                                  . "$span_sort<span style='$style_max_width_90 float:left;text-align:$format_align ' $dblclick_ondblclick  id='div$cont_TD'  >{$valor_txt}</span>"
