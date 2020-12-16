@@ -1,0 +1,18 @@
+/*Elemento para la visión de la wiki al pasar por encima con el cursor*/
+.box_wiki{
+    display: none;
+    width: 100%;
+}
+a:hover + .box_wiki,.box_wiki:hover{
+    display: block;
+    /*position: relative;*/
+    position: absolute;
+    z-index: 100;
+}
+
+a[aria-expanded=true] {
+	background-color:#444;
+}
+.w50px{
+	width:50px;
+}
