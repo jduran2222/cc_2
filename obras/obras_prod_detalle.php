@@ -53,11 +53,6 @@ require_once("../include/NumeroALetras.php");
 // require_once("../obras/obras_menutop_r.php");
 //require_once("../menu/menu_migas.php");
 
-?>
-
-
-	
-<?php 
 
 $listado_global= (!isset($_GET["id_produccion"])) ;
 $iniciar_form=(!isset($_POST["CAPITULO"])) ;  // determinamos si debemos de inicializar el FORM con valores vacíos
@@ -88,8 +83,19 @@ if (!$listado_global)
      // si estamos en $id_prod_estudio_costes le clonamos el PPROYECTO
      if (!cc_is_ESTUDIO_COSTE_actualizado($id_obra, $id_prod_estudio_costes))  {      cc_actualiza_ESTUDIO_COSTE($id_obra); }
  
- require_once("../obras/obras_menutop_r.php");
-// require_once("../menu/menu_migas.php");
+     require_once("../obras/obras_menutop_r.php");
+    // require_once("../menu/menu_migas.php");
+
+     
+     // Registro LRU (si no estamos en Listado Global)
+     $tipo_entidad='rel_valorada' ;
+     $id_entidad=$id_produccion;
+     $id_subdir=0 ;
+
+     $entidad=$titulo_pagina ;
+     require("../menu/LRU_registro.php"); 
+     // FIN LRU
+
 
  
   }
@@ -197,23 +203,30 @@ $Anno     = isset($_GET["Anno"])     ?  $_GET["Anno"]       :    (isset($_POST["
 if ($fmt_logo)
 {    
     if (!$path_logo_empresa = Dfirst("path_logo", "Empresas_Listado", "$where_c_coste")) {$path_logo_empresa = "../img/no_logo.jpg";}
-    echo "<div><div  ><img width='300' src='{$path_logo_empresa}_large.jpg' > </div>" ;
+    echo "<div class='row'>"
+           . "<div class='col-lg-6'>"
+               . "<img width='200' src='{$path_logo_empresa}_large.jpg' > "
+            . "</div>" ;
     
     $result_emp=$Conn->query("SELECT * FROM C_COSTES WHERE  $where_c_coste");
     $rs_emp = $result_emp->fetch_array(MYSQLI_ASSOC) ;
 
-    echo "<span style='font-size: xx-small;'><br>{$rs_emp["nombre_centro_coste"]}<br>{$rs_emp["domicilio"]} - {$rs_emp["cod_postal"]} {$rs_emp["Municipio"]}<br>CIF: {$rs_emp["cif"]}<br>"
-    . "Tels: {$rs_emp["tels"]} - email: {$rs_emp["email"]}<br>{$rs_emp["web"]}<br>"
-    . "</span></div>" ;
+    echo     "<div class='col-lg-6'>"
+               . "<div style='font-size: xx-small;text-align: right;'>{$rs_emp["nombre_centro_coste"]}<br>{$rs_emp["domicilio"]} - {$rs_emp["cod_postal"]} {$rs_emp["Municipio"]}<br>CIF: {$rs_emp["cif"]}<br>"
+               . "Tels: {$rs_emp["tels"]} - email: {$rs_emp["email"]}<br>{$rs_emp["web"]}<br><br><br>"
+               . "</div>"
+            . "</div>"
+        . "</div>" ;
       
 }
 
 $HTML_prod_comparadas="" ;
 $titulo=$PRODUCCION ;
 
+$boton_global='';
 if (!$listado_global)     
   {
-  echo "<a class='btn btn-link btn-xs noprint' href= '../obras/obras_prod_detalle.php?_m=$_m&Obra=SIN_OBRA' title='Ir a las relaciones valoradas de todas las obras'><i class='fas fa-globe-europe'></i> Prod. detalle Global</a>" ;
+    $boton_global= "<a class='btn btn-link btn-xs noprint' href= '../obras/obras_prod_detalle.php?_m=$_m&Obra=SIN_OBRA' title='Ir a las relaciones valoradas de todas las obras'><i class='fas fa-globe-europe'></i> Prod. detalle Global</a>" ;
   
   // Estamos en PRODUCCIONES COMPARADAS
   if ($agrupar=='comparadas'  )
@@ -267,11 +280,15 @@ if (!$listado_global)
 //      echo "<a class='btn btn-link'  href='#'  onclick=\"js_href('$href' )\" >"
 //                                                        . "<i class='fas fa-unlink'></i> DESCONCILIAR $titulo_txt - MOV. BANCO</a>" ;
     ?>    
- 
- <a class="btn btn-link btn-xs noprint" title="va al listado de relaciones valoradas de la Obra" href="../obras/obras_prod.php?_m=$_m&id_obra=<?php echo $id_obra;?>" ><span class="glyphicon glyphicon-arrow-left"></span> Volver a Producciones</a>    
- <a class="btn btn-link btn-xs noprint" title="imprimir" href=#  onclick="window.print();"><i class="fas fa-print"></i> Imprimir pantalla</a>
- <a class="btn btn-link btn-xs noprint" title="ver datos generales de la Relacion Valorada actual" target='_blank' href="../obras/prod_ficha.php?_m=$_m&id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><i class="far fa-calendar-alt"></i> ficha Rel. Valorada</a>    
- <a class="btn btn-link btn-xs noprint" title="Crea una Certificación con el importe de esta Relación Valorada" href="#" onclick="js_href('<?php echo $href; ?>' )" > Certificar la RV</a>    
+ <!--BOTONES SUPERIORES-->
+ <div class='noprint'>
+     <br><br>
+     <?php echo $boton_global; ?>
+     <a class="btn btn-link btn-xs noprint" title="imprimir" href=#  onclick="window.print();"><i class="fas fa-print"></i> Imprimir pantalla</a>
+     <a class="btn btn-link btn-xs noprint" title="ver datos generales de la Relacion Valorada actual" target='_blank' href="../obras/prod_ficha.php?_m=$_m&id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><i class="far fa-calendar-alt"></i> ficha Rel. Valorada</a>    
+     <a class="btn btn-link btn-xs noprint" title="Crea una Certificación con el importe de esta Relación Valorada" href="#" onclick="js_href('<?php echo $href; ?>' )" > Certificar la RV</a>    
+     <br><br>
+ </div>
  
 <script>
 
@@ -684,7 +701,7 @@ if (!$listado_global)
    
      // SUBOBRA
       $content_sel.= "<div class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>"
-              . "<b>SUBOBRAS</b>. Asignar selección a Subobra: <select id='id_subobra' style='font-size: 15px; width: 20%;'>" ;
+              . "<b>SUBOBRAS</b>. Pasar Udos seleccionadas a Subobra: <select id='id_subobra' style='font-size: 15px; width: 20%;'>" ;
       $content_sel.= DOptions_sql("SELECT   Subobra_View.ID_SUBOBRA,  Subobra_View.SUBOBRA FROM Subobra_View  WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY SUBOBRA ") ;
       $content_sel.= "</select>"; 
       $href='../include/sql.php?sql=' . encrypt2("UPDATE Udos SET ID_SUBOBRA = _VARIABLE1_  WHERE ID_OBRA=$id_obra AND ID_UDO IN _VARIABLE2_ ")     ;
@@ -749,13 +766,6 @@ if (!$listado_global)
      $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
    break;
    case "subobras":
-//     $sql1="SELECT ID_SUBOBRA,SUBOBRA , SUM(importe) as importe  FROM ConsultaProd WHERE $where   GROUP BY ID_SUBOBRA ORDER BY SUBOBRA " ;
-//     $sql2="SELECT ID_SUBOBRA,SUBOBRA , 0 as importe  FROM Subobra_View WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY SUBOBRA " ;
-//     $sql= "SELECT ID_SUBOBRA,SUBOBRA , SUM(importe) as importe  FROM (" . $sql1 ." UNION ALL ". $sql2 .") X GROUP BY ID_SUBOBRA" ;
-       
-//     $sql1="SELECT ID_SUBOBRA,SUBOBRA , SUM(importe) as importe  FROM ConsultaProd WHERE $where   GROUP BY ID_SUBOBRA ORDER BY SUBOBRA " ;
-//     $sql2="SELECT ID_SUBOBRA,SUBOBRA , 0 as importe  FROM Subobra_View WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY SUBOBRA " ;
-//     $sql= "SELECT ID_SUBOBRA,SUBOBRA , SUM(importe) as importe  FROM (" . $sql1 ." UNION ALL ". $sql2 .") X GROUP BY ID_SUBOBRA" ;
      
        // elegimos la consulta en función de si mostramos las SUBOBRAS VACIAS
      $sql=  $fmt_subobras ?  " SELECT   Subobra_View.ID_SUBOBRA,  Subobra_View.SUBOBRA,  ConsultaProd.importe FROM Subobra_View  "
@@ -782,16 +792,6 @@ if (!$listado_global)
       
    case "balance": 
      
-//     ANULADO, ESTA REPETIDO, LO CALCULAN TODO EN LA LINEA 89  , juand, junio2020       
-//     $sql_Obra="SELECT Pie_CERTIFCACION,iva_obra,COEF_BAJA,GG_BI,IMPORTE  FROM OBRAS WHERE ID_OBRA=$id_obra    " ;
-//     $result_Obra=$Conn->query($sql_Obra) ;     // consulta para los TOTALES
-//     $rs_Obra= $result_Obra->fetch_array(MYSQLI_ASSOC)  ;
-//   
-//     $GG_BI=$rs_Obra["GG_BI"];
-//     $COEF_BAJA=$rs_Obra["COEF_BAJA"];
-//     $iva_obra=$rs_Obra["iva_obra"];
-//     $IMPORTE_contrato_iva=$rs_Obra["IMPORTE"];   
-       
        
      $sql1=" (SELECT ID_SUBOBRA,SUBOBRA , SUM(IMPORTE) as importe, 0 AS gasto  FROM ConsultaProd WHERE $where   GROUP BY ID_SUBOBRA ) " ;
 //     $sql2=" (SELECT ID_SUBOBRA,SUBOBRA , 0 as importe, gasto AS gasto  FROM Subobra_gasto WHERE ID_OBRA=$id_obra ) " ;
@@ -806,8 +806,6 @@ $sql_T2="SELECT  CONCAT('Suma Ejecución Contrata... GG+BI x COEF_BAJA:',$COEF_B
         . ",( 1-SUM(gasto)/(SUM(importe)*(1+$GG_BI)*$COEF_BAJA)) as margen   FROM (" . $sql1 ." UNION ALL ". $sql2 .") X   " ;
 $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)*$COEF_BAJA)/($IMPORTE_contrato_iva/(1+$iva_obra)) as porc_ejecucion FROM (" . $sql1 ." UNION ALL ". $sql2 .") X   " ;
 
-
-//$sql_T3="SELECT  'Suma Ejecución Contrata (iva incluido).. ' $select_MED_PROYECTO_hueco_doble , SUM(IMPORTE)*(1+GG_BI)*COEF_BAJA*(1+iva_obra)/IMPORTE_OBRA as P_ejec , SUM(IMPORTE)*(1+GG_BI)*COEF_BAJA*(1+iva_obra) as importe $select_costes_T3 FROM ConsultaProd WHERE $where    " ;
   
      
    break;
@@ -922,7 +920,7 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
  
      $print_anadir_med=true ;
 
-     $sql_S="SELECT  ID_SUBOBRA, SUBOBRA  , SUM(IMPORTE) as importe   FROM "
+     $sql_S="SELECT  ID_SUBOBRA, SUBOBRA  , SUM(IMPORTE) as importe $select_costes  FROM "
            . " ConsultaProd "
            . " WHERE $where  GROUP BY ID_SUBOBRA ORDER BY SUBOBRA " ;
 
@@ -1160,8 +1158,9 @@ $formats["MES"]="mes" ;                //"pdf_800" ;
 
 
 //$styles["_ID_UDO"] = "vertical-align: top;" ;
-$styles["ud"] = "vertical-align: top;" ;
-$styles["COD_PROYECTO"] = "vertical-align: top;" ;
+//$styles["ud"] = "vertical-align: top;" ;
+//$styles["UDO"] = "vertical-align: top;" ;
+//$styles["COD_PROYECTO"] = "vertical-align: top;" ;
 $styles["MEDICION"] = "vertical-align: bottom;" ;
 $styles["PRECIO"] = "vertical-align: bottom;" ;
 $styles["importe"] = "vertical-align: bottom;" ;
@@ -1321,8 +1320,9 @@ $titulo="RESUMEN DE <B>$PRODUCCION<B>";
    
 //   echo "<h6>Málaga, a ".cc_format($F_certificacion,'fecha_es_semana')."</h6>" ; 
     $municipio= Dfirst("Municipio", "C_COSTES",$where_c_coste ) ;
-
-   echo "<h6>$municipio, a ".utf8_encode(strftime( '%A %e de %B de %Y' , strtotime($F_certificacion) ))."</h6>" ; 
+   $fecha_txt= $F_certificacion ? utf8_encode(strftime( '%A %e de %B de %Y' , strtotime($F_certificacion) )) : " fecha de la firma electrónica" ;
+    
+   echo "<h6>$municipio, a ".$fecha_txt."</h6>" ; 
    
 //   echo "<br><br>" ;
    

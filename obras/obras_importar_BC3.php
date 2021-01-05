@@ -115,9 +115,17 @@ if (isset($_FILES["file_BC3"]))         //
         
         // TODO OK, procedemos a la importación del fichero y lo metemos línea a línea en el array $bc3
         
-       if ($bc3 = file($target_file))
+//       if ($bc3 = file($target_file))
+       if ($bc3_file = file_get_contents($target_file))
        {
-//           //
+           //bc3_file
+           $bc3 = explode("~", ($bc3_file) ) ;
+           foreach ($bc3 as $key => $value)
+           {
+               $bc3[$key]="~". $bc3[$key] ;  // añadimos el char ~
+           }    
+           
+           
            // inicializo arrays
            $capitulos = [] ;
            $udos = [] ;
@@ -192,7 +200,15 @@ if (isset($_FILES["file_BC3"]))         //
            {
                $cod_BC3 = substr($value, 0, 2) ;
                if ($cod_BC3== "~D")           // estamos en un descompuesto (UDO)
-               {                  
+               {   
+                   // en las -D quitamos los saltos de línea
+                   $value = preg_replace("/[\r\n]+/", "", $value);
+//                   $value2 = preg_replace("/[\n]+/", "n", $value2);
+//                   $value2 = preg_replace("/[\r]+/", "r", $value2);
+//                   echo "<BR>TIPO_D: $value<BR>";
+//                   echo "<BR>TIPO_D2: $value2<BR>";
+                   
+                   
                    $a = explode("|", utf8_encode($value)) ;
                    if (isset($capitulos[$a[1]]))     // es el descompuesto de un capítulo, es decir , una UDO
                    {
@@ -211,8 +227,13 @@ if (isset($_FILES["file_BC3"]))         //
                        $c["TEXTO_UDO"]= isset($c["TEXTO_UDO"])? $c["TEXTO_UDO"] : $c["UDO"] ;   // evitamos un error de TEXTO_UDO no definido
 //                       $c["Descompuesto_PRECIO"]= isset($c["Descompuesto_PRECIO"])? $c["Descompuesto_PRECIO"] : "No hubo descompuesto Precio" ;   // evitamos un error de TEXTO_UDO no definido
                        
-                       $values_insert="($id_obra,$id_capitulo,$id_subobra,'{$c["UDO"]}','{$c["COD_PROYECTO"]}','{$c["ud"]}','{$c["TEXTO_UDO"]}' "
-                                         . " ,{$c["PRECIO"]},{$c["PRECIO"]},$MED_PROYECTO   )";
+                       $c_UDO=isset($c["UDO"])? $c["UDO"] :"" ;
+                       $c_COD_PROYECTO=isset($c["COD_PROYECTO"])? $c["COD_PROYECTO"] :"" ;
+                       $c_ud=isset($c["ud"])? $c["ud"] :"" ;
+                       $c_PRECIO=isset($c["PRECIO"])? $c["PRECIO"] :"" ;
+                       
+                       $values_insert="($id_obra,$id_capitulo,$id_subobra,'$c_UDO','$c_COD_PROYECTO','$c_ud','{$c["TEXTO_UDO"]}' "
+                                         . " ,'$c_PRECIO','$c_PRECIO','$MED_PROYECTO'   )";
                                              
                        //$values_insert="($id_obra,$id_capitulo,$id_subobra,'UDO','ud','TEXTO_UDO' ,123,567 )";
                       
@@ -272,6 +293,8 @@ if (isset($_FILES["file_BC3"]))         //
                    }    
                }elseif ($cod_BC3== "~M")           // estamos en un DESCOMPUESTO DE MEDICION
                {
+                     $value = preg_replace("/[\r\n]+/", "", $value);
+
                       // estamos en un DESCOMPUESTO DE MEDICION
                      $a = explode("|", utf8_encode($value)) ;
                      $cod_cap_udo=$a[1];
@@ -281,8 +304,17 @@ if (isset($_FILES["file_BC3"]))         //
                      $med_total=0 ;
                      while(isset($m[$i+4]))
                      {
-                           $med_parcial = cc_format( $m[$i+1]*($m[$i+2]? $m[$i+2]:1)*($m[$i+3]? $m[$i+3]:1)*($m[$i+4]? $m[$i+4]:1), 'fijo' ) ;
-                           $med_total += $med_parcial ;
+                           // calculamos el tipico  ud x largo x ancho x alto
+                         
+                          $m1=is_numeric($m[$i+1]) ? $m[$i+1] :1 ;
+                          $m2=is_numeric($m[$i+2]) ? $m[$i+2] :1 ;
+                          $m3=is_numeric($m[$i+3]) ? $m[$i+3] :1 ;
+                          $m4=is_numeric($m[$i+4]) ? $m[$i+4] :1 ; 
+                         
+//                           $med_parcial = cc_format( $m[$i+1]*($m[$i+2]? $m[$i+2]:1)*($m[$i+3]? $m[$i+3]:1)*($m[$i+4]? $m[$i+4]:1), 'fijo' ) ;
+                          $med_parcial = cc_format( $m1*$m2*$m3*$m4, 'fijo' ) ;
+                          $med_total += $med_parcial ;
+//                          echo "<br>tipo_m:  $value" ;
                            
                            $mediciones[$cod_cap_udo].= "<tr><td>{$m[$i+0]}</td><td align=right>{$m[$i+1]}</td><td>{$m[$i+2]}</td><td align=right>{$m[$i+3]}</td>"
                            . "<td align=right>{$m[$i+4]}</td><td align=right>$med_parcial</td></tr>" ;
@@ -297,7 +329,7 @@ if (isset($_FILES["file_BC3"]))         //
                    
                }else    
                {   $cont_udos_error++ ;
-                   echo ( $debug_bc3 ?  "ERROR EN descompuesto de precio: CONCEPTO {$a[1]} NO ENCONTRADO <BR>" :"" ); 
+                   echo ( $debug_bc3 ?  "ERROR EN descompuesto de precio: cod_BC3 es $cod_BC3 . CONCEPTO {$a[1]} NO ENCONTRADO <BR>" :"" ); 
                           
                } 
     
@@ -314,9 +346,7 @@ if (isset($_FILES["file_BC3"]))         //
            $clave_mediciones = $rs["cod_capitulo"] . "\\" . $rs["COD_PROYECTO"] ;
            $Descompuesto_MED = isset($mediciones[$clave_mediciones]) ? $mediciones[$clave_mediciones] : "SIN MEDICIONES" ;
            
-//           $sql_UPDATE.="UPDATE `Udos` SET `Descompuesto_MED` = '$Descompuesto_PRECIO' WHERE ID_UDO={$rs["ID_UDO"]} AND ID_OBRA=$id_obra   ;"   ;
            $sql_UPDATE.="UPDATE `Udos` SET `Descompuesto_PRECIO` = '$Descompuesto_PRECIO',  `Descompuesto_MED` = '$Descompuesto_MED' WHERE ID_UDO={$rs["ID_UDO"]} AND ID_OBRA=$id_obra   ;"   ;
-//           $sql_UPDATE.="UPDATE `Udos` SET `Descompuesto_PRECIO` = '$Descompuesto_PRECIO' WHERE ID_UDO={$rs["ID_UDO"]} AND ID_OBRA=$id_obra   ;"   ;
          }        
          
          
@@ -349,10 +379,12 @@ if (isset($_FILES["file_BC3"]))         //
            
            //debug
           if  ( $debug_bc3  )
-          {    
+          {  
+           echo "<br>ARRAY capitulos count:".count($capitulos);
            echo '<pre>' ;
            echo print_r($capitulos);
            echo '/<pre>' ;
+           echo "ARRAY conceptos count:".count($conceptos);
            echo '<pre>' ;
            echo print_r($conceptos);
            echo '/<pre>' ;

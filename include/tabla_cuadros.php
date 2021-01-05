@@ -618,6 +618,14 @@ if (isset($result_T)  )   // Hay TOTALES?
                            if (isset($onclick1_VARIABLE2_)) { $cadena_onclick=str_replace("_VARIABLE2_",$rs["$onclick1_VARIABLE2_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
                            echo $cadena_onclick ;
                            }    
+                       if (isset($actions_row["onclick2_link"]))     // está activado el boton onclick1
+                           {
+                          
+                           //sustituimos en la cadena $actions_row["onclick1_link"] la _VARIABLE1_ por su valor en cada row de $rs["$id_update_onclick1"] 
+                           $cadena_onclick=str_replace("_VARIABLE1_",$rs["$onclick1_VARIABLE1_"],$actions_row["onclick2_link"]);
+                           if (isset($onclick1_VARIABLE2_)) { $cadena_onclick=str_replace("_VARIABLE2_",$rs["$onclick1_VARIABLE2_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
+                           echo $cadena_onclick ;
+                           }    
 //                      echo "</td>";
                       echo "</div>";
                       }

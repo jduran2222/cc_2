@@ -78,7 +78,7 @@ function carga_ajax(id,href)
 
 
  
- // hacemos un href SIN AJAX 
+ // hacemos un href SIN AJAX , es decir, con window.open  _blank
 function js_href2( href,reload, msg, var1, var2 , var1_prompt_default, var2_prompt_default  ) { 
    //valores por defecto
                                 // href  :  link a realizar con window.open()
@@ -100,22 +100,25 @@ var var2_link = "" ;
 if (msg)          // si hay mensaje de Cofirmación, confirmo
     {  ejecutar= confirm(msg);
 }         // confirmo si hay que confirmar
-else if (var1.startsWith("PROMPT"))     /// comprobamos si var1 es PROMPT 
+else if (var1.startsWith("PROMPT_"))     /// comprobamos si var1 es PROMPT 
 {
+     var1 = var1.replace("PROMPT_", "");
      nuevo_valor= var1_prompt_default?    window.prompt(var1,var1_prompt_default) :  window.prompt(var1)   ;
      var1_link =  "&variable1=" + nuevo_valor ;
      var ejecutar = (!(nuevo_valor === null)) ; 
 
      // comprobamos  tambien la var2 es PROMPT
-     if (var2.startsWith("PROMPT"))     // hay que preguntar el valor a pasar al link
+     if (var2.startsWith("PROMPT_"))     // hay que preguntar el valor a pasar al link
      {
-         nuevo_valor=window.prompt(var2)   ;
+         var2 = var2.replace("PROMPT_", "");
+         nuevo_valor= var2_prompt_default?    window.prompt(var2,var2_prompt_default) :  window.prompt(var2)   ;
          var2_link =  "&variable2=" + nuevo_valor ;
          var ejecutar = (!(nuevo_valor === null)) ; 
      }
 
-}else if (var2.startsWith("PROMPT"))     // comprobamos si var2 es PROMPT 
+}else if (var2.startsWith("PROMPT_"))     // comprobamos si var2 es PROMPT 
 {
+     var2 = var2.replace("PROMPT_", "");
      nuevo_valor= var2_prompt_default?    window.prompt(var2,var2_prompt_default) :  window.prompt(var2)   ;
      var2_link =  "&variable2=" + nuevo_valor ;
      ejecutar = (!(nuevo_valor === null)) ; 
@@ -234,26 +237,30 @@ var var2_link = "" ;
 if (msg)          // si hay mensaje de Cofirmación, confirmo
     {  ejecutar= confirm(msg);
 }         // confirmo si hay que confirmar
-else if (var1.startsWith("PROMPT"))     /// comprobamos si var1 es PROMPT 
+else if (var1.startsWith("PROMPT_"))     /// comprobamos si var1 es PROMPT 
 {
+     var1 = var1.replace("PROMPT_", "");
      nuevo_valor= var1_prompt_default?    window.prompt(var1,var1_prompt_default) :  window.prompt(var1)   ;
      var1_link =  "&variable1=" + nuevo_valor ;
-     ejecutar = (!(nuevo_valor === null)) ; 
+     var ejecutar = (!(nuevo_valor === null)) ; 
 
      // comprobamos  tambien la var2 es PROMPT
-     if (var2.startsWith("PROMPT"))     // hay que preguntar el valor a pasar al link
+     if (var2.startsWith("PROMPT_"))     // hay que preguntar el valor a pasar al link
      {
-         nuevo_valor=window.prompt(var2)   ;
+         var2 = var2.replace("PROMPT_", "");
+         nuevo_valor= var2_prompt_default?    window.prompt(var2,var2_prompt_default) :  window.prompt(var2)   ;
          var2_link =  "&variable2=" + nuevo_valor ;
-         ejecutar = (!(nuevo_valor === null)) ; 
+         var ejecutar = (!(nuevo_valor === null)) ; 
      }
 
-}else if (var2.startsWith("PROMPT"))     // comprobamos si var2 es PROMPT 
+}else if (var2.startsWith("PROMPT_"))     // comprobamos si var2 es PROMPT 
 {
+     var2 = var2.replace("PROMPT_", "");
      nuevo_valor= var2_prompt_default?    window.prompt(var2,var2_prompt_default) :  window.prompt(var2)   ;
      var2_link =  "&variable2=" + nuevo_valor ;
      ejecutar = (!(nuevo_valor === null)) ; 
 }   
+
 
 
 

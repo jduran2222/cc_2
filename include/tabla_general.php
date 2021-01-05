@@ -87,22 +87,15 @@ $select= isset($_GET["select"])? ( is_encrypt2($_GET["select"]) ?  decrypt2($_GE
 $order_by= isset($_GET["order_by"])? (is_encrypt2($_GET["order_by"]) ?  " ORDER BY ".decrypt2($_GET["order_by"])  :  " ORDER BY ".$_GET["order_by"]): "" ;
 $limit= isset($_GET["limit"])? ( is_encrypt2($_GET["limit"]) ? " LIMIT ". decrypt2($_GET["limit"])  : " LIMIT ". $_GET["limit"]) : "" ;
 
-$link= isset($_GET["link"])? ( is_encrypt2($_GET["link"]) ?  decrypt2($_GET["link"])  :  $_GET["link"] )  :  "" ;
-$campo_id=  isset($_GET["campo_id"])? ( is_encrypt2($_GET["campo_id"]) ?  decrypt2($_GET["campo_id"])  :  $_GET["campo_id"] ) : "" ;
-$campo=  isset($_GET["campo"])? ( is_encrypt2($_GET["campo"]) ?  decrypt2($_GET["campo"])  :  $_GET["campo"]) : "" ;
-
-
-//$select= isset($_GET["select"])? $_GET["select"] : "*" ;
-//$order_by= isset($_GET["order_by"])? " ORDER BY ".$_GET["order_by"] : "" ;
-//$limit= isset($_GET["limit"])? " LIMIT ".$_GET["limit"] : "" ;
-
-//$link= isset($_GET["link"])? $_GET["link"] : "" ;
-//$campo_id= isset($_GET["campo_id"])? $_GET["campo_id"] : "" ;
-//$campo= isset($_GET["campo"])? $_GET["campo"] : "" ;
 
 $sql="SELECT $select FROM $tabla WHERE  $where  $order_by $limit  " ;
 
 }
+
+
+$link= isset($_GET["link"])? ( is_encrypt2($_GET["link"]) ?  decrypt2($_GET["link"])  :  $_GET["link"] )  :  "" ;
+$campo_id=  isset($_GET["campo_id"])? ( is_encrypt2($_GET["campo_id"]) ?  decrypt2($_GET["campo_id"])  :  $_GET["campo_id"] ) : "" ;
+$campo=  isset($_GET["campo"])? ( is_encrypt2($_GET["campo"]) ?  decrypt2($_GET["campo"])  :  $_GET["campo"]) : "" ;
 
 
 //if ($admin)
@@ -113,11 +106,11 @@ $sql="SELECT $select FROM $tabla WHERE  $where  $order_by $limit  " ;
 //echo '</pre>';
 //}
 
-$titulo= isset($titulo) ? "<h1>$titulo</h1>" : "<h1>$tabla</h1>" ;
-
+$titulo= isset($_GET["titulo"])? $_GET["titulo"] : ( isset($tabla) ? "$tabla" : "$titulo") ;
+$titulo="<h1>$titulo</h1>";
 
 if ($admin)  {echo "<span class='c_text'>solo admin: $sql </span> "; } ;
-logs("Tabla general: $sql") ;
+//logs("Tabla general: $sql") ; 
 $result=$Conn->query($sql) ;
 //$result_T=$Conn->query($sql_T) ;
 

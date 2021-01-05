@@ -121,8 +121,8 @@ echo "<div >" ;
     { 
         // echo "<h1>FACTURAS DE PROVEEDORES</h1>"  ;
         
-        echo "<div class='row' style='border-style: solid ; border-color:grey; margin-bottom: 25px; padding:10px'>" ;
-        echo "<div class='col-lg-4'> " ;   
+//        echo "<div class='row' style='border-style: solid ; border-color:grey; margin-bottom: 25px; padding:10px'>" ;
+//        echo "<div class='col-lg-4'> " ;   
 
         // echo "<form action='../proveedores/facturas_proveedores.php' method='post' id='form1' name='form1'>"    ;
         
@@ -137,8 +137,8 @@ echo "<div >" ;
          
         // echo "<h1>FACTURAS DE <B>$proveedor</B></h1>"  ;
 
-        echo "<div class='row' style='border-style: solid ; border-color:grey; margin-bottom: 25px; padding:10px'>" ;
-        echo "<div class='col-lg-4'> " ;   
+//        echo "<div class='row' style='border-style: solid ; border-color:grey; margin-bottom: 25px; padding:10px'>" ;
+//        echo "<div class='col-lg-4'> " ;   
 
         // echo "<form action='../proveedores/facturas_proveedores.php?id_proveedor=$id_proveedor' method='post' id='form1' name='form1'>"    ;
         

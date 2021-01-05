@@ -76,13 +76,13 @@ if( $id_usuario_invitado=Dfirst("id_usuario","Usuarios","id_usuario='$id_usuario
                     . "<br><br><br>Por favor, acceda con su email y su password abajo indicados y proceda a cambiarlo cuando acceda."
                     . "<br>Usuario: <b>$email_invitado</b>"
                     . "<br>Password: <b>$new_password</b>"
-                    . "<br><br><br>Acceder con nuevo password <a  href='http://www.construcloud.es/web' > a login construcloud.es</a>"
+                    . "<br><br><br>Acceder con nuevo password a <a  href='http://www.construcloud.es/web' > login</a> construcloud.es"
                     . "<br>Saludos"
                     . "<br><img width='256px' src='https://construcloud.es/web/img/logo_cc.svg' alt='Logo ConstruCloud 2.0'/>"
                     . "<br><a  href='http://www.construcloud.es'>ConstruCloud.es</a>";
 
 //      $mail->AltBody ="Se ha solicitado el restablecimiento del password de acceso. Utilice Empresa: $empresa , Usuario: $usuario, Nuevo password: $new_password" ;
-      $mail->AltBody ="El usuario $usuario de la empresa $empresa le ha enviado una invitación para acceder a https://construcloud.es  "
+      $mail->AltBody ="El usuario {$_SESSION["user"]} de la empresa {$_SESSION["empresa"]} le ha enviado una invitación para acceder a https://construcloud.es  "
               . " Utilice su email y su nuevo password: $new_password   para acceder. No olvide cambiar su password" ;
 
       $mail->SMTPOptions = array(

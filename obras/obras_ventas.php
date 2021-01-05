@@ -41,17 +41,20 @@ $iva_obra=Dfirst("iva_obra", "OBRAS", "ID_OBRA=$id_obra AND $where_c_coste") ;
    
 <!--************ INICIO VENTAS *************  -->
 
-<div   id="main" class="mainc_50" style="background-color:lightcoral">
+<div   id="main" class="mainc_100" style="background-color:lightcoral">
 
 <?php   // Iniciamos variables para tabla.php  
 
 
-echo   "<br><br><br><a class='btn btn-link noprint' href=# onclick='add_venta($id_obra)' target='_blank' ><i class='fas fa-plus-circle'></i> Venta nueva</a>" ; // BOTON AÑADIR FACTURA
+
+$fecha3=date('Y-m-d');
+$href='../include/sql.php?sql=' . encrypt2("INSERT INTO VENTAS (ID_OBRA,FECHA ) VALUES ('$id_obra','$fecha3' )")  ;  
+echo   "<br><br><br><a class='btn btn-link btn-xs noprint' href=# onclick=\" js_href('$href') \"  ><i class='fas fa-plus-circle'></i> Añadir Venta mensual</a>" ; // BOTON AÑADIR FACTURA
 
 
 $result=$Conn->query($sql="SELECT id, FECHA, FECHA AS MES ,PLAN,  IMPORTE , GASTOS_EX,(IMPORTE-GASTOS_EX) AS BENEFICIO, OBSERVACIONES from VENTAS WHERE ID_OBRA=$id_obra ORDER BY FECHA " );
 $result_T=$Conn->query("SELECT  'Totales',SUM(IMPORTE)/($importe_obra/(1+$iva_obra)) as p_Ventas,'' AS B11,  SUM(IMPORTE) as VENTAS , SUM(GASTOS_EX) AS IMPORTE_GASTOS, SUM(IMPORTE-GASTOS_EX) AS BENEFICIO,SUM(IMPORTE-GASTOS_EX)/SUM(IMPORTE) as Margen from VENTAS WHERE ID_OBRA=$id_obra  " );
-$titulo="VENTAS";
+$titulo="VENTAS MENSUALES";
 $idtabla="VENTAS";
 //$dblclicks["MES"]='mes' ;    // pruebas
 //$dblclicks["FECHA"]='mes' ;    // pruebas
@@ -79,50 +82,12 @@ $msg_tabla_vacia="No hay ventas";
 <?php require("../include/tabla.php"); echo $TABLE ;?>
 
 </div>
-<script>
-function add_venta(id_obra) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-   // var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
-//    alert("el nuevo valor es: "+valor) ;
-//   alert('debug') ;
-//   var id_concepto=document.getElementById("id_concepto").value ;
-//   var cantidad=document.getElementById("cantidad").value ;
-   var f = new Date();
-   var fecha= f.getFullYear()+ "-"+ (f.getMonth()+1)+ "-"+f.getDate();     // fecha en javascript
-//   alert(fecha) ;
-
-   var sql="INSERT INTO VENTAS (ID_OBRA,FECHA ) VALUES ('"+id_obra+"','"+ fecha +"' )"    ;   
-//   alert(sql) ;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
-    
-    
-    return ;
- }
-
-</script>
 <!--************ FIN VENTAS *************  -->
 	
 	
 <!--************ INICIO CERTIFICACIONES *************  -->
 
-<div  class="right2_50" style="background-color:lightblue">
+<div  class="mainc_100" style="background-color:lightblue">
 
 <?php   // Iniciamos variables para tabla.php  
 

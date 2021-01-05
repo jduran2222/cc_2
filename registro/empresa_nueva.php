@@ -103,15 +103,17 @@ if(Dfirst("email","C_COSTES","email='$email'"))
               $_SESSION["permiso_bancos"]=1;
 
               // creo el usuario nuevo           
-               $result=$Conn->query("INSERT INTO `Usuarios` (`id_c_coste`,`usuario`,  `password_hash`, `autorizado`, `email`) "
-                       . "                          VALUES ('$id_c_coste', '$user','$password_hash',1, '$email');" );
-
-               $_SESSION["id_usuario"]= Dfirst('max(id_usuario)', 'Usuarios', " id_c_coste=$id_c_coste ") ;
+//               $result=$Conn->query("INSERT INTO `Usuarios` (`id_c_coste`,`usuario`,  `password_hash`, `autorizado`, `email`) "
+//                       . "                          VALUES ('$id_c_coste', '$user','$password_hash',1, '$email');" );
+//               $_SESSION["id_usuario"]= Dfirst('max(id_usuario)', 'Usuarios', " id_c_coste=$id_c_coste ") ;
+//               $result=$Conn->query("INSERT INTO `Usuarios` (`id_c_coste`,`usuario`,  `password_hash`, `autorizado`, `email`) "
+//                       . "                          VALUES ('$id_c_coste', '$user','$password_hash',1, '$email');" );
+               $_SESSION["id_usuario"]= DInsert_into('Usuarios', "(`id_c_coste`,`usuario`,  `password_hash`, `autorizado`, `email`)", "('$id_c_coste', '$user','$password_hash',1, '$email')") ;
 
                // REGISTRO DE ACCESO
 
 
-               registrar_acceso($_SESSION["id_c_coste"],$_SESSION["user"],$_SESSION["empresa"],'Acceso creacion Empresa OK',$ip, 0,$_SESSION['android'], $pais, $json_geoip);
+               registrar_acceso($_SESSION["id_c_coste"],$_SESSION["user"],$_SESSION["empresa"],'Acceso creacion Empresa OK',$ip, 0,$_SESSION['android'], $pais, $json_geoip,$_SESSION["id_usuario"]);
          //function registrar_acceso($id_c_coste,            $user,           $empresa,              $resultado, $error, $android ,$pais='', $json_geoip='')
 
                

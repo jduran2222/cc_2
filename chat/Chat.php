@@ -178,7 +178,7 @@ class Chat{
 //            
 //             $chat_message =preg_replace("/\'/", "\'", $chat_message); //corregimos las comillas 
 //
-            
+             
             
             $sqlInsert = "
                     INSERT INTO ".$this->chatTable." 

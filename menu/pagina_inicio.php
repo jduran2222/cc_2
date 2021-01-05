@@ -433,11 +433,11 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../documentos/documentos.php"  >
                             <i class="far fa-file-alt"></i> 
-                            Documentos <?php echo   "<sup class='bg-info small px-0 px-sm-1'>$num_documentos</sup>"; ?></a>
+                            Documentos <?php echo   badge_sup($num_documentos, 'info'); ?></a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../documentos/documentos.php?_m=<?php echo $_m; ?>&clasificar=1" title='Documentación que se ha subido a la plataforma y aún no ha sido tramitada o archivada en su lugar. P. ej. la foto de albarán enviado opr movil desde la propia obra. '>
                             <i class="far fa-file-alt"></i>
-                            Docs. pdtes. Clasificar<?php echo badge($num_documentos_pdte_clasif); ?> 
+                            Docs. pdtes. Clasificar<?php echo badge_sup($num_documentos_pdte_clasif); ?> 
                         </a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../configuracion/usuario_ficha.php" >
@@ -454,14 +454,15 @@ echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_Vi
                             añadir usuario
                         </a>
                         <br>
-                        <a target="_blank" class="btn btn-link text-info text-left" href="../include/tabla_general.php?url_enc=<?php echo encrypt2("select=id_usuario,usuario,email,online,activo,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion&tabla=Usuarios_View&where=activo AND id_c_coste=$id_c_coste&link=../configuracion/usuario_ficha.php?id_usuario=&campo=usuario&campo_id=id_usuario") ; ?>" >
+                        <!--<a target="_blank" class="btn btn-link text-info text-left" href="../include/tabla_general.php?url_enc=<?php // echo encrypt2("select=id_usuario,usuario,email,online,activo,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion&tabla=Usuarios_View&where=id_c_coste=$id_c_coste&link=../configuracion/usuario_ficha.php?id_usuario=&campo=usuario&campo_id=id_usuario") ; ?>" >-->
+                        <a target="_blank" class="btn btn-link text-info text-left" href="../include/tabla_general.php?url_enc=<?php echo encrypt2("sql=select id_usuario,usuario,email,online,activo,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion FROM Usuarios WHERE id_c_coste=$id_c_coste ORDER BY activo DESC,id_usuario &link=../configuracion/usuario_ficha.php?id_usuario=&campo=usuario&campo_id=id_usuario") ; ?>" >
                             <i class="far fa-user"></i> 
-                            Usuarios empresa<?php echo "($num_usuarios/{$limites["usuarios"]})"; ?>
+                            Usuarios empresa<?php echo badge_sup($num_usuarios, 'info'); ?><?php // echo "($num_usuarios/{$limites["usuarios"]})"; ?>
                         </a>
                         <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../menu/menu_app.php" >
                             MENU APP
-                        </a>
+                        </a>  
 
 <?php
 if ($admin)  

@@ -45,7 +45,7 @@ $id_subobra=$_GET["id_subobra"];
  
   $titulo="SUBOBRA" ;
 //  $updates=['UDO','COD_PROYECTO','ud','TEXTO_UDO', 'PRECIO' ,'MED_PROYECTO', 'COSTE_EST', 'Estudio_coste', 'fecha_creacion', 'user' ]  ;
-  $updates=['*' ]  ;
+  $updates=['SUBOBRA' ]  ;
   $id_udo=$rs["ID_SUBOBRA"] ;
   $tabla_update="SubObras" ;
   $id_update="ID_SUBOBRA" ;
@@ -190,39 +190,6 @@ $Conn->close();
 
 </div>
 
-<script>       
-function add_udo_prod(id_udo,id_produccion) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-    var medicion=window.prompt("Medicion "+prompt , '0.00');
-//    alert("el nuevo valor es: "+valor) ;
-//   alert('debug') ;
-//   var id_personal=document.getElementById("id_personal").value ;
-   var sql="INSERT INTO PRODUCCIONES_DETALLE (ID_UDO,ID_PRODUCCION,Fecha,MEDICION ) VALUES ('"+ id_udo +"','"+ id_produccion +"' ,'2018-01-01','"+ medicion +"' )"    ;   
-//   alert(sql) ;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
-    
-    
-    return ;
- }
-</script>
-              	
 	
                 </div>
                 

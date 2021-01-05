@@ -42,18 +42,18 @@ include_once('../templates/_inc_privado2_navbar.php');
   $anadir_usuario=0;  //indica si mostramos el boton para mandar invitación al usuario
   $href_get='';
  
- if ( $_SESSION["admin"]  )  // admin puee ver TODO de cualquier usuario
+ if ( $_SESSION["admin"]  )  // admin puede ver TODO de TODOS los usuario
  {
      $id_usuario = $id_usuario_perfil ;
      // el administrador ver el perfil completo de cualquier usuario
-     $sql=  "SELECT * FROM Usuarios  WHERE id_usuario=$id_usuario " ; // AND $where_c_coste" 
+     $sql=  "SELECT * FROM Usuarios_View  WHERE id_usuario=$id_usuario " ; // AND $where_c_coste" 
      
      $href_get="?id_usuario=$id_usuario";
      $invitar_usuario=1;
      $anadir_usuario=1;
 
  }    
- elseif($_SESSION["autorizado"]  )
+ elseif($_SESSION["autorizado"]  )   // puede ver TODO de los usuarios de su Empresa
  {  
        $id_empresa_get = Dfirst('id_c_coste','Usuarios' , " id_usuario=$id_usuario_perfil " ) ;
        $id_empresa_autorizado = Dfirst('id_c_coste','Usuarios' , " id_usuario={$_SESSION["id_usuario"]} " ) ;
@@ -77,7 +77,7 @@ include_once('../templates/_inc_privado2_navbar.php');
  }       
  else     
  {
-        // el usuario ve su perfil    
+        // el Usuario NO AUTORIZADO solo ve su perfil    
         $id_usuario =  $_SESSION["id_usuario"] ;
         $sql="SELECT  id_usuario,usuario,email,nombre_completo,fecha_creacion FROM Usuarios  WHERE id_usuario=$id_usuario AND $where_c_coste" ;
  }    
@@ -90,7 +90,8 @@ include_once('../templates/_inc_privado2_navbar.php');
  $result=$Conn->query($sql);
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;
 
- $id_usuario=$rs["id_usuario"] ;    // comprobamos hay un concepto con ese ID, en caso contrario habrá un error
+ $id_usuario=$rs["id_usuario"] ;    // 
+ $usuario=$rs["usuario"] ;    // 
  
   $titulo="USUARIO" ;
   
@@ -132,7 +133,7 @@ include_once('../templates/_inc_privado2_navbar.php');
   
   require("../include/ficha.php"); ?>
    
-      <!--// FIN     **********    FICHA.PHP--> 
+      <!--// FIN     **********    FICHA.PHP-->  
   </div>
       
     <div class="right2">
@@ -148,7 +149,11 @@ include_once('../templates/_inc_privado2_navbar.php');
         echo  $cambio_password ? "<br><a class='btn btn-primary noprint' href='../registro/cambiar_password.php{$href_get}' target='_blank' >"
                          . " Cambiar password</a>" : ""; // BOTON CAMBIO PASSWORD
         echo   "<br><a class='btn btn-primary noprint' href='../registro/generar_link_autologin.php' target='_blank' >"
-                         . " Generar link autologin</a>" 
+                         . " Generar link autologin</a>" ;
+        $url_enc=encrypt2("sql=SELECT usuario,  fecha_creacion,ip, android, pais  FROM w_Accesos  WHERE id_c_coste='$id_c_coste' AND usuario='$usuario' ORDER BY fecha_creacion DESC ;"
+                         . "&titulo=Accesos del Usuario: <b>$usuario</b>") ;
+        echo   "<br><a class='btn btn-primary noprint' href='../include/tabla_general.php?url_enc=$url_enc' target='_blank' >"
+                         . " ver Accesos</a>" ;
 
        ?>  
     </div>

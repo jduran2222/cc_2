@@ -195,7 +195,9 @@ $titulo="Conceptos presupuestados" ;
 $msg_tabla_vacia="No hay conceptos";
 
 ?>
-	
+
+ <a class='btn btn-link btn-xs noprint'  href=# <?php echo "onclick=\"add_pof_concepto($id_pof)\" " ;?> ><i class="fas fa-plus-circle"></i> Añadir concepto vacío</a>
+
 <!--  <div class="right2"> -->
  
 <?php 
@@ -218,7 +220,45 @@ require("../include/tabla.php"); echo $TABLE ;
 $Conn->close();
 
 ?>
-	 
+<script>
+
+function add_pof_concepto(id_pof) {
+    var nuevo_valor=window.prompt("Concepto: " );
+//    alert("el nuevo valor es: "+valor) ;
+   if (!(nuevo_valor === null || nuevo_valor === ""))
+   { 
+//    window.open("../pof/pof_proveedor_anadir.php?id_pof="+id_pof+"&nombre="+nuevo_valor, '_blank' )   ;  
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        if (this.responseText.substr(0,5)=="ERROR")
+        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
+        else
+        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
+//            alert(this.responseText) ;   //debug
+              location.reload(true);  // refresco la pantalla tras edición
+        }
+      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
+      
+    }
+    }
+     xhttp.open("GET", "../pof/pof_concepto_anadir.php?id_pof="+id_pof+"&nombre="+nuevo_valor, true);
+     xhttp.send();   
+
+
+
+   }
+   else
+   {return;
+   }
+   
+}
+
+ 
+</script>
+
+ 	 
 
 </div>
 

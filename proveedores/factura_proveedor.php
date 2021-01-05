@@ -29,6 +29,8 @@ $result=$Conn->query($sql) ;
 
 if (!($rs = $result->fetch_array(MYSQLI_ASSOC))) {die( cc_page_error( "ERROR FACTURA PROVEEDOR NO ENCONTRADA" )) ;}        
 
+$rs_fra_prov=$rs; // copio el array de datos para uso en la FIRMA y otros menesteres
+
 $titulo_pagina="Fra. " . $rs["id_titulo_pagina"] ;
 
 $titulo = $titulo_pagina;
@@ -537,8 +539,10 @@ $num_vales_sin_conc= $result->num_rows;
 $tipo_entidad='fra_prov' ;
 $id_entidad=$id_fra_prov ;
 
-$flags_firma = ($conc ? "Cargada " : "" ) . ($pagada ? "Pagada " : " " ) . ($cobrada ? "Cobrada" : "" ) ;
-$firma="Factura $n_fra de $proveedor (".cc_format($importe_iva, 'moneda').") $flags_firma " ;
+//$flags_firma = ($conc ? "Cargada " : "" ) . ($pagada ? "Pagada " : " " ) . ($cobrada ? "Cobrada" : "" ) ;
+//$firma="Factura $n_fra de $proveedor (".cc_format($importe_iva, 'moneda').") $flags_firma " ;
+
+$firma = entidad_descripcion($tipo_entidad,$id_entidad, $rs_fra_prov );
 
 //$id_subdir=$id_proveedor ;
 //$size='400px' ;

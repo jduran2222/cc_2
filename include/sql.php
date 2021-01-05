@@ -60,6 +60,7 @@ if (isset($_GET["variable1"]))
 $error_txt=""; 
 $array_sql=  explode("_CC_NEW_SQL_", $sql);       // cambiamos el caracter ; punto y coma por esta cadena _CC_NEW_SQL_ para separar varias consultas SQL
 foreach ($array_sql as $sql_item) {
+  // ejecutamos las sentencias SQL $sql_item
   if (trim($sql_item)!='') {$error_txt.= !($Conn->query($sql_item)) ? "ERROR : $sql_item  \n" : ""  ;}
 }
 

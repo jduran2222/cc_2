@@ -249,9 +249,13 @@ if ($id_produccion)
    $produccion=Dfirst("PRODUCCION", "PRODUCCIONES", "ID_PRODUCCION=$id_produccion ") ;
 
     echo "<h1>Relación Valorada: <a href='../obras/obras_prod_detalle.php?id_produccion=$id_produccion' target='_blank' title='abrir Relación Valorada'>$produccion</a></h1> " ;
-//    $buttons[0]= "<a class='btn btn-link' href='#'  onclick='add_udo_prod($id_udo,$id_produccion);'> <i class='fas fa-plus-circle'></i> añadir medicion</a>" ;
-    $add_link_html= "<a class='btn btn-link' href='#'  onclick='add_udo_prod($id_udo,$id_produccion);'> <i class='fas fa-plus-circle'></i> añadir medicion</a>" ;
-//    $buttons[1]= "<a class='btn btn-link' href='../obras/udo_prod.php?id_udo=$id_udo'  > <i class='fas fa-list'></i> ficha Udo general</a>" ;
+
+    $fecha4=date('Y-m-d');
+    $sql_insert="INSERT INTO PRODUCCIONES_DETALLE (ID_UDO,ID_PRODUCCION,Fecha,MEDICION ) VALUES ('$id_udo','$id_produccion' ,'$fecha4','_VARIABLE1_' )"    ;   
+    $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
+
+    $add_link_html= "<a class='btn btn-link' href='#'  onclick=\" js_href('$href',1,'','PROMPT_Medicion:','','0.00'); \" > "
+                    . "<i class='fas fa-plus-circle'></i> añadir medicion</a>" ;
 
     require("../include/tabla.php"); echo $TABLE ;    // tabla de MEDICIONES DE UDO-RELACION VALORADA
     echo "</div>" ;
@@ -289,7 +293,6 @@ if ($id_produccion)
     echo "<div  style='background-color:lightblue;float:left;width:60%;padding:0 20px;' >" ;
 
     echo "<h1>Relaciones Valorada con esta UDO</h1> " ;
-//    $buttons[0]= "<a class='btn btn-link' href='#'  onclick='add_udo_prod($id_udo,$id_produccion);'> <i class='fas fa-plus-circle'></i> añadir medicion</a>" ;
 
     require("../include/tabla.php"); echo $TABLE ; //TABLA DE RELACIONES VALORADAS
 
@@ -349,36 +352,7 @@ function eval_coste(id_udo) {
  }
     
     
-function add_udo_prod(id_udo,id_produccion) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-    var medicion=window.prompt("Medicion "+prompt , '0.00');
-//    alert("el nuevo valor es: "+valor) ;
-//   alert('debug') ;
-//   var id_personal=document.getElementById("id_personal").value ;
-   var sql="INSERT INTO PRODUCCIONES_DETALLE (ID_UDO,ID_PRODUCCION,Fecha,MEDICION ) VALUES ('"+ id_udo +"','"+ id_produccion +"' ,'2018-01-01','"+ medicion +"' )"    ;   
-//   alert(sql) ;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
-    
-    
-    return ;
- }
+
 </script>
     	
                 </div>

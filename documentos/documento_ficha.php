@@ -296,6 +296,7 @@ function up_img_size(id_imagen) {
 </div>
 
                 </div>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
                 <!--****************** BUSQUEDA GLOBAL  *****************
             </div>
         </div>

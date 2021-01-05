@@ -25,14 +25,14 @@ $num_documentos_pdte_clasif = Dfirst("count(id_documento)", "Documentos", "tipo_
 $num_fras_prov_NR = Dfirst("count(ID_FRA_PROV)", "Fras_Prov_Listado", "ID_PROVEEDORES=$id_proveedor_auto AND $where_c_coste");
 $num_procedimientos = Dfirst("count(id_procedimiento)", "Procedimientos", " $where_c_coste AND Obsoleto=0 " );
 
-$fecha_inicio=date('Y-01-01') ;
+$fecha_inicio=(date('Y')-1)."-01-01" ;  // 1 de enero del año anterior
 
 if (!$path_logo_empresa = Dfirst("path_logo", "Empresas_Listado", "$where_c_coste")) {$path_logo_empresa = "../img/no_logo_empresa.jpg";} ;
 
 
 //tareas
 $tareas = Dfirst("count(id)", "Tareas_View", "$where_c_coste AND Terminada=0 AND usuarios LIKE '%{$_SESSION["user"]}%' " );
-$fecha_tareas_vistas=Dfirst("fecha_tareas_vistas","Usuarios_View"," $where_c_coste AND id_usuario={$_SESSION["id_usuario"]} " ) ;
+$fecha_tareas_vistas=Dfirst("fecha_tareas_vistas","Usuarios"," $where_c_coste AND id_usuario={$_SESSION["id_usuario"]} " ) ;
 $tareas_new = Dfirst("count(id)", "Tareas_View", "$where_c_coste AND Terminada=0 AND usuarios LIKE '%{$_SESSION["user"]}%' AND fecha_modificacion > '$fecha_tareas_vistas' " );
 
 // portafirmas

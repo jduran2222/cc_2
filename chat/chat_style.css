@@ -733,6 +733,8 @@ ol, ul {
     top: -20px;
     left: -35px;
 }
+/*
+ANULADO, JUAND, DIC20, CAMBIA EL FORMATO DE LOS BADGE DEL MENU LATERAL  
 .badge {
     display: inline-block;
     min-width: 10px;
@@ -746,4 +748,4 @@ ol, ul {
     text-align: center;
     background-color: #999;
     border-radius: 10px;
-} 
+} */

@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo_pagina="PoF " . Dfirst("CONCAT(NUMERO,'-',NOMBRE_POF)","POF_lista", "ID_POF={$_GET["id_pof"]} AND $where_c_coste"  ) ;
+$titulo_pagina="POF " . Dfirst("CONCAT(NUMERO,'-',NOMBRE_POF)","POF_lista", "ID_POF={$_GET["id_pof"]} AND $where_c_coste"  ) ;
 $titulo = $titulo_pagina;
 
 //INICIO
@@ -296,7 +296,7 @@ $actions_row["id"]="id";
     
 <br>
 <!--<a class='btn btn-link noprint' href='../pof/pof_proveedor_anadir.php?_m=$_m&id_pof=<?php echo $id_pof;?>'  ><i class="fas fa-plus-circle"></i> Añadir proveedor</a>-->
-<a class='btn btn-link'  href=# <?php echo "onclick=\"add_pof_proveedor($id_pof)\" " ;?> ><i class="fas fa-plus-circle"></i> Añadir Oferta</a>
+<a class='btn btn-link btn-xs'  href=# <?php echo "onclick=\"add_pof_proveedor($id_pof)\" " ;?> ><i class="fas fa-plus-circle"></i> Añadir Oferta</a>
 
 
 
@@ -306,7 +306,7 @@ $ocultos=[ 'Importe_Cobro']  ;
 $cols_string=["PROVEEDOR"] ;
 $cols_number=["Importe_Prov","Importe_Cobro"] ;
 $cols_line=["Importe_Cobro"] ;
-$chart_ON=1;
+//$chart_ON=1;
 
 
 require("../include/tabla.php"); echo $TABLE ;?>
@@ -462,7 +462,7 @@ $actions_row["delete_link"]="1";
    <p>Concepto vacio:</p>
 
    <!--<a class='btn btn-link btn-lg' href='../pof/pof_concepto_anadir.php?id_pof=<?php // echo $id_pof;?>'  ><i class='fas fa-plus-circle'></i> Añadir concepto vacio</a>-->
-   <a class='btn btn-link btn-xs noprint'  href=# <?php echo "onclick=\"add_pof_concepto($id_pof)\" " ;?> ><i class="fas fa-plus-circle"></i> Añadir concepto vacio</a>
+   <a class='btn btn-link btn-xs noprint'  href=# <?php echo "onclick=\"add_pof_concepto($id_pof)\" " ;?> ><i class="fas fa-plus-circle"></i> Añadir concepto vacío</a>
 
   </div>
 
@@ -471,10 +471,10 @@ $actions_row["delete_link"]="1";
     
 
       <p>Unidad de Obra (UDO):</p>
-      <input type="text" id="filtro" size="3" value="" style="text-align:right;" placeholder="busca Udo..." />
+      <input type="text" id="filtro" value="" style="border-color: silver; color:grey; font-size: 12px;text-align:right;width: 10%;" placeholder="filtra Udo..." />
       <i class="fas fa-search"></i>
       <!--<select class="form-control" id="id_personal" style="width: 30%;">-->
-      <select id="id_udo"  onblur='this.size=1;' onchange='this.size=1; this.blur();' style="font-size: 15px; width: 50%;" size="1">
+      <select id="id_udo"  onblur='this.size=1;' onchange='this.size=1; this.blur();' style="border-color: silver; color:grey; font-size: 12px; width: 50%;" >
   			
           
        <?php 
@@ -484,12 +484,22 @@ $actions_row["delete_link"]="1";
        echo DOptions_sql("SELECT ID_UDO,CONCAT('(',ID_UDO,') ' ,CAPITULO,':  ',MED_PROYECTO, ' ',ud,' ',UDO) FROM Udos_View "
                . "WHERE ID_OBRA=$id_obra AND $where_c_coste  ORDER BY CAPITULO, ID_UDO ") ;
 
+       
         ?>
         
- 	
       </select>
-      <!--<input type="text" id="cantidad" size="3" value="0" style="text-align:right;" />-->
-      <a id='anadir_concepto'  class='btn btn-link btn-xs noprint' href='#'  onclick='pof_add_udo(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir concepto de UDO</a>
+
+       <?php 
+        $sql_insert="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) "
+            ." SELECT '$id_pof' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO "
+          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_UDO='_VARIABLE1_'"   ;   
+   
+        $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
+        
+        ?>
+      
+      
+      <a id='anadir_concepto'  class='btn btn-link btn-xs noprint' href='#'  onclick="js_href('<?php echo $href  ; ?>', '', '', 'id_udo');"><i class='fas fa-plus-circle'></i> Añadir concepto de UDO</a>
       <a class='btn btn-link btn-xs noprint transparente' href='#'  onclick='ver_udo();'>ver Udo</a>
       <!--<a class='btn btn-link btn-xs' href='../proveedores/concepto_anadir.php?_m=$_m&id_proveedor=<?php // echo $id_proveedor  ; ?>&id_obra=<?php // echo $id_obra  ; ?>' target='_blank' ><i class='fas fa-plus-circle'></i> Nuevo concepto</a>-->
 
@@ -560,29 +570,49 @@ return ;
 
 
 </script>
- 
+        <?php 
+        
+       
+        $sql_insert="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) "
+            ." SELECT '$id_pof' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO "
+          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_CAPITULO='_VARIABLE1_'"   ;   
+   
+        $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
+        
+        ?>
+
 
     <div class='border' style='border-color: grey'>
         <p>Capítulo:</p>
-      <select  id="id_capitulo" style="font-size: 15px; width: 20%;">
+      <select  id="id_capitulo" style="border-color: silver; color:grey; font-size: 12px; width: 50%;" >
        <?php echo DOptions_sql("SELECT ID_CAPITULO,CAPITULO FROM Capitulos WHERE ID_OBRA=$id_obra  ORDER BY CAPITULO ", "Selecciona Capítulo...") ?>
       </select>
 <!--      <input type="text" id="cantidad_mq" size="3" value="0" style="font-size: 20px; text-align:right;" /> ud       
       <input type="text" id="observaciones_mq" size="10" value="" placeholder="Observaciones"  /> -->
       
-      <a class='btn btn-link btn-xs noprint' href='#'  onclick='pof_add_capitulo(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir conceptos del Capítulo</a>
+      <a class='btn btn-link btn-xs noprint' href='#'  onclick="js_href('<?php echo $href  ; ?>', '', '', 'id_capitulo');"><i class='fas fa-plus-circle'></i> Añadir conceptos del Capítulo</a>
       <a class='btn btn-link btn-xs noprint transparente' href='#'  onclick='ver_capitulo();'>ver Capítulo</a>
     </div>
+        <?php 
+        
+       
+        $sql_insert="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) "
+            ." SELECT '$id_pof' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO "
+          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_SUBOBRA='_VARIABLE1_'"   ;   
+   
+        $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
+        
+        ?>
 
     <div class='border' style='border-color: grey'>
         <p>SubObra:</p>
-      <select  id="id_subobra" style="font-size: 15px; width: 20%;">
+      <select  id="id_subobra" style="border-color: silver; color:grey; font-size: 12px; width: 50%;" >
        <?php echo DOptions_sql("SELECT ID_SUBOBRA,SUBOBRA FROM Subobra_View WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY SUBOBRA ", "Selecciona SubObra...") ?>
       </select>
 <!--      <input type="text" id="cantidad_mq" size="3" value="0" style="font-size: 20px; text-align:right;" /> ud       
       <input type="text" id="observaciones_mq" size="10" value="" placeholder="Observaciones"  /> -->
       
-      <a class='btn btn-link btn-xs noprint' href='#' onclick='pof_add_subobra(<?php echo $id_pof ; ?>);'><i class='fas fa-plus-circle'></i> Añadir conceptos de la SubObra</a>
+      <a class='btn btn-link btn-xs noprint' href='#' onclick="js_href('<?php echo $href  ; ?>', '', '', 'id_subobra');"><i class='fas fa-plus-circle'></i> Añadir conceptos de la SubObra</a>
       <a class='btn btn-link btn-xs noprint transparente' href='#' onclick="window.open('../obras/subobra_ficha.php?id_subobra='+document.getElementById('id_subobra').value); "> ver SubObra</a>
     </div>
 
@@ -626,146 +656,9 @@ $Conn->close();
 
 
 <script>
-function pof_add_udo(id_pof) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-   // var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
-//    alert("el nuevo valor es: "+valor) ;
-//   alert('debug') ;
-   var id_udo=document.getElementById("id_udo").value ;
-//   var cantidad_mq=document.getElementById("cantidad_mq").value ;
-//   var observaciones_mq=document.getElementById("observaciones_mq").value ;
-//   var sql="INSERT INTO POF_CONCEPTOS (ID_POF,id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user ) " + 
-//           "VALUES ('"+id_parte+"','"+ id_obra_maq +"','"+ cantidad_mq +"','"+ observaciones_mq +"')"    ;   
-//   var sql="INSERT INTO POF_CONCEPTOS " + 
-//           " SELECT '" + id_pof +"' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,UDO AS CONCEPTO,TEXTO_UDO AS DESCRIPCION, PRECIO AS Precio_Cobro " + 
-//           "FROM Udos WHERE ID_CAPITULO=" + id_capitulo   ;   
-   
-   
-   
- // FALLO SEGURIDAD  la consulta debe de venir encriptada salvo parametros
-   var sql="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) " + 
-           " SELECT '" + id_pof +"' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO "+
-           ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '<?php echo $_SESSION["user"]; ?>' AS user " + 
-           "FROM Udos_View WHERE ID_UDO=" + id_udo   ;   
-   
-   
-   
-//   alert(sql) ;
 
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
-    
-    
-    return ;
- } 
  
- 
-    
-   function pof_add_subobra(id_pof) {
-    
-  
-   var id_subobra=document.getElementById("id_subobra").value ;
-//
    
- // FALLO SEGURIDAD  la consulta debe de venir encriptada salvo parametros
-   var sql="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) " + 
-           " SELECT '" + id_pof +"' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO,"+
-           "TEXTO_UDO AS DESCRIPCION,  Precio_Cobro , '<?php echo $_SESSION["user"]; ?>' AS user " + 
-           "FROM Udos_View WHERE ID_SUBOBRA=" + id_subobra   ;   
-   
-   
-   
-//   alert(sql) ;
-
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
-    
-    
-    return ;
-    
- }    
- 
- 
-    function pof_add_capitulo(id_pof) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-   // var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
-//    alert("el nuevo valor es: "+valor) ;
-//   alert('debug') ;
-   var id_capitulo=document.getElementById("id_capitulo").value ;
-//   var cantidad_mq=document.getElementById("cantidad_mq").value ;
-//   var observaciones_mq=document.getElementById("observaciones_mq").value ;
-//   var sql="INSERT INTO POF_CONCEPTOS (ID_POF,id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user ) " + 
-//           "VALUES ('"+id_parte+"','"+ id_obra_maq +"','"+ cantidad_mq +"','"+ observaciones_mq +"')"    ;   
-//   var sql="INSERT INTO POF_CONCEPTOS " + 
-//           " SELECT '" + id_pof +"' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,UDO AS CONCEPTO,TEXTO_UDO AS DESCRIPCION, PRECIO AS Precio_Cobro " + 
-//           "FROM Udos WHERE ID_CAPITULO=" + id_capitulo   ;   
-   
-   
- // FALLO SEGURIDAD  la consulta debe de venir encriptada salvo parametros
-   var sql="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) " + 
-           " SELECT '" + id_pof +"' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO"+
-           ",TEXTO_UDO AS DESCRIPCION, Precio_Cobro , '<?php echo $_SESSION["user"]; ?>' AS user " + 
-           "FROM Udos_View WHERE ID_CAPITULO=" + id_capitulo   ;   
-   
-   
-   
-//   alert(sql) ;
-
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
-    
-    
-    return ;
- }    
  
 function add_pof_proveedor(id_pof) {
     var nuevo_valor=window.prompt("Nombre del Proveedor: " );

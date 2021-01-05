@@ -454,6 +454,16 @@ $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%
     
     ?> 
       
+    <div style='width:100% ; border-style:solid;border-width:2px; border-color:silver; padding: 10px;'>
+      <!--<label for="id_personal">Selecciona personal:</label>-->
+      Enviar a portafirmas
+      <!--<select class="form-control" id="id_personal" style="width: 30%;">-->
+      <select id="id_usuario" style="font-size: 15px; width: 20%;">
+       <?php echo DOptions_sql("SELECT id_usuario, usuario FROM Usuarios WHERE activo AND $where_c_coste ORDER BY usuario  ", "Selecciona Usuario...") ?>
+      </select>
+      <input type='text' id='id_observaciones' placeholder='Observaciones...  (opcional)'>
+      <a class='btn btn-warning btn-xs' href='#' onclick="genera_firmas()" title='Añade firmas pendientes de cada factura seleccionada al portafirmas del usuario' >Añadir firmas</a>
+    </div>
 
       
     </div>
@@ -793,6 +803,17 @@ function genera_remesa()
 // window.open("../bancos/remesa_anadir_selection.php?id_remesa="+id_remesa+"&array_str=1"  )   ;
  //window.open("../menu/pagina_inicio.php")   ;
     
+}
+function genera_firmas()
+{
+    
+ var id_usuario=document.getElementById("id_usuario").value ;
+ var id_observaciones=document.getElementById("id_observaciones").value ;
+
+//    alert( id_remesa ) ;
+ window.open("../include/firmas_anadir_selection.php?tipo_entidad=fra_prov&id_usuario="+id_usuario+"&observaciones="+id_observaciones+"&array_str=" + table_selection() )   ;
+
+return;
 }
 
 //function ver_remesa()

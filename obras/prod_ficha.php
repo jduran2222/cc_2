@@ -65,8 +65,10 @@ $formats["Valoracion"] = 'moneda' ;
 $formats["Val_iva_incluido"] = 'moneda' ; 
   
    
+$sql_F_certificacion=encrypt2("UPDATE `PRODUCCIONES` SET `F_certificacion` = NULL   WHERE ID_OBRA=$id_obra AND ID_PRODUCCION=$id_produccion ; ") ;
   
-  
+$spans_html['F_certificacion'] = "<a class='btn-link'  href='#'  onclick=\"js_href('../include/sql.php?code=1&sql=$sql_F_certificacion')\"  title='borra la fecha para que se imprima Fecha a la firma electrónica' >firma elect.</a>" ;
+ 
   
   
   

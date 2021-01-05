@@ -492,7 +492,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="../include/tabla_general.php?url_enc=<?php echo encrypt2("select=id_usuario,usuario,email,online,activo,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion&tabla=Usuarios_View&where=activo AND id_c_coste=$id_c_coste&link=../configuracion/usuario_ficha.php?id_usuario=&campo=usuario&campo_id=id_usuario") ; ?>" class="nav-link">
+                    <a href="../include/tabla_general.php?url_enc=<?php echo encrypt2("sql=select id_usuario,usuario,email,online,activo,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion FROM Usuarios WHERE id_c_coste=$id_c_coste ORDER BY activo DESC,id_usuario &link=../configuracion/usuario_ficha.php?id_usuario=&campo=usuario&campo_id=id_usuario") ; ?>" class="nav-link">
                       <i class="far fa-dot-circle nav-icon"></i>
                       <p>Usuarios empresa <span class="badge badge-info right"><?php echo $num_usuarios; ?></span></p>
                     </a>

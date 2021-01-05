@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo_pagina="Py " . Dfirst("NOMBRE_OBRA","OBRAS", "ID_OBRA={$_GET["id_obra"]} AND $where_c_coste"  ) ;
+$titulo_pagina="Proy " . Dfirst("NOMBRE_OBRA","OBRAS", "ID_OBRA={$_GET["id_obra"]} AND $where_c_coste"  ) ;
 $titulo = $titulo_pagina;
 
 //INICIO
@@ -74,11 +74,12 @@ $js_href="js_href( '$href', 1, '', '$href_prompt_update_precio', '', 1, '')"
 
 <a class="btn btn-primary" title="Copia el Coste Estimado al campo Precio, permite hacer un presupuesto detallado de cada UDO" target="_blank"
           href=# onclick='corregir_precios_proyecto_desde_coste_est("<?php echo $sql_update_precio_desde_coste_est;?>" )'>Copiar Coste Estimado a Precio</a>
-<a class="btn btn-primary" title="imprimir proyecto" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=" target="_blank">imprimir</a>
-<a class="btn btn-primary" title="exportar proyecto a PDF" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=pdf">pdf</a>
+<a class="btn btn-primary" title="PDF" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=" target="_blank">imprimir</a>
+<!--ANULADO juand, dic20, da error el pdf creado
+<a class="btn btn-primary" title="exportar proyecto a PDF" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=pdf">pdf</a>-->
 <a class="btn btn-primary" title="exportar proyecto a XLS" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=xls">xls</a>
 <a class="btn btn-primary" title="exportar proyecto a DOC" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=doc">doc</a>
-<a class="btn btn-danger" title="Borrar proyecto completo" href=# onclick="js_href( '../obras/obras_proy_delete.php?id_obra=<?php echo $id_obra;?>'  ,1, '¿Borrar el proyecto completo? \n\n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto '  );"  >Borrar proyecto</a><br>
+<a class="btn btn-danger" title="Borrar proyecto completo" href=# onclick="js_href( '../obras/obras_proy_delete.php?id_obra=<?php echo $id_obra;?>'  ,1, '¿Borrar el proyecto completo? \n\n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto \n No se borrarán las Udos que estén en una Rel. Valorada '  );"  >Borrar proyecto</a><br>
 <br><br>
 
   
@@ -216,6 +217,7 @@ if ($result->num_rows > 0)
 		  {
   ?>
 	<TR >
+                 <TD></TD>
 	    <TD align=right>SUMA DE CAPITULO</TD>
 		<TD></TD>
 		<TD></TD>
@@ -229,28 +231,29 @@ if ($result->num_rows > 0)
             $sumaCap=0;
 		  }
 	        $firstIdCapitulo=$rs["ID_CAPITULO"];
-			  
+			   
 			  ?>	
 	
-    <TR> 
-	<TR>
-	   <TD style="background-color:lightgreen;color:grey;font-size:14px;" > Unidad de Obra </TD>
-	   <TD style="background-color:lightgreen;color:grey;font-size:14px;" > Med_proy </TD>
-	   <TD style="background-color:lightgreen;color:grey;font-size:14px;" > Precio </TD>
-	   <TD style="background-color:lightgreen;color:grey;font-size:14px;" > Coste_Est </TD>
-	   <!--<TD style="background-color:lightgreen;color:grey;font-size:14px;" > Estudio coste </TD>-->
-	   <TD style="background-color:lightgreen;color:grey;font-size:14px;" > Importe </TD>
-	   <TD style="background-color:lightgreen;color:grey;font-size:14px;" > SubObra </TD>
-	</TR>
 	<TR >
-          <TD colspan="7">CAPITULO<b> <?php echo "<a target='_blank'  href='../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=$firstIdCapitulo' "
-                                        . "title='abrir ficha de Capítulo' >{$rs["CAPITULO"]}</a>";?></b>
-              <a class="btn btn-link btn-xs noprint transparente" title="añadir Unidad de Obra (UdO) al Capitulo" href=# <?php echo "onclick=\"add_udo({$rs["ID_CAPITULO"]},$id_obra)\" " ;?>  > <i class="fas fa-plus-circle"></i> UdO</a></TD>
+            <TD colspan="7"><h4>CAPITULO <?php echo "<a target='_blank'  href='../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=$firstIdCapitulo' "
+                  . "title='abrir ficha de Capítulo' >{$rs["CAPITULO"]}</a>";?>
+              <a class="btn btn-link btn-xs noprint transparente" title="añadir Unidad de Obra (UdO) al Capitulo" href=# <?php echo "onclick=\"add_udo({$rs["ID_CAPITULO"]},$id_obra)\" " ;?>  > <i class="fas fa-plus-circle"></i> UdO</a></h4></TD>
+	</TR>
+	<TR>
+	   <TD style="background-color:LightCyan;color:grey;font-size:14px;" > Cod </TD>
+	   <TD style="background-color:LightCyan;color:grey;font-size:14px;" > Unidad de Obra </TD>
+	   <TD style="background-color:LightCyan;color:grey;font-size:14px;" > Med_proy </TD>
+	   <TD style="background-color:LightCyan;color:grey;font-size:14px;" > Precio </TD>
+	   <TD style="background-color:LightCyan;color:grey;font-size:14px;" > Coste_Est </TD>
+	   <!--<TD style="background-color:lightgreen;color:grey;font-size:14px;" > Estudio coste </TD>-->
+	   <TD style="background-color:LightCyan;color:grey;font-size:14px;" > Importe </TD>
+	   <TD style="background-color:LightCyan;color:grey;font-size:14px;" > SubObra </TD>
 	</TR>
 	
   <?php   } ?>
  
  <TR>  
+  <TD align=center> <?php   echo $rs["COD_PROYECTO"];?> </TD>
   <TD ><a class="enlaceTabla" target='_blank' href="udo_prod.php?_m=<?php echo $_m ;?>&id_udo=<?php   echo $rs["ID_UDO"];?>"  title="<?php   echo $rs["TEXTO_UDO"];?>"> <?php   echo $rs["ud"]." ".$rs["UDO"];?>  </a> </TD>
   <TD align=right> <?php   echo $rs["MED_PROYECTO"];?> </TD>
   <TD align=right> <?php   echo cc_format($rs["PRECIO"],'moneda');?> </TD>
@@ -270,16 +273,17 @@ if ($result->num_rows > 0)
 
 <TR >
 	    <TD></TD>
-		<TD></TD>
 	    <TD></TD>
-		<TD></TD>
-		<!--<TD></TD>-->
-		<TD align=right><b><?php echo number_format($sumaCap,2,".",",");?></b></TD>
-        <TD></TD>
+	    <TD></TD>
+	    <TD></TD>
+	    <TD></TD>
+      	    <TD align=right><b><?php echo number_format($sumaCap,2,".",",");?></b></TD>
+            <TD></TD>
 	</TR>
 
 <?php $PEM=$PEM+$sumaCap;?>
 <TR >
+               <TD></TD>
 	    <TD>TOTAL EJECUCION MATERIAL DEL PROYECTO</TD>
 		<TD></TD>
 		<TD></TD>

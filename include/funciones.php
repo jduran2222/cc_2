@@ -51,7 +51,7 @@ $desfase=1.234   ; // usamos el desfse para evitar que nuevas UDOs son MED_PROYE
 $id_prod_estudio_costes=$id_prod_estudio_costes? $id_prod_estudio_costes : Dfirst("id_prod_estudio_costes", "OBRAS", "ID_OBRA=$id_obra AND id_c_coste={$_SESSION["id_c_coste"]} ")  ;
 
 $hash_proyecto=Dfirst("SUM(ID_UDO*(MED_PROYECTO+$desfase))", "Udos", "ID_OBRA=$id_obra")  ;
-$hash_estudio_costes=Dfirst("SUM(ID_UDO*(MEDICION+$desfase))", "PRODUCCIONES_DETALLE", "ID_PRODUCCION=$id_prod_estudio_costes")  ;
+$hash_estudio_costes=Dfirst("SUM(ID_UDO*(MEDICION+$desfase))", "PRODUCCIONES_DETALLE", "ID_PRODUCCION='$id_prod_estudio_costes'")  ;
 
   
 return ($hash_proyecto==$hash_estudio_costes);
@@ -178,8 +178,8 @@ function texto_a_html_hex($chat_message)
        $link=  strip_tags($S[0]) ;
        $etiqueta_txt=  str_replace("https://", "", $link);
        $etiqueta_txt=  str_replace("http://", "", $etiqueta_txt);
-       $etiqueta_txt= substr( $etiqueta_txt,0,10);
-     return "<a href='#' style='cursor:pointer;'  onclick=\"window.open('$link');\" target='_blank' title='$link'>$etiqueta_txt...</a>";
+       $etiqueta_txt= substr( $etiqueta_txt,0,25);
+     return "<a href='#' style='cursor:pointer;'  onclick=\"window.open('$link');\"  title='$link'>$etiqueta_txt...</a>";
       }, $chat_message); 
 
       // # HASHTAGS
@@ -191,7 +191,7 @@ function texto_a_html_hex($chat_message)
 //     return "<a href=\'#\' style=\'cursor:pointer;\'  onclick=\"window.open(\'$S[0]\');\" target=\'_blank\' title=\'$S[0]\'>link</a>";
      // quitamos TAGS, commas y puntos, y quitamos la # y codificamos a URL    
      $filtro= urlencode( str_replace([chr(194),chr(160)," ",",",".","#"],"", trim(strip_tags( $S[0] )) ) )  ; 
-     return "<a href='#' style='cursor:pointer;'  onclick=\"window.open('../menu/busqueda_texto.php?ht=1&filtro=$filtro');\" target='_blank' title='Buscar hashtag'>$S[0]</a>";
+     return "<a href='#' style='cursor:pointer;'  onclick=\"window.open('../menu/busqueda_texto.php?ht=1&filtro=$filtro');\"  title='Buscar hashtag'>$S[0]</a>";
       }, $chat_message); 
 
       // buscar ENTIDADES @
@@ -202,8 +202,12 @@ function texto_a_html_hex($chat_message)
 //     return "<a href=\'$S[0]\' target=\'_blank\' title=\'$S[0]\'>link</a>";
 //     return "<a href=\'#\' style=\'cursor:pointer;\'  onclick=\"window.open(\'$S[0]\');\" target=\'_blank\' title=\'$S[0]\'>link</a>";
      // quitamos TAGS, quitamos la # y codificamos a URL    
-     $filtro= urlencode( str_replace([" ",",",".","@"],"", trim( strip_tags( $S[0] ) )) )  ; 
-     return "<a href='#' style='cursor:pointer;'  onclick=\"window.open('../menu/busqueda_global.php?filtro=$filtro');\" target='_blank' title='Buscar entidad'>$S[0]</a>";
+//     $filtro= urlencode( str_replace([" ",",",".","@"],"", trim( strip_tags( $S[0] ) )) )  ; 
+     $filtro = substr(trim( strip_tags( $S[0] ) ), 1);          // quitamos el primer @        
+     $filtro= urlencode( str_replace([",",".","-","_"]," ", $filtro) )  ;  
+//     $filtro=preg_replace('/^@/', '', $filtro);
+//     $filtro= str_replace("_"," ", $filtro)   ; // cambiamos barra baja por espacio para la búsqueda
+     return "<a href='#' style='cursor:pointer;'  onclick=\"window.open('../menu/busqueda_global.php?filtro=$filtro');\"  title='Busca en Búsqueda Global'>$S[0]</a>";
       }, $chat_message); 
 
       
@@ -219,7 +223,7 @@ function texto_a_html_hex($chat_message)
             
 
 
-function entidad_link($entidad)
+function entidad_link($tipo_entidad)
 {
     $array_links["aval"]="../bancos/aval_ficha.php?id_aval=";
     $array_links["obra_doc"]="../obras/obras_ficha.php?id_obra=";
@@ -266,7 +270,25 @@ function entidad_link($entidad)
     
     
     
-    return  isset( $array_links[$entidad]) ? $array_links[$entidad] :  "#"  ; 
+    return  isset( $array_links[$tipo_entidad]) ? $array_links[$tipo_entidad] :  "#"  ; // el # es para incluirlo directamente al href
+}
+
+function entidad_descripcion($tipo_entidad, $id_entidad, $rs=null)
+{
+  switch ($tipo_entidad) { 
+      
+    case "fra_prov":    
+          // si no enviamos el $row lo calculamos  
+         if (!isset($rs))  {  $rs=Drow("Fras_Prov_View", "id_fra_prov=$id_entidad AND id_c_coste={$_SESSION['id_c_coste']} ") ;  }
+         $descripcion="Factura {$rs["N_FRA"]} de {$rs["PROVEEDOR"]} (".cc_format($rs["IMPORTE_IVA"], 'moneda').") "  
+                       .($rs["conc"] ? "Cargada " : "" ) . ($rs["pagada"] ? "Pagada " : " " ) . ($rs["cobrada"] ? "Cobrada" : "" ) ; ;
+    break;
+    
+    default:
+       $descripcion= $tipo_entidad . " con id " . $id_entidad  ;  // nombre de firma general
+  }
+    
+ return  $descripcion ; 
 }
 
 
@@ -404,7 +426,9 @@ function badge($number, $tipo='danger')
 
 function badge_sup($number, $tipo='danger')
 {  //badge badge-danger navbar-badge
-   return (($number) ? "<div style='float:right;'><sup class='small px-0 px-sm-1'>". badge($number,$tipo)  ."</sup></div>": "") ;
+//    <sup class='bg-info small px-0 px-sm-1'>$num_documentos</sup>
+   return (($number) ? "<sup class='rounded-circle bg-$tipo small px-0 px-sm-1'>". $number  ."</sup>": "") ;
+//   return (($number) ? "<div style='float:right;'><sup class='small px-0 px-sm-1'>". badge($number,$tipo)  ."</sup></div>": "") ;
 
 }
 
@@ -824,7 +848,7 @@ function pais($json)
 
 }
 
-function registrar_acceso($id_c_coste,$user,$empresa,$resultado,$ip, $error, $android ,$pais='', $json_geoip='')
+function registrar_acceso($id_c_coste,$user,$empresa,$resultado,$ip, $error, $android ,$pais='', $json_geoip='', $id_usuario=0)
 {
   //extract($GLOBALS);
       if (!isset($GLOBALS["Conn"]))
@@ -837,8 +861,8 @@ function registrar_acceso($id_c_coste,$user,$empresa,$resultado,$ip, $error, $an
         $nueva_conn = false;
     }
     
-      $sql="insert into w_Accesos (id_c_coste  ,  ip   , usuario   , clave  ,  resultado  , sistema     ,error, android , pais , json_geoip) "
-              . "values  ($id_c_coste,'$ip','$user','$empresa','$resultado', '{$_SERVER['HTTP_USER_AGENT']}','$error', '$android' ,'$pais','$json_geoip')";
+      $sql="insert into w_Accesos (id_c_coste  ,  ip   , usuario   , clave  ,  resultado  , sistema     ,error, android , pais , json_geoip,id_usuario) "
+              . "values  ($id_c_coste,'$ip','$user','$empresa','$resultado', '{$_SERVER['HTTP_USER_AGENT']}','$error', '$android' ,'$pais','$json_geoip',$id_usuario)";
 	
          $result = $Conn->query($sql);
 
@@ -1062,6 +1086,10 @@ function cc_format($valor , $format="" , &$format_style="", $clave="")     ///, 
   elseif (substr($format,0,13)=="semaforo_txt_")                 // formato boolean_txt
      {  $txt=substr($format,13)   ;
         $format="semaforo_txt" ;
+     }  
+  elseif (substr($format,0,14)=="semaforo_txt2_")                 // formato boolean_txt
+     {  $txt=substr($format,14)   ;
+        $format="semaforo_txt2" ;
      }  
 //  elseif (substr($format,0,5)=="icon_")                 // formato boolean_txt
 //     {  $icon=substr($format,5)   ;
@@ -1464,9 +1492,14 @@ switch ($format) {
 //                        $valor = (!$valor) ? '<i class="fas fa-check"></i>' : '' ;
 
                         break;
-            case "semaforo_txt":
+            case "semaforo_txt":   // ej:  CARGADA   o   NO CARGADA
                         $format_style = $valor ? " style='color: green; font-weight: bold;' "  : " style='color: red; font-weight: bold;' "  ;   
                         $valor = $valor ? $txt : 'NO '.$txt ;
+
+                        break;
+            case "semaforo_txt2":        // igual que el anterior pero el negativo es vacío, ej: SUBCONTRATADA
+                        $format_style = $valor ? " style='color: green; font-weight: bold;' "  : " style='color: red; font-weight: bold;' "  ;   
+                        $valor = $valor ? $txt : '';
 
                         break;
             case "array_pre":
@@ -2033,7 +2066,9 @@ function Dfirst($field, $select, $where = 1, $order_by = 0)
         }
     }else 
     {
+        
             logs( " Resultado Dfirst: ERROR EN CONSULTA: $sql2") ;
+            $return=0;
         
     }   
 

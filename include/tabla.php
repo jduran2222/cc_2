@@ -4,6 +4,8 @@
 // echo "<div id='chart_div' ></div>" ;
 // echo "JUAN DURAN" ;
 
+ $idtabla="tabla_".rand() ;           // genero un idtabla aleatorio que usaremos para evitar conflictos con otras tabla.php o ficha.php
+
 
  ?>
 
@@ -206,8 +208,8 @@ table th {
             }
          }
    
-  th.hide_id { display: none; }
-  td.hide_id { display: none; }
+  th.hide_id_<?php echo $idtabla;?> { display: none; }
+  td.hide_id_<?php echo $idtabla;?> { display: none; }
   
          
     
@@ -280,16 +282,30 @@ $chart_ocultos=isset($chart_ocultos) ? $chart_ocultos : [] ;     // por defecto 
 $table_button=isset($table_button) ? $table_button : True ;     // botones de graficos. Por defecto SI
 $chart_button=isset($chart_button) ? $chart_button : True ;     // botones de graficos. Por defecto SI
 
+$columna_ficha=isset($columna_ficha) ? $columna_ficha : False ;     // ANULADO POR DEFECTO HASTA QUE FUNCIONE BIEN LOS HIDE SIN INTERFERIR CON OTRAS TABLAS Y FICHAS.PHP (juand,dic20) botones de graficos. Por defecto SI
 
-$add_link_html= (isset($add_link_html)) ? $add_link_html :
-              (isset($add_link) ? "<p><a class='btn btn-xs btn-link noprint' href='#' onclick=\"tabla_add_row( '{$tabla_update}' , '{$add_link['field_parent']}', '{$add_link['id_parent']}'  ) ;\"  >"
-            . "<i class='fas fa-plus-circle'></i> añadir fila</a></p> " : "" ) ;
+//CODIGO PARA EL añadir fila $add_link
 
+// si no está definido previamente add_link_html, lo definimos.
+if(!isset($add_link_html))
+{ 
+  // construimos add_link_html si existe el array $add_link    
+  if(isset($add_link)){
+   $sql_insert="INSERT INTO $tabla_update ( {$add_link['field_parent']} ) VALUES ( {$add_link['id_parent']} )"    ;   
+   $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
+  
+   $add_link_html = "<p><a class='btn btn-xs btn-link noprint' href='#' onclick=\"js_href('$href','1'  )\"  >"
+            . "<i class='fas fa-plus-circle'></i> añadir fila</a></p> " ;
+  }else{
+   $add_link_html="";   
+  }
+}
+// fin definicion add_link_html
 
 //$TABLE .=  "<P class='noprint'>$titulo $add_link_html</P>" ; 
 
 $cont=0;
-$idtabla="tabla_".rand() ;           // genero un idtabla aleatorio
+//$idtabla="tabla_".rand() ;           // genero un idtabla aleatorio
 //$idtabla="tabla" ;                   // DEBUG
 
 // DEBUG
@@ -349,7 +365,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                    $is_visible = ( (!preg_match("/^ID_|^ID$/i", $clave) OR in_array($clave,$visibles) ) AND ( !in_array($clave,$ocultos) ))  ; 
                    $not_id_var= isset($print_id)?  $print_id : $is_visible  ;         // $print_id indica que se imprima los campos ID_ tambien
                    // Lo metemos en COLUMNAS OCULTAS POR SI SE QUIEREN MOSTRAR POR JAVASCRIPT
-                   $class_hide_id= $not_id_var ? "" : "class='hide_id'" ;     
+                   $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla'" ;     
                    $hide_id= $not_id_var ? "" : "hide_id" ;                 //class hide_id hace que se oculten las columnas hasta que pulsemos Show ID
                    
                    // evitamos las ETIQUETAS
@@ -473,7 +489,7 @@ if (isset($result_T)  )   // Hay TOTALES?
     $TABLE .= "<div>";  
   }    
     $TABLE .= "<a type='button' class='btn btn-link btn-xs noprint transparente'  href='../include/export_xls.php?sql=$sql_encrypt&titulo=$titulo_w_tags'  >Exportar xls</a>";  
-    $TABLE .= "<button type='button' title='Copia la tabla para pegar en excel, word..., antes desabilitar fotos y PDF para evitar comflictos' "
+    $TABLE .= "<button type='button' title='Copia la tabla al portapapeles para pegar en XLS, DOC...' "
                     . "class='btn btn-link btn-xs noprint transparente'  onclick=selectElementContents(document.getElementById('$idtabla'))  >copy</button>";
    
    $TABLE .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=tabla_down_font_size(document.getElementById('$idtabla'))><i class='fas fa-search-minus'></i></button>" ;
@@ -482,7 +498,7 @@ if (isset($result_T)  )   // Hay TOTALES?
    //  BOTON SELECTION
    if (isset($col_sel)) {$TABLE .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=ver_table_selection()  >seleccion</button>" ;  }  
 
-   if ($_SESSION["admin"]) {$TABLE .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=show_ID()  >show ID adm</button>" ;  }  
+   if ($_SESSION["admin"]) {$TABLE .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=show_ID_$idtabla()  >show ID adm</button>" ;  }  
 //   $TABLE .= "<button type='button' class='btn btn-link btn-lg noprint transparente'  title='ver Gráficos' onclick=google.charts.setOnLoadCallback(drawChart);  >"
 //                   . "<i class='fas fa-chart-bar'></i></button>" ;  
    
@@ -531,6 +547,7 @@ if (isset($result_T)  )   // Hay TOTALES?
     $TABLE .= "<div id='chart_div$idtabla' style='display:none;'></div>" ;  // div para el gráfico
    } 
     
+   if ($columna_ficha) {$TABLE .= "<div style=float:right;'><button type='button' class='btn btn-link btn-xs noprint transparente'  onclick=show_FICHA()  >show FICHA</button></div>" ;  }  
     
    // INICIAMOS LA TABLE
    $TABLE .= "<div><table  id=\"$idtabla\" $tabla_style >";   
@@ -546,7 +563,7 @@ if (isset($result_T)  )   // Hay TOTALES?
    $cont_TR= mt_rand (1,2000000)  ;  // creamos un contador de TD para cada celda. Lo inicializamos con random
    
    
-   // GOOGLE CHARTS
+   // GOOGLE CHARTS, inicializo variables de trabajo
    $json_rows_chart=" rows : [ " ;
    $comma_rows="";
    
@@ -555,6 +572,7 @@ if (isset($result_T)  )   // Hay TOTALES?
    
    
 
+   // EMPEZAMOS A RECORRER LA TABLA DE DATOS
    while($rst = $result->fetch_array(MYSQLI_ASSOC))               // 
    {
       $cont_TD++;      
@@ -569,7 +587,7 @@ if (isset($result_T)  )   // Hay TOTALES?
 
        if ($is_subtotal) { $subtotal=$rst[$col_subtotal]   ;}
 
-       $TABLE .= "<thead><tr>";
+       $TABLE .= "<thead><tr>";  // iniciamos el cabecero principal
        $c=0 ;
        $c_sel=0;
        
@@ -602,7 +620,7 @@ if (isset($result_T)  )   // Hay TOTALES?
        
        
 //       $cols_count=1;
-       foreach ($rst as $clave => $valor) //  ENCABEZADOS
+       foreach ($rst as $clave => $valor) // pintamos los ENCABEZADOS 
        {
            
    
@@ -618,7 +636,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                $is_visible = ( (!preg_match("/^ID_|^ID$/i", $clave) OR in_array($clave,$visibles) ) AND ( !in_array($clave,$ocultos) ))  ; 
                
                $not_id_var= isset($print_id)?  $print_id : $is_visible  ;         // $print_id indica que se imprima los campos ID_ tambien
-               $class_hide_id= $not_id_var ? "" : "class='hide_id'" ;
+               $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla'" ;
                $hide_id= $not_id_var ? "" : "hide_id" ;
                
                // inicializamos variables
@@ -663,7 +681,8 @@ if (isset($result_T)  )   // Hay TOTALES?
                     //  inicializamos la $etiqueta_txt con su etiqueta o en su defecto el nombre del campo sin el 'ID_' y sin '_'
 //                   $etiqueta_txt= isset($etiquetas[$clave]) ? $etiquetas[$clave] : str_replace('_',' ',( (strtoupper(substr($clave,0,3))=="ID_")? substr($clave,3)  :   $clave     ))  ; 
 
-                   $etiqueta_txt= isset($etiquetas["$clave"]) ? $etiquetas["$clave"] : cc_etiqueta($clave)  ; 
+                   if (!isset($etiquetas["$clave"])) { $etiquetas["$clave"] = cc_etiqueta($clave)  ;}  // si todavia no hay definida $etiqueta_txt, la calculamos por defecto y lo metemos en el array
+                   $etiqueta_txt= $etiquetas["$clave"] ; 
                    // fabricamos el <div> para el TOOLTIP
                    $tooltip_txt = isset($tooltips[$clave])? $tooltips[$clave]  : ""  ;    
 //                   $tooltip_txt= str_replace("<br>","\n", $tooltip_txt) ;
@@ -751,7 +770,7 @@ if (isset($result_T)  )   // Hay TOTALES?
 
        }
 
-       // calculamos las columnas que serán línes en vez de barras
+       // CHART . calculamos las columnas que serán línes en vez de barras en el gráfico
        $serie_line_txt="";
        foreach ($cols_line as $col_line)
          {
@@ -766,14 +785,19 @@ if (isset($result_T)  )   // Hay TOTALES?
        $json_cols_chart.=" ] " ; // finalizo la json_cols del google charts
 
        if (isset($actions_row)) { $TABLE .= "<th></th>"; }	// añado columna para los links de las acciones de fila  
+       if ($columna_ficha) { $TABLE .= "<th class='columna_ficha'>FICHA</th>"; }	// añado columna_ficha
+       
        $TABLE .= "</tr></thead><tbody>";	
        if ($is_subtotal) $TABLE .= "<tr><td colspan='$colspan'><b><big>$subtotal</big></b></td></tr>";
       }
       $cont++ ;
+      
+      
+      
       // **********************   FIN ENCABEZADOS *************                              
 
 
-      // GESTION DE SUBTOTALES
+      // GESTION DE SUBTOTALES. cuando tenemos agrupamiento y subtotales
       if ($is_subtotal)            
       { if ($subtotal<>$rst[$col_subtotal])
             { 
@@ -809,8 +833,11 @@ if (isset($result_T)  )   // Hay TOTALES?
 //       $cols_count=1 ;
       
       // RECORREMOS LOS VALORES DE NUESTRA FILA
+      $columna_ficha_html='';   // inicializamos la celda de la columna_ficha 
       foreach ($rst as $clave => $valor)  //  ******** VALORES ***************** VALORES ******************
        {
+          $TD_td =  "<td  class='class_$idtabla'  >" ;  // ponemos por defecto el <td>, luego podemos cambiarlo
+
           $tipo_formato_por_clave=cc_formato_auto($clave);
           
           //deshacemos el guardado en HEX
@@ -866,7 +893,7 @@ if (isset($result_T)  )   // Hay TOTALES?
 //           $not_id_var= isset($print_id)?  $print_id : (strtoupper(substr($clave,0,2))<>"ID") ;         // $print_id indica que se imprima los campos ID_ tambien
 
            // Lo metemos en COLUMNAS OCULTAS POR SI SE QUIEREN MOSTRAR POR JAVASCRIPT
-           $class_hide_id= $not_id_var ? "" : "class='hide_id'" ;     
+           $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla class_$idtabla'" ;     
            $hide_id= $not_id_var ? "" : "hide_id" ;                 //class hide_id hace que se oculten las columnas hasta que pulsemos Show ID
           
            
@@ -954,9 +981,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                 $format_style = (isset($aligns[$clave])) ?   " style='text-align:{$aligns[$clave]} ; ' "    :  $format_style  ;      // $aligns[] si se ha especificado una ALIGN la determino
                 $format_align = cc_format_align($format_style) ;   // esto se usa para los botones dentro del <TD>
                 $format_style = (isset($styles[$clave])) ? str_replace("style='", "style='".$styles[$clave], $format_style)    :  $format_style  ;      // añadimos los styles particulares
-        
-//                $format_style=" style='vertical-align: bottom;' ";   // por defecto left DEBUG
-                
+                       
              
                 // DBLCLICK o FILTRADO .  preparamos codigo javascript para DBLCLICK
                $valor_sin_tags=strip_tags($valor) ;
@@ -1010,22 +1035,25 @@ if (isset($result_T)  )   // Hay TOTALES?
                                      {
                                          $valor_txt_final=$valor_txt? $valor_txt : 'ver'  ;  // evitamos que un valor vacio impida hacer el link
 //                                         $valor_txt_final=$valor_txt? $valor_txt : ''  ;  // No mostramos 'ver' en caso de valor vacio, juand, dic-2020
-                                         $TABLE .= "<td $class_hide_id   $format_style $dblclick_ondblclick >$span_sort<span id='div$cont_TD'  ><a href='$href_link' title='$title' "
-                                                 . " $link_target_blank>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}</td>";        
+                                         $TD_td = "<td $class_hide_id   $format_style $dblclick_ondblclick >"  ;
+                                         $TD_html = "$span_sort<span id='div$cont_TD'  ><a href='$href_link' title='$title' "
+                                                 . " $link_target_blank>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}";        
 
                                      }elseif ($tipo_formato_link=='formato_sub_vacio')   // FORMATO TRADICIONAL DE SUBRRAYADO (es incompatible con sortTable (ordenar tabla)) pero son poner "ver"
                                      {
                                          $valor_txt_final=$valor_txt? $valor_txt : ''  ;  // evitamos que un valor vacio permita hacer el link
-                                         $TABLE .= "<td $class_hide_id   $format_style $dblclick_ondblclick >$span_sort<span id='div$cont_TD'  ><a href='$href_link' title='$title' "
-                                                 . " $link_target_blank>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}</td>";        
+                                         
+                                         $TD_td = "<td $class_hide_id   $format_style $dblclick_ondblclick >" ;
+                                         $TD_html = "$span_sort<span id='div$cont_TD'  ><a href='$href_link' title='$title' "
+                                                 . " $link_target_blank>{$valor_txt_final}</a></span>{$update_pencil_div}{$div_extras_html}";        
 
                                      }else              //if ($tipo_formato_link=='icon')     // FORMATO link principal
                                      {   
-                                         $TABLE .= "<td $class_hide_id  $format_style $dblclick_ondblclick   >"
-                                                 . "$span_sort<span id='div$cont_TD' style='float:left;width:90%' >{$valor_txt}</span>"    
+                                         $TD_td = "<td $class_hide_id  $format_style $dblclick_ondblclick   >" ;
+                                         $TD_html ="$span_sort<span id='div$cont_TD' style='float:left;width:90%' >{$valor_txt}</span>"    
                                                  . "{$update_pencil_div}<a class='btn btn-link btn-xs noprint transparente' id='a$cont'  href=\"$href_link\"   "
                                                  . "  title='$title' $link_target_blank> <i class='fas fa-external-link-alt'></i>"
-                                                 . "</a>{$update_onclick}{$div_extras_html}</td>";  
+                                                 . "</a>{$update_onclick}{$div_extras_html}";  
 
                                       }
 
@@ -1035,9 +1063,9 @@ if (isset($result_T)  )   // Hay TOTALES?
                                     $link_div= "<a class='btn btn-link btn-xs noprint transparente' href='$href_link' title='$title'"
                                                . " $link_target_blank> <i class='fas fa-external-link-alt'></i></a>" ;
                                     $style_max_width_90 = ($update_pencil_div OR $dblclick_div )? "max-width:90% ;"   :  ""   ;
-                                    $TABLE .= "<td $class_hide_id $format_style  ' >"
-                                                 . "$span_sort<span style='$style_max_width_90 float:left;text-align:$format_align ' $dblclick_ondblclick  id='div$cont_TD'  >{$valor_txt}</span>"
-                                                              . "{$update_pencil_div}{$link_div}{$div_extras_html}</td>";
+                                    $TD_td = "<td $class_hide_id $format_style  ' >" ;
+                                    $TD_html = "$span_sort<span style='$style_max_width_90 float:left;text-align:$format_align ' $dblclick_ondblclick  id='div$cont_TD'  >{$valor_txt}</span>"
+                                                              . "{$update_pencil_div}{$link_div}{$div_extras_html}";
 
 
                                    }
@@ -1055,29 +1083,12 @@ if (isset($result_T)  )   // Hay TOTALES?
                                                   : (($formato_valor=='semaforo_not')? ( $valor ? "background-color:red;" : "background-color:green;")
                                                   : ( $valor ? "background-color:royalblue;" : "background-color:white;") )  ;
                                  
-//                                 $TABLE .=   "<td style='text-align:center;'>$span_sort<label id='label_$cont_TD'   style='$background_color' for='chk_$cont_TD'>"
-//                                       . "<input type='checkbox' id='chk_$cont_TD' name='chk_$cont_TD'  $checked "
-//                                         . " onchange=\"tabla_update_onchange('$cadena_link',this.checked,'$tipo_dato','','label_$cont_TD' )\" >"
-//                                       . "</label>{$div_extras_html}</td>"  ;
 
-//                                 $TABLE .=   "<td style='text-align:center;$background_color' id='td_$cont_TD' name='$checked'   "
-//                                         .    "onclick=\"document.getElementById('chk_$cont_TD').click(); \"  >"
-//                                         . "$span_sort"
-//                                       . "<input  type='checkbox' id='chk_$cont_TD' name='chk_$cont_TD'  $checked "
-//                                         . " onchange=\"tabla_update_onchange('$cadena_link',this.checked,'$tipo_dato','','td_$cont_TD' )\" >"
-//                                       . "{$div_extras_html}</td>"  ;
-
-//                                 $TABLE .=   "<td style='text-align:center;$background_color' id='td_$cont_TD' value='$checked'   "
-//                                         .    "onclick=\"tabla_update_onchange('$cadena_link',document.getElementById('span_$cont_TD').text,'$tipo_dato','span_$cont_TD','td_$cont_TD' )\"  >"
-//                                         . "$span_sort"
-//                                         . "<span id='span_$cont_TD' >$valor_txt</span>"
-//                                       . "{$div_extras_html}</td>"  ;
-
-                                 $TABLE .=   "<td style='cursor: pointer;text-align:center;$background_color' id='td_$cont_TD' value='$checked'   "
+                                 $TD_html =   "<div style='cursor: pointer;text-align:center;$background_color' id='td_$cont_TD' value='$checked'   "
                                          .    "onclick=\"tabla_update_onchange('$cadena_link',document.getElementById('span_$cont_TD').style.display,'$tipo_dato','span_$cont_TD','td_$cont_TD' )\"  >"
                                          . "$span_sort"
                                          . "<span id='span_$cont_TD' style='$display' ><i class='fas fa-check'></i></span>"
-                                       . "{$div_extras_html}</td>"  ;
+                                       . "{$div_extras_html} </div>"  ;
 
  
 
@@ -1085,17 +1096,15 @@ if (isset($result_T)  )   // Hay TOTALES?
                                {                       // UPDATE DIV_EDIT                                                                                             //// ****DEBUG 1***
            
 
-//                                // DIV EDIT  (PRUEBAS)
+//                                // DIV EDIT  (PRUEBAS)  NO BORRAR
 //                                   $TABLE .=   "<td>"
 //                                            . "<div id='div$cont_TD' "
 //                                            . " onblur=\"tabla_update_onchange('$cadena_link',this.innerHTML,'div_edit' )\"   >$valor <a href='https://www.google.es' title='titulo'>link</a></div>$div_extras_html"
 //                                             ." </td>"  ;
 
                                    $div_extras_html=""; // PROVISIONALMENTE ANULAMOS LOS DIV_EXTRAS por que interfieren, abril20
-                                   $TABLE .=   "<td>"
-                                            . "<div id='div$cont_TD' contenteditable='true' class='div_edit' "
-                                            . " onblur=\"tabla_update_onchange('$cadena_link',this.innerHTML,'div_edit','div$cont_TD' )\"   >$valor</div>$div_extras_html"
-                                             ."</td>" ;
+                                   $TD_html =  "<div id='div$cont_TD' contenteditable='true' class='div_edit' "
+                                            . " onblur=\"tabla_update_onchange('$cadena_link',this.innerHTML,'div_edit','div$cont_TD' )\"   >$valor</div>$div_extras_html" ;
                                    
 //                                    $TABLE .= ($debug)? "<button onclick='alert($(\"#div$cont_TD\").html());' style='cursor:pointer;'  >VER</button>" :"" ;
 
@@ -1109,10 +1118,8 @@ if (isset($result_T)  )   // Hay TOTALES?
                                }elseif ($is_text_edit) 
                                {                       // UPDATE TEXT_EDIT          TEXTAREA                                                                                   //// ****DEBUG 1***
 
-                                   $TABLE .=   "<td>"
-                                            . "<textarea class='textarea_tabla' rows='3' id='textarea1' name='textarea1' "
-                                            . " onchange=\"tabla_update_onchange('$cadena_link',this.value )\"   >$valor</textarea>$div_extras_html"
-                                             ." </td>"  ;
+                                   $TD_html = "<textarea class='textarea_tabla' rows='3' id='textarea1' name='textarea1' "
+                                            . " onchange=\"tabla_update_onchange('$cadena_link',this.value )\"   >$valor</textarea>$div_extras_html" ;
 
 
 
@@ -1122,10 +1129,9 @@ if (isset($result_T)  )   // Hay TOTALES?
 
         
                                    $valor_txt = cc_format($valor, 'moneda') ;
-                                   $TABLE .=   "<td>$span_sort"
+                                   $TD_html =   "$span_sort"
                                             . "<textarea class='textarea_tabla' style='border:none; text-align:right; resize: none;' rows='1' cols='13' id='div$cont_TD' name='textarea1' onclick='this.select()' "
-                                            . " onchange=\"tabla_update_onchange('$cadena_link',this.value,'num','div$cont_TD' )\"   >$valor_txt</textarea>$div_extras_html"
-                                             ." </td>"  ;
+                                            . " onchange=\"tabla_update_onchange('$cadena_link',this.value,'num','div$cont_TD' )\"   >$valor_txt</textarea>$div_extras_html";
 
 
 
@@ -1135,10 +1141,9 @@ if (isset($result_T)  )   // Hay TOTALES?
                                      $fecha0=substr($valor,0,10) ;
 
                     //              $TABLE .=  $TD_etiqueta ;
-                                   $TABLE .=  "<td>$span_sort"
+                                   $TD_html = "$span_sort"
                                        . "<input type='date' id='datepicker2' value='$fecha0' "
-                                       . " onchange=\"tabla_update_onchange('$cadena_link',this.value,'fecha' )\">"
-                                       . "</td>" ;                                                                    // hacemos el JAVASCRIPT para actualizar la FECHA
+                                       . " onchange=\"tabla_update_onchange('$cadena_link',this.value,'fecha' )\" > " ;                                                                    // hacemos el JAVASCRIPT para actualizar la FECHA
 
                                }
                                
@@ -1152,9 +1157,9 @@ if (isset($result_T)  )   // Hay TOTALES?
                                
                                
                                  $style_max_width_90 = ($update_pencil_div OR $dblclick_div )? "max-width:90% ;"   :  ""   ;
-                                $TABLE .= "<td $class_hide_id $format_style  ' >"
-                                        . "$span_sort<span style='$style_max_width_90 float:left;text-align:$format_align ' $dblclick_ondblclick  id='div$cont_TD'  >{$valor_txt}</span>"
-                                                              . "{$update_pencil_div}{$div_extras_html}</td>";
+                                $TD_td = "<td $class_hide_id $format_style  ' >";
+                                $TD_html =  "$span_sort<span style='$style_max_width_90 float:left;text-align:$format_align ' $dblclick_ondblclick  id='div$cont_TD'  >{$valor_txt}</span>"
+                                                              . "{$update_pencil_div}{$div_extras_html}";
 
                                
         //                       $update_pencil_div='';
@@ -1165,15 +1170,19 @@ if (isset($result_T)  )   // Hay TOTALES?
                                $update_onclick="" ;
 //                               $update_pencil_div='';
                                $style_max_width_90 = ($dblclick_div )? "max-width:90% ;"   :  ""   ;      // preveyendo poner un <span> para que simule el doblr click (copia a filtro) en mobile
-                                $TD_html= "<td $class_hide_id $format_style   >"
-                                        . "$span_sort<span style='$style_max_width_90 float:$format_align;text-align:$format_align ' $dblclick_ondblclick  id='div$cont_TD'  >{$valor_txt}</span>"
-                                        . "{$div_extras_html}</td>";
-                                $TABLE .= $TD_html ;        
+
+                               $TD_td = "<td $class_hide_id $format_style   >" ;
+                               $TD_html =  "$span_sort<span style='$style_max_width_90 float:$format_align;text-align:$format_align ' $dblclick_ondblclick  id='div$cont_TD'  >{$valor_txt}</span>"
+                                        . "{$div_extras_html}";
+//                                $TABLE .= $TD_html ;        
                                
                               
                 }  
 
-                
+                $TABLE.= $TD_td  . $TD_html . "</td>" ;
+               
+                $columna_ficha_html.= $is_visible? "<div><span style='float:left;color:silver;'>{$etiquetas["$clave"]}:&nbsp;&nbsp; </span>$TD_html</div>"   : "" ;
+//                $columna_ficha_html.= $not_id_var? "<div>".$clave .":". $TD_html."</div>"   : "" ;
 
            }	//************* FIN DE PINTADO EL VALOR  VISIBLE               
        } //  ******** FIN DE FOREACH CLAVE -> VALOR
@@ -1185,16 +1194,16 @@ if (isset($result_T)  )   // Hay TOTALES?
        //*********     <TD> DE ACCIONES  **************
        //
        // ACCION ROW botones de acciones en ULTIMA COLUMNA que compenten a toda la fila (edit, delete...)
+       $TD_html='';
        if (isset($actions_row["id"]) AND isset($rst[$actions_row["id"]]))  // comprobamos si está definido el campo y si existe en la consulta                        
        { 
            $id_link=$rst[$actions_row["id"]] ;
            
            // Iniciamos el <TD> de ACTION_ROW[]
-           $TABLE .= "<td align='center'>" ;
            
            //  ACTION_ROW   UPDATE_LINK
            if (isset($actions_row["update_link"]))
-           { $TABLE .= "<a class='btn btn-link btn-xs transparente noprint' href=\"{$actions_row["update_link"]}{$id_link}\" ><i class='fas fa-pencil-alt'></i></a> ";             
+           { $TD_html .= "<a class='btn btn-link btn-xs transparente noprint' href=\"{$actions_row["update_link"]}{$id_link}\" ><i class='fas fa-pencil-alt'></i></a> ";             
            }
 
            //  ACTION_ROW   DELETE_LINK
@@ -1202,7 +1211,7 @@ if (isset($result_T)  )   // Hay TOTALES?
            {
            $cadena_link= encrypt2("tabla=$tabla_update&wherecond=$id_update=".$rst["$id_update"] ) ; 
            $delete_confirm= isset($actions_row["delete_confirm"]) ? $actions_row["delete_confirm"] : 1 ;
-           $TABLE .= "<a class='btn btn-link transparente noprint'  onclick=\"tabla_delete_row('$cadena_link'  , 'TR_$cont_TR' , '$delete_confirm')\"  title='eliminar fila'><i class='far fa-trash-alt'></i></a> "; 
+           $TD_html .= "<a class='btn btn-link transparente noprint'  onclick=\"tabla_delete_row('$cadena_link'  , 'TR_$cont_TR' , '$delete_confirm')\"  title='eliminar fila'><i class='far fa-trash-alt'></i></a> "; 
            }
            
            //  ACTION_ROW   ONCLICK1_LINK
@@ -1213,10 +1222,25 @@ if (isset($result_T)  )   // Hay TOTALES?
                $cadena_onclick=str_replace("_VARIABLE1_",$rst["$onclick1_VARIABLE1_"],$actions_row["onclick1_link"]);
                if (isset($onclick1_VARIABLE2_)) { $cadena_onclick=str_replace("_VARIABLE2_",$rst["$onclick1_VARIABLE2_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
                if (isset($onclick1_VARIABLE3_)) { $cadena_onclick=str_replace("_VARIABLE3_",$rst["$onclick1_VARIABLE3_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
-               $TABLE .= $cadena_onclick ;
+               $TD_html .= $cadena_onclick ;
                }    
-          $TABLE .= "</td>";    // FIN <TD> ACTION_ROW
+               
+          $TABLE .= "<td align='center'>" . $TD_html. "</td>";    // FIN <TD> ACTION_ROW
+          
+          
+          $columna_ficha_html.= "<div>". $TD_html ."</div>" ;        // meto los botones action , si los hay, a la columna_ficha
        }
+       
+       if ($columna_ficha)  // comprobamos si está definido el campo y si existe en la consulta                        
+       { 
+           
+           // Iniciamos el <TD> de COLUMNA_FICHA
+           $TABLE .= "<td class='columna_ficha'>" ;
+           $TABLE .= $columna_ficha_html ;
+           $TABLE .= "</td>";    // FIN <TD> ACTION_ROW
+       }
+       
+       
 	$TABLE .= "</tr>";	  // FIN DE <TR> FILA DE VALORES
        
     $json_rows_chart.=" ] } " ;         // FIN FILA INDIVIDUAL google CHART
@@ -1308,7 +1332,7 @@ $TABLE = <<<EOT
               <div class="card-header border-0">
 
                 <h2 class="card-title">
-                  <button type="button" class="btn btn-tool btn-sm" data-card-widget="collapse">
+                  <button type="button" class="btn btn-tool btn-sm noprint" data-card-widget="collapse">
                     <i class="far fa-calendar-alt noprint"></i> $titulo
                   </button>
                 </h2>
@@ -1354,12 +1378,94 @@ EOT;
  
  <script>
 
-//$(document).ready(function(){
-//   $('#chart_button<?php echo $idtabla; ?>').click();
-//   console.log("LISTO!!");
-//});
+$(document).ready(function(){
+$('th.columna_ficha').hide() ;  // por defecto, ocultamos la COLUMNA_FICHA
+$('td.columna_ficha').hide() ;
 
-    
+if (<?php echo $_SESSION["android"];?>) { show_FICHA_ON();}
+//   $('#chart_button<?php // echo $idtabla; ?>').click();
+//   console.log("LISTO!!");
+});
+
+function show_ID_<?php echo $idtabla;?>()
+ { 
+     alert('<?php echo $idtabla;?>');
+// $('table th.hide').each( function() { $(this).show() ; }   );
+// $('table td.hide').each( function() { $(this).show() ; }   );
+if ( typeof show_ID.show == 'undefined' ) {
+        // It has not... perform the initialization
+        show_ID.show = 1;
+    }
+ 
+
+if ( show_ID.show == 1) 
+{   
+ $('th.hide_id_<?php echo $idtabla;?>').show() ;
+ $('td.hide_id_<?php echo $idtabla;?>').show() ;
+ show_ID.show = 0 ;
+ }
+ else
+{   
+ $('th.hide_id_<?php echo $idtabla;?>').hide() ;
+ $('td.hide_id_<?php echo $idtabla;?>').hide() ;
+ show_ID.show = 1 ;
+ }
+     
+//  alert(show_ID.show);
+//   alert('hola') ;
+ 
+ 
+  return ;
+}
+
+function show_FICHA()
+ { 
+     
+// $('table th.hide').each( function() { $(this).show() ; }   );
+// $('table td.hide').each( function() { $(this).show() ; }   );
+if ( typeof show_FICHA.show == 'undefined' ) {
+        // It has not... perform the initialization
+        show_FICHA.show = 1;
+    }
+ 
+
+if ( show_FICHA.show == 1) 
+{   
+ $('th').hide() ;   // quitamos todas
+ $('td').hide() ;
+ $('th.columna_ficha').show() ;         // ponemos solo las fichas
+ $('td.columna_ficha').show() ;
+ show_FICHA.show = 0 ;
+ }
+ else
+{   
+ $('th').show() ;   // ponemos todas
+ $('td').show() ;   
+ $('th.hide_id_<?php echo $idtabla;?>').hide() ;      // ocultamos las ocultas tipo ID
+ $('td.hide_id_<?php echo $idtabla;?>').hide() ;
+ $('th.columna_ficha').hide() ;  // quitamos las FICHA
+ $('td.columna_ficha').hide() ;
+ show_FICHA.show = 1 ;
+ }
+     
+//  alert(show_ID.show);
+//   alert('hola') ;
+ 
+ 
+  return ;
+}
+function show_FICHA_ON()
+ { 
+     
+ $('th.class_<?php echo $idtabla;?>').hide() ;   // quitamos todas
+ $('td.class_<?php echo $idtabla;?>').hide() ;
+ $('th.class_<?php echo $idtabla;?>columna_ficha').show() ;         // ponemos solo las fichas
+ $('td.class_<?php echo $idtabla;?>columna_ficha').show() ;
+ 
+  return ;
+}
+
+
 function tabla_update_onchange(cadena_link, nuevo_valor, tipo_dato , elementId , idlabel_chk ) {
    //valores por defecto
      tipo_dato = tipo_dato || 'str'; 
@@ -1627,7 +1733,6 @@ str = (str.match( /\d{4}-\d{2}-\d{2}/ ) ) ? str.substr(0,10) : str ;    //  si e
 // document.getElementById("form1").submit();
 }
 
-
 function sortTable(n, idtabla, c_sel) {
   var tfoot, table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
   table = document.getElementById(idtabla);
@@ -1752,46 +1857,8 @@ function sortTable(n, idtabla, c_sel) {
           }
     }
   }
- // alert('salgo del while')  ;
 
 }
-
-//
-//function tabla_update_boolean(cadena_link, prompt, valor0) {
-//
-////        alert('juan') ;
-//    
-////    var valor0Num=dbNumero(valor0) ;
-////    var esNumero=(!isNaN(valor0Num)) ;
-////    //alert(esNumero) ;
-////    if (esNumero) {valor0=valor0Num ;} // si es campo numérico lo paso a formato dbNumero  ej: 1254.51
-////    
-////    var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
-//    var nuevo_valor=  valor0=='0' ? 1 : 0 ;
-//    
-//    
-////    alert("el nuevo valor es: "+valor) ;
-//   if (!(nuevo_valor === null))
-//   { 
-////       if (esNumero) {nuevo_valor=dbNumero(nuevo_valor)  ;}        // vuelvo a dar formato dbNumero
-//       
-//       var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText.substr(0,5)=="ERROR")
-//        { alert(this.responseText) ;}                   // mostramos el ERROR
-//        else
-//        {  //alert(this.responseText) ;     //debug
-//            location.reload(true); }  // refresco la pantalla tras edición
-//        }
-//  };
-//  xhttp.open("GET", "../include/update_ajax.php?"+cadena_link+nuevo_valor, true);
-//  xhttp.send();   
-//   }
-//   else
-//   {return;}
-//   
-//}
 
 
 
@@ -1802,12 +1869,6 @@ function tabla_delete_row(cadena_link, id , confirm) {
      id = id || '';
      confirm = confirm || '1';
    
-//    document.getElementById(id).style.display = "none"  ;
-//    document.getElementById(id).toggle('slow')  ;
-//    document.getElementById(id).style.visiblity = "hidden"  ;//visiblity:hidden
-//    document.getElementById(id).show=0  ;
-//    document.getElementById(id).hide() ;
-//    $("#" + id).toggle('fast')  ;
     
     if (confirm=='1')                 // variable que permite no confirmar y borrar diectamente la fila
     {   var nuevo_valor=window.confirm("¿Borrar fila? "); }
@@ -1839,37 +1900,7 @@ function tabla_delete_row(cadena_link, id , confirm) {
    
 }
 
-function tabla_add_row(tabla,field_parent,id_parent) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-   // var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
-//    alert("el nuevo valor es: "+valor) ;
-//   alert('debug') ;
-//   var id_personal=document.getElementById("id_personal").value ;
-   var sql="INSERT INTO "+tabla+" ("+ field_parent+ ") VALUES ('" + id_parent + "')"    ;   
-//   alert(sql) ;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
-    
-    
-    return ;
- }
- 
+
  function table_selection()
  { var array_str="" ;
  $('table input:checkbox:checked').each(
@@ -1904,36 +1935,6 @@ function ver_table_selection()
   return array_str;
 }
 
-function show_ID()
- { 
-     
-// $('table th.hide').each( function() { $(this).show() ; }   );
-// $('table td.hide').each( function() { $(this).show() ; }   );
-if ( typeof show_ID.show == 'undefined' ) {
-        // It has not... perform the initialization
-        show_ID.show = 1;
-    }
- 
-
-if ( show_ID.show == 1) 
-{   
- $('th.hide_id').show() ;
- $('td.hide_id').show() ;
- show_ID.show = 0 ;
- }
- else
-{   
- $('th.hide_id').hide() ;
- $('td.hide_id').hide() ;
- show_ID.show = 1 ;
- }
-     
-//  alert(show_ID.show);
-//   alert('hola') ;
- 
- 
-  return ;
-}
 
 
 function table_selection_IN()

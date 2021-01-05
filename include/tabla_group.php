@@ -412,7 +412,8 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
    
     //echo $tr_totales ;                // imprimo los TOTALES antes de la table
 //    echo "<tr ><td COLSPAN=3></td></tr>";  // meto una tr para separar
-    
+   
+   $tabla_secundaria_iniciada=0;
    while($rs = $result->fetch_array(MYSQLI_ASSOC))               // tabla de valores
    {
 	  if ($cont==0)   // --------------- ENCABEZADOS SECUNDARIOS------------------------
@@ -423,8 +424,9 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
            $c=0 ;
                                          //{echo  "<td><input type=\"checkbox\" id=\"Encabezado\" value=\"Bike\"></td>" ;  }  
            $c_sel=0;
-           if (isset($col_sel)  ) {$content_TH_sec.= "<th style='background-color:silver; '><input onclick=\"selection_grupo('$idtabla');\" type=\"checkbox\" id=\"sel2_$idtabla\" value=\"0\"></th>" ;  $c++ ;$c_sel=1; }       // Si hay columna de Selección añadimos una columna vacía a los TOTALES
-//           if (isset($col_sel)  ) {$content_TH_sec.= "<td>$idtabla</td>" ;  $c++ ;$c_sel=1; }       // Si hay columna de Selección añadimos una columna vacía a los TOTALES
+           // anulamos el select del encabezado secundario porque no funciona bien el javascript
+//           if (isset($col_sel)  ) {$content_TH_sec.= "<th style='background-color:silver; '><input onclick=\"selection_grupo('$idtabla');\" type=\"checkbox\" id=\"sel2_$idtabla\" value=\"0\"></th>" ;  $c++ ;$c_sel=1; }       // Si hay columna de Selección añadimos una columna vacía a los TOTALES
+           if (isset($col_sel)  ) {$content_TH_sec.= "<th style='background-color:silver; '></th>" ;  $c++ ;$c_sel=1; }       // Si hay columna de Selección añadimos una columna vacía a los TOTALES
 	   
            foreach ($rs as $clave => $valor) //  encabezados
            {
@@ -468,7 +470,18 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
            {
             if ($id_subgrupo<>$rs[$id_agrupamiento])        //NUEVO SUBGRUPO
              {
-                echo "</table></div><table id=\"$idtabla\" class='table2' >"; 
+                if(  $tabla_secundaria_iniciada)
+                {  echo ""
+                      . "</table>"
+                     . "</div>";
+                }
+                else
+                {
+                   $tabla_secundaria_iniciada=1; 
+                }    
+                
+                echo   "<div id='nuevo subgrupo'>"
+                        . "<table id=\"$idtabla\" class='table2' >"; 
                 
 //                echo "</table></div></td></tr>";
 //                echo "</table></div>";
@@ -521,9 +534,13 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
                               $c++ ;
                              }  
 		 }
-	         echo "<button type='button' style='display:none;' id='exp_$id_subgrupo' data-toggle='collapse' data-target='#div_$id_subgrupo'></button></tr>";	  
+	         echo "<button type='button' style='display:none;' id='exp_$id_subgrupo' data-toggle='collapse' data-target='#div_$id_subgrupo'></button>"
+                         . "</tr>"
+                         . "</table>";	  
  
-                 echo "<td colspan='40'><div id='div_$id_subgrupo' class='collapse'><table id=\"$idtabla\" class='table2' >";
+                 // iniciamos div collapse conteniendo tabla secundaria
+                 echo "<div id='div_$id_subgrupo' class='collapse'>"
+                                           . "<table id=\"$idtabla\" class='table2 tabla_secundarios' >";
                  echo $content_TH_sec ;            // Pintamos el encabezado secundario para cada desplegable
                  
 	     }

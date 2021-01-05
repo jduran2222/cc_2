@@ -38,9 +38,9 @@ else
 
 $titulo = 'PDFs';
 
-//INICIO
-include_once('../templates/_inc_privado1_header.php');
-include_once('../templates/_inc_privado2_navbar.php');
+//INICIO   ANULADO, JUAND DIC20, ESTA PANTALLA ES PARA IMPRIMIRLA O MANDAR A XLS Y DOC, NO NECESITA MENUS
+//include_once('../templates/_inc_privado1_header.php');
+//include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
@@ -93,6 +93,7 @@ if ($result->num_rows > 0)
             {
                 ?>
                                 <TR >
+                                    <TD></TD>
                                     <TD align=right>SUMA DE CAPITULO</TD>
                                     <TD></TD>
                                     <TD></TD>
@@ -109,6 +110,7 @@ if ($result->num_rows > 0)
             {
                 ?>
                                 <TR>
+                                    <TD style="font-size:10px;" > Cod </TD>
                                     <TD style="font-size:10px;" > Unidad de Obra </TD>
                                     <TD style="font-size:10px;" > Med_proy </TD>
                                     <TD style="font-size:10px;" > Precio </TD>
@@ -119,7 +121,7 @@ if ($result->num_rows > 0)
                                     <TD style="font-size:10px;" > SubObra </TD>
                                 </TR>
 
-
+ 
 
             <?php
             }
@@ -128,7 +130,7 @@ if ($result->num_rows > 0)
                             <tr></tr>
 
                             <TR >
-                                <TD >CAPITULO<b> <?php echo $rs["CAPITULO"]; ?></b></TD>
+                                <TD >CAPITULO<b> <?php echo utf8_decode( $rs["CAPITULO"]); ?></b></TD>
                                 <TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD><TD></TD>
                             </TR>
                             <tr></tr>
@@ -138,16 +140,17 @@ if ($result->num_rows > 0)
         <?php } ?>
 
                         <TR>  
-                            <TD ><?php echo $rs["ud"] . " " . $rs["UDO"]; ?> </TD>
+                            <TD ><?php echo utf8_decode($rs["COD_PROYECTO"]); ?> </TD>
+                            <TD ><?php echo utf8_decode($rs["ud"]) . " " .utf8_decode( $rs["UDO"]); ?> </TD>
                             <TD align=right> <?php echo number_format($rs["MED_PROYECTO"], 2, ",", "."); ?> </TD>
                             <TD align=right> <?php echo number_format($rs["PRECIO"], 2, ",", "."); ?> </TD>
                             <TD align=right> <?php echo number_format($rs["COSTE_EST"], 2, ",", "."); ?> </TD>
-                            <TD > <?php echo $rs["Estudio_coste"]; ?> </TD>
+                            <TD > <?php echo utf8_decode($rs["Estudio_coste"]); ?> </TD>
         <?php $importe = $rs["MED_PROYECTO"] * $rs["PRECIO"]; ?> 
         <?php $sumaCap = $sumaCap + $importe; ?>
                             <TD align=right> <?php echo number_format($importe, 2, ",", "."); ?> </TD>
                             <TD></TD>
-                            <TD style="color:grey;font-size:12px;"> <?php echo $rs["SUBOBRA"]; ?> </TD>
+                            <TD style="color:grey;font-size:12px;"> <?php echo utf8_decode( $rs["SUBOBRA"]) ; ?> </TD>
                         </TR>
 
                             <?php //$rs->movenext;  ?>
@@ -165,12 +168,14 @@ if ($result->num_rows > 0)
                     <TD></TD>
                     <TD></TD>
                     <TD></TD>
+                    <TD></TD>
                     <TD align=right><b><?php echo number_format($sumaCap, 2, ",", "."); ?></b></TD>
                     <TD></TD>
                 </TR>
 
 <?php $PEM = $PEM + $sumaCap; ?>
                 <TR >
+                    <TD></TD>
                     <TD>TOTAL EJECUCION MATERIAL</TD>
                     <TD></TD>
                     <TD></TD>
@@ -195,4 +200,4 @@ $Conn->close();
 <?php 
 
 //FIN
-include_once('../templates/_inc_privado3_footer.php');
+//include_once('../templates/_inc_privado3_footer.php');

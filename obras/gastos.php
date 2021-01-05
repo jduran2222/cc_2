@@ -347,7 +347,16 @@ echo   "<a class='btn btn-link btn-xs' href='#' onclick=\"window.open('../obras/
                ." title='Ver la ficha de la SubObra' >ver Subobra</a>  " ;
 
 
-echo  "<a class='btn btn-link btn-xs' href='#' onclick=\"nueva_subobra( $id_obra )\" title='Crea subobra nueva' ><i class='fas fa-plus-circle'></i> nueva subobra</a> "
+
+$sql_insert2="INSERT INTO SubObras (ID_OBRA,SUBOBRA) VALUES ( '$id_obra' , '_VARIABLE1_' )"    ;   
+$href='../include/sql.php?sql=' . encrypt2($sql_insert2)  ;  
+//$add_link_html= (isset($add_link_html)) ? $add_link_html :
+//              (isset($add_link) ? "<p><a class='btn btn-xs btn-link noprint' href='#' onclick=\"js_href('$href','1'  )\"  >"
+//            . "<i class='fas fa-plus-circle'></i> añadir fila</a></p> " : "" ) ;
+//    var subobra=window.prompt("Subobra nueva:" );
+//    var sql="INSERT INTO SubObras (ID_OBRA,SUBOBRA) VALUES ("+id_obra+",'"+subobra+"' )"    ;   
+
+echo  "<a class='btn btn-link btn-xs' href='#' onclick=\"js_href('$href','1','' , `PROMPT_Subobra nueva:` )\" title='Crea subobra nueva' ><i class='fas fa-plus-circle'></i> nueva subobra</a> "
         . "</div>"
         . "</div>"
         . "</div>" ;
@@ -374,34 +383,7 @@ function imputar_a_subobra(id_obra) {
     
     return ;
  }  
- function nueva_subobra(id_obra) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-    var subobra=window.prompt("Subobra nueva:" );
-
-   if (subobra){
-    var sql="INSERT INTO SubObras (ID_OBRA,SUBOBRA) VALUES ("+id_obra+",'"+subobra+"' )"    ;   
-//   alert(sql) ;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
- } 
-    return ;
- }  
+  
 </script>    
     
 <?php
@@ -446,7 +428,8 @@ function imputar_a_subobra(id_obra) {
 
    case "concepto":
     $sql="SELECT ID_CONCEPTO,ID_PROVEEDORES,PROVEEDOR ,CONCEPTO,SUM(CANTIDAD) AS CANTIDAD, COSTE, SUM(IMPORTE) as importe,ID_CUENTA,CUENTA_TEXTO,id_usub as Usub  FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY ID_PROVEEDORES,ID_CONCEPTO  ORDER BY PROVEEDOR,CONCEPTO  " ;
-    $sql_T="SELECT '' AS A,'' AS B,'' AS C,'' AS D, SUM(IMPORTE) as importe, '' as dd  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+    $select_suma_cantidad= $CONCEPTO? "SUM(CANTIDAD) AS CANTIDAD," : "'' AS C," ;
+    $sql_T="SELECT '' AS A,'' AS B,  $select_suma_cantidad    '' AS D, SUM(IMPORTE) as importe, '' as dd  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "subobra":
     $sql="SELECT ID_SUBOBRA,SUBOBRA ,  SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY ID_SUBOBRA  ORDER BY SUBOBRA  " ;
@@ -561,13 +544,14 @@ $links["FECHA"] = ["../proveedores/albaran_proveedor.php?id_vale=", "ID_VALE", "
 $links["SUBOBRA"] = ["../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "ver Subobra", "icon"] ;
 //$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
 $links["N_FRA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura" ,"formato_sub"] ;
-$links["Usub"] = ["../proveedores/usub_ficha.php?id=", "Usub","ver Usub" ,"formato_sub"] ;
+$links["Usub"] = ["../proveedores/usub_ficha.php?id=", "Usub","ver Unidad Subcontratada" ,"formato_sub_vacio"] ;
 
 //$formats["facturado"]='boolean_FACTURADO';
 
 $formats["path_archivo"]="pdf_100_400" ;
 
 
+$formats["Usub"] = "semaforo_txt2_subcontratada" ;
 $formats["P_gasto"] = "porcentaje" ;
 $formats["importe"] = "moneda" ;
 $formats["COSTE"] = "moneda" ;

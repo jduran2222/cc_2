@@ -455,8 +455,6 @@ $(document).ready(function() {
 
 
     
-    
-    
 function add_vale_detalle(id_vale, id_subobra, id_proveedor, id_obra) {
     
     //var valor0 = valor0_encode;
@@ -481,11 +479,9 @@ function add_vale_detalle(id_vale, id_subobra, id_proveedor, id_obra) {
 //            alert(this.responseText) ;   //debug
               location.reload(true);  // refresco la pantalla tras edición
         }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
       
     }
     }
-//     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
      xhttp.open("GET", "../proveedores/albaran_anadir.php?id_vale="+id_vale+"&id_proveedor="+id_proveedor+"&id_obra="+id_obra+"&id_concepto="+id_concepto+"&cantidad=" 
                      +cantidad+"&concepto_nuevo="+concepto_nuevo+"&coste="+coste+"&importe="+importe, true);
      xhttp.send();   
@@ -503,36 +499,7 @@ function add_vale_detalle(id_vale, id_subobra, id_proveedor, id_obra) {
     return ;
  }
     
-    function add_parte_maquinaria(id_parte) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-   // var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
-//    alert("el nuevo valor es: "+valor) ;
-//   alert('debug') ;
-   var id_obra_maq=document.getElementById("id_obra_maq").value ;
-   var sql="INSERT INTO Partes_Maquinas (id_parte,id_obra,cantidad) VALUES ('"+id_parte+"','"+ id_obra_maq +"', 1)"    ;   
-//   alert(sql) ;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                                        // hay un error y lo muestro en pantalla
-        else
-        { //document.getElementById(pcont).innerHTML = this.responseText ;   // "pinto" en la pantalla el campo devuelto por la BBDD tras el Update
-//            alert(this.responseText) ;   //debug
-              location.reload(true);  // refresco la pantalla tras edición
-        }
-      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-      
-    }
-    }
-     xhttp.open("GET", "../include/insert_ajax.php?sql="+sql, true);
-     xhttp.send();   
-    
-    
-    return ;
- }
+
 </script>
              
                 <!--</div>-->
