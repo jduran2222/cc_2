@@ -217,10 +217,8 @@ $links["Banco"] = ["../bancos/bancos_mov_bancarios.php?id_cta_banco=", "id_cta_b
     $link_conciliar.="</div>" ;
 
     //
-    $sql=encrypt2("INSERT INTO FRAS_CLI_PAGOS ( id_fra,id_pago ) VALUES ( '$id_fra'  ,'_VARIABLE1_'  );") ;
-//    $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs noprint' target='_blank' title='Desconcilia el Pago de la factura' "
-//                                   . " href=\"../include/sql.php?code=1&sql=$sql&variable1=_VARIABLE1_ \" >desconciliar</a> ";
-    $href="../include/sql.php?code=1&sql=$sql&variable1=_VARIABLE1_ " ;
+    $sql=encrypt2("INSERT INTO FRAS_CLI_PAGOS ( id_fra,id_pago ) VALUES ( '$id_fra'  ,'_VAR_SQL1_'  );") ;
+    $href="../include/sql.php?code=1&sql=$sql&var_sql1=_VAR_HREF1_ " ;
     $link_conciliar.="<div  class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
     $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick=\"js_href('$href',1,'','PROMPT_Indica el ID_PAGO del cobro a conciliar'); \" "
             . " title='concilia la factura con un ID_PAGO existente del mismo Cliente.\n Ej. Un Cobro para varias facturas'>"
@@ -304,7 +302,6 @@ $formats["Precio"]="text_moneda";
 
 $actions_row=[];
 $actions_row["id"]="id";
-$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
 $actions_row["delete_link"]="../include/delete_row.php?tabla=Fra_Cli_Detalles&where=id=";
 
 $tooltip=[] ; 

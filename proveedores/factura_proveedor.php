@@ -1,8 +1,8 @@
 <?php
 // cambios
 require_once("../include/session.php");
-$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
-$id_c_coste = $_SESSION['id_c_coste'];
+
+
 
 $id_fra_prov=$_GET["id_fra_prov"];
  
@@ -39,6 +39,12 @@ $titulo = $titulo_pagina;
 include_once('../templates/_inc_privado1_header.php');
 include_once('../templates/_inc_privado2_navbar.php');
 
+
+
+
+
+include_once('../include/formatosHTML_jd.php');      // nuevas funciones de FORMATO
+
 ?>
 
         <!-- Contenido principal 
@@ -51,7 +57,17 @@ include_once('../templates/_inc_privado2_navbar.php');
                 <!--****************** BUSQUEDA GLOBAL  *****************
                 <!--<div class="col-12 col-md-4 col-lg-9">-->
 
-   
+<style>
+    .borde_gris
+    {
+    width:100% ; 
+    border-style:solid;
+    border-width:1px; 
+    border-color:silver;
+
+    }
+
+</style>   
 <?php 
 
  //require("../proveedores/proveedores_menutop_r.php");
@@ -62,6 +78,9 @@ include_once('../templates/_inc_privado2_navbar.php');
  <div >	   
  <div id="main" class="mainc_40"> 
      <br><a class="btn btn-link noprint" title="imprimir" href=#  onclick="window.print();"><i class="fas fa-print"></i> Imprimir</a>
+     <br><a href="../proveedores/facturas_proveedores.php" class="nav-link">ver Facturas Proveedores <?php echo badge_sup($num_fras_prov,'info'); ?></a>
+ 
+
  
   <!--<a class='btn btn-link btn-xs' href= '../proveedores/proveedores_anadir.php' >proveedor nuevo</a>-->
     
@@ -424,16 +443,15 @@ $actions_row["delete_link"]="1";
 
 
 // accion de DESCONCILIAR el ALBARAN (vale) de la FRA_PROV
-$onclick1_VARIABLE1_="ID_VALE" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//$onclick1_VARIABLE2_="" ;     // idem
+$onclick_VAR_TABLA1_="ID_VALE" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+//$onclick_VAR_TABLA2_="" ;     // idem
 
- $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = NULL  WHERE  ID_VALE=_VARIABLE1_ ; " ;
+ $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = NULL  WHERE  ID_VALE=_VAR_SQL1_ ; " ;
  
  $sql_update=encrypt2($sql_update) ;
  
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs noprint' target='_blank' title='Desconcilia el ALBARAN  a la factura' href=\"../include/sql.php?code=1&variable1=_VARIABLE1_&sql=$sql_update \" >desconciliar</a> ";
 $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs noprint' target='_blank' title='Desconcilia el ALBARAN  a la factura' "
-        . " onclick='js_href(\"../include/sql.php?code=1&variable1=_VARIABLE1_&sql=$sql_update \" )' >desconciliar</a> ";
+        . " onclick='js_href(\"../include/sql.php?code=1&variable1=_VAR_TABLA1_&sql=$sql_update \" )' >desconciliar</a> ";
     
     
 $msg_tabla_vacia="No hay albaranes cargados a obra en esta factura";
@@ -456,11 +474,10 @@ $msg_tabla_vacia="No hay albaranes cargados a obra en esta factura";
 
 //$tabla_expandida  =  (!($conc AND ($num_vales>0)))  ;  
 
- $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov' WHERE  ID_VALE IN _VARIABLE1_ ; " ;
+ $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov' WHERE  ID_VALE IN _VAR_SQL1_ ; " ;
  
 $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;    
 
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el ALBARAN  a la factura' onclick='js_href(\"../include/sql.php?code=1&variable1=_VARIABLE1_&sql=$sql_update \" )' >conciliar</a> ";
 
 $add_link_html= "<a class='btn btn-warning btn-xs noprint' href='#' "
      . " onclick=\"js_href('$href' ,'1','' ,'table_selection_IN()' )\"   "
@@ -500,10 +517,10 @@ $aligns["importe"] = "right" ;
 $aligns["Pdte_conciliar"] = "right" ;
 
 // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-$onclick1_VARIABLE1_="ID_VALE" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//$onclick1_VARIABLE2_="" ;     // idem
+//$onclick_VAR_TABLA1_="ID_VALE" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+//$onclick_VAR_TABLA2_="" ;     // idem
 
- $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov'  WHERE  ID_VALE=_VARIABLE1_ ; " ;
+ $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov'  WHERE  ID_VALE=_VAR_SQL1_ ; " ;
 
   $sql_update=encrypt2($sql_update) ;
   
@@ -513,7 +530,7 @@ $id_update="ID_VALE" ;
 $actions_row=[];
 $actions_row["id"]="ID_VALE"; 
 $actions_row["delete_link"]="1";
-$actions_row["onclick1_link"]="<br><a class='btn btn-warning btn-xs' target='_blank' title='concilia el ALBARAN  a la factura' onclick='js_href(\"../include/sql.php?code=1&variable1=_VARIABLE1_&sql=$sql_update \" )' >conciliar</a> ";
+$actions_row["onclick1_link"]="<br><a class='btn btn-warning btn-xs' target='_blank' title='concilia el ALBARAN  a la factura' onclick='js_href(\"../include/sql.php?code=1&var_sql1=_VAR_ID_&sql=$sql_update \" )' >conciliar</a> ";
   
 $num_vales_sin_conc= $result->num_rows;
 
@@ -622,17 +639,17 @@ $tooltips["fecha_banco"] = "fecha de cobro del proveedor. Clickar para ver el mo
 
 
 // accion de DESCONCILIAR el PAGO de la FRA_PROV
-$onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//$onclick1_VARIABLE2_="" ;     // idem
+$onclick_VAR_TABLA1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+//$onclick_VAR_TABLA2_="" ;     // idem
 
 // $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = NULL  " 
 //         ."WHERE  ID_VALE=_VARIABLE1_ ; " ;
 
- $sql_delete="DELETE FROM `FRAS_PROV_PAGOS`  WHERE id_fra_prov=$id_fra_prov AND id_pago=_VARIABLE1_ ; " ;
+ $sql_delete="DELETE FROM `FRAS_PROV_PAGOS`  WHERE id_fra_prov=$id_fra_prov AND id_pago=_VAR_SQL1_ ; " ;
  
  $sql_delete=encrypt2($sql_delete) ;
         
-$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs noprint' target='_blank' title='Desconcilia el Pago de la factura' href=\"../include/sql.php?code=1&variable1=_VARIABLE1_&sql=$sql_delete \" >desconciliar</a> ";
+$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs noprint' target='_blank' title='Desconcilia el Pago de la factura' href=\"../include/sql.php?code=1&var_sql1=_VAR_TABLA1_&sql=$sql_delete \" >desconciliar</a> ";
 
   
   
@@ -669,69 +686,97 @@ if (1)     // antiguo else
     
 //    añadir a REMESA 
     
-    $link_conciliar.="<div class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>"
-        . "Añadir a remesa de pagos"
-         ."<select class='noprint'  id='id_remesa' style='width: 20%;'>"
-            ."<OPTION value='0' selected>*crear remesa nueva*</OPTION>"
-        . DOptions_sql("SELECT id_remesa,CONCAT(remesa,' (' ,FORMAT(IFNULL(importe,0),2),'€ en ' ,IFNULL(num_pagos,0),' pagos)') "
-                                          . " FROM Remesas_View WHERE activa=1 AND tipo_remesa='P' AND firmada=0 AND $where_c_coste ORDER BY f_vto ")
-        ."</select>"
-//        ."<a class='btn btn-link noprint' href='#' onclick=\"window.open('../bancos/remesa_anadir_selection.php?array_str=$id_fra_prov&id_remesa='+document.getElementById('id_remesa').value )\" "
-        ."<a class='btn btn-link noprint' href='#' onclick=\"js_href('../bancos/remesa_anadir_selection.php?array_str=$id_fra_prov&id_remesa='+document.getElementById('id_remesa').value )\" "
-                                . " title='Añade/Genera remesa con la factura' ><i class='fas fa-link'></i> Añadir a remesa</a>"
-        ."<a class='btn btn-link btn-xs noprint' style='opacity:0.3;' href='#' onclick=\"window.open('../bancos/remesa_ficha.php?id_remesa='+document.getElementById('id_remesa').value ) \" "
-                                   . " title='abre la remesa seleccionada' >Ver remesa</a>"
-        ."</div>" ;
-
+    
+    $titulo_operar="<small>Añadir a remesa de pagos</small>";        
+    $select_operar="<select class='form-control form-control-sm noprint'  id='id_remesa' style='width: 100%;'>"
+                    ."<OPTION value='0' selected>*crear remesa nueva*</OPTION>"
+                    . DOptions_sql("SELECT id_remesa,CONCAT(remesa,' (' ,FORMAT(IFNULL(importe,0),2),'€ en ' ,IFNULL(num_pagos,0),' pagos)') "
+                                         . " FROM Remesas_View WHERE activa=1 AND tipo_remesa='P' AND firmada=0 AND $where_c_coste ORDER BY f_vto ")
+                    ."</select>";
+    $botones_operar="<a class='btn btn-warning btn-xs noprint' href='#' onclick=\"js_href('../bancos/remesa_anadir_selection.php?array_str=$id_fra_prov&id_remesa='+document.getElementById('id_remesa').value )\" "
+                        . " title='Añade el pago pendiente de la factura a una remesa nueva o existente' ><i class='fas fa-link'></i> Añadir a remesa</a>"
+                        ."<a class='btn btn-link btn-xs noprint' style='opacity:0.3;' href='#' onclick=\"window.open('../bancos/remesa_ficha.php?id_remesa='+document.getElementById('id_remesa').value ) \" "
+                        . " title='abre la remesa seleccionada' >Ver remesa</a>";
+     
+    $link_conciliar.="<div class='borde_gris noprint' >"
+                   . div_row3($titulo_operar, $select_operar, $botones_operar)
+                     ."</div>" ;
+     
+    
+    
 //  CONCILIAR MOV. EXISTENTE
-    $link_conciliar.="<div  class='noprint'  style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
-//    $link_conciliar.="<label for='id_obra'>Cargar a obra:</label>" ;
-    $link_conciliar.="Conciliar con mov.banco existente:" ;
-//    $link_conciliar.="<select class='form-control' id='id_obra' style='width: 50%;'>" ; 
-    $link_conciliar.="<select  class='noprint'  id='id_mov_banco' style='width: 40%; '>" ;
-//    $link_conciliar.=DOptions_sql("SELECT id_mov_banco,CONCAT(DATE_FORMAT(fecha_banco, '%d-%m-%Y'),'  ', Banco, '-', Concepto,' ',cargo,'€') FROM MOV_BANCOS_conc_fras WHERE ID_FRA_PROV=$id_fra_prov AND $where_c_coste ORDER BY fecha_banco DESC ") ;
-    $link_conciliar.=DOptions_sql("SELECT id_mov_banco,CONCAT(DATE_FORMAT(fecha_banco, '%d-%m-%Y'),'- ', Banco, '-', Concepto,' ',cargo,'€') FROM MOV_BANCOS_View "
-                        . "WHERE $where_c_coste  AND NOT conc AND cargo=$pdte_pago ORDER BY fecha_banco DESC ") ;
-    $link_conciliar.="  </select>" ;
-    $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='mov_bancos_conciliar_selection_fras($id_fra_prov);' title='Ej. Cuando ya se ha pagado previamente. Ej. pagos con tarjeta'  >"
-                        . "<i class='fas fa-link'></i> Crea Pago y lo concilia con el mov.banco</a>"
+    $select_operar="<select  class='form-control form-control-sm noprint'  id='id_mov_banco' style='width: 100%; '>" 
+                   . DOptions_sql("SELECT id_mov_banco,CONCAT(DATE_FORMAT(fecha_banco, '%d-%m-%Y'),'- ', Banco, '-', Concepto,' ',cargo,'€') FROM MOV_BANCOS_View "
+                   . "WHERE $where_c_coste  AND NOT conc AND cargo=$pdte_pago ORDER BY fecha_banco DESC ") 
+                   ."  </select>" ;
+    $num_mov_bancos_conciliables= $pdte_pago ? substr_count($select_operar, '</option>')-1 : 0 ;
+    $titulo_operar="<small>Conciliar con mov.banco existente:</small>". badge_sup($num_mov_bancos_conciliables, 'danger') ;
+   
+    $botones_operar=" <a class='btn btn-warning btn-xs noprint' href='#'  onclick='mov_bancos_conciliar_selection_fras($id_fra_prov);' title='Ej. Cuando ya se ha pagado previamente. Ej. pagos con tarjeta'  >"
+                        . "<i class='fas fa-link'></i> Conciliar</a>"
                       ." <a class='btn btn-link btn-xs noprint' style='opacity:0.3;'  href='#' onclick=\"window.open('../bancos/pago_ficha.php?id_mov_banco='+document.getElementById('id_mov_banco').value ) \"    "
-                       ." title='Ver Movimiento bancario' >Ver mov banco</a>" ;
+                       ." title='Ver Movimiento bancario' >ver mov.banco</a>" ;
 
-    $link_conciliar.="</div>" ;
+    
+    $link_conciliar.="<div class='borde_gris noprint' >"
+                   . div_row3($titulo_operar, $select_operar, $botones_operar)
+                     ."</div>" ;
+     
+    
 
-//    *** ANULAMOS EL BOTON PAGAR CON CAJA METALICO, LO PONEMOS POR DEFECTO EN EL SIGUIENTE SELECT ****    
-//    // pago con CAJA METALICO    
-//    $link_conciliar.="<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
-//    $link_conciliar.=" <a class='btn btn-link' href='#'  onclick='mov_bancos_conciliar_fras_caja_metalico($id_fra_prov);' title='Ej. Cuando la fra. ya está pagada por bolsillo'  >"
-//                    . "pagar con cuenta de CAJA METALICO($pdte_pago_txt)</a>" ;    
-//    $link_conciliar.="</div>" ;
+
+
+    // crea PAGO NUEVO
+    $titulo_operar="<small>Crear solo Pago (sin mov.banco) :</small>";
+    $select1="<input class='form-control form-control-sm' type='text' style='width: 100%;text-align:right;' placeholder='Importe pago...' value='$pdte_pago' id='importe_pago'>";
+    $select2= " <select  class='form-control form-control-sm'  id='id_cta_banco' style='width: 100%; '>" 
+                             .DOptions_sql("SELECT id_cta_banco, Banco FROM ctas_bancos WHERE Activo AND $where_c_coste ORDER BY Banco") 
+                             ."  </select>" ;    
+    $botones_operar=" <a class='btn btn-warning btn-xs noprint' href='#'  onclick='fra_prov_crear_pago($id_fra_prov);' title='Crea un Pago nuevo en la cta banco por defecto. Se usa cuando vamos a emitir un pago. El importe admite fórmulas \n Ej. Pagarés, pagos fraccionados,... '><i class='fas fa-plus-circle'></i> Crear Pago</a>" ;    
+
+    $link_conciliar.="<div class='borde_gris noprint' >"
+                   . div_row3($titulo_operar, div_row2($select1,$select2), $botones_operar)
+                     ."</div>" ;
+
+    
+
 
     
     // pago con cuenta a seleccionar
-    $link_conciliar.="<div   class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
-    $link_conciliar.="Pagar y anotar en cuenta: <select  class='noprint'  id='id_cta_banco' style='width: 40%; '>" ;
-    $link_conciliar.=DOptions_sql("SELECT id_cta_banco, Banco FROM ctas_bancos WHERE Activo AND $where_c_coste ORDER BY Banco") ; //por defecto CAJA METALICO
-    $link_conciliar.="  </select>" ;    
-    $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='mov_bancos_conciliar_fras_cta($id_fra_prov);' "
-                    . " title='Crea Pago nuevo, crea un mov. bancario en la cta.banco seleccionada y los concilia \n Ej. Cuando se paga con Caja Metálico, pagos hechos a cargo de Notas de Gastos de empleados, cuando hay compensaciones de facturas o abonos...' >"
-                    . "<i class='fas fa-plus-circle'></i><i class='fas fa-link'></i> Crear Pago, crea mov.banco y concilia $pdte_pago_txt</a>" 
+
+    $titulo_operar="<small>Crear Pago y mov.banco en la cuenta:</small>";
+    $select1="<input class='form-control form-control-sm' type='text' style='width: 100%;text-align:right;' placeholder='Importe pago...' value='$pdte_pago' id='importe_pago_mov'>";
+    $select2= " <select  class='form-control form-control-sm'  id='id_cta_banco_mov' style='width: 100%; '>" 
+                             .DOptions_sql("SELECT id_cta_banco, Banco FROM ctas_bancos WHERE Activo AND $where_c_coste ORDER BY Banco") 
+                             ."  </select>" ;    
+    $botones_operar=" <a class='btn btn-warning btn-xs noprint' href='#'  onclick='mov_bancos_conciliar_fras_cta($id_fra_prov);' "
+                    . " title='Crea Pago nuevo, crea un mov. bancario nuevo en la cta.banco seleccionada y los concilia \n Ej. Cuando se paga con Caja Metálico, pagos hechos a cargo de Notas de Gastos de empleados, cuando hay compensaciones de facturas o abonos...' >"
+                    . "<i class='fas fa-plus-circle'></i> Crear Pago y mov.</a>" 
                     .""
                      . " <a class='btn btn-link btn-xs noprint' style='opacity:0.3;'  href='#' onclick=\"window.open('../bancos/bancos_mov_bancarios.php?id_cta_banco='+document.getElementById('id_cta_banco').value ) \"    "
                     ." title='Ver cuenta bancaria' >ver cta bancaria</a>" ;
 
-    $link_conciliar.="</div>" ;
-    
-    // crea pago nuevo 
-    $link_conciliar.="<div  class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
-    $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='fra_prov_crear_pago($id_fra_prov);' title='Crea un Pago nuevo en la cta banco por defecto. Se usa cuando vamos a emitir un pago. \n Ej. Pagarés, pagos fraccionados,... '><i class='fas fa-plus-circle'></i> Crear Pago nuevo $pdte_pago_txt</a>" ;    
-    $link_conciliar.="</div>" ;
 
-    //
-    $link_conciliar.="<div  class='noprint' style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;'>" ;
-    $link_conciliar.=" <a class='btn btn-link noprint' href='#'  onclick='fra_prov_conciliar_a_pago($id_fra_prov);' title='concilia la factura con un ID_PAGO existente del mismo proveedor.\n Ej. Un pago para varias facturas'>"
-            . "<i class='fas fa-link'></i> Conciliar ID_PAGO ya existente a esta fra_prov</a>" ;    
-    $link_conciliar.="</div>" ;
+    $link_conciliar.="<div class='borde_gris noprint' >"
+                   . div_row3($titulo_operar, div_row2($select1,$select2), $botones_operar)
+                     ."</div>" ;
+    
+    
+    
+    
+    // Conciliamos con PAGO EXISTENTE
+    $titulo_operar="<small>Conciliar Pago existente en esta factura:</small>";
+    $select_operar='';
+    $botones_operar=" <a class='btn btn-warning btn-xs noprint' href='#'  onclick='fra_prov_conciliar_a_pago($id_fra_prov);' title='concilia la factura con un ID_PAGO existente del mismo proveedor.\n Ej. Un pago para varias facturas'>"
+            . "<i class='fas fa-link'></i> Conciliar Pago</a>" ;    
+
+    $link_conciliar.="<div class='borde_gris noprint' >"
+                   . div_row3($titulo_operar, $select_operar, $botones_operar)
+                     ."</div>" ;
+    
+    
+    
+    
     $link_conciliar.="</div>" ;   // fin expand
 
 
@@ -827,33 +872,27 @@ $Conn->close();
 //   window.open('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&id_mov_banco=SOLO_PAGO');
 //   location.reload();
 
-   js_href('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&id_mov_banco=SOLO_PAGO');
+   var id_cta_banco=document.getElementById("id_cta_banco").value ;
+   var importe_pago = encodeURIComponent( document.getElementById("importe_pago").value );
+
+   js_href('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&importe_pago='+importe_pago+'&modo=SOLO_PAGO&id_mov_banco=CTA_' + id_cta_banco);
         
     
     return ;
  }
  
-    function mov_bancos_conciliar_fras_caja_metalico(id_fra_prov) {
-    
-    //var valor0 = valor0_encode;
-    //var valor0 = JSON.parse(valor0_encode);
-//    alert("el nuevo valor es: "+valor) ;
-    window.open('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&id_mov_banco=CAJA_METALICO');
-    location.reload();
-
-//    js_href('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&id_mov_banco=CAJA_METALICO');
-    
-    return ;
- }
  
     function mov_bancos_conciliar_fras_cta(id_fra_prov) {
     
 //   alert('debug') ;
 
-   var id_cta_banco=document.getElementById("id_cta_banco").value ;
+   var id_cta_banco=document.getElementById("id_cta_banco_mov").value ;
+   var importe_pago_mov = encodeURIComponent( document.getElementById("importe_pago_mov").value );
+   
+   
 //   window.open('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&id_mov_banco=CTA_' + id_cta_banco);
 //   document.body.style.cursor = "wait" ;
-   window.open('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&id_mov_banco=CTA_' + id_cta_banco);
+   window.open('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&importe_pago='+importe_pago_mov+'&id_mov_banco=CTA_' + id_cta_banco);
 //   js_href('../bancos/mov_bancos_conciliar_selection_fras.php?id_fra_prov='+id_fra_prov+'&id_mov_banco=CTA_' + id_cta_banco);
 location.reload();
         

@@ -75,8 +75,6 @@ $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;
 $onclick_anadir_link = "js_href('$href' ,'1','', 'PROMPT_Introduce_link'  )" ;
 
 // importar id_documento ya subido y PDTE_CLASIFICAR  (permitimos importar cualquier documento aun NO PDTE_CLASIFICAR, juand abril20)
-//$sql_import= "UPDATE `Documentos` SET `tipo_entidad` = '$tipo_entidad', `id_entidad` = '$id_entidad', `id_subdir` = '$id_subdir'  "
-//        . " WHERE  tipo_entidad = 'pdte_clasif' AND $where_c_coste AND id_documento=_VARIABLE1_ ; "  ;
 $sql_import= "UPDATE `Documentos` SET `tipo_entidad` = '$tipo_entidad', `id_entidad` = '$id_entidad', `id_subdir` = '$id_subdir'  "
         . " WHERE   $where_c_coste AND id_documento=_VARIABLE1_ ; "  ;
         

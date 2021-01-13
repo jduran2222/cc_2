@@ -164,11 +164,15 @@ if (!$listado_global)
 
 <?php 
 
+ echo "<a class='btn btn-link noprint' href= '../bancos/bancos_ctas_bancos.php' title='Ver todas las Cuentas de Bancos'><i class='fas fa-university'></i> Bancos</a><br>" ;
+
+
 if ($listado_global)                // Estamos en pantalla de LISTADO GLOBALES (es decir, en toda la empres)
 { 
     echo "<h1>Movimientos Bancarios Global</h1>"  ;
     echo "<form action='bancos_mov_bancarios.php' method='post' id='form1' name='form1'>"    ;
     
+//    bancos/bancos_ctas_bancos.php
     echo "<TABLE align='center'>"  ;
    
     echo "<TR><TD>Tipo Cuenta</TD><TD><INPUT type='text' id='tipo' name='tipo' value='$tipo'><button type='button' onclick=\"document.getElementById('tipo').value='' \" >*</button></TD></TR>" ;
@@ -307,7 +311,7 @@ $where_conc.=$fecha2==""? '' :  " AND FECHA <= '$fecha2' " ;
   echo "<div style='border: 1px solid silver;'>";
 
 $where_id_cta_banco= $listado_global ? "1=1" : "id_cta_banco=$id_cta_banco" ;      // permitimos borrar en listado global
-$sql_delete= "DELETE FROM `MOV_BANCOS` WHERE  $where_id_cta_banco AND id_mov_banco IN _VARIABLE1_ ; "  ;
+$sql_delete= "DELETE FROM `MOV_BANCOS` WHERE  $where_id_cta_banco AND id_mov_banco IN _VAR_SQL1_ ; "  ;
 $href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
 echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint ' href='#' "
      . " onclick=\"js_href('$href' ,'1','¿Borrar Movs. Bancos seleccionados?' ,'table_selection_IN()' )\"   "
@@ -319,8 +323,8 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
 // conciliar a factura proveedor 
   echo "<div style='border: 1px solid silver;'>";
 
-      $url_sugerir= encrypt2( "javascript_code=js_href('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
-              . "id_fra_prov_unica=_ID_VALOR__JS_AND_array_str=_VARIABLE1_',1,'','table_selection_IN()')"
+      $url_sugerir= encrypt2( "javascript_code=js_href2('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
+              . "id_fra_prov_unica=_ID_VALOR__JS_AND_array_str=_VAR_HREF1_',1,'','table_selection_IN()')"
               . "&sql_sugerir=SELECT ID_FRA_PROV,CONCAT('Proveedor: ',PROVEEDOR,'<br>N.Factura: ',N_FRA) FROM Fras_Prov_Listado WHERE  $where_c_coste AND "
               . " filtro LIKE '%_FILTRO_%' LIMIT 10" );
       
@@ -332,7 +336,7 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
   echo "<div style='border: 1px solid silver;'>"; 
 
       echo "<button class='btn btn-xs btn-link' onclick=\"js_href2('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
-              . "id_fra_prov_unica=FACTURA_NUEVA_JS_AND_array_str=_VARIABLE1_',1,'','table_selection_IN()' ) \"  >"
+              . "id_fra_prov_unica=FACTURA_NUEVA_JS_AND_array_str=_VAR_HREF1_',1,'','table_selection_IN()' ) \"  >"
               . "Conciliar en una factura nueva</button> " ;
        
   echo "</div>";
@@ -420,20 +424,51 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
      break;
     case "meses":
 //    $sql="SELECT  CONCAT('<small>(',DATE_FORMAT(fecha_banco, '%Y-%m'),')</small> ',DATE_FORMAT(fecha_banco, '%M-%Y')  ) as MES,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso ,COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
-    $sql="SELECT  id_mov_banco,DATE_FORMAT(fecha_banco, '%Y-%m') as MES,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , 0 AS saldo"
+    $sql_aux="SELECT  id_mov_banco,DATE_FORMAT(fecha_banco, '%Y-%m') as MES,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso ,  SUM(ingreso) - SUM(cargo) AS diferencia"
             . " ,COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
-    $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo ,COUNT(id_mov_banco) as Num_movs  FROM MOV_BANCOS_View WHERE $where   " ;
+
+    $Conn->query("SELECT @saldo_acum := 0;") ;   
+//    $sql_aux="SELECT  id_mov_banco,DATE_FORMAT(fecha_banco, '%Y') as anno,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso "
+//            . " ,  SUM(ingreso) - SUM(cargo) AS diferencia     "
+//           . ", COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY anno  ORDER BY anno  " ;
+    
+    $sql="SELECT  q.* , (@saldo_acum := @saldo_acum  + q.ingreso  - q.cargo ) AS saldo_acum1    "
+           . " FROM ($sql_aux) AS q ;  " ;
+    
+        
+        
+    $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo ,COUNT(id_mov_banco) as Num_movs,'' as aa  FROM MOV_BANCOS_View WHERE $where   " ;
     break;
     case "trimestres":
 //    $sql="SELECT  CONCAT('<small>(',DATE_FORMAT(fecha_banco, '%Y-%m'),')</small> ',DATE_FORMAT(fecha_banco, '%M-%Y')  ) as MES,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso ,COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
-    $sql="SELECT  id_mov_banco,CONCAT(YEAR(fecha_banco), '-', QUARTER(fecha_banco),'T') as Trimestre,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , 0 AS saldo"
+    $sql_aux="SELECT  id_mov_banco,CONCAT(YEAR(fecha_banco), '-', QUARTER(fecha_banco),'T') as Trimestre,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso ,SUM(ingreso) - SUM(cargo) AS diferencia"
             . " ,COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY Trimestre  ORDER BY Trimestre  " ;
-    $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo ,COUNT(id_mov_banco) as Num_movs  FROM MOV_BANCOS_View WHERE $where   " ;
+        
+    $Conn->query("SELECT @saldo_acum := 0;") ;   
+//    $sql_aux="SELECT  id_mov_banco,DATE_FORMAT(fecha_banco, '%Y') as anno,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso "
+//            . " ,  SUM(ingreso) - SUM(cargo) AS diferencia     "
+//           . ", COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY anno  ORDER BY anno  " ;
+    
+    $sql="SELECT  q.* , (@saldo_acum := @saldo_acum  + q.ingreso  - q.cargo ) AS saldo_acum1    "
+           . " FROM ($sql_aux) AS q ;  " ;
+    
+        
+        
+    $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo ,COUNT(id_mov_banco) as Num_movs,'' as aa  FROM MOV_BANCOS_View WHERE $where   " ;
     break;
    case "annos":
-    $sql="SELECT  id_mov_banco,DATE_FORMAT(fecha_banco, '%Y') as anno,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , 0 AS saldo ,"
-           . "COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY anno  ORDER BY anno  " ;
-    $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo ,COUNT(id_mov_banco) as Num_movs  FROM MOV_BANCOS_View WHERE $where   " ;
+//    $Conn->query("SET @saldo_acum = 0;") ;   // otra forma de inicializar variable en Mysql
+    $Conn->query("SELECT @saldo_acum := 0;") ;   
+    $sql_aux="SELECT  id_mov_banco,DATE_FORMAT(fecha_banco, '%Y') as anno,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso "
+            . " ,  SUM(ingreso) - SUM(cargo) AS diferencia     "
+           . ", COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY anno  ORDER BY anno  " ;
+    
+    $sql="SELECT  q.* , (@saldo_acum := @saldo_acum  + q.ingreso  - q.cargo ) AS saldo_acum1    "
+           . " FROM ($sql_aux) AS q ;  " ;
+    
+    
+    
+    $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo , COUNT(id_mov_banco) as Num_movs ,'' as aa FROM MOV_BANCOS_View WHERE $where   " ;
     break;
    case "conc_unica":
     $sql="SELECT $select numero,id_mov_banco ,CONCAT(id_mov_banco , '&' , id_pago  ) AS  id_values_mov_banco_pago , fecha_banco,Concepto,cargo,ingreso,Num_pagos, "
@@ -529,7 +564,6 @@ $tabla_update="MOV_BANCOS" ;
 $id_update="id_mov_banco" ;
 //$actions_row=[];
 $actions_row["id"]="id_mov_banco";
-//$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
 //$actions_row["delete_link"]="../include/delete_row.php?tabla=PARTES_PERSONAL&where=id=";
 //$actions_row["delete_link"]="1";
 
@@ -572,6 +606,9 @@ $formats["cargo"] = "moneda" ;
 //$formats["fecha_banco"] = "fecha" ;
 $formats["ingreso"] = "moneda" ;
 $formats["saldo"] = "moneda" ;
+$formats["diferencia"] = "moneda" ;
+$formats["saldo_acum"] = "moneda" ;
+$formats["saldo_acum1"] = "moneda" ;
 $formats["conc"] = "boolean" ;
 $formats["MES"] = "mes" ;
 

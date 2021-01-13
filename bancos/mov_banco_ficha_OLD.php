@@ -192,19 +192,14 @@ $links["observaciones"] = ["../bancos/pago_ficha.php?id_pago=", "id_pago"] ;
 $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "id_proveedor"] ;
 
 // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-$onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//$onclick1_VARIABLE2_="" ;     // idem
+$onclick_VAR_TABLA1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
 
-// OBSOLETA TRAS EL CAMBIO DE BBDD ELIMINANDO PAGOS_MOV_BANCOS
-//$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-//          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
-$sql_insert="UPDATE PAGOS SET id_mov_banco='$id_mov_banco' WHERE id_pago=_VARIABLE1_ ;"  ;
+$sql_insert="UPDATE PAGOS SET id_mov_banco='$id_mov_banco' WHERE id_pago=_VAR_SQL1_ ;"  ;
 
 
  $sql_insert=encrypt2($sql_insert) ;
 
-$href="../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_";
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
+$href="../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_TABLA1_";
 $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con el Pago' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
 $actions_row["id"]="id_pago";
   
@@ -251,19 +246,15 @@ $updates=[];
 $links["remesa"] = ["../bancos/remesa_ficha.php?id_remesa=", "id_remesa", "ver Remesa", "formato_sub"] ;
 
 // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-$onclick1_VARIABLE1_="id_remesa" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//$onclick1_VARIABLE2_="" ;     // idem
+$onclick_VAR_TABLA1_="id_remesa" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+//$onclick_VAR_TABLA2_="" ;     // idem
 
-// OBSOLETA TRAS EL CAMBIO DE BBDD ELIMINANDO PAGOS_MOV_BANCOS
-//$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-//          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
-$sql_insert="UPDATE Remesas SET id_mov_banco_remesa='$id_mov_banco' WHERE id_remesa=_VARIABLE1_ ;"  ;
+$sql_insert="UPDATE Remesas SET id_mov_banco_remesa='$id_mov_banco' WHERE id_remesa=_VAR_SQL1_ ;"  ;
 
 
  $sql_insert=encrypt2($sql_insert) ;
 
-$href="../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_";
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
+$href="../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_TABLA1_";
 $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con la Remesa' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
 $actions_row["id"]="id_remesa";
   
@@ -313,20 +304,13 @@ $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_P
 
 
 // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-$onclick1_VARIABLE1_="ID_FRA_PROV" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//$onclick1_VARIABLE2_="" ;     // idem
-
-//$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-//          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
 
 //
 
-$href="../bancos/mov_bancos_conciliar_selection_fras.php?id_mov_banco=$id_mov_banco&id_fra_prov=_VARIABLE1_";
+$href="../bancos/mov_bancos_conciliar_selection_fras.php?id_mov_banco=$id_mov_banco&id_fra_prov=_VAR_ID_";
 $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco con la factura creando un id_pago' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
 //
 
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con la factura creando un id_pago ' "
-//                  . "href=\"../bancos/mov_bancos_conciliar_selection_fras.php?id_mov_banco=$id_mov_banco&id_fra_prov=_VARIABLE1_ \" >conciliar</a> ";
 $actions_row["id"]="ID_FRA_PROV";
 
 
@@ -377,20 +361,6 @@ $links["CLIENTE"] = ["../clientes/clientes_ficha.php?id_cliente=", "ID_CLIENTE"]
 
 
 // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-//$onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-////$onclick1_VARIABLE2_="" ;     // idem
-//
-//$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-//          " VALUES ( '$id_mov_banco', _VARIABLE1_ );" ;
-//
-//$actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?sql=base64_encode($sql_insert) \" >conciliar</a> ";
-//$actions_row["id"]="id_pago";
-//  
-
-//$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
-
-//$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-//$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
 $titulo="FACTURAS Clientes conciliables...($result->num_rows) " ;
 $msg_tabla_vacia="";
 
@@ -432,19 +402,11 @@ $links["fecha_banco"] = ["../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco
 
 
 // accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-$onclick1_VARIABLE1_="id_mov_banco" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//$onclick1_VARIABLE2_="" ;     // idem
-
-//$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-//          " VALUES ( '$id_mov_banco', _VARIABLE1_ );"  ;
 
 
-$href="../bancos/mov_bancos_conciliar_traspaso.php?id_mov_banco1=$id_mov_banco&id_mov_banco2=_VARIABLE1_";
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_ \" >conciliar</a> ";
+$href="../bancos/mov_bancos_conciliar_traspaso.php?id_mov_banco1=$id_mov_banco&id_mov_banco2=_VAR_ID_";
 $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='concilia el mov.banco como TRASPASO INTERNO entre cuentas' href='#'  onclick=\"js_href('$href')\"   >conciliar</a> ";
 
-//$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='concilia el mov.banco como TRASPASO INTERNO entre cuentas ' "
-//                  . "href=\"../bancos/mov_bancos_conciliar_traspaso.php?id_mov_banco1=$id_mov_banco&id_mov_banco2=_VARIABLE1_ \" >conciliar</a> ";
 $actions_row["id"]="id_mov_banco";
 
 

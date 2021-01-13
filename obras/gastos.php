@@ -341,7 +341,7 @@ echo     "  </select>" ;
 echo  ($agrupar=='detalle') ?
        "<a class='btn btn-link' href='#' onclick=\"imputar_a_subobra( '$id_obra' )\" title='Imputa los gastos seleccionados a la Subobra' >imputar gastos a Subobra</a> " 
     :  "<a class='btn btn-link' href='#' "
-        . " onclick=\"js_href( '../obras/imputar_a_subobra.php?id_obra=$id_obra&id_subobra=_VARIABLE1_&table_selection_IN=$table_selection_IN','0','' , 'id_subobra' )\" title='Imputa los gastos  a la Subobra' >imputar gastos a Subobra</a> " ;
+        . " onclick=\"js_href( '../obras/imputar_a_subobra.php?id_obra=$id_obra&id_subobra=_VAR_HREF1_&table_selection_IN=$table_selection_IN','0','' , 'id_subobra' )\" title='Imputa los gastos  a la Subobra' >imputar gastos a Subobra</a> " ;
  
 echo   "<a class='btn btn-link btn-xs' href='#' onclick=\"window.open('../obras/subobra_ficha.php?id_subobra='+document.getElementById('id_subobra').value ) \"   "
                ." title='Ver la ficha de la SubObra' >ver Subobra</a>  " ;

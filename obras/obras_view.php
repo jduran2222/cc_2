@@ -374,7 +374,7 @@ $select_prod_origen="" ;
 $select_prod_origen_sql4="" ;
 $select_prod_origen_Union="" ;
 $select_prod_origen_Union_T="" ;
-
+$col_vacia="";
 
 $is_obra_unica=(Dfirst("COUNT(ID_OBRA)","OBRAS", $where )==1)  ; // miramos si es una única obra la seleccionada para añadir opciones de link y Cerrar Mes
 $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // cogemos el ID_OBRA de esa obra única
@@ -389,7 +389,7 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 //         . ",' ' as ID_TH_COLOR2, VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
 //            . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
 
-      $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA,IMPORTE AS importe_iva_inc  "
+      $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,IMPORTE AS importe_iva_inc  "
          . ",Plazo,F_Fin_Plazo,id_produccion_obra, 'ver Prod_Obra' as PRODUCCION_OBRA "
             . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
 
@@ -398,14 +398,8 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 //             . " SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_View WHERE $where    " ;
    break;
    case "situacion":
-//     $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA,importe_sin_iva,Cartera_pdte "
-//         . "Cartera_pdte,Porcentaje_Plazo , Valoracion/importe_sin_iva as Porcentaje_ejecutado, Valoracion/importe_sin_iva-Porcentaje_Plazo as Porcentaje_DESFASE"
-//           . ",' ' as ID_TH_COLOR, Valoracion as Importe_Ejecutado ,Gastos as Gasto_real, "
-//           . "Valoracion-Gastos as Beneficio_real,(Valoracion-Gastos)/Valoracion as Margen_real,(Valoracion-Gasto_est)/Valoracion as Margen_estimado "
-//         . ",' ' as ID_TH_COLOR2, VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
-//            . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
 
-      $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA,IMPORTE AS importe_iva_inc , importe_sin_iva "
+      $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,IMPORTE AS importe_iva_inc , importe_sin_iva "
          . ", VENTAS , Cartera_pdte, VENTAS/importe_sin_iva as Porcentaje_ejecutado,F_Fin_Plazo,Porcentaje_Plazo ,  VENTAS/importe_sin_iva-Porcentaje_Plazo as Porcentaje_DESFASE"
            . ",' ' as ID_TH_COLOR,  "
            . "Facturado_iva , Facturado_iva/IMPORTE AS Porcentaje_Facturado , Pdte_Cobro , ' ' as ID_TH_COLOR2  "
@@ -415,8 +409,8 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
              . " SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_View WHERE $where    " ;
    break;
    case "obras2":
-     $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA,importe_sin_iva,Cartera_pdte,  Beneficio_pdte,Margen_estimado  "
-           . "  , Plazo,F_Acta_Rep,Porcentaje_Plazo,F_Fin_Plazo,importe_POF, VENTAS,Facturado_iva,Pdte_Cobro ,GRUPOS"
+     $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,importe_sin_iva,Cartera_pdte,  Beneficio_pdte,Margen_estimado  "
+           . "  , Plazo,F_Acta_Rep,Porcentaje_Plazo,F_Fin_Plazo,importe_POF, VENTAS,Facturado_iva,Pdte_Cobro "
             . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
 
      $sql_T="SELECT '' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma' ,  SUM(IMPORTE) as Importe_contrato_iva ,  SUM(importe_sin_iva) as importe_sin_iva , "
@@ -424,8 +418,9 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
    break;
    case "prod_gasto_obras":
        
-       $select_PPAL=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA , " ;
-       $select_PPAL_Union=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA , " ;
+       $select_PPAL=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA, GRUPOS , " ;
+       $select_PPAL_Union=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA, GRUPOS , " ;
+       
        
        // produccion a origen
        $select_prod_origen = $fmt_prod_origen ? " 0 as prod_origen, 0 as gastos_origen," : "" ;
@@ -434,6 +429,8 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
                               . " , SUM(prod_origen) - SUM(gastos_origen) as benef_origen , (SUM(prod_origen) - SUM(gastos_origen))/SUM(prod_origen) as margen_origen ," : "" ;
        $select_prod_origen_Union_T = $fmt_prod_origen ? " '' as prod_origen , '' as gastos_origen ,'' as benef_origen , '' as margen_origen , " : "" ;
        $union_sql4 = ($fmt_prod_origen OR $fmt_facturacion) ;
+       
+       $col_vacia=" '' as activa2, " ;
 
        
        
@@ -455,19 +452,19 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
        if ($Mes) // PROVISIONAL
        {
             $fecha_ventas=$Mes."-01" ;   // fecha del mes a cerrar
-            $onclick1_VARIABLE1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-            $onclick1_VARIABLE2_="importe_prod" ;     // idem
-            $onclick1_VARIABLE3_="gasto_real" ;     // idem
+            $onclick_VAR_TABLA1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+            $onclick_VAR_TABLA2_="importe_prod" ;     // idem
+            $onclick_VAR_TABLA3_="gasto_real" ;     // idem
 
-            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
+            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VAR_SQL1_' AND FECHA='$fecha_ventas' ;"  ;
 //            $sql_insert="UPDATE VENTAS SET PLAN=999999 WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
             $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
-                      " VALUES ( '_VARIABLE1_', '$fecha_ventas','_VARIABLE2_','_VARIABLE3_'  );"  ;
+                      " VALUES ( '_VAR_SQL1_', '$fecha_ventas','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
 
             $sql_insert=encrypt2($sql_insert) ;
 
             $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
-                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_&variable2=_VARIABLE2_&variable3=_VARIABLE3_ \")'  "
+                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_TABLA1_&var_sql2=_VAR_TABLA2_&var_sql3=_VAR_TABLA3_ \")'  "
                     . " >cerrar mes</a> ";
             $actions_row["id"]="ID_OBRA";
        }   
@@ -519,22 +516,19 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
            
 //           echo $where ;
 //            $fecha_ventas=$Mes."-01" ;
-            $onclick1_VARIABLE1_="Mes" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-            $onclick1_VARIABLE2_="importe_prod" ;     // idem
-            $onclick1_VARIABLE3_="gasto_real" ;     // idem
+            $onclick_VAR_TABLA1_="Mes" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+            $onclick_VAR_TABLA2_="importe_prod" ;     // idem
+            $onclick_VAR_TABLA3_="gasto_real" ;     // idem
 
-            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA=$id_obra_unica AND FECHA='_VARIABLE1_-01' ;"  ;
+            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA=$id_obra_unica AND FECHA='_VAR_SQL1_-01' ;"  ;
 //            $sql_insert="UPDATE VENTAS SET PLAN=999999 WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
             $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
-                      " VALUES ( '$id_obra_unica', '_VARIABLE1_-01','_VARIABLE2_','_VARIABLE3_'  );"  ;
+                      " VALUES ( '$id_obra_unica', '_VAR_SQL1_-01','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
 
             $sql_insert=encrypt2($sql_insert) ;
 
-//            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' target='_blank' title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
-//                    . " href=\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_&variable2=_VARIABLE2_&variable3=_VARIABLE3_ \"  "
-//                    . "onclick='location.reload();' >cerrar mes</a> ";
             $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
-                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&variable1=_VARIABLE1_&variable2=_VARIABLE2_&variable3=_VARIABLE3_ \")'  "
+                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_TABLA1_&var_sql2=_VAR_TABLA2_&var_sql3=_VAR_TABLA3_ \")'  "
                     . " >cerrar mes</a> ";
             $actions_row["id"]="Mes";
                                  
@@ -597,8 +591,8 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 if (like($agrupar,'prod_gasto%'))
 {
      // sql produccion
-     $sql1=" (SELECT $select_PPAL SUM(importe)*COEF_BAJA*(1+GG_BI) as importe_prod,SUM(gasto_est) as gasto_est, $select_prod_origen "
-           . " SUM(importe)*COEF_BAJA*(1+GG_BI)-SUM(gasto_est) as benef_est , 1-SUM(gasto_est)/(SUM(importe)*COEF_BAJA*(1+GG_BI)) as margen_est, 0 AS gasto_real,"
+     $sql1=" (SELECT $select_PPAL SUM(importe*COEF_BAJA*(1+GG_BI)) as importe_prod,SUM(gasto_est) as gasto_est, $select_prod_origen "
+           . " SUM(importe*COEF_BAJA*(1+GG_BI))-SUM(gasto_est) as benef_est , 1-SUM(gasto_est)/(SUM(importe*COEF_BAJA*(1+GG_BI))) as margen_est, 0 AS gasto_real,"
            . " 0 AS PLAN, 0 AS VENTAS, 0 AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro "
             . " FROM ConsultaProd WHERE $where AND $where_fecha AND ID_PRODUCCION=id_produccion_obra $group_order ) " ;
 
@@ -632,7 +626,7 @@ if (like($agrupar,'prod_gasto%'))
              . " FROM (" . $sql1 ." UNION ALL ". $sql2 ." UNION ALL ". $sql3 . $union_all_sql4 ."  ) X $group_order" ; 
      
 //        echo $sql ;
-     $sql_T= "SELECT '' as activa2, '' as ID_OBRA, 'Suma...' , SUM(importe_prod) as importe_prod "
+     $sql_T= "SELECT $col_vacia '' as ID_OBRA, 'Suma...' , SUM(importe_prod) as importe_prod "
              . ", SUM(gasto_real) AS gasto_real,SUM(importe_prod)- SUM(gasto_real) AS benef_real , 1-SUM(gasto_real)/SUM(importe_prod) as margen_real "
              . ",$select_prod_origen_Union_T SUM( gasto_est) AS gasto_est ,SUM(benef_est) AS benef_est ,  1- SUM(gasto_est)/SUM(importe_prod) as margen_est ,"
              . "  SUM(PLAN) AS PLAN, SUM(VENTAS) AS VENTAS, SUM(GASTOS_EX) AS GASTOS_EX,  SUM(VENTAS)-SUM(GASTOS_EX) AS Beneficio, (SUM(VENTAS)-SUM(GASTOS_EX))/SUM(VENTAS) as Margen   "
@@ -653,6 +647,8 @@ $updates=['activa']  ;
 $tabla_update="Obras_View" ;
 $id_update="ID_OBRA" ;
 $id_clave="ID_OBRA" ;
+
+$ocultos[]="GRUPOS" ;   // añadimos GRUPOS a los campos ocultos
 
 
 $formats["activa"] = 'boolean' ;
@@ -702,29 +698,12 @@ $formats["Facturado_iva"] = "moneda" ;
 $formats["Estudio_Costes_inicial"] = "moneda" ;
 $etiquetas["Porcentaje_Plazo"] = "% plazo" ;
 $etiquetas["Porcentaje_ejecutado"] = "% ejecutado" ;
-//$formats["COSTE"] = "moneda" ;
-////$formats["COSTE_EST"] = "text_edit" ;
-//$formats["MED_PROYECTO"] = "fijo" ;
-//$formats["MEDICION"] = "fijo" ;
-////$formats["fecha"] = "dbfecha" ;
-////$formats["conc"] = "boolean" ;
-//$formats["PRECIO"] = "moneda" ;
-//$formats["exceso"] = "semaforo_OK" ;
-////$formats["ingresos"] = "moneda" ;
-//$aligns["leyenda_beneficio"] = "right" ;
-////$aligns["Neg"] = "center" ;
-//$aligns["Pagada"] = "center" ;
-//$tooltips["conc"] = "Indica si el pago está conciliado" ;
-//$tooltips["Banco_Neg"] = "Indica el banco o línea de descuento donde está negociada" ;
+
 
 //$cols_string=["NOMBRE_OBRA"] ;
 $chart_ocultos=["T"] ;
 
- //$links["CAPITULO"] = ["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-//echo $sql ;
-//echo $sql_T ;
-//echo $sql ;
-//echo $sql ;
+
 
 $result=$Conn->query($sql) ;
 
@@ -736,26 +715,6 @@ if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para lo
 if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
 if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
-//$links["NOMBRE_OBRA"] = ["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-//
-//if (!$listado_global)
-//{
-////$links["UDO"] = ["../obras/udo_prod.php?id_produccion=$id_produccion&id_udo=", "ID_UDO","ver detalles de medición de la Unidad de Obra" ,"formato_sub"] ;    
-//$links["UDO"] = ["../obras/udo_prod.php?id_produccion=$id_produccion&id_udo=", "ID_UDO" ,"ver detalles de medición de la Unidad de Obra", 'formato_sub'] ;    
-//}    
-//else
-//{
-//$links["UDO"] = ["../obras/udo_prod.php?id_udo=", "ID_UDO", "ver ficha de la unidad de obra", "formato_sub"] ;  
-//$links["PRODUCCION"]=["../obras/obras_prod_detalle.php?id_produccion=", "ID_PRODUCCION"] ;
-//
-//}    
-//    
-//$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-//
-//
-
-
-//$titulo="<small>Produccion por $agrupar</small>";
 
 $tabla_expandible=0;
 $msg_tabla_vacia="No hay.";
@@ -778,211 +737,7 @@ else
 
 
 ?>
- <script>
-
-//function prod_anade_med_udo(id_produccion)
-//{  // añade la medicion de los INPUT a cada UDO
-//
-//    //    alert(id_produccion);
-////     var nuevo_valor=window.confirm("¿Completar mediciones de UDO hasta MED_PROYETO? ");
-////    alert("el nuevo valor es: "+valor) ;
-//
-//// contruimos el array_str de pares (ID_UDO, MEDICION)
-//var array_str="" ;
-// $('table input:text').each(
-//    function() {
-//        
-////        array_str+=  $(this).attr('id') + '&' + $(this).val() ;
-//        var id=$(this).prop('id') ;
-//        
-//        if (id.substring(0,4)=='UDO_')
-//        {
-//            
-//          var id_udo=id.substring(4)  ;
-////          if (id_udo==72152) $(this).val('123') ;
-//          var medicion=$(this).val()  ;
-//          if (medicion)
-//          {
-//              if (!(array_str=="" )) { array_str+= ";" } ;  // inserto el separador de filas
-//              array_str+=  id_udo + '&' + medicion ;         // inserto la fila, el par de datos
-//          } 
-//        }
-//    }
-//  );
-//  
-////  array_str+= ")"  ;
-//  
-////  alert(array_str);  // debug
-//  
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText.substr(0,5)=="ERROR")
-//        { alert(this.responseText) ;}                   // mostramos el ERROR
-//        else
-//        {  //alert(this.responseText) ;     //debug
-//           location.reload(true); }  // refresco la pantalla tras edición
-//      }
-//  };
-//  
-////  $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rs["$id_update"] ; 
-//
-//  xhttp.open("GET", "../obras/prod_add_detalle_ajax.php?id_produccion=" + id_produccion + "&array_str=" + encodeURIComponent(array_str) , true);
-//  xhttp.send();   
-////    alert(table_selection_IN());
-//  
-//    
-//  return ;  
-//        
-//}
-//     
-//function sel_borrar_mediciones_detalle()
-// { 
-//
-//    var nuevo_valor=window.confirm("¿Borrar fila? ");
-////    alert("el nuevo valor es: "+valor) ;
-//   if (!(nuevo_valor === null) && nuevo_valor)
-//   { 
-//       
-//       var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText.substr(0,5)=="ERROR")
-//        { alert(this.responseText) ;}                   // mostramos el ERROR
-//        else
-//        {  //alert(this.responseText) ;     //debug
-//           location.reload(true); }  // refresco la pantalla tras edición
-//      }
-//  };
-//  
-////  $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rs["$id_update"] ; 
-//
-//  xhttp.open("GET", "../include/tabla_delete_row_ajax.php?tabla=PRODUCCIONES_DETALLE&wherecond=id IN " + table_selection_IN() , true);
-//  xhttp.send();   
-//   }
-//   else
-//   {return;}
-// 
-//}
-//
-//function prod_completa_udo(id_produccion)
-//{
-////    alert(id_produccion);
-////     var nuevo_valor=window.confirm("¿Completar mediciones de UDO hasta MED_PROYETO? ");
-////    alert("el nuevo valor es: "+valor) ;
-//
-//  
-//     var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText.substr(0,5)=="ERROR")
-//        { alert(this.responseText) ;}                   // mostramos el ERROR
-//        else
-//        {  //alert(this.responseText) ;     //debug
-//           location.reload(true); }  // refresco la pantalla tras edición
-//      }
-//  };
-//  
-////  $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rs["$id_update"] ; 
-//
-//  xhttp.open("GET", "../obras/prod_completa_udo_prod.php?id_produccion=" + id_produccion + "&table_selection_IN=" + table_selection_IN() , true);
-//  xhttp.send();   
-////    alert(table_selection_IN());
-//  
-//    
-//  return ;  
-//}
-//
-//function borrar_mediciones_udo(id_produccion)
-// { 
-//
-//    var nuevo_valor=window.confirm("¿Borrar filas? ");
-////    alert("el nuevo valor es: "+valor) ;
-//   if (!(nuevo_valor === null) && nuevo_valor)
-//   { 
-//       
-//       var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText.substr(0,5)=="ERROR")
-//        { alert(this.responseText) ;}                   // mostramos el ERROR
-//        else
-//        {  //alert(this.responseText) ;     //debug
-//           location.reload(true); }  // refresco la pantalla tras edición
-//      }
-//  };
-//  
-////  $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rs["$id_update"] ; 
-//
-//  xhttp.open("GET", "../include/tabla_delete_row_ajax.php?tabla=PRODUCCIONES_DETALLE&wherecond=ID_PRODUCCION=" + id_produccion +" AND ID_UDO IN " + table_selection_IN() , true);
-//  xhttp.send();   
-//   }
-//   else
-//   {return;}
-// 
-//}
-//     
-//     
-//     
-//     
-//function add_detalle( id_produccion, id_udo, med_proyecto ) {
-//    var nuevo_valor=window.prompt("Medición", med_proyecto);
-////    alert("el nuevo valor es: "+valor) ;
-//   if (!(nuevo_valor === null) )
-//   { 
-//       
-//       var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText.substr(0,5)=="ERROR")
-//        { alert(this.responseText) ;}                   // mostramos el ERROR
-//        else
-//        { //alert(this.responseText) ;       //debug
-//          location.reload(true) ; }  // refresco page
-//        
-//      //document.getElementById("sugerir_obra").innerHTML = this.responseText;
-//      }
-//  };
-//  xhttp.open("GET", "../obras/prod_add_detalle_ajax.php?id_produccion="+id_produccion+"&id_udo="+id_udo+"&medicion="+nuevo_valor, true);
-//  xhttp.send();   
-//   }
-//   else
-//   {return;}
-//   
-//}
-//
-// function copy_prod_consulta(id_obra,id_produccion,where,produccion0) {
-////    var d = new Date();
-////    var f=d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() ;
-//     var produccion=window.prompt("Nombre de la nueva producción: ", produccion0  );
-//
-////    where=encodeURI(where) ;
-//    alert(where) ;
-//
-//    
-//   if (produccion)
-//   {    
-//       var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText.substr(0,5)=="ERROR")
-//        { alert(this.responseText) ;}
-//        else
-//        {  //alert(this.responseText) ;     //debug
-//            location.reload(true); }  // refresco la pantalla tras editar Producción
-//      }
-//  };
-//  xhttp.open("GET", "../obras/prod_copy_ajax.php?id_obra="+id_obra+"&id_produccion="+id_produccion+"&where="+where+"&produccion="+produccion, true);
-//  xhttp.send();   
-//   }  
-//    //alert("el nuevo valor es: "+ fecha) ;
-//   
-//   return ;
-//   
-//   
-//}
-
-</script>   
+ 
    
 </div>
 

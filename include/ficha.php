@@ -194,9 +194,9 @@ $titulo_sin_html= strip_tags($titulo)   ;
   
    $idtabla="tabla_".rand() ;           // genero un idtabla aleatorio
  
-  $content_ficha="" ; 
-  $content_ficha .="<button type='button' class='btn btn-link btn-sm noprint transparente' onclick=ficha_down_font_size(document.getElementById('$idtabla'))><i class='fas fa-search-minus'></i></button>" ;
-  $content_ficha .="<button type='button' class='btn btn-link btn-sm noprint transparente' onclick=ficha_up_font_size(document.getElementById('$idtabla'))  ><i class='fas fa-search-plus'></i></button>" ;
+  $content_FICHA="" ; 
+  $content_FICHA .="<button type='button' class='btn btn-link btn-sm noprint transparente' onclick=ficha_down_font_size(document.getElementById('$idtabla'))><i class='fas fa-search-minus'></i></button>" ;
+  $content_FICHA .="<button type='button' class='btn btn-link btn-sm noprint transparente' onclick=ficha_up_font_size(document.getElementById('$idtabla'))  ><i class='fas fa-search-plus'></i></button>" ;
 
 
 //  echo "<table id='$idtabla' class='tabla_ficha2' >" ;
@@ -819,34 +819,36 @@ if ($max_fila>20000)  // si tenemos campos con orden de fila mayor a 20.000 , SO
 
  
 ksort($array_TD);   // ORDENAMOS EL ARRAY POR SU KEY
-$content_ficha .="<table id='$idtabla' class='tabla_ficha2' >" ;
+$content_FICHA .="<table id='$idtabla' class='tabla_ficha2' >" ;
 
 //echo implode($array_TD) ;
 
 $td_abierto=0;
-foreach ($array_TD as $value) {
-    if (!$value["en_linea"])
-    {  
-        $content_ficha .=($td_abierto)?  "</td></tr>" : ""  ;  // si está abierto lo cerramos
-         $content_ficha .= "<tr><td colspan='2'>" ;
-         $content_ficha .=$value["TD"]  ;
-         $td_abierto=1 ;
-         
-    }else   // el campo va en línea
-    {
-        $content_ficha .=(!$td_abierto)?  "<tr><td colspan='2'>" : ""  ;  // si NO está abierto lo abrimos
-        $content_ficha .=$value["TD"]  ;
-         $td_abierto=1 ;
-    }    
-    
+foreach ($array_TD as $key => $value) {
+   if ($_SESSION["admin_chat"] OR $key<20000 )
+   {   
+        if (!$value["en_linea"])
+        {  
+            $content_FICHA .=($td_abierto)?  "</td></tr>" : ""  ;  // si está abierto lo cerramos
+             $content_FICHA .= "<tr><td colspan='2'>" ;
+             $content_FICHA .=$value["TD"]  ;
+             $td_abierto=1 ;
+
+        }else   // el campo va en línea
+        {
+            $content_FICHA .=(!$td_abierto)?  "<tr><td colspan='2'>" : ""  ;  // si NO está abierto lo abrimos
+            $content_FICHA .=$value["TD"]  ;
+             $td_abierto=1 ;
+        }    
+   }
 }
 
-$content_ficha .=($td_abierto)?  "</td></tr>" : ""  ;  // si está abierto lo cerramos
+$content_FICHA .=($td_abierto)?  "</td></tr>" : ""  ;  // si está abierto lo cerramos
 
 
 
-$content_ficha .=  $item_TD_final ;   
-$content_ficha .=  "</table>" ;   
+$content_FICHA .=  $item_TD_final ;   
+$content_FICHA .=  "</table>" ;   
 
 
 
@@ -896,7 +898,7 @@ $content_ficha .=  "</table>" ;
               <div class="card-body pt-0">
                 <!--The calendar -->
 <!--                <div id="calendar" style="width: 100%"></div>-->
-                 <?php echo $content_ficha ;?>
+                 <?php echo $content_FICHA ;?>
 
               </div>
               <!-- /.card-body -->

@@ -1,6 +1,6 @@
 
 
-/*DEBUG DIV RED BORDER*/
+/*(NO BORRAR)   DEBUG DIV RED BORDER  */
 /* div {
     border: 1px solid red; 
 }
@@ -38,18 +38,16 @@ body
     background-color: #e6e6e6;
 }
 
-/*.div_ppal_expand
+.borde_gris
 {
-    width:90%;
-    float:left;
-    border:3px solid white;
+    width:100% ; 
+    border-style:solid;
+    border-width:1px; 
+    border-color:silver;
+    
 }
-.div_boton_expand
-{
-    width:10%;
-    float:left;
-    border:3px solid white;
-}*/
+
+
 
 
 /* Icon when the collapsible content is hidden */

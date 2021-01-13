@@ -175,12 +175,17 @@ $tipo_tabla='';
    case "usuario":
      $anchos_ppal=[30,20,20,20,20,20,20,20,20,20,20,20,20] ;
 
-     $sql="SELECT SHA1(user) as id_user, user, tipo_entidad, firma, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=',id_entidad) as id_entidad_link FROM Firmas_View "
-            . "WHERE  id_usuario=$id_usuario AND $where AND $where_c_coste  ORDER BY id_user " ;
+//     $sql="SELECT SHA1(user) as id_user, user, tipo_entidad, firma, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=',id_entidad) as id_entidad_link FROM Firmas_View "
+//            . "WHERE  id_usuario=$id_usuario AND $where AND $where_c_coste  ORDER BY id_user " ;
+//
+//    $sql_S="SELECT SHA1(user) as id_user, user, COUNT(id_firma) as Firmas  FROM Firmas_View "
+//                . "WHERE  id_usuario=$id_usuario AND $where AND $where_c_coste  GROUP BY id_user ORDER BY user " ;
+     $sql="SELECT id_usuario_emisor, usuario_emisor, tipo_entidad, firma, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=',id_entidad) as id_entidad_link, observaciones FROM Firmas_View "
+            . "WHERE  id_usuario=$id_usuario AND $where AND $where_c_coste  ORDER BY id_usuario_emisor " ;
 
-    $sql_S="SELECT SHA1(user) as id_user, user, COUNT(id_firma) as Firmas  FROM Firmas_View "
-                . "WHERE  id_usuario=$id_usuario AND $where AND $where_c_coste  GROUP BY id_user ORDER BY user " ;
-    $id_agrupamiento="id_user" ;
+    $sql_S="SELECT id_usuario_emisor, usuario_emisor, COUNT(id_firma) as Firmas  FROM Firmas_View "
+                . "WHERE  id_usuario=$id_usuario AND $where AND $where_c_coste  GROUP BY id_usuario_emisor ORDER BY id_usuario_emisor " ;
+    $id_agrupamiento="id_usuario_emisor" ;
     $tipo_tabla='group' ;       // indica si usamos tabla.php o tabla_group.php
 
   break;
@@ -225,6 +230,32 @@ $id_update="id_firma" ;
 $actions_row=[];
 $actions_row["id"]="id_firma";
 $actions_row["delete_link"]="1";
+
+$sql_insert= "INSERT INTO `Firmas` (`tipo_entidad`, `id_entidad`,`id_usuario`, firma ,observaciones, id_usuario_emisor,  user) "
+        . "          SELECT     tipo_entidad, id_entidad, id_usuario_emisor , firma ,'_VAR_SQL1_','{$_SESSION['id_usuario']}' , '{$_SESSION['user']}'  "
+        . "  FROM `Firmas` WHERE id_firma='_VAR_SQL2_'   ;"   ;
+$sql_insert=encrypt2($sql_insert) ;
+
+$href="../include/sql.php?code=1&sql=$sql_insert&var_sql2=_VAR_ID_&var_sql1=_VAR_HREF1_";
+$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='responder al portafirmas del emisor' href='#' "
+                             . " onclick=\"js_href('$href' ,0,'','PROMPT_Mensaje respuesta:') ; \"   ><i class='fas fa-reply'></i></a> ";
+  
+
+// CREAR TAREA DESDE FIRMA
+$fecha_modificacion=date('Y-m-d H:i:s') ;    
+$onclick_VAR_TABLA1_="observaciones" ;
+$onclick_VAR_TABLA2_="usuario_emisor" ;
+
+$sql_insert_tarea="INSERT INTO `Tareas` ( id_c_coste,tipo_entidad,id_entidad, usuarios,Tarea ,Texto, fecha_modificacion , user) "
+//        . "   VALUES (  '{$_SESSION['id_c_coste']}','$tipo_entidad' ,'$id_entidad' ,'_VAR_SQL1_' ,'_VAR_SQL2_','$fecha_modificacion' ,'{$_SESSION['user']}' );" 
+        . "          SELECT  '{$_SESSION['id_c_coste']}' ,   tipo_entidad, id_entidad, '_VAR_SQL1_', firma ,'_VAR_SQL3_' ,'$fecha_modificacion' , '{$_SESSION['user']}'  "
+        . "  FROM `Firmas` WHERE id_firma='_VAR_SQL2_'   ;"   ;
+$sql_insert_tarea=encrypt2($sql_insert_tarea) ;
+$href_tarea="../include/sql.php?code=1&sql=$sql_insert_tarea&var_sql2=_VAR_ID_&var_sql1=_VAR_HREF1_&var_sql3=_VAR_TABLA1_";
+$actions_row["onclick1_link"].="<a class='btn btn-warning btn-xs' title='Crea una Tarea con esta firma' href='#' "
+                             . " onclick=\"js_href('$href_tarea' ,0,'','PROMPT_Usuarios:', '', '{$_SESSION['user']}, _VAR_TABLA2_') ; \"   >Tarea</a> ";
+
+
 
 // 
 //$formats["Tarea"] = "text_edit" ;

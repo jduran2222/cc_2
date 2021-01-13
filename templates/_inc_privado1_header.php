@@ -60,7 +60,7 @@ include_once('../include/formatosHTML.php');
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?php echo $titulo; ?> | ConstruCloud.es 2.0</title>
+  <title><?php echo $titulo; ?> - <?php echo $_SESSION["empresa"]; ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Font Awesome -->

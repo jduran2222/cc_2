@@ -116,7 +116,6 @@ $id_update="ID_UDO" ;
 
 $actions_row=[];
 $actions_row["ID_UDO"]="ID_UDO";
-//$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
 //$actions_row["delete_link"]="../include/tabla_delete_row.php?tabla=PARTES_PERSONAL&where=id=";
 $actions_row["delete_link"]="1";
 

@@ -120,32 +120,7 @@ $sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO, '' FROM Partes_Perso
 //echo $sql;
 $result_T=$Conn->query($sql );
 
-//$updates=['HO','HX','MD','DC', 'Observaciones']  ;
-//$tabla_update="PARTES_PERSONAL" ;
-//$id_update="id" ;
-//
-//$actions_row=[];
-//$actions_row["id"]="id";
-////$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
-////$actions_row["delete_link"]="../include/tabla_delete_row.php?tabla=PARTES_PERSONAL&where=id=";
-//$actions_row["delete_link"]="1";
-//
 
-//$id_clave="id" ;
-
-//$formats["FECHA"]='fecha';
-//$formats["importe"]='moneda';
-//
-//$links["NOMBRE"] = ["../personal/personal_ficha.php?id_personal=", "ID_PERSONAL"] ;
-//$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-//
-//$aligns["importe"] = "right" ;
-//$aligns["Pdte_conciliar"] = "right" ;
-////$aligns["Importe_ejecutado"] = "right" ;
-
-//$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
-
-//$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
 $titulo="<h3>Personal en obra</h3>" ;
 $msg_tabla_vacia="No hay personal";
 

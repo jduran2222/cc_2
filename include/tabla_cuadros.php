@@ -601,10 +601,10 @@ if (isset($result_T)  )   // Hay TOTALES?
            // ACCION ROW botones de acciones en ULTIMA COLUMNA que compenten a toda la fila (edit, delete...)
            if (isset($actions_row["id"]))                          
                      {
-                      $id_link=$rs[$actions_row["id"]] ;
+                      $var_id=$rst[$actions_row["id"]] ;
 //                      echo "<td align='center'>" ;
                       echo "<div align='center'>" ;
-                       if (isset($actions_row["update_link"])) { echo "<a class='dentro_tabla noprint' href=\"{$actions_row["update_link"]}{$id_link}\"><i class='fas fa-pencil-alt'></i></a> ";  }
+                       if (isset($actions_row["update_link"])) { echo "<a class='dentro_tabla noprint' href=\"{$actions_row["update_link"]}{$var_id}\"><i class='fas fa-pencil-alt'></i></a> ";  }
                        if (isset($actions_row["delete_link"])) 
                            {
                            $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rs["$id_update"] ; 
@@ -614,16 +614,18 @@ if (isset($result_T)  )   // Hay TOTALES?
                            {
                           
                            //sustituimos en la cadena $actions_row["onclick1_link"] la _VARIABLE1_ por su valor en cada row de $rs["$id_update_onclick1"] 
-                           $cadena_onclick=str_replace("_VARIABLE1_",$rs["$onclick1_VARIABLE1_"],$actions_row["onclick1_link"]);
-                           if (isset($onclick1_VARIABLE2_)) { $cadena_onclick=str_replace("_VARIABLE2_",$rs["$onclick1_VARIABLE2_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
+                           $cadena_onclick=str_replace("_VAR_ID_",$var_id,$actions_row["onclick1_link"]);     // sustituimos si existe la variable _VAR_ID_
+                           if (isset($onclick_VAR_TABLA1_)) { $cadena_onclick=str_replace("_VAR_TABLA1_",$rst["$onclick_VAR_TABLA1_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
+                           if (isset($onclick_VAR_TABLA2_)) { $cadena_onclick=str_replace("_VAR_TABLA2_",$rs["$onclick_VAR_TABLA2_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
                            echo $cadena_onclick ;
                            }    
                        if (isset($actions_row["onclick2_link"]))     // está activado el boton onclick1
                            {
                           
                            //sustituimos en la cadena $actions_row["onclick1_link"] la _VARIABLE1_ por su valor en cada row de $rs["$id_update_onclick1"] 
-                           $cadena_onclick=str_replace("_VARIABLE1_",$rs["$onclick1_VARIABLE1_"],$actions_row["onclick2_link"]);
-                           if (isset($onclick1_VARIABLE2_)) { $cadena_onclick=str_replace("_VARIABLE2_",$rs["$onclick1_VARIABLE2_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
+                           $cadena_onclick=str_replace("_VAR_ID_",$rst["$id_update"],$actions_row["onclick2_link"]);     // sustituimos si existe la variable _VAR_ID_                           
+                           if (isset($onclick_VAR_TABLA1_)) { $cadena_onclick=str_replace("_VAR_TABLA1_",$rst["$onclick_VAR_TABLA1_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
+                           if (isset($onclick_VAR_TABLA2_)) { $cadena_onclick=str_replace("_VAR_TABLA2_",$rs["$onclick_VAR_TABLA2_"],$cadena_onclick);}   // si hy _VAR2_ la sustituimos
                            echo $cadena_onclick ;
                            }    
 //                      echo "</td>";

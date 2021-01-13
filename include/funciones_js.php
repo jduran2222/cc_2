@@ -163,16 +163,16 @@ href = href.replace( /_JS_AND_/g ,  "&" ) ;
 
 
 //sustituimos las _VARIABLES_ si es que usamos este sistema
-if (href.match(/_VARIABLE1_/g))
-{   // sustituimos _VARIABLE1_ por el valor del url var1_link
-    href = href.replace( "_VARIABLE1_" ,  var1_link.replace("&variable1=","") ) ;
+if (href.match(/_VAR_HREF1_/g))
+{   // sustituimos _VAR_HREF1_ por el valor del url var1_link
+    href = href.replace( "_VAR_HREF1_" ,  var1_link.replace("&variable1=","") ) ;
     var1_link = "" ;
-//    alert("hay _VARIABLE1_");
+//    alert("hay _VAR_HREF1_");
 }  
             
-if (href.match(/_VARIABLE2_/g))
-{   // sustituimos _VARIABLE1_ por el valor del url var1_link
-    href = href.replace( "_VARIABLE2_" ,  var1_link.replace("&variable2=","") ) ;
+if (href.match(/_VAR_HREF2_/g))
+{   // sustituimos _VAR_HREF1_ por el valor del url var1_link
+    href = href.replace( "_VAR_HREF2_" ,  var1_link.replace("&variable2=","") ) ;
     var2_link = "" ;
 }  
 
@@ -301,16 +301,16 @@ href = href.replace( /_JS_AND_/g ,  "&" ) ;
 
 
 //sustituimos las _VARIABLES_ si es que usamos este sistema
-if (href.match(/_VARIABLE1_/g))
-{   // sustituimos _VARIABLE1_ por el valor del url var1_link
-    href = href.replace( "_VARIABLE1_" ,  var1_link.replace("&variable1=","") ) ;
+if (href.match(/_VAR_HREF1_/g))
+{   // sustituimos _VAR_HREF1_ por el valor del url var1_link
+    href = href.replace( "_VAR_HREF1_" ,  var1_link.replace("&variable1=","") ) ;
     var1_link = "" ;
-//    alert("hay _VARIABLE1_");
+//    alert("hay _VAR_HREF1_");
 }  
             
-if (href.match(/_VARIABLE2_/g))
-{   // sustituimos _VARIABLE1_ por el valor del url var1_link
-    href = href.replace( "_VARIABLE2_" ,  var1_link.replace("&variable2=","") ) ;
+if (href.match(/_VAR_HREF2_/g))
+{   // sustituimos _VAR_HREF2_ por el valor del url var1_link
+    href = href.replace( "_VAR_HREF1_" ,  var1_link.replace("&variable2=","") ) ;
     var2_link = "" ;
 }  
 

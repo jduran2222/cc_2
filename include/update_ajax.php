@@ -93,15 +93,7 @@ else
 
         }
 
-    //      $nuevo_valor=evalua_expresion($nuevo_valor ) ;  // los datos numericos pueden meterse como formulas
-    //       
-    //       $nuevo_valor=evalua_expresion($nuevo_valor ) ;  // los datos numericos pueden meterse como formulas
-
-    //   $nuevo_valor=preg_match('/Notice|error|Evaluar/', $nuevo_valor) ? 'ERROR' : $nuevo_valor ; // controlamos que no se haya producido un error en la Evaluar.php
-    //   $nuevo_valor= eval($nuevo_valor)  ; // controlamos que no se haya producido un error en la Evaluar.php
-
-
-
+ 
 
 
 

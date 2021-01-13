@@ -319,12 +319,13 @@ if ($rs=DRow("Remesas_View","id_remesa=$id_remesa AND $where_c_coste"))
 }
 //Generamos el archivo
 //$contenido = "Hola Mundo.";
-$file = $remesa . ".xml" ;
+//$file = $remesa . ".xml" ;
+$file = str_replace(array('"', "'", "\\", ',', '/', '*', '?', '<', '>', '|', ':', ';'), '_', $remesa)  . ".xml"  ;  // quitamos simbolos incompatible al nombre de fichero
 $f=fopen($file,"w");
 fwrite($f,$xml);
 fclose($f);
 
-
+//     \ / : ? *  < > |
 
 //$enlace = $archivo; 
 header ("Content-Disposition: attachment; filename=".$file); 

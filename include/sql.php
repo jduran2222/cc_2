@@ -36,20 +36,27 @@ else
 }    
  
 // vemos si hay variable1
-if (isset($_GET["variable1"]))
+$var_sql1= isset($_GET["variable1"]) ? $_GET["variable1"] : (isset($_GET["var_sql1"]) ? $_GET["var_sql1"] : '' ) ;
+$var_sql2= isset($_GET["variable2"]) ? $_GET["variable2"] : (isset($_GET["var_sql2"]) ? $_GET["var_sql2"] : '' ) ;
+$var_sql3= isset($_GET["variable3"]) ? $_GET["variable3"] : (isset($_GET["var_sql3"]) ? $_GET["var_sql3"] : '' ) ;
+
+if ($var_sql1)
 {
-    $sql= str_replace('_VARIABLE1_', $_GET["variable1"], $sql)  ;
-    // probamos si hay una segunda variable
-    if (isset($_GET["variable2"]))
-    {
-        $sql= str_replace('_VARIABLE2_', $_GET["variable2"], $sql)  ;
-    }    
-    if (isset($_GET["variable3"]))
-    {
-        $sql= str_replace('_VARIABLE3_', $_GET["variable3"], $sql)  ;
-    }    
-     
+    $sql= str_replace('_VARIABLE1_', $var_sql1, $sql)  ;
+    $sql= str_replace('_VAR_SQL1_', $var_sql1, $sql)  ;
+ } 
+// probamos si hay una segunda variable
+if ($var_sql2)
+{
+    $sql= str_replace('_VARIABLE2_', $var_sql2, $sql)  ;
+    $sql= str_replace('_VAR_SQL2_', $var_sql2, $sql)  ;
 }    
+if ($var_sql3)
+{
+    $sql= str_replace('_VARIABLE3_', $var_sql3, $sql)  ;
+    $sql= str_replace('_VAR_SQL3_', $var_sql3, $sql)  ;
+}    
+     
 
 
 

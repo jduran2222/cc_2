@@ -543,9 +543,9 @@ if (!$listado_global)
   
      break;
    case "EDICION":
-   $onclick1_VARIABLE1_="ID_UDO" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-   $onclick1_VARIABLE2_="MED_PROYECTO" ;     // idem
-   $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='añade nuevo detalle de medición a la Udo' href=# onclick=\"add_detalle( $id_produccion, _VARIABLE1_ , '_VARIABLE2_' )\" >add</a> ";
+   $onclick_VAR_TABLA1_="ID_UDO" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+   $onclick_VAR_TABLA2_="MED_PROYECTO" ;     // idem
+   $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='añade nuevo detalle de medición a la Udo' href=# onclick=\"add_detalle( $id_produccion, _VAR_TABLA1_ , '_VAR_TABLA2_' )\" >add</a> ";
    $actions_row["id"]="ID_UDO"; 
    
    $sql0="SELECT * FROM Prod_det_suma WHERE ID_PRODUCCION=$id_produccion   " ;    
@@ -563,8 +563,8 @@ if (!$listado_global)
    
      break;
    case "comparadas":
-//   $onclick1_VARIABLE1_="ID_UDO" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//   $onclick1_VARIABLE2_="MED_PROYECTO" ;     // idem
+//   $onclick_VAR_TABLA1_="ID_UDO" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+//   $onclick_VAR_TABLA2_="MED_PROYECTO" ;     // idem
 //   $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='añade nuevo detalle de medición a la Udo' href=# onclick=\"add_detalle( $id_produccion, _VARIABLE1_ , '_VARIABLE2_' )\" >add</a> ";
 //   $actions_row["id"]="ID_UDO"; 
    

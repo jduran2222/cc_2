@@ -109,6 +109,7 @@ $firma="Remesa {$rs["remesa"]} de importe ".cc_format($rs["importe"], 'moneda').
 //$size='400px' ;
 require("../include/widget_firmas.php");          // FIRMAS
 
+require("../menu/LRU_registro.php");
  ?>
 	 
 </div>	

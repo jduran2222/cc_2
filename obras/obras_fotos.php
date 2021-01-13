@@ -292,14 +292,14 @@ $result_T=$Conn->query($sql_T) ;
  $actions_row["delete_link"]="1";
     
 
-$href="../documentos/documento_ficha.php?id_documento=_VARIABLE1_" ;
+$href="../documentos/documento_ficha.php?id_documento=_VAR_ID_" ;
 $actions_row["onclick1_link"]="<a class='btn btn-link'  onclick=\"js_href2( '$href' ,0 )\"   title='abre ficha de la foto'><i class='far fa-calendar-alt'></i></a> " ;   // abre ficha doc.
-$onclick1_VARIABLE1_="id_documento" ;  // variable a pasar
+//$onclick_VAR_TABLA1_="id_documento" ;  // variable a pasar
 
     // boton para poder ROTAR 90º la foto
-$href_270="../documentos/doc_rotar_ajax.php?grados=270&id_documento=_VARIABLE2_" ;
+$href_270="../documentos/doc_rotar_ajax.php?grados=270&id_documento=_VAR_ID_" ;
 $actions_row["onclick2_link"]="<a class='btn btn-link' href=# onclick=\"js_href( '$href_270' ,0 )\"   title='rotar la foto -90º'><i class='fas fa-undo'></i></a> " ;   // acción de rotar
-$onclick1_VARIABLE2_="id_documento" ;  // variable a pasar
+//$onclick_VAR_TABLA2_="id_documento" ;  // variable a pasar
 
 //echo   "<a class='btn btn-primary' href='../proveedores/factura_proveedor_anadir.php' target='_blank' >Factura nueva</a>" ; // BOTON AÑADIR FACTURA
 //echo   "<a class='btn btn-primary' href='#' onclick=\"genera_remesa()\" title='Genera remesa con las facturas seleccionadas' >Generar Remesa</a>" ; // BOTON AÑADIR FACTURA

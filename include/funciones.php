@@ -257,6 +257,7 @@ function entidad_link($tipo_entidad)
     $array_links["pago_nuevo"]="../bancos/pago_ficha.php?id_pago=";
     $array_links["mov_banco"]="../bancos/pago_ficha.php?id_mov_banco=";
     $array_links["banco"]="../bancos/bancos_mov_bancarios.php?id_cta_banco=";
+    $array_links["cta_banco"]="../bancos/bancos_mov_bancarios.php?id_cta_banco=";
     $array_links["procedimiento"]="../agenda/procedimiento_ficha.php?id_procedimiento=";
     $array_links["doc_nuevo"]="../documentos/documento_ficha.php?id_documento=";
 //    $array_links["pdte_clasif"]="../documentos/documento_ficha.php?id_documento=";
@@ -504,25 +505,25 @@ function logs_reset($msg='')
     $_SESSION['logs']='' ;
 }
 
-function evalua_expresion($exp)
-{
-    require_once("../include/expresiones/Evaluar.php");
-    
-    $error_level=error_reporting();    // quitamos la emisión de mensajes de error para evitar conflictos 
-
-    $evaluadorExpresiones2 = new Evaluar();
-            
-//     $exp=dbNumero($exp) ;
-     $Transformado = $evaluadorExpresiones2->TransformaExpresion($exp);
-     $ExprNegativos = $evaluadorExpresiones2->ArreglaNegativos($Transformado);
-
-     
-    $evaluadorExpresiones2->Analizar($ExprNegativos);
-
-    error_reporting($error_level);   // restauramos el nivel de alertas de error
-
-     return round($evaluadorExpresiones2->Calcular(), 14);
-}
+//function evalua_expresion_OBSOLETA($exp)
+//{
+//    require_once("../include/expresiones/Evaluar.php");
+//    
+//    $error_level=error_reporting();    // quitamos la emisión de mensajes de error para evitar conflictos 
+//
+//    $evaluadorExpresiones2 = new Evaluar();
+//            
+////     $exp=dbNumero($exp) ;
+//     $Transformado = $evaluadorExpresiones2->TransformaExpresion($exp);
+//     $ExprNegativos = $evaluadorExpresiones2->ArreglaNegativos($Transformado);
+//
+//     
+//    $evaluadorExpresiones2->Analizar($ExprNegativos);
+//
+//    error_reporting($error_level);   // restauramos el nivel de alertas de error
+//
+//     return round($evaluadorExpresiones2->Calcular(), 14);
+//}
 
 function evalua_expresion_mysql($expresion)
 {
@@ -537,6 +538,8 @@ function evalua_expresion_mysql($expresion)
     }
 
     // quitamos los TAGS
+    logs( "Exp previo TAGs: $expresion" );
+    
     $expresion = strip_tags( $expresion);    
 //    $expresion =  preg_replace('/<(.|\n)*?/', '', $expresion);
 
@@ -629,7 +632,7 @@ return $id_pago;
 
 
 
-function concilia_mov_banco_fra_prov($id_mov_banco,$id_fra_prov)
+function concilia_mov_banco_fra_prov($modo, $id_mov_banco,$id_fra_prov, $importe=null)
 {
   //extract($GLOBALS);
       if (!isset($GLOBALS["Conn"]))
@@ -646,13 +649,17 @@ function concilia_mov_banco_fra_prov($id_mov_banco,$id_fra_prov)
 //  
 //$id_fra_prov=$_GET["id_fra_prov"]  ;	
 
-if ($id_mov_banco=='CAJA_METALICO' )          //$id_mov_banco puede ser CAJA_METALICO, SOLO_PAGO (no se concilia el id_pago a bancos, o el id_mov_banco a conciliar el id_pago
+    
+// si no se ha indicado el Importe, calculamos el importe pendiente de pago de la factura en cuestión    
+$importe= is_null($importe)?  Round( Dfirst("pdte_pago","Fras_prov_importes", "ID_FRA_PROV=$id_fra_prov") , 2 ) : evalua_expresion_mysql( $importe) ;	   // hacemos el MOV_BANCO solo por el pdte_pago de la factura
+    
+if ($modo=='CAJA_METALICO' )          //$id_mov_banco puede ser CAJA_METALICO, SOLO_PAGO (no se concilia el id_pago a bancos, o el id_mov_banco a conciliar el id_pago
 {
     // preparamos para crear primero el id_mov_banco en la cta_banco CAJA_METALICO
 //$id_cta_banco=  getVar('id_cta_banco_caja_metalico')  ;	              // CUENTA PARA PAGOS EN METALICO previamente habría que consultar si existe la variable y en caso negativo, crearla cta_banco CAJA_METALICO y la variable
 $id_cta_banco=  getVar('id_cta_banco_auto')  ;	      // HEMOS ANULADO EL USO DE CAJA_METALICO, irá a la id_cta_banco_auto  (juand, junio2020)     
 //$importe=Dfirst("IMPORTE_IVA","FACTURAS_PROV", "ID_FRA_PROV=$id_fra_prov") ;	
-$importe=Round( Dfirst("pdte_pago","Fras_prov_importes", "ID_FRA_PROV=$id_fra_prov") , 2 ) ;	   // hacemos el MOV_BANCO solo por el pdte_pago de la factura
+//$importe= is_null($importe)?  Round( Dfirst("pdte_pago","Fras_prov_importes", "ID_FRA_PROV=$id_fra_prov") , 2 ) : $importe ;	   // hacemos el MOV_BANCO solo por el pdte_pago de la factura
 //$fecha_banco=Dfirst("FECHA","FACTURAS_PROV", "ID_FRA_PROV=$id_fra_prov") ;	
 $fecha_banco=date('Y-m-d');	 // cambiamos a la FECHA DE HOY
 $concepto=Dfirst( "CONCAT(PROVEEDOR,' ', N_FRA)","Fras_Prov_View", "ID_FRA_PROV=$id_fra_prov") ;	
@@ -664,31 +671,32 @@ $sql="INSERT INTO `MOV_BANCOS` ( id_cta_banco,fecha_banco,cargo,Concepto,user ) 
   $result=$Conn->query($sql);
   $id_mov_banco=Dfirst( "MAX(id_mov_banco)", "MOV_BANCOS", "id_cta_banco=$id_cta_banco" ) ; 
 
-}elseif (substr( $id_mov_banco, 0, 4 ) =='CTA_' )   //$id_mov_banco CTA_xxx, debemos crear MOV_BANCO en cta ID_CTA=XXX y conciliar despues 8util para ABONOS Y COMPENSACIONES DE FRAS
+}elseif (substr( $id_mov_banco, 0, 4 ) =='CTA_' )   //$id_mov_banco CTA_xxx, debemos crear MOV_BANCO en cta ID_CTA=XXX y conciliar despues (util para ABONOS Y COMPENSACIONES DE FRAS)
 {
     // preparamos para crear primero el id_mov_banco en la cta_banco CAJA_METALICO
-$id_cta_banco= substr( $id_mov_banco, 4 ) ;	              // CUENTA CTA_XXX
-//$importe=Dfirst("IMPORTE_IVA","FACTURAS_PROV", "ID_FRA_PROV=$id_fra_prov") ;	
-$importe=Round( Dfirst("pdte_pago","Fras_prov_importes", "ID_FRA_PROV=$id_fra_prov") , 2 ) ;	   // hacemos el MOV_BANCO solo por el pdte_pago de la factura
+$id_cta_banco=Dfirst( 'id_cta_banco','ctas_bancos' , " id_c_coste={$_SESSION['id_c_coste']} AND id_cta_banco=". substr( $id_mov_banco, 4 ) ) ;   // CUENTA CTA_XXX y comprobacion SEGURIDAD
+
 //$fecha_banco=Dfirst("FECHA","FACTURAS_PROV", "ID_FRA_PROV=$id_fra_prov") ;	
 $fecha_banco=date('Y-m-d');	 // cambiamos a la FECHA DE HOY
 
 $concepto=Dfirst( "CONCAT(PROVEEDOR,' ', N_FRA)","Fras_Prov_View", "ID_FRA_PROV=$id_fra_prov") ;	
 
 // creamos el MOV.BANCARIO en la cta_banco de CTA_XXX
-$sql="INSERT INTO `MOV_BANCOS` ( id_cta_banco,fecha_banco,cargo,Concepto,user )  "
+if (!($modo=='SOLO_PAGO'))
+ {
+    $sql="INSERT INTO `MOV_BANCOS` ( id_cta_banco,fecha_banco,cargo,Concepto,user )  "
         . "  VALUES ( '$id_cta_banco' ,'$fecha_banco' ,'$importe' ,'$concepto' , '{$_SESSION['user']}' );" ;
-  // echo ($sql);
-  $result=$Conn->query($sql);
-  $id_mov_banco=Dfirst( "MAX(id_mov_banco)", "MOV_BANCOS", "id_cta_banco=$id_cta_banco" ) ; 
-
+    // echo ($sql);
+    $result=$Conn->query($sql);
+    $id_mov_banco=Dfirst( "MAX(id_mov_banco)", "MOV_BANCOS", "id_cta_banco=$id_cta_banco" ) ; 
+ }
 }  
   
-elseif ($id_mov_banco=='SOLO_PAGO')
+elseif ($modo=='SOLO_PAGO')  // modo SOLO PAGO pero sin definir CTA_xxx
 {
 
 $id_cta_banco= getVar('id_cta_banco_auto') ;	                    // CUENTA POR DEFECTO previamente habría que consultar si existe la variable y en caso negativo, crearla cta_banco_auto y la variable
-$importe=Round(Dfirst("pdte_pago","Fras_prov_importes", "ID_FRA_PROV=$id_fra_prov"), 2) ;	
+//$importe=Round(Dfirst("pdte_pago","Fras_prov_importes", "ID_FRA_PROV=$id_fra_prov"), 2) ;	
 $fecha_banco=Dfirst("FECHA","FACTURAS_PROV", "ID_FRA_PROV=$id_fra_prov") ;	
 $concepto=Dfirst( "CONCAT(PROVEEDOR,' ', N_FRA)","Fras_Prov_View", "ID_FRA_PROV=$id_fra_prov") ;	
     
@@ -698,7 +706,7 @@ else
     
 logs("creando Pago en fra_prov para el id_mov_banco $id_mov_banco ") ;
 $id_cta_banco=Dfirst("id_cta_banco","MOV_BANCOS", "id_mov_banco=$id_mov_banco") ;	
-$importe=Round(Dfirst("cargo","MOV_BANCOS", "id_mov_banco=$id_mov_banco"), 2) ;	
+$importe=Round(Dfirst("cargo","MOV_BANCOS", "id_mov_banco=$id_mov_banco"), 2) ;	// creamos el nuevo Pago con mov. banco existente con el importe del mov.banco
 $fecha_banco=Dfirst("fecha_banco","MOV_BANCOS", "id_mov_banco=$id_mov_banco") ;	
 $concepto=Dfirst("Concepto","MOV_BANCOS", "id_mov_banco=$id_mov_banco") ;	
 }
@@ -716,7 +724,7 @@ $sql="INSERT INTO `PAGOS` ( id_cta_banco,tipo_pago,f_vto,importe,observaciones,u
              $sql="INSERT INTO FRAS_PROV_PAGOS ( id_fra_prov,id_pago ) VALUES ( '$id_fra_prov'  ,'$id_pago'  );" ;
              $result=$Conn->query($sql);
 
-             if (!($id_mov_banco=='SOLO_PAGO'))  // si no estamos en la situacin SOLO_PAGO, vinculamos el id_mov_banco con el id_fra_prov
+             if (!($modo=='SOLO_PAGO'))  // si no estamos en la situacin SOLO_PAGO, vinculamos el id_mov_banco con el id_fra_prov
              { 
 //               $sql="INSERT INTO PAGOS_MOV_BANCOS ( id_pago,id_mov_banco ) VALUES ( '$id_pago','$id_mov_banco'   );" ;  // SUSTITUIDA POR ELIMINACION DE TABLA PAGOS_MOV_BANCOS
                  $sql="UPDATE PAGOS SET id_mov_banco='$id_mov_banco' WHERE id_pago=$id_pago ;"  ;

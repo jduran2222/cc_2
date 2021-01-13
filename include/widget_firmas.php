@@ -20,23 +20,23 @@ require_once("../include/funciones_js.php");
 
 $observaciones_firma = isset($observaciones_firma) ? $observaciones_firma : '' ;
 
-$sql_insert= "INSERT INTO `Firmas` (`tipo_entidad`, `id_entidad`,`id_usuario`, firma ,observaciones,   user) "
-        . "VALUES ( '$tipo_entidad', '$id_entidad', '_VARIABLE1_' , '$firma','_VARIABLE2_' , '{$_SESSION['user']}' );"   ;
+$sql_insert= "INSERT INTO `Firmas` (`tipo_entidad`, `id_entidad`,`id_usuario`, firma ,observaciones, id_usuario_emisor,  user) "
+        . "VALUES ( '$tipo_entidad', '$id_entidad', '_VARIABLE1_' , '$firma','_VARIABLE2_' , '{$_SESSION['id_usuario']}', '{$_SESSION['user']}' );"   ;
 
 // campo usuario q quien envio la firma        
 $add_link_html= "<div style='width:100% ; border-style:solid;border-width:2px; border-color:silver ;font-size:xx-small;'>" 
-               . "<br>Añadir firma: <select  id='id_usuario_wf' style='width: 30%; '>"
+               . "<br>Añadir firma: <select  id='id_usuario_wf'   style='width: 30%; border-color:silver;color:grey; '>"
                . DOptions_sql("SELECT id_usuario, usuario FROM Usuarios WHERE activo AND $where_c_coste ORDER BY usuario  ", "Selecciona Usuario...") 
                . "  </select>" ;    
 
 // añadimos campo observaciones (opcional)
-$add_link_html.= "<input type='text' id='id_observaciones' placeholder='Observaciones...  (opcional)'>"  ;
+$add_link_html.= "<input type='text' id='id_observaciones' placeholder='Mensaje...  (opcional)'>"  ;
 
 //añadimos boton para 'añadir firma' al Portafirmas
 $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;    
-$add_link_html.= "<a class='btn btn-link btn-xs noprint' href='#' "
+$add_link_html.= "<a class='btn btn-warning btn-xs noprint' href='#' "
      . " onclick=\"js_href('$href' ,'1','', 'id_usuario_wf', 'id_observaciones'  )\"   "
-     . "title='añadir firma de usuario' ><i class='fas fa-plus-circle'></i> Añadir Firma</a>" ;
+     . "title='añadir firma de usuario' ><i class='fas fa-pen-nib'></i></a>" ;
 
 $add_link_html.= "<br></div>" ;
 

@@ -140,7 +140,7 @@ $error_level=error_reporting();
 error_reporting(0) ;
 
 echo "</b<br>--------------- evalua_expresion --------------------------------------------------------------";
-echo "><br>evalua_expresion:<b>". evalua_expresion($filtro) ;
+echo "><br>evalua_expresion:<b>". evalua_expresion_mysql($filtro) ;
 //echo "</b><br>Decrypt: <b>".  decrypt( ($filtro) ) ;
 //echo "</b><br>Decrypt encrypt:<b>".  decrypt( encrypt($filtro) ) ;
 

@@ -247,11 +247,11 @@ $where=$cobrada==""? $where : $where . " AND  Cobrada=$cobrada" ;
 
  switch ($agrupar) {
     case "ultimas_fras_reg":
-     $sql="SELECT ID_FRA,ID_FRA AS nID_FRA,ID_OBRA, ID_CLIENTE,N_FRA,CLIENTE,NOMBRE_OBRA,FECHA_EMISION,CONCEPTO, Base_Imponible, iva, IMPORTE_IVA,Negociada,Banco_Neg,Cobrada,Pdte_Cobro,Observaciones  FROM Facturas_View WHERE $where  ORDER BY ID_FRA DESC LIMIT 50 " ;
+     $sql="SELECT ID_FRA,ID_FRA AS nID_FRA,ID_OBRA, ID_CLIENTE,N_FRA,CLIENTE,CIF, NOMBRE_OBRA,FECHA_EMISION,CONCEPTO, Base_Imponible, iva, IMPORTE_IVA,Negociada,Banco_Neg,Cobrada,Pdte_Cobro,Observaciones  FROM Facturas_View WHERE $where  ORDER BY ID_FRA DESC LIMIT 50 " ;
      //$sql_T="SELECT '' " ;
     break;
     case "facturas":
-     $sql="SELECT ID_FRA,ID_OBRA,ID_CLIENTE,N_FRA,CLIENTE,NOMBRE_OBRA,FECHA_EMISION,CONCEPTO, Base_Imponible, iva, IMPORTE_IVA,Negociada,Banco_Neg,Cobrada,Pdte_Cobro,Observaciones  FROM Facturas_View WHERE $where  ORDER BY FECHA_EMISION DESC " ;
+     $sql="SELECT ID_FRA,ID_OBRA,ID_CLIENTE,N_FRA,CLIENTE,CIF, NOMBRE_OBRA,FECHA_EMISION,CONCEPTO, Base_Imponible, iva, IMPORTE_IVA,Negociada,Banco_Neg,Cobrada,Pdte_Cobro,Observaciones  FROM Facturas_View WHERE $where  ORDER BY FECHA_EMISION DESC " ;
      $sql_T="SELECT '' AS a,'' AS a8,'' AS b,'' AS c,'' AS d,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a1,'' AS b1,'' AS c1,SUM(Pdte_Cobro) AS Pdte_Cobro,'' AS c3  FROM Facturas_View WHERE $where  " ;   
      //$sql_T="SELECT '','Suma' , SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where    " ;
     break;

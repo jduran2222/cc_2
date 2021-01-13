@@ -20,9 +20,10 @@ include_once('../templates/_inc_privado2_navbar.php');
                 <!--****************** ESPACIO LATERAL  *****************
 
                 <!--****************** BUSQUEDA GLOBAL  *****************
-                <!--<div class="col-12 col-md-4 col-lg-9">-->
+                <!--<div class="col-12 col-md-4 col-lg-9">-->-->
 
 <?php 
+
 
 $id_cta_banco = $_GET["id_cta_banco"] ;
 
@@ -90,7 +91,7 @@ if ($uploadOk == 0) {
     {
 
     //parse_cabecera_cuenta
-    echo "<br>IBAN DE CUENTA CORRECTA<br><br>";
+    echo "<br><b style='color:green;'>IBAN DE CUENTA CORRECTA</b><br><br>";
 
     $numero_ultimo=Dfirst("MAX(numero)", "MOV_BANCOS", "id_cta_banco=$id_cta_banco" ) ;  // numero del ultimo mov_banco registrado en la cuenta 
 
@@ -148,7 +149,7 @@ if ($uploadOk == 0) {
     }
     else
     {
-        echo "<br> ERROR EN IBAN. LAS CUENTAS CORRIENTES NO COINCIDEN <br> <br> <br> "  ;
+        echo "<br><h1 style='color:red;'> ERROR EN IBAN. LAS CUENTAS CORRIENTES NO COINCIDEN </h1><br> <br> <br> "  ;
     }    
    
    

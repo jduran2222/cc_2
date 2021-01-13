@@ -209,21 +209,6 @@ $links["FECHA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_
 $links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
 //$links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;
 
-// accion de CONCILIAR el MOV_BANCO con el ID_PAGO
-//$onclick1_VARIABLE1_="id_pago" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-////$onclick1_VARIABLE2_="" ;     // idem
-//
-//$sql_insert="INSERT INTO PAGOS_MOV_BANCOS ( id_mov_banco,id_pago ) " . 
-//          " VALUES ( '$id_mov_banco', _VARIABLE1_ );" ;
-//
-//$actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='concilia el mov.banco con el Pago' href=\"../include/sql.php?sql=base64_encode($sql_insert) \" >conciliar</a> ";
-//$actions_row["id"]="id_pago";
-//  
-
-//$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
-
-//$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-//$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
 
 
 $titulo="Ultimas facturas " ;

@@ -45,103 +45,104 @@ if (!isset($_SESSION["logs"])) { $_SESSION["logs"] = '' ; }      // inicializamo
 //$debug = isset($_GET["debug"]) ? $_GET["dd"] : 0 ;
 
 // comprobamos los accesos directos que evitan login (puertas de atrás)
-  if (isset($_GET["login"]))         // ACCESO PUENTE DESDE URL PARA LOGUEARNOS CON GET login ENCRIPTADO
+//  if (isset($_GET["login"]))         // ACCESO PUENTE DESDE URL PARA LOGUEARNOS CON GET login ENCRIPTADO
+  if (0)         // ANULAMOS POR AHORA EL ACCESO LOGIN, juand, enero2021.      ACCESO PUENTE DESDE URL PARA LOGUEARNOS CON GET login ENCRIPTADO
   {  
       
-      // extraer el login con decrypt2
-      // pasar por $_POST a REGOSTRO/registrar.PHP  (EMAIL Y PASSWORD)
-      
-      
-//               require_once("../../conexion.php");
-//               require_once("../include/funciones.php");
-               $login=decrypt2(($_GET["login"]))   ;
-               
-               // FALTA DESCOMPONER LOGIN EN VARIABLES Y ENVIAR POR PIOST A REGISTRAR.PHP, JUAND 22/3/
-            //   echo $_GET["login"]   ;   // DEBUG
-            //   echo "<br>";
-            //   echo base64_decode($_GET["login"])   ;
-            //   echo "<br>$login";
-               
-               
-               // GEOLOCALIZACION DE LA IP
-                 $ip=$_SERVER['REMOTE_ADDR'] ;
-                 $json_geoip=json_geoip($ip) ;
-                 $pais= pais($json_geoip);
-
-              $_SESSION['android']= preg_match('/Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ;     // estamos en un movil o tablet
-
-               
-               
-               if ($login=='LOGIN_INVITADO2')        //JUAND
-               {
-                           $_SESSION["id_c_coste"]=1 ;
-                           $_SESSION["empresa"]='ingenop' ;
-                           $_SESSION["user"]='juand' ;
-                           $_SESSION["admin"]=1 ;
-                           $_SESSION["admin_chat"]=1 ;
-                           $_SESSION["email"]='juanduran@ingenop.com' ;
-                           $_SESSION["Moneda_simbolo"]='€' ;
-
-                           $cif='B92334879' ;
-                           $_SESSION["cif"]=$cif ;
-                           $_SESSION["invitado"]=0 ;       
-                           $_SESSION["autorizado"]=1 ;       
-                           $_SESSION["permiso_licitacion"]=1 ;       
-                           $_SESSION["permiso_obras"]=1 ;       
-                           $_SESSION["permiso_administracion"]=1 ;       
-                           $_SESSION["permiso_bancos"]=1 ;       
-
-
-               } 
-               elseif ($login=='LOGIN_INVITADO')
-                   {
-
-                           $_SESSION["id_c_coste"]=1 ;
-                           $_SESSION["empresa"]='ingenop' ;
-                           $_SESSION["user"]='invitado' ;
-                           $_SESSION["admin"]=0 ;
-                           $_SESSION["admin_chat"]=0 ;
-                           $_SESSION["email"]='invitado' ;
-
-                           $cif='B92334879' ;
-                           $_SESSION["cif"]=$cif ;       
-                           $_SESSION["invitado"]=1 ;   
-                           $_SESSION["autorizado"]=0 ;       
-                           
-
-
-               }
-                elseif ($login=='LOGIN_INVITADO_sergio')
-                   {
-
-                           $_SESSION["id_c_coste"]=1 ;
-                           $_SESSION["empresa"]='ingenop' ;
-                           $_SESSION["user"]='cristobal' ;
-                           $_SESSION["admin"]=0 ; 
-                           $_SESSION["admin_chat"]=0 ;
-                           $_SESSION["email"]='invitado_cristobal' ;
-
-                           $cif='B92334879' ;
-                           $_SESSION["cif"]=$cif ;       
-                           $_SESSION["invitado"]=1 ;  
-                           $_SESSION["autorizado"]=0 ;       
-                           
-
-
-               }
-               if (isset($_SESSION["id_c_coste"]))     // REGISTRAMOS ACCESO LOGIN OK
-               {
-                   
-                   $_SESSION["id_usuario"]=Dfirst("id_usuario","Usuarios","usuario='{$_SESSION["user"]}' AND id_c_coste={$_SESSION["id_c_coste"]}") ;
-                   registrar_acceso($_SESSION["id_c_coste"],$_SESSION["user"],$_SESSION["empresa"],'login_GET OK', $ip, 0, $_SESSION['android'], $pais, $json_geoip);
-//function registrar_acceso($id_c_coste,$user,$empresa,$resultado,$sistema,$ip, $error, $android ,$pais='', $json_geoip='')
-
-               }
-               else {              /// ERROR EN ACCESO LOGIN
-                   registrar_acceso(0,'error','ERROR','login_GET error',$ip,1,$_SESSION['android'],$pais, $json_geoip);
-                   header('Location: ../index.php'); 
-               }
-//               $_SESSION['android']= preg_match('/Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ;     // estamos en un movil o tablet
+//      // extraer el login con decrypt2
+//      // pasar por $_POST a REGOSTRO/registrar.PHP  (EMAIL Y PASSWORD)
+//      
+//      
+////               require_once("../../conexion.php");
+////               require_once("../include/funciones.php");
+//               $login=decrypt2(($_GET["login"]))   ;
+//               
+//               // FALTA DESCOMPONER LOGIN EN VARIABLES Y ENVIAR POR PIOST A REGISTRAR.PHP, JUAND 22/3/
+//            //   echo $_GET["login"]   ;   // DEBUG
+//            //   echo "<br>";
+//            //   echo base64_decode($_GET["login"])   ;
+//            //   echo "<br>$login";
+//               
+//               
+//               // GEOLOCALIZACION DE LA IP
+//                 $ip=$_SERVER['REMOTE_ADDR'] ;
+//                 $json_geoip=json_geoip($ip) ;
+//                 $pais= pais($json_geoip);
+//
+//              $_SESSION['android']= preg_match('/Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ;     // estamos en un movil o tablet
+//
+//               
+//               
+//               if ($login=='LOGIN_INVITADO2')        //JUAND
+//               {
+//                           $_SESSION["id_c_coste"]=1 ;
+//                           $_SESSION["empresa"]='ingenop' ;
+//                           $_SESSION["user"]='juand' ;
+//                           $_SESSION["admin"]=1 ;
+//                           $_SESSION["admin_chat"]=1 ;
+//                           $_SESSION["email"]='juanduran@ingenop.com' ;
+//                           $_SESSION["Moneda_simbolo"]='€' ;
+//
+//                           $cif='B92334879' ;
+//                           $_SESSION["cif"]=$cif ;
+//                           $_SESSION["invitado"]=0 ;       
+//                           $_SESSION["autorizado"]=1 ;       
+//                           $_SESSION["permiso_licitacion"]=1 ;       
+//                           $_SESSION["permiso_obras"]=1 ;       
+//                           $_SESSION["permiso_administracion"]=1 ;       
+//                           $_SESSION["permiso_bancos"]=1 ;       
+//
+//
+//               } 
+//               elseif ($login=='LOGIN_INVITADO')
+//                   {
+//
+//                           $_SESSION["id_c_coste"]=1 ;
+//                           $_SESSION["empresa"]='ingenop' ;
+//                           $_SESSION["user"]='invitado' ;
+//                           $_SESSION["admin"]=0 ;
+//                           $_SESSION["admin_chat"]=0 ;
+//                           $_SESSION["email"]='invitado' ;
+//
+//                           $cif='B92334879' ;
+//                           $_SESSION["cif"]=$cif ;       
+//                           $_SESSION["invitado"]=1 ;   
+//                           $_SESSION["autorizado"]=0 ;       
+//                           
+//
+//
+//               }
+//                elseif ($login=='LOGIN_INVITADO_sergio')
+//                   {
+//
+//                           $_SESSION["id_c_coste"]=1 ;
+//                           $_SESSION["empresa"]='ingenop' ;
+//                           $_SESSION["user"]='cristobal' ;
+//                           $_SESSION["admin"]=0 ; 
+//                           $_SESSION["admin_chat"]=0 ;
+//                           $_SESSION["email"]='invitado_cristobal' ;
+//
+//                           $cif='B92334879' ;
+//                           $_SESSION["cif"]=$cif ;       
+//                           $_SESSION["invitado"]=1 ;  
+//                           $_SESSION["autorizado"]=0 ;       
+//                           
+//
+//
+//               }
+//               if (isset($_SESSION["id_c_coste"]))     // REGISTRAMOS ACCESO LOGIN OK
+//               {
+//                   
+//                   $_SESSION["id_usuario"]=Dfirst("id_usuario","Usuarios","usuario='{$_SESSION["user"]}' AND id_c_coste={$_SESSION["id_c_coste"]}") ;
+//                   registrar_acceso($_SESSION["id_c_coste"],$_SESSION["user"],$_SESSION["empresa"],'login_GET OK', $ip, 0, $_SESSION['android'], $pais, $json_geoip);
+////function registrar_acceso($id_c_coste,$user,$empresa,$resultado,$sistema,$ip, $error, $android ,$pais='', $json_geoip='')
+//
+//               }
+//               else {              /// ERROR EN ACCESO LOGIN
+//                   registrar_acceso(0,'error','ERROR','login_GET error',$ip,1,$_SESSION['android'],$pais, $json_geoip);
+//                   header('Location: ../index.php'); 
+//               }
+////               $_SESSION['android']= preg_match('/Android|iPhone|iPad/', $_SERVER['HTTP_USER_AGENT']) ;     // estamos en un movil o tablet
                
   }
   
@@ -154,6 +155,9 @@ if (!isset($_SESSION["logs"])) { $_SESSION["logs"] = '' ; }      // inicializamo
     
    }
  // coletilla a añadir a todas las SQL para garantizar que nunca mezclamos datos de dos empresas
+   
+   // variables Generales de empresa y admin
+$id_c_coste = $_SESSION['id_c_coste'];   
 $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;  
 $admin= isset($_SESSION['admin']) ?  $_SESSION['admin'] : 0 ;   
 

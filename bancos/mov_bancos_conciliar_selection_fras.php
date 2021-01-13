@@ -7,8 +7,9 @@ $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
 require_once("../../conexion.php"); 
 require_once("../include/funciones.php"); 
 		
-// PHP que realiza diferentes acciones según el MODO y los parámetros de entrada y sus valores. id_mov_banco = [id_mov_banco, CAJA_METALICO, SOLO_PAGO...]
- //MODOS:
+// DESCRIPCION DEL FICHERO:
+// PHP que realiza diferentes acciones según el MODO y los parámetros de entrada y sus valores. id_mov_banco = [id_mov_banco, CAJA_METALICO, ...]
+ //MODOS: MOVS_A_FRA,  SOLO_PAGO
 //  pares array_str(id_mov_banco1&id_fra_prov1 - id_mov_banco2&id_fra_prov2 - .....)   conciliacion automatica de mov bancos y facturas
 //   (id_mov_banco1&id_fra_prov1 - id_mov_banco2&id_fra_prov2 - .....)   conciliacion automatica de mov bancos y facturas
 // muchos mov_bancos a una única factura id_fra_prov_unica
@@ -19,8 +20,18 @@ require_once("../include/funciones.php");
 // comprobamos si es  MODO muchos mov_bancos a una única Factura
 
 $modo=isset($_GET["modo"]) ? $_GET["modo"]: ''  ; 
+//$id_cta_banco=isset($_GET["id_cta_banco"]) ? $_GET["id_cta_banco"]: ''  ; 
 $id_fra_prov_unica=isset($_GET["id_fra_prov_unica"]) ? $_GET["id_fra_prov_unica"]: ''  ; 
-$abrir_factura=0;
+$importe_pago=isset($_GET["importe_pago"]) ? $_GET["importe_pago"]: null  ;          // es el importe del pago a crear. Si es null se calculará el PDTE_PAGO de la factura 
+
+
+//logs( "importe_pago: $importe_pago" );
+
+
+
+
+// variables de control de acciones
+$abrir_factura=0;            // indica si abriremos la factura al final
 $actualizar_datos_factura=0;
 
 if ($id_fra_prov_unica=='FACTURA_NUEVA')
@@ -28,7 +39,7 @@ if ($id_fra_prov_unica=='FACTURA_NUEVA')
 //    $id_proveedor = isset($_GET["id_proveedor"]) ? $_GET["id_proveedor"] : getVar('id_proveedor_auto') ;   // si no se indica el id_proveedor lo asigno a getVar('id_proveedor_auto')
         
   $id_fra_prov_unica= factura_proveedor_anadir() ;
-  $abrir_factura=1;
+  $abrir_factura=1;              // abrimos la factura al final por ser factura nueva
   $actualizar_datos_factura=1;
 
     /// pdte creamos factura y asociamos id a su $id_fra_prov_unica
@@ -36,7 +47,7 @@ if ($id_fra_prov_unica=='FACTURA_NUEVA')
 
 //logs('JUAN2:'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 
-if ($modo=='MOVS_A_FRA')
+if ($modo=='MOVS_A_FRA')         // aquí venimos de bancos_mov_bancarios.php y mandamos varios mov.bancos a una factura, creando el Pago previamente
 {
     $array_str=rawurldecode($_GET["array_str"])   ;
     $array_str=  str_replace("'", "", $array_str) ;
@@ -52,7 +63,8 @@ if ($modo=='MOVS_A_FRA')
 
 }else    // no es Array_str, solo hay una conciliacion
 {
-    $id_mov_banco=isset($_GET["id_mov_banco"]) ? $_GET["id_mov_banco"]: 'CAJA_METALICO'  ;         // si no viene el parámetro id_mov_banco , suponemos que va a PAGADO POR CAJA METALICO
+    $id_mov_banco=isset($_GET["id_mov_banco"]) ? $_GET["id_mov_banco"]: 'CAJA_METALICO'  ;         // mantenemos este mal sistema de control por compatibilidad, juand enero2021
+    $modo=isset($_GET["id_mov_banco"]) ? $modo: 'CAJA_METALICO'  ;         // si no viene el parámetro id_mov_banco , suponemos que va a PAGADO POR CAJA METALICO
     $id_fra_prov=$_GET["id_fra_prov"]  ;
     $values_mov_banco_fras_array[0]= $id_mov_banco.'&'.$id_fra_prov ;      // fabricamos un elemento del array para simularlo
 }    
@@ -68,28 +80,32 @@ foreach ($values_mov_banco_fras_array as $values_mov_banco_fras)
         $id_mov_banco=$array_id[0]  ;
         $id_fra_prov=$array_id[1]  ;
     }
-    elseif (count($array_id)==1 AND $id_fra_prov_unica )          // es un unico  ( $id_mov_banco )  estasmos en modo MOVS_A_FRA
+    elseif (count($array_id)==1 AND $id_fra_prov_unica )          // es un unico  ( $id_mov_banco )  estamos en modo MOVS_A_FRA
     {     
         $id_mov_banco=$array_id[0]  ;
         $id_fra_prov=$id_fra_prov_unica  ;
+        $abrir_factura=1;
     }
     else                              // solo viene un parámetro por fila, es el id_fra_prov y se paga por CAJA_METALICO
     {
          $id_mov_banco= isset($_GET["id_mov_banco"]) ? $_GET["id_mov_banco"] :  'CAJA_METALICO'  ;         // compatibilizamos con la opcion de pagar con cualquier CTA_BANCO
+         $modo=isset($_GET["id_mov_banco"]) ? $modo: 'CAJA_METALICO'  ;         // si no viene el parámetro id_mov_banco , suponemos que va a PAGADO POR CAJA METALICO
+
          $id_fra_prov=$array_id[0]  ;   
    }    
     
 //        logs("MOV-FRA: $id_mov_banco - $id_fra_prov");
         
     if ($id_mov_banco)   // evitamos ERROR si id_mov_banco=0    
-    {if (concilia_mov_banco_fra_prov($id_mov_banco,$id_fra_prov))
+    {if (concilia_mov_banco_fra_prov($modo, $id_mov_banco,$id_fra_prov, $importe_pago))
        { // echo "CONCILACION CREADA: $id_mov_banco - $id_fra_prov"       ;
 //         echo "<script languaje='javascript' type='text/javascript'>window.close();</script>"; 
           $id_mov_banco_valido=$id_mov_banco ;  // cogemos cualquier mov banco válido para rellenar los datos de la FACTURA_NUEVA
 
         }   //DEBUG 
        else 
-       {  echo "ERROR EN CONCILIACION: $id_mov_banco - $id_fra_prov"  ;
+       {  
+           //echo "ERROR EN CONCILIACION: $id_mov_banco - $id_fra_prov"  ;  //anulado, juand, ene21 porque sigue saliendo el error sin serlo
        }  
       
        

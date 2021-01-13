@@ -294,9 +294,9 @@ echo "<br><font size=2 color=grey>Agrupar por : $agrupar <br> {$result->num_rows
 if ($clasificar)
   {
 //   $actions_row["delete_link"]="1";
-   $onclick1_VARIABLE1_="id_documento" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-   $onclick1_VARIABLE2_="path_archivo" ;     // idem
-   $actions_row["onclick1_link"]="<a class='btn btn-danger' title='Elimina el documento completamente' href=# onclick=\"delete_doc_listado(  _VARIABLE1_ , '_VARIABLE2_' )\" >"
+   $onclick_VAR_TABLA1_="id_documento" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+   $onclick_VAR_TABLA2_="path_archivo" ;     // idem
+   $actions_row["onclick1_link"]="<a class='btn btn-danger' title='Elimina el documento completamente' href=# onclick=\"delete_doc_listado(  _VAR_TABLA1_ , '_VAR_TABLA2_' )\" >"
            . "<i class='far fa-trash-alt'></i></a> ";
 
 

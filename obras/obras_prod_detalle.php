@@ -286,7 +286,7 @@ if (!$listado_global)
      <?php echo $boton_global; ?>
      <a class="btn btn-link btn-xs noprint" title="imprimir" href=#  onclick="window.print();"><i class="fas fa-print"></i> Imprimir pantalla</a>
      <a class="btn btn-link btn-xs noprint" title="ver datos generales de la Relacion Valorada actual" target='_blank' href="../obras/prod_ficha.php?_m=$_m&id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><i class="far fa-calendar-alt"></i> ficha Rel. Valorada</a>    
-     <a class="btn btn-link btn-xs noprint" title="Crea una Certificación con el importe de esta Relación Valorada" href="#" onclick="js_href('<?php echo $href; ?>' )" > Certificar la RV</a>    
+     <a class="btn btn-link btn-xs noprint" title="Crea una Certificación con el importe de esta Relación Valorada" href="#" onclick="js_href('<?php echo $href; ?>' )" ><i class="fas fa-pen-nib"></i> Certificar Rel.Val.</a>    
      <br><br>
  </div>
  
@@ -475,21 +475,21 @@ function formato_estudio_costes()
 <br><a class="btn btn-link btn-xs noprint" title="imprimir la producción con formato de Certificación sin costes, con texto_udo y con resumen" href=#  onclick="formato_certif();"><i class="fas fa-print"></i> modo Certificacion</a>
 
 <br>Modo personalizado: <br>
-<label title='Permite seleccionar udos para operar con ellas'><INPUT type="checkbox" id="fmt_seleccion" name="fmt_seleccion" <?php echo $fmt_seleccion;?>  >&nbsp;Selección&nbsp;&nbsp;</label>
-<label title='Añade una columna de Costes Estimados de cada Udo'><INPUT type="checkbox" id="fmt_costes" name="fmt_costes" <?php echo $fmt_costes;?>  >&nbsp;Costes Est.&nbsp;&nbsp;</label>
-<label title='Agrupa el listado de Udos por capítulos'><INPUT type="checkbox" id="fmt_agrupar_cap" name="fmt_agrupar_cap" <?php echo $fmt_agrupar_cap;?>  >&nbsp;Agrupar Capitulos&nbsp;&nbsp;</label>
-<label title='Muestra el texto completo de la Udo'><INPUT type="checkbox" id="fmt_texto_udo" name="fmt_texto_udo" <?php echo $fmt_texto_udo;?>  >&nbsp;Texto udo&nbsp;&nbsp;</label>
-<label title='Muestra la Medición de Proyecto'><INPUT type="checkbox" id="fmt_med_proyecto" name="fmt_med_proyecto" <?php echo $fmt_med_proyecto;?>  >&nbsp;MED_PROYECTO&nbsp;&nbsp;</label>
-<label title='Añade un Resumen de Capítulos al final de la Relación Valorada'><INPUT type="checkbox" id="fmt_resumen_cap" name="fmt_resumen_cap" <?php echo $fmt_resumen_cap;?>  >&nbsp;Resumen capitulos&nbsp;&nbsp;</label>
-<label title='Desglosa en meses de Enero a Diciembre la Relación Valorada\n Se aconseja filtrar un año para evitar solapar meses de diferentes años'><INPUT type="checkbox" id="fmt_mensual" name="fmt_mensual" <?php echo $fmt_mensual;?>  >&nbsp;Desglose mensual&nbsp;&nbsp;</label>
-<label title='Añade una columna donde poder añadir mediciones. Agrupe por cap-udos, udos, subobra-udos o MODO EDICION'><INPUT type="checkbox" id="fmt_anadir_med" name="fmt_anadir_med" <?php echo $fmt_anadir_med;?>  >&nbsp;Columna Añadir Med.&nbsp;&nbsp;</label>
-<label title='Imprime el logo de la empresa'><INPUT type="checkbox" id="fmt_logo" name="fmt_logo" <?php echo $fmt_logo;?>  >&nbsp;Logo&nbsp;&nbsp;</label>
-<label title='Muestra los documentos , pdf, jpg... asociados a una Udo'><INPUT type="checkbox" id="fmt_doc" title='Muestra los documentos , pdf, jpg... asociados a una Udo' name="fmt_doc" <?php echo $fmt_doc;?>  >&nbsp;Doc. udo&nbsp;&nbsp;</label>
-<label title='Muestra todas las Subobras aunque no tengan Udos asignadas'><INPUT type="checkbox" id="fmt_subobras"  name="fmt_subobras" <?php echo $fmt_subobras;?>  >&nbsp;Subobras vacias&nbsp;&nbsp;</label>
-<label title='No muestra los capítulos con la etiqueta _NO_PRINT_ (ó simplificada _NP_ ), para poder imprimir certificaciones sin los capítulos auxiliares como p.ej. COSTES INDIRECTOS'><INPUT type="checkbox" id="fmt_no_print"  name="fmt_no_print" <?php echo $fmt_no_print;?>  >&nbsp;Quitar NP&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Permite seleccionar udos para operar con ellas'><INPUT type="checkbox" id="fmt_seleccion" name="fmt_seleccion" <?php echo $fmt_seleccion;?>  >&nbsp;Selección&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Añade una columna de Costes Estimados de cada Udo'><INPUT type="checkbox" id="fmt_costes" name="fmt_costes" <?php echo $fmt_costes;?>  >&nbsp;Costes Est.&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Agrupa el listado de Udos por capítulos'><INPUT type="checkbox" id="fmt_agrupar_cap" name="fmt_agrupar_cap" <?php echo $fmt_agrupar_cap;?>  >&nbsp;Agrupar Capitulos&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Muestra el texto completo de la Udo'><INPUT type="checkbox" id="fmt_texto_udo" name="fmt_texto_udo" <?php echo $fmt_texto_udo;?>  >&nbsp;Texto udo&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Muestra la Medición de Proyecto'><INPUT type="checkbox" id="fmt_med_proyecto" name="fmt_med_proyecto" <?php echo $fmt_med_proyecto;?>  >&nbsp;Med.Proyecto&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Añade un Resumen de Capítulos al final de la Relación Valorada'><INPUT type="checkbox" id="fmt_resumen_cap" name="fmt_resumen_cap" <?php echo $fmt_resumen_cap;?>  >&nbsp;Resumen capitulos&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Desglosa en meses de Enero a Diciembre la Relación Valorada\n Se aconseja filtrar un año para evitar solapar meses de diferentes años'><INPUT type="checkbox" id="fmt_mensual" name="fmt_mensual" <?php echo $fmt_mensual;?>  >&nbsp;Desglose mensual&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Añade una columna donde poder añadir mediciones. Agrupe por cap-udos, udos, subobra-udos o MODO EDICION'><INPUT type="checkbox" id="fmt_anadir_med" name="fmt_anadir_med" <?php echo $fmt_anadir_med;?>  >&nbsp;Columna Añadir Med.&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Imprime el logo de la empresa'><INPUT type="checkbox" id="fmt_logo" name="fmt_logo" <?php echo $fmt_logo;?>  >&nbsp;Logo&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Muestra los documentos , pdf, jpg... asociados a una Udo'><INPUT type="checkbox" id="fmt_doc" title='Muestra los documentos , pdf, jpg... asociados a una Udo' name="fmt_doc" <?php echo $fmt_doc;?>  >&nbsp;Doc. udo&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Muestra todas las Subobras aunque no tengan Udos asignadas'><INPUT type="checkbox" id="fmt_subobras"  name="fmt_subobras" <?php echo $fmt_subobras;?>  >&nbsp;Subobras vacias&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='No muestra los capítulos con la etiqueta _NO_PRINT_ (ó simplificada _NP_ ), para poder imprimir certificaciones sin los capítulos auxiliares como p.ej. COSTES INDIRECTOS'><INPUT type="checkbox" id="fmt_no_print"  name="fmt_no_print" <?php echo $fmt_no_print;?>  >&nbsp;Quitar NP&nbsp;&nbsp;</label>
 
-
-<!--</div>-->         
+ 
+<!--</div>-->          
  <!--</div>-->         
 </div>         
          
@@ -978,9 +978,9 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
   
      break;
    case "EDICION":
-   $onclick1_VARIABLE1_="ID_UDO" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-   $onclick1_VARIABLE2_="MED_PROYECTO" ;     // idem
-   $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='añade nuevo detalle de medición a la Udo' href=# onclick=\"add_detalle( $id_produccion, _VARIABLE1_ , '_VARIABLE2_' )\" >add</a> ";
+   $onclick_VAR_TABLA1_="ID_UDO" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+   $onclick_VAR_TABLA2_="MED_PROYECTO" ;     // idem
+   $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='añade nuevo detalle de medición a la Udo' href=# onclick=\"add_detalle( $id_produccion, _VAR_TABLA1_ , '_VAR_TABLA2_' )\" >add</a> ";
    $actions_row["id"]="ID_UDO"; 
    
    $sql0="SELECT * FROM Prod_det_suma WHERE ID_PRODUCCION=$id_produccion   " ;    
@@ -999,8 +999,8 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
    
      break;
    case "comparadas":
-//   $onclick1_VARIABLE1_="ID_UDO" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-//   $onclick1_VARIABLE2_="MED_PROYECTO" ;     // idem
+//   $onclick_VAR_TABLA1_="ID_UDO" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+//   $onclick_VAR_TABLA2_="MED_PROYECTO" ;     // idem
 //   $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' title='añade nuevo detalle de medición a la Udo' href=# onclick=\"add_detalle( $id_produccion, _VARIABLE1_ , '_VARIABLE2_' )\" >add</a> ";
 //   $actions_row["id"]="ID_UDO"; 
        

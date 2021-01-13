@@ -9,7 +9,6 @@ require_once("../include/funciones.php");
 		
 
 
-//    $id_mov_banco=isset($_GET["id_mov_banco"]) ? $_GET["id_mov_banco"]: 'CAJA_METALICO'  ;         // si no viene el parámetro id_mov_banco , suponemos que va a PAGADO POR CAJA METALICO
 $id_fra_prov=$_GET["id_fra_prov"]  ;
 $id_pago=$_GET["id_pago"]  ;
 

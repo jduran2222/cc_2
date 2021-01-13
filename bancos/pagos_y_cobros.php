@@ -382,28 +382,14 @@ $content_anadir_med="" ;
 
 // eliminacion en grupo de seleccionados
 //$where_id_cta_banco= $listado_global ? "1=1" : "id_cta_banco=$id_cta_banco" ;      // permitimos borrar en listado global
-$sql_delete= "DELETE FROM `PAGOS` WHERE  id_pago IN _VARIABLE1_ ; "  ;
+$sql_delete= "DELETE FROM `PAGOS` WHERE  id_pago IN _VAR_SQL1_ ; "  ;
 $href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
 echo "<a class='btn btn-danger btn-xs noprint ' href='#' "
      . " onclick=\"js_href('$href' ,'1','¿Borrar Pagos o cobros seleccionados? Recuerde no pueden estar conciliados' ,'table_selection_IN()' )\"   "
      . "title='Borra los Pagos  seleccionados' ><i class='far fa-trash-alt'></i> Borrar Pagos seleccionadas</a>" ;
       
       
-//      
-//// conciliar a factura proveedor 
-//      $url_sugerir= encrypt2( "javascript_code=js_href('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
-//              . "id_fra_prov_unica=_ID_VALOR__JS_AND_array_str=_VARIABLE1_',1,'','table_selection_IN()')"
-//              . "&sql_sugerir=SELECT ID_FRA_PROV,CONCAT('Proveedor: ',PROVEEDOR,'<br>N.Factura: ',N_FRA) FROM Fras_Prov_Listado WHERE  $where_c_coste AND "
-//              . " filtro LIKE '%_FILTRO_%' LIMIT 10" );
-//      
-//      echo "<br>Buscar factura donde conciliar: <INPUT  style='font-size: 70% ;font-style: italic ;' id='input_fra_prov' size='13'  "
-//              . "  onkeyup=\"sugerir('$url_sugerir',this.value,'sugerir_fra_prov')\" placeholder='buscar Prov-factura...' value=''  >"
-//              . "<div class='sugerir' id='sugerir_fra_prov'></div>" ;
-//
-//      echo "<button class='btn btn-xs btn-link' onclick=\"js_href('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
-//              . "id_fra_prov_unica=FACTURA_NUEVA_JS_AND_array_str=_VARIABLE1_',1,'','table_selection_IN()' ) \"  >"
-//              . "Conciliar en una factura nueva</button> " ;
-//       
+
       
  ?>     
     </div>

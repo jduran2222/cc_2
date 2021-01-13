@@ -32,7 +32,7 @@ $id=$_GET["id"] ;
  
  // DATOS   FICHA . PHP
  //echo "<pre>";
-$sql="SELECT * FROM Tareas_View WHERE id=$id AND $where_c_coste";
+$sql="SELECT *,CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=',id_entidad) as id_entidad_link FROM Tareas_View WHERE id='$id' AND $where_c_coste";
  $result=$Conn->query($sql);
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;
 
@@ -56,10 +56,10 @@ $sql="SELECT * FROM Tareas_View WHERE id=$id AND $where_c_coste";
   
 //  $updates=['NOMBRE','DNI','F_ALTA','BAJA', 'F_BAJA' , 'Observaciones', 'pagada']  ;
   
-  $updates=['*']  ;
-  $formats["usuarios"]='text_edit' ;
-  $formats["Tarea"]='text_edit' ;
-  $etiquetas["Tarea"]='Título tarea' ;
+  $updates=['usuarios', 'tarea', 'Terminada', 'Tarea', 'Texto']  ;
+//  $formats["usuarios"]='text_edit' ;
+//  $formats["Tarea"]='text_edit' ;
+//  $etiquetas["Tarea"]='Título tarea' ;
 //  $ocultos=['NOMBRE_OBRA']  ;
   
 //  $id_proveedor=$rs["ID_PROVEEDORES"] ;
@@ -67,7 +67,8 @@ $sql="SELECT * FROM Tareas_View WHERE id=$id AND $where_c_coste";
   $id_update="id" ;
   $id_valor=$id ;
   
-  
+  $links["tipo_entidad"] =["../include/ficha_entidad.php?", "id_entidad_link", "ver entidad asociada al documento (Factura, Pof, ...)", 'formato_sub'] ;
+
   $delete_boton=1;
 //  if (Dfirst("ID_VALE","GASTOS_T","ID_CONCEPTO=$id_concepto"))
 //  {        

@@ -442,8 +442,6 @@ $etiquetas["P9"] = " 9" ;
   
 $actions_row=[];
 $actions_row["id"]="id";
-//$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
-//$actions_row["delete_link"]="../include/tabla_delete_row.php?tabla=PARTES_PERSONAL&where=id=";
 $actions_row["delete_link"]="1";
 
 
@@ -492,7 +490,7 @@ $actions_row["delete_link"]="1";
        <?php 
         $sql_insert="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) "
             ." SELECT '$id_pof' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO "
-          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_UDO='_VARIABLE1_'"   ;   
+          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_UDO='_VAR_SQL1_'"   ;   
    
         $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
         
@@ -575,7 +573,7 @@ return ;
        
         $sql_insert="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) "
             ." SELECT '$id_pof' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO "
-          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_CAPITULO='_VARIABLE1_'"   ;   
+          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_CAPITULO='_VAR_SQL1_'"   ;   
    
         $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
         
@@ -598,7 +596,7 @@ return ;
        
         $sql_insert="INSERT INTO POF_CONCEPTOS (ID_POF, id_udo,CANTIDAD,CONCEPTO,DESCRIPCION,Precio_Cobro,user) "
             ." SELECT '$id_pof' AS ID_POF,ID_UDO AS id_udo ,MED_PROYECTO AS CANTIDAD,CONCAT(ud,' ',UDO) AS CONCEPTO "
-          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_SUBOBRA='_VARIABLE1_'"   ;   
+          . ",TEXTO_UDO AS DESCRIPCION,  Precio_Cobro, '{$_SESSION["user"]}' AS user FROM Udos_View WHERE ID_SUBOBRA='_VAR_SQL1_'"   ;   
    
         $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
         

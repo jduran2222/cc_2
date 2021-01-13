@@ -57,7 +57,7 @@ $boton_recalcular= "<button class='btn-warning'  onclick=eval_coste($id_udo); ti
 $id_obra=$rs["ID_OBRA"];
 
 
-$href_anadir_capitulo="javascript:js_href( '../obras/add_capitulo_ajax.php?id_obra=$id_obra&id_udo=$id_udo&capitulo=_VARIABLE1_',1, '', 'PROMPT_Nombre de Capítulo nuevo?', '' , 'capitulo nuevo', ''  ) ;" ;
+$href_anadir_capitulo="javascript:js_href( '../obras/add_capitulo_ajax.php?id_obra=$id_obra&id_udo=$id_udo&capitulo=_VAR_HREF1_',1, '', 'PROMPT_Nombre de Capítulo nuevo?', '' , 'capitulo nuevo', ''  ) ;" ;
 //$href_anadir_capitulo="javascript:alert('hola') ;" ;
 
 $selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
@@ -219,9 +219,6 @@ if ($id_produccion)
     //$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
     //
     //$aligns["importe"] = "right" ;
-    //$aligns["Pdte_conciliar"] = "right" ;
-    ////$aligns["Importe_ejecutado"] = "right" ;
-    //
     ////$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
     //
     ////$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
@@ -235,7 +232,6 @@ if ($id_produccion)
 
     $actions_row=[];
     $actions_row["id"]="id";
-    //$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
     //$actions_row["delete_link"]="../include/tabla_delete_row.php?tabla=PARTES_PERSONAL&where=id=";
     $actions_row["delete_link"]="1";
     $formats["MEDICION"] = "text_moneda" ;
@@ -251,7 +247,7 @@ if ($id_produccion)
     echo "<h1>Relación Valorada: <a href='../obras/obras_prod_detalle.php?id_produccion=$id_produccion' target='_blank' title='abrir Relación Valorada'>$produccion</a></h1> " ;
 
     $fecha4=date('Y-m-d');
-    $sql_insert="INSERT INTO PRODUCCIONES_DETALLE (ID_UDO,ID_PRODUCCION,Fecha,MEDICION ) VALUES ('$id_udo','$id_produccion' ,'$fecha4','_VARIABLE1_' )"    ;   
+    $sql_insert="INSERT INTO PRODUCCIONES_DETALLE (ID_UDO,ID_PRODUCCION,Fecha,MEDICION ) VALUES ('$id_udo','$id_produccion' ,'$fecha4','_VAR_SQL1_' )"    ;   
     $href='../include/sql.php?sql=' . encrypt2($sql_insert)  ;  
 
     $add_link_html= "<a class='btn btn-link' href='#'  onclick=\" js_href('$href',1,'','PROMPT_Medicion:','','0.00'); \" > "

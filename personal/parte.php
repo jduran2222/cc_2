@@ -201,8 +201,6 @@ $id_update="id" ;
 
 $actions_row=[];
 $actions_row["id"]="id";
-//$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
-//$actions_row["delete_link"]="../include/tabla_delete_row.php?tabla=PARTES_PERSONAL&where=id=";
 $actions_row["delete_link"]="1";
 
 
@@ -271,7 +269,6 @@ $id_update="id" ;
 
 $actions_row=[];
 $actions_row["id"]="id";
-//$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
 //$actions_row["delete_link"]="../include/tabla_delete_row.php?tabla=PARTES_PERSONAL&where=id=";
 $actions_row["delete_link"]="1";
 
@@ -345,8 +342,6 @@ $id_update="ID_VALE" ;
 
 $actions_row=[];
 $actions_row["id"]="ID_VALE";
-//$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
-//$actions_row["delete_link"]="../include/tabla_delete_row.php?tabla=PARTES_PERSONAL&where=id=";
 $actions_row["delete_link"]="1";
 
 
@@ -454,9 +449,9 @@ $add_link_html= "<div >"
 $tabla_expandida=0;$tabla_footer='<br>' ;
 
 // boton para poder ROTAR 90º la foto
-$href_270="../documentos/doc_rotar_ajax.php?grados=270&id_documento=_VARIABLE1_" ;
+$href_270="../documentos/doc_rotar_ajax.php?grados=270&id_documento=_VAR_TABLA1_" ;
 $actions_row["onclick1_link"]="<a class='btn btn-link' href=# onclick=\"js_href( '$href_270'  )\"   title='rotar la foto -90º'><i class='fas fa-undo'></i></a> " ;   // acción de rotar
-$onclick1_VARIABLE1_="id_documento" ;  // variable a pasar
+$onclick_VAR_TABLA1_="id_documento" ;  // variable a pasar
 
 
 

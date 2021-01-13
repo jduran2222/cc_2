@@ -1,8 +1,7 @@
 <?php
 // cambios
 require_once("../include/session.php");
-$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
-$id_c_coste = $_SESSION['id_c_coste'];
+
 
 $titulo = 'Agenda';
 
@@ -103,55 +102,7 @@ $links["Tarea"] = ["../agenda/tarea_ficha.php?id=", "id"] ;
 	
 <?php            // ----- div PARTES PERSONAL  tabla.php   -----<!--  DETALLE DEL PARTE -->
 
-////$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX,MD,DC,Observaciones FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
-//$sql="SELECT id,ID_VALE,REF,FECHA,ID_OBRA,NOMBRE_OBRA,CANTIDAD,COSTE,IMPORTE,ID_FRA_PROV ,facturado, Observaciones  FROM ConsultaGastos_View  WHERE ID_CONCEPTO=$id_concepto  AND $where_c_coste    ";
-////echo $sql;
-//$result=$Conn->query($sql );
-//
-////$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO,SUM(HX) as HX,SUM(MD) as MD,SUM(DC) as DC FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
-//
-//$sql="SELECT 'Suma',' ','' as b1,SUM(CANTIDAD) as cantidad,COSTE,SUM(IMPORTE) as importe,'' as b2 FROM ConsultaGastos_View  WHERE ID_CONCEPTO=$id_concepto  AND $where_c_coste    ";
-////$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO, '','  ' FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
-////echo $sql;
-//$result_T=$Conn->query($sql );
-//
-//$updates=[ 'Observaciones']  ;
-//$tabla_update="GASTOS_T" ;
-//$id_update="id" ;
-//
-//$actions_row=[];
-//$actions_row["id"]="id";
-////$actions_row["update_link"]="../include/update_row.php?tabla=Fra_Cli_Detalles&where=id=";
-////$actions_row["delete_link"]="../include/delete_row.php?tabla=PARTES_PERSONAL&where=id=";
-//$actions_row["delete_link"]="1";
-//
-//
-//$links["NOMBRE_OBRA"] = ["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-//$links["PROVEEDOR"] = ["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;
-//$links["CONCEPTO"] = ["../proveedores/concepto_ficha.php?id_concepto=", "ID_CONCEPTO"]  ;
-//$links["REF"] = ["../proveedores/albaran_proveedor.php?id_vale=", "ID_VALE"] ;
-//$links["facturado"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura" ,"formato_sub"] ;
-//
-//
-//
-//
-////$id_clave="id" ;
-//
-//$formats["facturado"]='boolean_factura';
-////$formats["importe"]='moneda';
-////
-//$links["NOMBRE"] = ["../personal/personal_ficha.php?id_personal=", "ID_PERSONAL"] ;
-//$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-//
-//$aligns["importe"] = "right" ;
-//$aligns["Pdte_conciliar"] = "right" ;
-////$aligns["Importe_ejecutado"] = "right" ;
 
-//$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
-
-//$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-//$titulo="" ;
-//$msg_tabla_vacia="No hay vales";
 
 ?>
 

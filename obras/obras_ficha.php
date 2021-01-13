@@ -55,7 +55,7 @@ if ($tipo_subcentro=='O')     // consulta para las OBRAS
 {
  $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,NOMBRE_COMPLETO,EXPEDIENTE,ID_CLIENTE,TIPO_LICITACION,IMPORTE,BAJA,COEF_BAJA,iva_obra, importe_sin_iva   "
          . ",GG_BI,ID_ESTUDIO,id_prod_estudio_costes,id_produccion_obra"
-         . ",Plazo,Situacion,URL_Google_Maps ,Agenda_Obra, Observaciones "
+         . ",Plazo,Situacion,URL_Google_Maps ,Agenda_Obra,GRUPOS, Observaciones "
          . ",'Fechas' as EXPAND_1 , F_Contrato,Fecha_Plan_SS,F_Aper_C_Trabajo "
          . " ,F_Acta_Rep,F_Fin_Plazo,Plazo_dias, Porcentaje_Plazo"
          . " ,F_A_Recepcion"
@@ -85,14 +85,14 @@ if ($tipo_subcentro=='O')     // consulta para las OBRAS
     
 }elseif($tipo_subcentro=='G' OR $tipo_subcentro=='A')
 {
- $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,importe_sin_iva,IMPORTE, Valoracion  ,Gastos as Gasto_real,Valoracion-Gastos as Beneficio_real,VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
+ $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,importe_sin_iva,IMPORTE,id_prod_estudio_costes,id_produccion_obra,GRUPOS, Valoracion  ,Gastos as Gasto_real,Valoracion-Gastos as Beneficio_real,VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
          . ",Situacion,URL_Google_Maps, TIPO_LICITACION "
          . ", user,fecha_creacion FROM Obras_View WHERE ID_OBRA=$id_obra AND $where_c_coste";
     
 }elseif($tipo_subcentro=='M')
 {
  $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,IMPORTE/(1+iva_obra) AS IMPORTE_SIN_IVA, IMPORTE"
-         . ",iva_obra,Situacion,URL_Google_Maps "
+         . ",iva_obra,GRUPOS,Situacion,URL_Google_Maps "
          . ", F_Contrato "
               . " ,'----------RESUMEN ECONOMICO----------' as a ,"
          . " ,Gastos,VENTAS,GASTOS_EX"
