@@ -121,15 +121,15 @@ if ($filtro<>"")
 // buscamos Estudios_de_Obra 
 if ($_SESSION["permiso_licitacion"])    
 {
-    $result=$Conn->query("SELECT ID_ESTUDIO,NUMERO,NOMBRE,`PLAZO ENTREGA` FROM Estudios_view WHERE  CONCAT('@licitacion',NUMERO,'-',NOMBRE,COALESCE(`Nombre Completo`,'')) LIKE '%$filtro%' AND $where_c_coste ORDER BY NUMERO DESC LIMIT $limite");
+    $result=$Conn->query("SELECT ID_ESTUDIO,NUMERO,NOMBRE,`PLAZO ENTREGA` FROM Estudios_view WHERE  CONCAT('@ESTUDIO',NUMERO,'-',NOMBRE,COALESCE(`Nombre Completo`,'')) LIKE '%$filtro%' AND $where_c_coste ORDER BY NUMERO DESC LIMIT $limite");
  if ($result->num_rows > 0)
  {  
      $c=0 ;
-    $content.= "</td></tr></table><br><table class='table table-hover table-striped table-bordered'><tr><td><p style='font-size: 40px;'><i class='fas fa-globe-europe'></i>&nbsp;LICITACIONES ({$result->num_rows}):</p>" ;
+    $content.= "</td></tr></table><br><table class='table table-hover table-striped table-bordered'><tr><td><p style='font-size: 40px;'><i class='fas fa-globe-europe'></i>&nbsp;ESTUDIOS DE OBRA ({$result->num_rows}):</p>" ;
     while($rs = $result->fetch_array(MYSQLI_ASSOC))    // cojo la de mayor usuarios permitidos 
     {
      $c++ ;   $g++ ;
-     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../estudios/estudios_ficha.php?id_estudio={$rs["ID_ESTUDIO"]}'>@licitacion{$rs["NUMERO"]}-{$rs["NOMBRE"]}</a>...<font size=5 color=grey>({$rs["PLAZO ENTREGA"]})</font>"   ;
+     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../estudios/estudios_ficha.php?id_estudio={$rs["ID_ESTUDIO"]}'>{$rs["NUMERO"]}-{$rs["NOMBRE"]}</a>...<font size=5 color=grey>({$rs["PLAZO ENTREGA"]})</font>"   ;
     }
     if ($c==$limite) {$content.= ".....<a class='btn btn-link btn-xs' href='../estudios/estudios_buscar.php' >Buscar más estudios de obra</a> " ; }
     
@@ -167,29 +167,29 @@ if ($_SESSION["permiso_obras"])
     while($rs = $result->fetch_array(MYSQLI_ASSOC))    // cojo la de mayor usuarios permitidos 
     {
      $c++ ;   $g++ ;
-     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../obras/obras_ficha.php?id_obra={$rs["ID"]}'>@obra {$rs["NOMBRE"]}</a>...<font size=5 color=grey>({$rs["FECHA"]})</font>"   ;
+     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../obras/obras_ficha.php?id_obra={$rs["ID"]}'>{$rs["NOMBRE"]}</a>...<font size=5 color=grey>({$rs["FECHA"]})</font>"   ;
     }
     if ($c==$limite) {$content.= ".....<a class='btn btn-link btn-xs' href='../obras/obras_buscar.php?tipo_subcentro=O' >Buscar más Obras</a> " ; }
     
  }
  
  // buscamos PRODUCCION DE OBRAS
- $result=$Conn->query("SELECT *  FROM Prod_view WHERE CONCAT('@rel_val',NOMBRE_OBRA,' ',PRODUCCION) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
+ $result=$Conn->query("SELECT *  FROM Prod_view WHERE CONCAT(NOMBRE_OBRA,'PRODUCCION',PRODUCCION) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
      $c=0 ;
-    $content.= "</td></tr></table><br><table class='table table-hover table-striped table-bordered'><tr><td><p style='font-size: 40px;'><i class='fas fa-globe-europe'></i>&nbsp;RELACIONES VALORADAS ({$result->num_rows}):</p>" ;
+    $content.= "</td></tr></table><br><table class='table table-hover table-striped table-bordered'><tr><td><p style='font-size: 40px;'><i class='fas fa-globe-europe'></i>&nbsp;PRODUCCION DE OBRAS ({$result->num_rows}):</p>" ;
     while($rs = $result->fetch_array(MYSQLI_ASSOC))    // cojo la de mayor usuarios permitidos 
     {
      $c++ ;   $g++ ;
-     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../obras/obras_prod_detalle.php?id_obra={$rs["ID_OBRA"]}&id_produccion={$rs["ID_PRODUCCION"]}'>@rel_val {$rs["NOMBRE_OBRA"]} / {$rs["PRODUCCION"]}</a>...<font size=5 color=grey>({$rs["fecha_creacion"]})</font>"   ;
+     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../obras/obras_prod_detalle.php?id_obra={$rs["ID_OBRA"]}&id_produccion={$rs["ID_PRODUCCION"]}'>{$rs["NOMBRE_OBRA"]} / {$rs["PRODUCCION"]}</a>...<font size=5 color=grey>({$rs["fecha_creacion"]})</font>"   ;
     }
     //if ($c==$limite) {$content.= ".....<a class='btn btn-link btn-xs' href='../obras/obras_prod_detalle.php?id_produccion={$rs["NOMBRE"]}' >Buscar más Obras</a> " ; }
     
  }
  // buscamos MAQUINARIA
- $result=$Conn->query("SELECT ID_OBRA AS ID,'' AS NUMERO, NOMBRE_OBRA AS NOMBRE,FECHA_INICIO AS FECHA  FROM OBRAS WHERE tipo_subcentro='M' AND CONCAT('@maquinaria',NOMBRE_OBRA,NOMBRE_COMPLETO) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC LIMIT $limite");
+ $result=$Conn->query("SELECT ID_OBRA AS ID,'' AS NUMERO, NOMBRE_OBRA AS NOMBRE,FECHA_INICIO AS FECHA  FROM OBRAS WHERE tipo_subcentro='M' AND CONCAT(NOMBRE_OBRA,NOMBRE_COMPLETO) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -198,13 +198,13 @@ if ($_SESSION["permiso_obras"])
     while($rs = $result->fetch_array(MYSQLI_ASSOC))    // cojo la de mayor usuarios permitidos 
     {
      $c++ ;   $g++ ;
-     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../obras/obras_ficha.php?id_obra={$rs["ID"]}'>@maquinaria {$rs["NOMBRE"]}</a>...<font size=5 color=grey>({$rs["FECHA"]})</font>"   ;
+     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../obras/obras_ficha.php?id_obra={$rs["ID"]}'>{$rs["NOMBRE"]}</a>...<font size=5 color=grey>({$rs["FECHA"]})</font>"   ;
     }
     if ($c==$limite) {$content.= ".....<a class='btn btn-link btn-xs' href='../obras/obras_buscar.php?tipo_subcentro=M' >Buscar más Maquinaria</a> " ; }
     
  }
  // buscamos OBRAS -> POF 
- $result=$Conn->query("SELECT *  FROM POF_lista WHERE CONCAT('@pof',NOMBRE_OBRA,'-',NUMERO,'-',NOMBRE_POF) LIKE '%$filtro%' AND $where_c_coste ORDER BY fecha_creacion DESC LIMIT $limite");
+ $result=$Conn->query("SELECT *  FROM POF_lista WHERE CONCAT('@pof',NOMBRE_OBRA,'-',NUMERO,'-',NOMBRE_POF) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  
@@ -213,7 +213,7 @@ if ($_SESSION["permiso_obras"])
     while($rs = $result->fetch_array(MYSQLI_ASSOC))    // cojo la de mayor usuarios permitidos 
     {
      $c++ ;   $g++ ;
-     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../pof/pof.php?id_pof={$rs["ID_POF"]}'>@pof {$rs["NOMBRE_OBRA"]} / {$rs["NUMERO"]}-{$rs["NOMBRE_POF"]}</a>...<font size=5 color=grey>({$rs["fecha_creacion"]})</font>"   ;
+     $content.= "</td></tr><tr><td><a id='a_link' style='font-size: 40px;' target='_blank' href='../pof/pof.php?id_pof={$rs["ID_POF"]}'>pof {$rs["NOMBRE_OBRA"]} / {$rs["NUMERO"]}-{$rs["NOMBRE_POF"]}</a>...<font size=5 color=grey>({$rs["fecha_creacion"]})</font>"   ;
     }
     //if ($c==$limite) {$content.= ".....<a class='btn btn-link btn-xs' href='../obras/obras_prod_detalle.php?id_produccion={$rs["NOMBRE"]}' >Buscar más Obras</a> " ; }
     
