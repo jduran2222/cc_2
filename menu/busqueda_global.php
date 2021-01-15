@@ -6,6 +6,8 @@ $id_c_coste = $_SESSION['id_c_coste'];
 
 $titulo = 'Búsqueda Global';
 
+// PRUEBA DE GITHUB, JUAND, ENERO2021
+
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
 include_once('../templates/_inc_privado2_navbar.php');
