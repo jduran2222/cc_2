@@ -61,7 +61,7 @@ $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
 //  $id_proveedor=$rs["ID_PROVEEDORES"] ;
   $tabla_update="PERSONAL" ;
   $id_update="ID_PERSONAL" ;
-  $id_valor=$id_personal ;
+  $id_valor=$id_personal ;  
   
   
   $delete_boton=1;
@@ -70,7 +70,7 @@ $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
   
 //  $selects["id_obra"]=["ID_OBRA","NOMBRE_OBRA","OBRAS","","../obras/obras_ficha.php?id_obra=","id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 
-  $selects["id_concepto_mo"]=["ID_CONCEPTO","CONCEPTO","Conceptos_View","../proveedores/concepto_anadir.php?id_proveedor=". getVar('id_proveedor_mo') ,"../proveedores/concepto_ficha.php?id_concepto=",'id_concepto_mo'] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+  $selects["id_concepto_mo"]=["ID_CONCEPTO","CONCEPTO","Conceptos_View","../proveedores/concepto_anadir.php?id_personal=$id_personal&id_proveedor={$rs["id_proveedor_nomina"]}" ,"../proveedores/concepto_ficha.php?id_concepto=",'id_concepto_mo'] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
   $tooltips["id_concepto_mo"]= 'Concepto de gasto asignado al empleado como coste de Hora de trabajo, se cargará a la obra al cargar el correspondiente Parte Diario donde aparezca el empleado. ';   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 
   $selects["id_proveedor_nomina"]=["ID_PROVEEDORES","PROVEEDOR","Proveedores" 

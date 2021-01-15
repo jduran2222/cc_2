@@ -265,7 +265,7 @@ echo "</div>" ;
 
 ///  DETALLES CONCEPTOS DEL ALBARAN
 
-$sql="SELECT id,ID_CONCEPTO,id_usub, CONCEPTO,CANTIDAD,COSTE,IMPORTE,Obs,SUBOBRA,IF(id_usub,'uSub','') as Subc FROM ConsultaGastos_View  WHERE ID_VALE=$id_vale  AND $where_c_coste  ";
+$sql="SELECT id,ID_CONCEPTO,id_usub,ID_SUBOBRA, CONCEPTO,CANTIDAD,COSTE,IMPORTE,Obs,SUBOBRA,IF(id_usub,'uSub','') as Subc FROM ConsultaGastos_View  WHERE ID_VALE=$id_vale  AND $where_c_coste  ";
 //$sql="SELECT * FROM GASTOS_T  WHERE ID_VALE=$id_vale   ";
 //echo $sql;
 $result=$Conn->query($sql );
@@ -274,7 +274,7 @@ $sql_T="SELECT 'Total' AS A,'' AS A1,'' AS A2, SUM(IMPORTE) AS IMPORTE,'' AS A3 
 //echo $sql;
 $result_T=$Conn->query($sql_T );
 
-  $updates=['CANTIDAD','Obs']  ;
+  $updates=['CANTIDAD','Obs','SUBOBRA']  ;
 //  $id_proveedor=$rs["ID_PROVEEDORES"] ;
   $tabla_update="GASTOS_T" ;
   $id_update="id" ;
@@ -289,6 +289,7 @@ $actions_row["delete_confirm"]="0";
 //$links["f_vto"] = ["fra_prov_pago.php?id_pago=", "id_pago"] ;
 $links["CONCEPTO"] = ["../proveedores/concepto_ficha.php?id_concepto=", "ID_CONCEPTO","ver Ficha del Concepto de proveedor","formato_sub"]  ;
 $links["Subc"] = ["../proveedores/usub_ficha.php?id=", "id_usub","ver Unidad subcontratada","formato_sub_vacio"]  ;
+$links["SUBOBRA"] = ["../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "ver Subobra", "icon"] ;
 
 //
 $tooltips["Subc"] = "Unidad de Obra perteneciente a un Subcontrato" ;

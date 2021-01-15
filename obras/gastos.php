@@ -136,7 +136,7 @@ if ($gastos_global)                // Estamos en pantalla de GASTOS GLOBALES (to
  else
 {
     echo "<a class='btn btn-link btn-lg noprint' href= '../obras/gastos.php'title='permite consultar los gastos de todas las obras a la vez' >$ICON-globe$SPAN Gastos globales</a><br>" ;
-    echo "<a target='_blank' class='btn btn-link btn-lg' href='../proveedores/albaran_anadir.php?id_obra=$id_obra' title='añade un albarán de proveedor a la obra'><i class='fas fa-plus-circle'></i> añadir Gasto</a>" ;
+    echo "<a target='_blank' class='btn btn-primary btn-xs' href='../proveedores/albaran_anadir.php?id_obra=$id_obra' title='añade un albarán de proveedor a la obra'><i class='fas fa-plus-circle'></i> añadir Albarán</a>" ;
 
     echo "<h1>Gastos de la obra <B>$NOMBRE_OBRA</B></h1>"  ;
     echo "<form action='gastos.php?id_obra=$id_obra' method='post' id='form1' name='form1'>"    ;

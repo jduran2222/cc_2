@@ -257,7 +257,8 @@ if(Dfirst("email","C_COSTES","email='$email'"))
                    setVar("id_concepto_nomina", $id_concepto_nomina) ;
                }
                // creamos un CONCEPTO para coste de hora estándar
-               if ($id_concepto_hora_estandar=DInsert_into( "CONCEPTOS", "( ID_OBRA,ID_CUENTA,CONCEPTO, COSTE,ID_PROVEEDOR )" , "   ( $id_obra_mo ,$id_cuenta_mo ,'h empleado estándar',10,$id_proveedor_auto )" , "ID_CONCEPTO" , "ID_PROVEEDOR=$id_proveedor_auto" ) )
+               $coste_hora=cc_coste_hora() ;
+               if ($id_concepto_hora_estandar=DInsert_into( "CONCEPTOS", "( ID_OBRA,ID_CUENTA,CONCEPTO, COSTE,ID_PROVEEDOR )" , "   ( $id_obra_mo ,$id_cuenta_mo ,'h empleado estándar','$coste_hora',$id_proveedor_auto )" , "ID_CONCEPTO" , "ID_PROVEEDOR=$id_proveedor_auto" ) )
               {  // añadido con éxito        
                    setVar("id_concepto_hora_estandar", $id_concepto_hora_estandar) ;
                }

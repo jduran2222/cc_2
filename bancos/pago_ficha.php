@@ -500,7 +500,7 @@ if ($id_mov_banco)
             //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
             $num_pagos=$result->num_rows;
             $tabla_expandida= ($num_pagos>0) ;
-            $titulo="PAGOS conciliables... ($num_pagos)" ;
+            $titulo="PAGOS conciliables...". badge_sup($num_pagos) ;
             $msg_tabla_vacia="";
 
             //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
@@ -559,7 +559,7 @@ if ($id_mov_banco)
             //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
             $num_remesas=$result->num_rows;
             $tabla_expandida= ($num_remesas>0) ;        
-            $titulo="REMESAS conciliables... ($num_remesas)" ;
+            $titulo="REMESAS conciliables...". badge_sup($num_remesas) ;
             $msg_tabla_vacia="";
 
             //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
@@ -625,7 +625,7 @@ if ($id_mov_banco)
             //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
             $num_fras_prov=$result->num_rows;
             $tabla_expandida= ($num_fras_prov>0) ;
-            $titulo="FACTURAS Proveedor conciliables...($num_fras_prov) " ;
+            $titulo="FACTURAS Proveedor conciliables...". badge_sup($num_fras_prov) ;
             $msg_tabla_vacia="";
 
             //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
@@ -682,7 +682,7 @@ if ($id_mov_banco)
             //$titulo="Posibles REMESAS, PAGOS, COBROS O TRASPASOS a conciliar " ;
             $num_fras_cli=$result->num_rows;
             $tabla_expandida= ($num_fras_cli>0) ;     
-            $titulo="FACTURAS Clientes conciliables...($num_fras_cli) " ;
+            $titulo="FACTURAS Clientes conciliables...". badge_sup($num_fras_cli) ;
             $msg_tabla_vacia="";
 
             //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
@@ -738,7 +738,7 @@ if ($id_mov_banco)
 
             $num_traspasos=$result->num_rows;
             $tabla_expandida= ($num_traspasos>0) ;
-            $titulo="TRASPASOS INTERNOS conciliables...($num_traspasos) " ;
+            $titulo="TRASPASOS INTERNOS conciliables...". badge_sup($num_traspasos) ;
             $msg_tabla_vacia="";
 
             //echo "<div id='main' class='mainc' style='background-color:orange'>" ;

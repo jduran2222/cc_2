@@ -9,7 +9,11 @@ $SPAN = "'></span>";
 
 
 
-// Actualiza , si procede, la RV ESTUDIO D COSTES
+// coste de la hora de empleado pordefecto, podemos configurarla para según el pais poner un coste u otro
+function cc_coste_hora() 
+{
+return 15;  //15 coste estandar en España en 2021
+} 
 function cc_actualiza_ESTUDIO_COSTE( $id_obra )
 {
   //extract($GLOBALS);
@@ -1842,7 +1846,7 @@ function setVar($variable, $valor)
 function clave_mail()
 {
     return "111111Sw" ;
-}
+} 
 
 function DInsert_into($tabla, $campos, $valores, $id_xxx = "", $where_xxx="", $logs=1)
 {    // Sintax: "INSERT INTO $tabla  $campos VALUES $valores "
@@ -1872,7 +1876,7 @@ function DInsert_into($tabla, $campos, $valores, $id_xxx = "", $where_xxx="", $l
     
     if ($Conn->query($sql2))
     {   
-        
+            
         $return=$Conn->insert_id ;
         // ANULADO ANTIGUO SISTEMA DE CONOCER EL ID_NUEVO, ahora usamos el $Conn->insert_id
 //        $id_auto=$Conn->insert_id ;

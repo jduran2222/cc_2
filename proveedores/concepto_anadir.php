@@ -20,19 +20,32 @@ $id_cuenta= isset($_GET["id_cuenta"]) ? $_GET["id_cuenta"]
 // posibles asociaciones a Entidades desde la que se crea el Concepto nuevo
 $id_usub= isset($_GET["id_usub"]) ? $_GET["id_usub"] : "" ;  // si viene un USUB es porque esta asociado a una UNIDAD SUBCONTRATADA
 $id_obra_concepto_mq=isset($_GET["id_obra_concepto_mq"]) ? $_GET["id_obra_concepto_mq"] : "" ;  // si viene un USUB es porque esta asociado a una UNIDAD SUBCONTRATADA
-
 $concepto= isset($_GET["concepto"]) ? $_GET["concepto"] : 'concepto nuevo' ;
+$id_personal= isset($_GET["id_personal"]) ? $_GET["id_personal"] : '' ;
 
-//$id_proveedor= getVar('id_proveedor_auto');
+$coste=0;
+if ($id_personal) // vamos a registrar un Coste de hora de un Personal
+{
+    $id_cuenta=getVar('id_cuenta_mo') ;
+    $nombre_personal=Dfirst("NOMBRE","PERSONAL","$where_c_coste AND ID_PERSONAL=$id_personal");
+    $concepto="Hora de trabajo de $nombre_personal";
+    $coste=cc_coste_hora() ;
+
+    
+}
+
+//$id_proveedor= getVar('id_proveedor_auto');  
 
 //$fecha=date('Y-m-d');
 
-$sql="INSERT INTO `CONCEPTOS` ( ID_OBRA,ID_CUENTA,ID_PROVEEDOR,CONCEPTO,`user` )    VALUES (  '$id_obra','$id_cuenta' ,'$id_proveedor','$concepto' ,'{$_SESSION["user"]}' );" ;
+$sql="INSERT INTO `CONCEPTOS` ( ID_OBRA,ID_CUENTA,ID_PROVEEDOR,CONCEPTO,COSTE,`user` )    VALUES (  '$id_obra','$id_cuenta' ,'$id_proveedor','$concepto' ,'$coste' ,'{$_SESSION["user"]}' );" ;
 // echo ($sql);
 $result=$Conn->query($sql);
           
  if ($result) //compruebo si se ha creado la obra
-             { 	$id_concepto=Dfirst( "MAX(ID_CONCEPTO)", "Conceptos_View", "id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
+             { 
+//              $id_concepto=Dfirst( "MAX(ID_CONCEPTO)", "Conceptos_View", "id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
+              $id_concepto=$Conn->insert_id ; ; 
 	        // TODO OK-> Entramos a pagina_inicio.php
 //	       echo "ficha personal creada satisfactoriamente." ;
 //		echo  "Ir a ficha personal <a href=\"../personal/personal_ficha.php?id_personal=$id_personal\" title='ver ficha'> $id_personal</a>" ;
@@ -42,6 +55,9 @@ $result=$Conn->query($sql);
                }
                if ($id_obra_concepto_mq) {
                 $result_UPDATE=$Conn->query("UPDATE `OBRAS` SET `id_concepto_mq` = $id_concepto WHERE ID_OBRA=$id_obra_concepto_mq" );
+               }
+               if ($id_personal) {
+                $result_UPDATE=$Conn->query("UPDATE `PERSONAL` SET `id_concepto_mo` = $id_concepto WHERE $where_c_coste AND ID_PERSONAL=$id_personal" );
                }
                 echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../proveedores/concepto_ficha.php?id_concepto=$id_concepto'>" ;
 

@@ -392,7 +392,7 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
 
  if (!$listado_global)   
  {
-     echo "<a class='btn btn-link noprint' href= '../obras/obras_anadir_parte.php?_m=$_m&id_obra=$id_obra' ><i class='fas fa-plus-circle'></i> Añadir parte</a><br>" ;
+     echo "<br><a class='btn btn-link noprint' href= '../obras/obras_anadir_parte.php?_m=$_m&id_obra=$id_obra' ><i class='fas fa-plus-circle'></i> Añadir parte</a><br>" ;
 //     echo   "<a class='btn btn-primary' href='../proveedores/factura_proveedor_anadir.php'  >Añadir Factura proveedor</a>" ; // BOTON AÑADIR FACTURA
 
  }
