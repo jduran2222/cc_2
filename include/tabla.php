@@ -233,6 +233,7 @@ table th {
         $tooltips
         $actions_row  -> acciones a nivel row (edit, delete ,onclick1_link...)   
  *      $updates    -> array de campos que se pueden actualizar online (ajax)
+ *      $no_updates    -> array de campos que NO se pueden actualizar online (ajax)
  *      $actions_row["onclick1_link"]   permite añadir un boton al final con acción de onclick, usa tambien $rs["$id_update_onclick1"]
  *      $dblclicks["CAPITULO"] = ["CAPITULO", 'literal']   columnas que copian el valor al filtro
         $id_agrupamiento En tablas con SUBGRUPOS agrupamiento, variable que indica qué campo agrupará  Ej. ID_CLIENTE.  (VER tbla_group.php)
@@ -258,6 +259,7 @@ $TABLE='';
 
 
 $updates= isset($updates)? $updates :  [] ;    // si no existe $updates lo inicializo vacío para poder hacer llamadas sin que dé error
+$no_updates= isset($no_updates)? $no_updates :  [] ;    // inicializamos $no_update[]
 $visibles= isset($visibles) ? $visibles : [] ;  // $visibles es array con campos ID_ que queremos mostrar
 $ocultos= isset($ocultos) ? $ocultos : [] ;  // $ocultos es array con campos ID_ que NO queremos mostrar
 //$cols_chart= isset($cols_chart) ? $cols_chart : [] ;  // $ocultos es array con campos ID_ que NO queremos mostrar
@@ -320,6 +322,7 @@ echo "\$aligns".var_dump($aligns)."<br>";
 echo "\$tooltips".var_dump($tooltips)."<br>";
 echo "\$actions_row".var_dump($actions_row)."<br>";
 echo "\$updates".var_dump($updates)."<br>";
+echo "\$no_updates".var_dump($no_updates)."<br>";
 echo "\$visibles".var_dump($visibles)."<br>";
 echo "\$ocultos".var_dump($ocultos)."<br>";
 echo "\$dblclicks".var_dump($dblclicks)."<br>";
@@ -844,7 +847,7 @@ if (isset($result_T)  )   // Hay TOTALES?
            if(preg_match("/__HEX__/", $valor) ){ $valor = hex2bin ( preg_replace("/__HEX__/", "", $valor)) ; }
               
               
-           $cont_TD++;  //contador de TD para su identificacion en javascript
+           $cont_TD++;  //contador de TD para su identificacion en javascript 
 
           // determinamos si es boolean
            $is_boolean= isset($formats[$clave])? (($formats[$clave]=='boolean') OR (substr($formats[$clave],0,8)=='semaforo'))  : 0 ;
@@ -859,9 +862,9 @@ if (isset($result_T)  )   // Hay TOTALES?
 //           $is_fecha =  isset($formats[$clave])? (substr($formats[$clave],0,5)=='fecha') : ($tipo_formato_por_clave=='fecha') ;
            $is_fecha =  isset($formats[$clave])? (substr($formats[$clave],0,5)=='fecha') : ($tipo_formato_por_clave=='fecha') ;
 
-           $is_update =( ( in_array($clave, $updates)  OR in_array("*", $updates) )  );
+           $is_update =  ( in_array($clave, $updates)  OR in_array("*", $updates) ) AND !(in_array($clave, $no_updates) )   ;  
            
-           if ($is_doc_logo = ( $clave=='doc_logo'  ))
+           if ($is_doc_logo = ( $clave=='doc_logo'  )) 
            {
                if ($valor) // si hay campo DOC_LOGO y su valor no es cero, calculamos el path_archivo del id_documento
                {             

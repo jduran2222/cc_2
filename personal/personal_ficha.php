@@ -54,9 +54,10 @@ $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
 //}
 //echo "</pre>";
   $titulo="PERSONAL" ;
-//  $updates=['NOMBRE','DNI','F_ALTA','BAJA', 'F_BAJA' , 'Observaciones', 'pagada']  ;
+//  $updates=['NOMBRE','DNI','F_ALTA','BAJA', 'F_BAJA' , 'Observaciones', 'pagada']  ; 
   $updates=['*']  ;
-  $ocultos=['N_CUENTA']  ;
+  $no_updates=['COSTE']  ;
+  $ocultos=['N_CUENTA']  ;   
 //  $visibles=['id_concepto_mo']  ;
 //  $id_proveedor=$rs["ID_PROVEEDORES"] ;
   $tabla_update="PERSONAL" ;
@@ -116,79 +117,8 @@ require("../menu/LRU_registro.php"); require("../include/widget_documentos.php")
 </div>
 	
 	
-<?php            // ----- div VALES  tabla.php   -----
 
-//$sql="SELECT ID_VALE,FECHA, ID_OBRA, NOMBRE_OBRA, REF,importe FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ORDER BY FECHA   ";
-////echo $sql;
-//$result=$Conn->query($sql );
-//
-//$sql="SELECT '' as a,'' as b,'' as c, SUM(importe) as importe FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
-////echo $sql;
-//$result_T=$Conn->query($sql );
-//
-//$formats["FECHA"]='fecha';
-//$formats["importe"]='moneda';
-//
-//$links["FECHA"] = ["albaran_proveedor.php?id_vale=", "ID_VALE"] ;
-//$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-//
-//$aligns["importe"] = "right" ;
-//$aligns["Pdte_conciliar"] = "right" ;
-////$aligns["Importe_ejecutado"] = "right" ;
-//
-////$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
-//
-////$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-//$titulo="Vales conciliados" ;
-//$msg_tabla_vacia="No hay vales conciliados a esta factura";
-
-?>
 	
-<!--  <div class="right2"> -->
- <div class="right2">
-	
-<?php // require("../include/tabla.php"); echo $TABLE ; ?>
-	 
-</div>
-	
-<!--              FIN vales   -->
- 
-	
-<?php            //  div PAGOS  tabla.php
-
-//$sql="SELECT id_pago,Banco, tipo_doc, f_vto, importe,id_mov_banco,if(conc,'mov.banco','') as abonado,if(FProv > 1, 'X' , '') as P_multiple FROM Fras_Prov_Pagos_View  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ORDER BY f_vto   ";
-////echo $sql;
-//$result=$Conn->query($sql );
-//
-//$sql_T="SELECT '','' as a,'' as a1, SUM(importe),'' as a2,'' as a11 FROM Fras_Prov_Pagos_View  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
-////echo $sql;
-//$result_T=$Conn->query($sql_T );
-//
-//$formats["f_vto"]='fecha';
-//$links["f_vto"] = ["../bancos/pago_ficha.php?id_pago=", "id_pago"] ;
-//$links["abonado"]=["../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco"] ;
-//
-//$aligns["importe"] = "right" ;
-//$aligns["abonado"] = "center" ;
-//$aligns["P_multiple"] = "center" ;
-////$aligns["Importe_ejecutado"] = "right" ;
-//
-//$tooltips["abonado"] = "Pago abonado. Clickar para ver el movimiento bancario" ;
-//$tooltips["P_multiple"] = "Pago múltiple. Pago para varias facturas" ;
-//
-////$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-//$titulo="Pagos emitidos" ;
-//$msg_tabla_vacia="No hay Pagos emitidos en esta factura";
-
-?>
-	
-
- <div class="mainc">
-	
-<?php // require("../include/tabla.php"); echo $TABLE ; ?>
-	
-</div>	 
-<!--              FIN pagos   -->	
 	
 <?php  
 

@@ -463,13 +463,14 @@ $email  = isset($_SESSION["email"]) ? $_SESSION["email"] : 'email' ;
 $empresa  = isset($_SESSION["empresa"]) ? $_SESSION["empresa"] : 'empresa' ;   
     
 $id_log_db= DInsert_into('logs_db', "(id_c_coste,user,email,file_php,msg, tipo, empresa, parametros)"
-     . " ", "( '$id_c_coste', '$user','$email','$file  $line','$msg' ,'$tipo' ,'$empresa'  ,'$parametros' )" ,'' , '', '', 0  ) ;
+     . " ", "( '$id_c_coste', '$user','$email','$file  $line','$msg' ,'$tipo' ,'$empresa'  ,'$parametros' )" ,'' , '', '', 0  ) ; 
      
- if($id_log_db)
-  { return $id_log_db ;}                  // devuelvo el $id_log_db de la tabla logs_db para localizar el ERROR
- else
-  { return "ERROR:". $msg ;}  
-    
+// if($id_log_db)
+//  { return $id_log_db ;}                  // devuelvo el $id_log_db de la tabla logs_db para localizar el ERROR
+// else
+//  { return "ERROR:". $msg ;}  
+
+ return $id_log_db ;   
 }
 
 //function logs_db_error($msg,$parametros='')

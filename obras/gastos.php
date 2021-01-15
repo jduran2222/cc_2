@@ -531,7 +531,7 @@ $dblclicks["Dia"]="Dia" ;
 $dblclicks["Semana"]="Semana" ;
 $dblclicks["Mes"]="Mes" ;
 $dblclicks["Trimestre"]="Trimestre" ;
-$dblclicks["Anno"]="Anno" ;
+$dblclicks["Anno"]="Anno" ; 
 
 
 
@@ -543,7 +543,7 @@ $links["REF"] = ["../proveedores/albaran_proveedor.php?id_vale=", "ID_VALE", "ve
 $links["FECHA"] = ["../proveedores/albaran_proveedor.php?id_vale=", "ID_VALE", "ver Vale-albarán", "formato_sub"] ;
 $links["SUBOBRA"] = ["../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "ver Subobra", "icon"] ;
 //$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-$links["N_FRA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura" ,"formato_sub"] ;
+$links["N_FRA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura" ,"formato_sub_vacio"] ;
 $links["Usub"] = ["../proveedores/usub_ficha.php?id=", "Usub","ver Unidad Subcontratada" ,"formato_sub_vacio"] ;
 
 //$formats["facturado"]='boolean_FACTURADO';

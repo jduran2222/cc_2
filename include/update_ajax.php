@@ -133,7 +133,7 @@ else
 
 
      // guardamos en base de datos el nuevo valos
-     $sql= "UPDATE `$tabla` SET `$field` = '$nuevo_valor' WHERE $wherecond  "  ;
+     $sql= "UPDATE `$tabla` SET `$field` = '$nuevo_valor' WHERE $wherecond  "  ; 
 
      //$result = $Conn->query($sql);
 
