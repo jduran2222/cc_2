@@ -8,10 +8,6 @@ $titulo = 'Búsqueda Global';
 
 // PRUEBA DE GITHUB, JUAND, ENERO2021, VERSION 2 GITHUB
 
-
-
-// PRUEBA DE GITHUB, JUAND, ENERO2021, version1
-
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
 include_once('../templates/_inc_privado2_navbar.php');
