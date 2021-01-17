@@ -8,6 +8,11 @@ $ICON = "<span class='glyphicon glyphicon" ;
 $SPAN = "'></span>"; 
 
 
+function pre($array)
+{
+     return "<pre>".print_r($array,TRUE)."</pre>"  ;
+}
+
 
 // coste de la hora de empleado pordefecto, podemos configurarla para según el pais poner un coste u otro
 function cc_coste_hora() 

@@ -120,7 +120,7 @@ else      // El PARTE tiene un VALE asociado, vamos a VACIAR los detalles del VA
 }    
 
 
-if (!$delete_vale)    
+if (!$delete_vale)    // si no venimos solo a borrar el Albarán lo creamos
  {
 
         // iniciamos el registro en el ID_VALE_CARGO ya vacío, si es que existía previamente, de los conceptos correspondientes
@@ -133,8 +133,10 @@ if (!$delete_vale)
         {
             // registramos gasto de horas totales de cada personal
             $horas_total= $rs["HO"] + $rs["HX"]   ;        // sumamos horas ordinarias + horas extras
+            $id_subobra_parte=$rs["ID_SUBOBRA"]? $rs["ID_SUBOBRA"] : $id_subobra_si;
+//            $id_subobra_parte=$rs["ID_SUBOBRA"];
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_cargo','{$rs["id_concepto_mo"]}' ,'$horas_total', '$id_subobra_si' );" ;
+            $sql3 .= "VALUES ( '$id_vale_cargo','{$rs["id_concepto_mo"]}' ,'$horas_total', '$id_subobra_parte' );" ;
         //  echo ($sql3);
             $result3=$Conn->query($sql3);
             // registramos los ABONOS DE MANO DE OBRA
@@ -149,7 +151,7 @@ if (!$delete_vale)
             if ($rs["MD"])
             {
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_cargo','$id_concepto_md' ,'1', '$id_subobra_si' );" ;
+            $sql3 .= "VALUES ( '$id_vale_cargo','$id_concepto_md' ,'1', '$id_subobra_parte' );" ;
         //  echo ($sql3)."<br>";
             $result3=$Conn->query($sql3);    
             // ABONOS 
@@ -163,7 +165,7 @@ if (!$delete_vale)
             if ($rs["DC"])
             {
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_cargo','$id_concepto_dc' ,'1', '$id_subobra_si' );" ;
+            $sql3 .= "VALUES ( '$id_vale_cargo','$id_concepto_dc' ,'1', '$id_subobra_parte' );" ;
         //  echo ($sql3)."<br>";
             $result3=$Conn->query($sql3);  
             // abono
@@ -186,8 +188,10 @@ if (!$delete_vale)
         while ($rs = $result->fetch_array(MYSQLI_ASSOC) )
         {
             // registramos gasto de horas totales de cada personal
+            $id_subobra_parte=$rs["ID_SUBOBRA"]? $rs["ID_SUBOBRA"] : $id_subobra_si;
+
             $sql3  = "INSERT INTO `GASTOS_T` ( ID_VALE,ID_CONCEPTO,CANTIDAD,ID_SUBOBRA ) ";
-            $sql3 .= "VALUES ( '$id_vale_cargo','{$rs["id_concepto_mq"]}' ,'{$rs["cantidad"]}', '$id_subobra_si' );" ;
+            $sql3 .= "VALUES ( '$id_vale_cargo','{$rs["id_concepto_mq"]}' ,'{$rs["cantidad"]}', '$id_subobra_parte' );" ;
         //  echo ($sql3)."<br>";
             $result3=$Conn->query($sql3);
 

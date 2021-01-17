@@ -186,16 +186,17 @@ if ($id_parte_anterior)
 
 
 //$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX,MD,DC,Observaciones FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
-$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX, Observaciones FROM Partes_Personal_View  WHERE ID_PERSONAL<>0 AND ID_PARTE=$id_parte  AND $where_c_coste    ";
+$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX, ID_SUBOBRA , Observaciones  FROM Partes_Personal_View  WHERE ID_PERSONAL<>0 AND ID_PARTE=$id_parte  AND $where_c_coste    ";
 //echo $sql;
 $result=$Conn->query($sql );
 
-//$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO,SUM(HX) as HX,SUM(MD) as MD,SUM(DC) as DC FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
-$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO, '' FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
+$sql_T="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO, '' FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 //echo $sql;
-$result_T=$Conn->query($sql );
+$result_T=$Conn->query($sql_T );
 
-$updates=['HO','HX','MD','DC', 'Observaciones']  ;
+$updates=['HO','HX','MD','DC','ID_SUBOBRA','Observaciones','DDDD']  ;
+$visibles=['ID_SUBOBRA'] ;
+
 $tabla_update="PARTES_PERSONAL" ;
 $id_update="id" ;
 
@@ -204,21 +205,11 @@ $actions_row["id"]="id";
 $actions_row["delete_link"]="1";
 
 
-//$id_clave="id" ;
+$selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 
-//$formats["FECHA"]='fecha';
-//$formats["importe"]='moneda';
-//
 $links["NOMBRE"] = ["../personal/personal_ficha.php?id_personal=", "ID_PERSONAL"] ;
-//$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-//
-//$aligns["importe"] = "right" ;
-//$aligns["Pdte_conciliar"] = "right" ;
-////$aligns["Importe_ejecutado"] = "right" ;
 
-//$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
-//$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
 $titulo="Personal de Obra ($result->num_rows". cc_format( "solo_icon", "icon_usuarios") ." )" ;
 $msg_tabla_vacia="No hay personal";
 
@@ -254,7 +245,7 @@ require("../include/tabla.php"); echo $TABLE ; ?>
   
 
 //$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX,MD,DC,Observaciones FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
-$sql="SELECT id,id_obra_mq,Maquinaria,id_concepto_mq,CONCEPTO AS Concepto, cantidad as Cantidad , Observaciones FROM Partes_Maquinas_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
+$sql="SELECT id,id_obra_mq,Maquinaria,id_concepto_mq,CONCEPTO AS Concepto, cantidad as Cantidad,ID_SUBOBRA , Observaciones FROM Partes_Maquinas_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 //echo $sql;
 $result=$Conn->query($sql );
 
@@ -263,7 +254,9 @@ $result=$Conn->query($sql );
 //echo $sql;
 //$result_T=$Conn->query($sql );
 
-$updates=['Cantidad', 'Observaciones']  ;
+$updates=['Cantidad','ID_SUBOBRA', 'Observaciones']  ;
+$visibles=['ID_SUBOBRA'] ;
+
 $tabla_update="Partes_Maquinas" ;
 $id_update="id" ;
 
@@ -280,6 +273,7 @@ $actions_row["delete_link"]="1";
 //
 $links["Maquinaria"] = ["../maquinaria/maquinaria_ficha.php?id_obra=", "id_obra_mq"] ;
 $links["Concepto"] = ["../proveedores/concepto_ficha.php?id_concepto=", "id_concepto_mq"] ;
+$selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 
 $formats["path_archivo"]='pdf_100_500' ;
 
@@ -336,6 +330,7 @@ $result=$Conn->query($sql );
 $result_T=$Conn->query($sql_T ); 
 
 $updates=['cantidad', 'Observaciones']  ;
+
 $tabla_update="VALES" ;
 $id_update="ID_VALE" ; 
  

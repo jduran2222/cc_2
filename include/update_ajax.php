@@ -136,6 +136,7 @@ else
      $sql= "UPDATE `$tabla` SET `$field` = '$nuevo_valor' WHERE $wherecond  "  ; 
 
      //$result = $Conn->query($sql);
+     logs("UPDATE_AJAX.PHP sql: $sql")  ;
 
 
      if ($Conn->query($sql)) // tras el UPDATE si este no da fallos, consulto el nuevo valor almacenado para confirmar que coincide con lo Update

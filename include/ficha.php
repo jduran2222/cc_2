@@ -437,7 +437,7 @@ $titulo_sin_html= strip_tags($titulo)   ;
               // PROVISIONAL UNOS DÍAS HASTA VER QUÉ FICHAS REQUIEREN AÑADIR LOS SELECT AL UPDATES[]
 //                if (!$is_update) { $valor_txt_sel = '¡¡ ATENCION!! AÑADIR EL SELECT AL UPDATES SI PROCEDE (juand)' ;}
               // LINK PARA VER LA ENTIDAD
-              $add_link_select_ver = $link_ver ? "<a class='btn tn-md btn-link' href='{$link_ver}{$rs[$id_campo]}&_m=$_m' target='_blank'>$valor_txt_sel</a>" : "$valor_txt_sel" ;
+               $add_link_select_ver = $link_ver ? "<a  href='{$link_ver}{$rs[$id_campo]}&_m=$_m' target='_blank'>$valor_txt_sel</a>" : "$valor_txt_sel" ;
 
               if ($is_update)
               {
@@ -669,14 +669,14 @@ $titulo_sin_html= strip_tags($titulo)   ;
             { // hay formato especial de link
               if ($link_formato=='formato_sub')   // LINK FORMATO_SUB. FORMATO TRADICIONAL DE SUBRRAYADO (es incompatible con sortTable (ordenar tabla))
               { 
-                $TD_valor = "<span $format_style  ><a class='btn btn-link'  href= '{$link_href}$valor_campo_id' "
+                $TD_valor = "<span $format_style  ><a   href= '{$link_href}$valor_campo_id' "
                         . "title='$title' target='_blank'>{$valor_txt}</a></span>$spans_html_txt";        
 
               }elseif($link_formato=='html')  // LINK FORMATO HTML
               { 
                 $link_html= $links[$clave][4] ;   
                 
-                $TD_valor = "<span  $format_style  >{$valor_txt}<a class='btn btn-link'  href= {$link_href}$valor_campo_id title='$title' target='_blank'>$link_html</a></span>"
+                $TD_valor = "<span  $format_style  >{$valor_txt}<a   href= {$link_href}$valor_campo_id title='$title' target='_blank'>$link_html</a></span>"
                         . "$spans_html_txt";        
                     
               }
@@ -687,8 +687,8 @@ $titulo_sin_html= strip_tags($titulo)   ;
             }
             else   // el LINK en modo GENERAL con pequeña 'ver' tras pintar el $valor_txt
             {    
-               $TD_valor = "<div style=' float:left;'><p id='p$cont_TD'>$valor_txt</p></div>"
-                       . "<div style=' float:left;'><a class='btn btn-xs btn-link transparente noprint' href= {$link_href}{$valor_campo_id} target='_blank'>ver</a></div>"
+               $TD_valor = "<span id='p$cont_TD'>$valor_txt"
+                       . "<a class='btn btn-xs btn-link transparente noprint' href= {$link_href}{$valor_campo_id} target='_blank'>ver</a></span>"
                        . "$spans_html_txt";
             }// fin 
          
@@ -1310,22 +1310,8 @@ function ficha_update_str(cadena_link, prompt, valor0, pcont, nuevo_valor,tipo_d
     if ( nuevo_valor === '' )
     {   
       nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
-      
-      refrescar=false ;  // NO REFERSCO la página para comodidad del usuario,comprobaré que el UPDATE ha sido exitoso por ajax.
-    } else if ( nuevo_valor === '_PASTE_FROM_CLIPBOARD_' )          // FUNCION OBSOLETA
-    {  
-//      nuevo_valor=paste();   // el parámetro nuevo_valor está definido, no se le consulta al usuario. Posiblemente es una actualización masiva. Hay que refrescar.
-////      paste() ;
-//      nuevo_valor=document.getElementById('textarea22').value;   
-//      alert('supuestamente he terminado') ;
-//      nuevo_valor=navigator.clipboard.readText();   // el parámetro nuevo_valor está definido, no se le consulta al usuario. Posiblemente es una actualización masiva. Hay que refrescar.
-//      nuevo_valor=navigator.clipboard.readText();   // el parámetro nuevo_valor está definido, no se le consulta al usuario. Posiblemente es una actualización masiva. Hay que refrescar.
-      refrescar=true ;     // variable para indicar si hay que refrescar pantalla tras la actualizacion       
-    }    
-     else
-    {                          // el parámetro nuevo_valor está definido, no se le consulta al usuario. Posiblemente es una actualización masiva. Hay que refrescar.
-//      refrescar=true ;     // variable para indicar si hay que refrescar pantalla tras la actualizacion    ( DESHABILITAMOS TEMPORALMENTE para mejorar efectividad de paste , juand, ene20   
-    }    
+      refrescar=false ;  // NO REFRESCO la página para comodidad del usuario,comprobaré que el UPDATE ha sido exitoso por ajax.
+    }   
     
 if (tipo_dato === 'date')
    { cad_tipo_dato = '&tipo_dato=date'  ;

@@ -83,7 +83,7 @@ foreach ($values_mov_banco_fras_array as $values_mov_banco_fras)
     elseif (count($array_id)==1 AND $id_fra_prov_unica )          // es un unico  ( $id_mov_banco )  estamos en modo MOVS_A_FRA
     {     
         $id_mov_banco=$array_id[0]  ;
-        $id_fra_prov=$id_fra_prov_unica  ;
+        $id_fra_prov=$id_fra_prov_unica  ; 
         $abrir_factura=1;
     }
     else                              // solo viene un parámetro por fila, es el id_fra_prov y se paga por CAJA_METALICO

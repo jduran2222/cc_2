@@ -772,6 +772,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                }       
 
        }
+      // **********************   FIN ENCABEZADOS *************                              
 
        // CHART . calculamos las columnas que serán línes en vez de barras en el gráfico
        $serie_line_txt="";
@@ -795,9 +796,10 @@ if (isset($result_T)  )   // Hay TOTALES?
       }
       $cont++ ;
       
+     // FIN de  CHART . calculamos las columnas que serán línes en vez de barras en el gráfico
+     
       
       
-      // **********************   FIN ENCABEZADOS *************                              
 
 
       // GESTION DE SUBTOTALES. cuando tenemos agrupamiento y subtotales
@@ -820,7 +822,7 @@ if (isset($result_T)  )   // Hay TOTALES?
             }
       }    ////////***************** FIN IMPRESION FILA SUBTOTALES
 
-      //********* INICIAMOS FILA DE VALORES *************
+      //************************** INICIAMOS FILA DE VALORES ************************
       $TABLE .= "<tr  id='TR_$cont_TR'>";
       
       // Columna de CHECKBOX DE SELECTION *****
@@ -843,7 +845,7 @@ if (isset($result_T)  )   // Hay TOTALES?
 
           $tipo_formato_por_clave=cc_formato_auto($clave);
           
-          //deshacemos el guardado en HEX
+          //deshacemos el guardado en HEX  por compatibilidad con el uso de HEX ya obsoleto desde 2019 donde se guardaban los texto en hexadecial para evitar problemas especial chars
            if(preg_match("/__HEX__/", $valor) ){ $valor = hex2bin ( preg_replace("/__HEX__/", "", $valor)) ; }
               
               
@@ -863,7 +865,8 @@ if (isset($result_T)  )   // Hay TOTALES?
            $is_fecha =  isset($formats[$clave])? (substr($formats[$clave],0,5)=='fecha') : ($tipo_formato_por_clave=='fecha') ;
 
            $is_update =  ( in_array($clave, $updates)  OR in_array("*", $updates) ) AND !(in_array($clave, $no_updates) )   ;  
-           
+           $is_select= (isset($selects[$clave])) ; 
+
            if ($is_doc_logo = ( $clave=='doc_logo'  )) 
            {
                if ($valor) // si hay campo DOC_LOGO y su valor no es cero, calculamos el path_archivo del id_documento
@@ -882,18 +885,13 @@ if (isset($result_T)  )   // Hay TOTALES?
            $dblclick_div=  '' ;
            $dblclick_ondblclick=  '' ;  //dblclick_ondblclick
 
-           
+           // subtotales cuando hay agrupación
            if (isset($array_sumas[$clave])) { $array_sumas[$clave]+= $valor ; }  // sumo los SUBTOTALES 
 
-           // Gestión de CAMPOS ID_
-           
-           $is_visible = ( (!preg_match("/^ID_|^ID$/i", $clave) OR in_array($clave,$visibles) ) AND ( !in_array($clave,$ocultos) ))  ; 
-//           $is_visible=  !in_array($clave,$ocultos)  ; 
+           // Gestión de CAMPOS ID_, ocultamos por defecto los campos ID_xxx y los ocultos y mostramos los visibles        
+           $is_visible = ( (!preg_match("/^ID_|^ID$/i", $clave) OR in_array($clave,$visibles) OR in_array($clave,$updates) ) AND ( !in_array($clave,$ocultos) ))  ; 
 
            $not_id_var= isset($print_id)?  $print_id : $is_visible  ;         // $print_id indica que se imprima los campos ID_ tambien
-           //debug
-//           echo "$clave es  not_id_var:  $not_id_var <br>" ;
-//           $not_id_var= isset($print_id)?  $print_id : (strtoupper(substr($clave,0,2))<>"ID") ;         // $print_id indica que se imprima los campos ID_ tambien
 
            // Lo metemos en COLUMNAS OCULTAS POR SI SE QUIEREN MOSTRAR POR JAVASCRIPT
            $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla class_$idtabla'" ;     
@@ -926,20 +924,15 @@ if (isset($result_T)  )   // Hay TOTALES?
            {
                $clave_formateada=substr($clave,0,$pos) ;
                $formats[$clave_formateada]=$valor ;
-           }   
-           
-           
+           }       
            else     // INICIAMOS  VALOR VISIBLES .continuamos, es un campo de valores convencional
            {   
                   // google chart   
-//                  if ($is_visible AND (in_array($clave,$cols_string) ))
                   if ((in_array($clave,$cols_string) ))
                       { $json_rows_chart.= "  { v: '$valor' } "  ; }
-//                  elseif ($is_visible AND  in_array($clave,$cols_number))
                   elseif (in_array($clave,$cols_number))
                       { $json_rows_chart.= " , { v: '$valor' } "  ; }       // OJO !! introducimos la coma separadora
 
-               
                
                // inicializamos los div extras que irán dentro del TD tras el valor (button, tooltips, flags, links, etc)
                $div_extras_html='';
@@ -993,7 +986,6 @@ if (isset($result_T)  )   // Hay TOTALES?
                $dblclick_div = isset($dblclicks[$clave]) ?   "<button class='btn btn-xs btn-link noprint transparente'  "
                                             . "onclick=\"document.getElementById('{$dblclicks[$clave]}').value='$valor_sin_tags'; document.getElementById('form1').submit(); \" "
                                             . " title='copiar al Filtro' ><i class='fas fa-filter'></i></button>"  : ""  ;
-// document.getElementById(input_id).value=str ;
                                             
                  $div_extras_html .= $dblclick_div ;                          
                                             
@@ -1002,25 +994,23 @@ if (isset($result_T)  )   // Hay TOTALES?
                 $span_sort= $is_numero ?  "<span style='opacity : 0 ; font-size: 0px ;' >"
                                 .str_pad(number_format(10000000000000+$valor,3,".",""),20," ", STR_PAD_LEFT)."</span>"   : "<span style='opacity : 0 ; font-size: 0px ;'>".$valor."</span>" ;
                 
-//                 $span_sort="<span >".$valor."</span>" ;
                 
                 // formamos la cadena_link si es campo UPDATE EDITABLE y si está definida $table_update para hacer los update via javascript
                 $cadena_link = $is_update  ?  "tabla=$tabla_update&wherecond=$id_update=".$rst["$id_update"]."&field=".$clave."&nuevo_valor=" :  ""; 
 
-//                   if ((in_array($clave, $updates) AND isset($rst["$id_update"])) OR (in_array("*", $updates) )) 
                 
+                //empezamos a PINTAR
                 // PRIMERO COMPROBAMOS SI ES LINKABLE. SI ES LINKABLE NO ES EDITABLE (UPDATE)
-                if (isset($links[$clave]))   //                      
+                if (isset($links[$clave]))   //     ES LINKABLE.                 
                 {          // hay link 
                 //         
                                
-//                                $href_link= $links[$clave][0] . $rst[$links[$clave][1]]  ;
                                 $href_link= $links[$clave][0] . $rst[$links[$clave][1]] ."&_m=$_m" ;            // FASE EXPERIMENTAL PARA EL MIGAS
                                 
                                  // creamos el div update_pencil_div por si el link fuera editable (update)
                                 
                                  $update_pencil_div= ($is_update) ?   "<a class='btn btn-xs btn-link noprint transparente'  title='editar campo'   "
-                                                                     . " onclick=\"tabla_update_str('$cadena_link','$clave','$valor' , 'div$cont_TD')\" >"
+                                                                     . " onclick=\"tabla_update_str('$cadena_link','$clave','$valor' ,'div$cont_TD','','')\" >"
                                                                     . "<i class='fas fa-pencil-alt'></i>"
                                                                    . "</a> "         :    ""    ;
 
@@ -1148,6 +1138,111 @@ if (isset($result_T)  )   // Hay TOTALES?
                                        . "<input type='date' id='datepicker2' value='$fecha0' "
                                        . " onchange=\"tabla_update_onchange('$cadena_link',this.value,'fecha' )\" > " ;                                                                    // hacemos el JAVASCRIPT para actualizar la FECHA
 
+                               }elseif ( $is_select) // es SELECT, es decir, podemos seleccionarlo de una lista a buscar
+                               {
+                                   //definimos variables para el SELECT
+                                  $campo_ID=$selects[$clave][0] ;      // ["campo_ID", "campo_texto", "tabla_select",Opcional "link a nuevo",   link a VER ,   campo al link anterior,   otro_WHERE]
+                                  $campo_texto=$selects[$clave][1] ;
+                                  $tabla_select=$selects[$clave][2] ;
+                                  $link_nuevo=isset($selects[$clave][3]) ? $selects[$clave][3] : "" ;
+                                  $link_ver = isset($selects[$clave][4]) ? $selects[$clave][4] : "" ;
+                                  $id_campo = isset($selects[$clave][5]) ? $selects[$clave][5] : "" ;
+                                  $otro_where=isset($selects[$clave][6]) ? $selects[$clave][6] : "" ;   // solo sirve para el UPDATE y la nueva búsqueda
+                                  $no_where_c_coste = isset($selects[$clave][7]) ? $selects[$clave][7] : "" ;
+                                  $where_c_coste_txt = $no_where_c_coste ? "" : " AND $where_c_coste " ;
+                                  $otro_where .= $where_c_coste_txt ;  
+                                  $campo_mostrado=isset($selects[$clave][8]) ? $selects[$clave][8] : $campo_texto ;   // solo sirve pintar un valor diferente al de búsqueda
+                                  $link_nuevo_target_blank = preg_match("/^javascript/i", $link_nuevo) ? '' : "target='_blank'" ;
+
+                                  // **PROVISIONAL*** a todos las busquedas de SELECT les añado el $where_id_c_coste
+                                  $valor_txt_sel= ($valor<>"") ?  Dfirst($campo_mostrado,$tabla_select,"$campo_ID='$valor' $where_c_coste_txt ") : ""  ;   //evitamos un error en Dfirst si $valor es NULL              
+                                  $valor_txt_sel= $valor_txt_sel ?  $valor_txt_sel : "";   // quitamos el valor 0
+
+                                  // PROVISIONAL UNOS DÍAS HASTA VER QUÉ FICHAS REQUIEREN AÑADIR LOS SELECT AL UPDATES[]
+                    //                if (!$is_update) { $valor_txt_sel = '¡¡ ATENCION!! AÑADIR EL SELECT AL UPDATES SI PROCEDE (juand)' ;}
+                                  // LINK PARA VER LA ENTIDAD
+                                  
+                                  //debug
+//                                  pre($rs);
+                                  
+                                  $add_link_select_ver = $link_ver ? "<a href='{$link_ver}{$rst[$id_campo]}&_m=$_m' target='_blank'>$valor_txt_sel</a>" : "$valor_txt_sel" ;
+
+                                  if ($is_update)
+                                  {
+                            //              LINKS EN CASO DE EL SELECT SER EDITABLE (UPDATES)  (entiendo que siempre el SELECT es EDITABLE!!)
+                                          $add_link_select= $link_nuevo ? "<a class='btn btn-xs btn-link noprint transparente' href=\"$link_nuevo\"   $link_nuevo_target_blank    title='nuevo'>"
+                                                                              . "<i class='fas fa-plus-circle'></i></a>" : "" ;
+                                          //debug
+//                                          echo pre($rst);
+
+
+                                          $cadena_link="tabla=$tabla_update&wherecond=$id_update=".$rst[$id_update]."&field=".$clave."&nuevo_valor=";     
+
+                                          $cadena_link_encode=urlencode($cadena_link); //$cadena_link necesaria para update_ajax.php
+
+                                          // HREF, link  a ejecutar tras la actualización del campo
+                                          $select_href  = isset($selects[$clave]['href']) ? $selects[$clave]['href'] : " " ; //por defecto un ESPACIO para evitar errores en el GET
+                                          // DEBUG MAY20
+                                          $cadena_select_enc= encrypt2( "href=$select_href&cadena_link_encode=$cadena_link_encode&tabla_select=$tabla_select&campo_ID=$campo_ID&campo_texto=$campo_texto&select_id=select_$cont_TD&filtro=") ;
+
+
+                                          // sistema showInt   
+                                          // PONEMOS EL INPUT
+                                          $add_link_select_cambiar="<INPUT class='noprint' style='font-size: 70% ;font-style: italic ;' id='input_$cont_TD' size='7'  "
+                                                  . "  onkeyup=\"tabla_update_select_showHint('$cadena_select_enc','$campo_texto','$valor_txt_sel','p$cont_TD','$otro_where' ,this.value)\" placeholder='buscar...' value=''  >" ;
+                                          // LUPA busca todos, intruduce tres espacios en el INPUT
+                                          $add_link_select_cambiar.= "<span class='btn btn-xs btn-link noprint transparente'  " 
+                                                  . " onclick=\" $('#input_$cont_TD').val($('#input_$cont_TD').val()+'   ')  ; $('#input_$cont_TD').keyup()   \"   "
+                                                  . " title='Buscar'> <i class='fas fa-search'></i></span>" ;
+                                          // FUNCION PASTE()
+                                           $add_link_select_cambiar.= "<span class='btn btn-xs btn-link noprint transparente'  "
+                                                  . " onclick=\" paste( function(nuevo_valor){  document.getElementById('input_$cont_TD').value=nuevo_valor ; $('#input_$cont_TD').keyup() } )  \"   "
+                                                  . " title='paste from clipboard'> <i class='fas fa-paste'></i> </span>";
+
+
+                                          //    SCRIPT PARA PODER PULSAR ENTER
+                                          $add_link_select_cambiar.="<script>"
+                                                                  . "var input_id = document.getElementById('input_$cont_TD');"
+                                                                  . "input_id.addEventListener('keyup', function(event) {"
+                                                                  . "      event.preventDefault();if (event.keyCode === 13) "
+                                                                  . " {tabla_update_select_showHint_ENTER('p$cont_TD');  }});"
+                                                                  . "</script>" ;
+
+                                           $add_link_select_cambiar_div_sugerir= "<div class='sugerir' id='sugerir_$cont_TD'></div>" ;
+
+                                          // uso de cambiar a VALOR NULL  PARA HACER CERO EL ID_ (probablemente 0) y no seleccionarlo de la lista. Ej: quitar pago de remesa (id_remesa=0)
+                                          if (isset($selects[$clave]["valor_null"]))     // cuando queremos poner a CERO el ID_, por ejemplo quitar la remesa, hacer id_remesa=0 en un ID_PAGO
+                                          {   
+                                             $valor_null= $selects[$clave]["valor_null"] ; 
+                                             $valor_null_title = isset($selects[$clave]["valor_null_title"])? $selects[$clave]["valor_null_title"] : "quitar" ; 
+
+                                             $add_link_select_valor_null= "<span class='btn btn-xs btn-link noprint transparente' title='$valor_null_title' "
+                                                         . " onclick=\"tabla_update_str('$cadena_link','','','p$cont_TD','$valor_null','' );location.reload(); \" ><i class='far fa-window-close'></i></span>" ;
+                                  //                                   tabla_update_str('$cadena_link','$clave','$valor' , 'div$cont_TD', '$tipo_dato')
+                                             }
+                                          else
+                                          {
+                                              $add_link_select_valor_null="" ;
+                                          }    
+                                  }
+                                  else    // NO ES EDITABLE UPDATE
+                                  {
+                                          $add_link_select_cambiar='';
+                                          $add_link_select='';
+                                          $add_link_select_valor_null='';
+                                          $add_link_select_cambiar_div_sugerir='';
+                                  }
+                                  //  IMPRESION DE CAMPO $SELECT[]
+                    //              pintamos el TD_html
+
+                                  $TD_html = "$span_sort <span id='p_span_$cont_TD'>$add_link_select_ver $add_link_select_cambiar $add_link_select $add_link_select_valor_null $add_link_select_cambiar_div_sugerir</span>"
+                                               . "<div id='p$cont_TD'></div>" ;
+
+
+                               // fin $IS_SELECT
+                                   
+//                                   $TD_html = "$span_sort $TD_valor" ;                                                                    // hacemos el JAVASCRIPT para actualizar la FECHA
+
                                }
                                
                                else
@@ -1155,7 +1250,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                                $update_onclick="";   //ANULAMOS ANTIGUO PROCEDIMIENTO DE ONCLICK EN TODO EL TD
                                
                                  $update_pencil_div="<span class='btn btn-link btn-xs transparente noprint' style='float:right ; cursor:pointer;'  title='editar campo' "
-                                            . " onclick=\"tabla_update_str('$cadena_link','$clave','$valor' , 'div$cont_TD', '$tipo_dato')\"   >"
+                                            . " onclick=\"tabla_update_str('$cadena_link','$clave','$valor' , 'div$cont_TD','', '$tipo_dato')\"   >"
                                             . "<i class='fas fa-pencil-alt noprint'></i></span> ";
                                
                                
@@ -1394,7 +1489,7 @@ if (<?php echo $_SESSION["android"];?>) { show_FICHA_ON();}
 
 function show_ID_<?php echo $idtabla;?>()
  { 
-     alert('<?php echo $idtabla;?>');
+//     alert('<?php echo $idtabla;?>');
 // $('table th.hide').each( function() { $(this).show() ; }   );
 // $('table td.hide').each( function() { $(this).show() ; }   );
 if ( typeof show_ID.show == 'undefined' ) {
@@ -1548,9 +1643,10 @@ nuevo_valor=encodeURIComponent(nuevo_valor) ;
 }
 
 
-function tabla_update_str(cadena_link, prompt, valor0, idcont, tipo_dato) {
+function tabla_update_str(cadena_link, prompt, valor0, idcont,nuevo_valor, tipo_dato) {
     
  // apaño provisional y chapucero para calcular formulas en num   
+     nuevo_valor = nuevo_valor || '';
      tipo_dato = tipo_dato || '';
      var cadena_tipo_dato='' ;   
     if (tipo_dato) {cadena_tipo_dato="&tipo_dato="+tipo_dato ;} // si es campo numérico lo paso a formato dbNumero  ej: 1254.51
@@ -1568,7 +1664,16 @@ function tabla_update_str(cadena_link, prompt, valor0, idcont, tipo_dato) {
     //alert(esNumero) ;
     if (esNumero) {valor0=valor0Num ;} // si es campo numérico lo paso a formato dbNumero  ej: 1254.51
     
-    var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
+//    var nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
+    // el valor nuevo_valor es opcional, si no se pasa, se pregunta por él y se intenta NO REFRESCAR si todo va bien.
+    if ( nuevo_valor === '' )
+    {   
+      nuevo_valor=window.prompt("Nuevo valor de "+prompt , valor0);
+      refrescar=false ;  // NO REFRESCO la página para comodidad del usuario,comprobaré que el UPDATE ha sido exitoso por ajax.
+    }   
+   
+    
+    
 //    alert("el nuevo valor es: "+valor) ;
    if (!(nuevo_valor === null))
    { 
@@ -1600,6 +1705,84 @@ function tabla_update_str(cadena_link, prompt, valor0, idcont, tipo_dato) {
    {return;}
    
 }
+
+//funciones para el SELECT
+function tabla_update_select_showHint_ENTER(pcont) {
+
+// hago click en el primer elemento de la lista 'li'
+document.getElementById(pcont).getElementsByTagName("ul")[0].getElementsByTagName("li")[0].getElementsByTagName("a")[0].click() ;
+
+}   
+
+
+function tabla_update_select_showHint(cadena_select_enc, prompt, valor0, pcont, otro_where, str) {
+//    var nuevo_valor=window.prompt("Filtre la búsqueda y seleccione en la lista el nuevo "+prompt , valor0);
+    var nuevo_valor=str;
+    
+    if (str.length < 3) { 
+      document.getElementById(pcont).innerHTML = "";
+    return;
+    }
+
+    
+//    alert("el nuevo valor es: "+valor) ;
+         
+     var xhttp = new XMLHttpRequest();
+     xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        if (this.responseText.substr(0,5)=="ERROR")
+        { alert(this.responseText) ;}                    // hay un error y lo muestro en pantalla
+        else
+        {   
+//            alert(this.responseText) ;                                // debug
+//            document.getElementById("sugerir").innerHTML = this.responseText;
+            document.getElementById(pcont).innerHTML = this.responseText ; }  // "pinto" en el <div> el select options
+//  
+      }
+  };
+  
+  xhttp.open("GET", "../include/select_ajax_showhint.php?tipo_pagina=tabla&url_enc="+cadena_select_enc+"&url_raw="+encodeURIComponent( nuevo_valor+"&otro_where="+otro_where) , true);
+  xhttp.send();   
+ 
+}   
+
+//function onClickAjax(id_obra, nombre_obra) {
+////alert(val);
+////document.getElementById("obra").value = val;
+//window.location="obras_ficha.php?id_obra="+id_obra+"&nombre_obra="+nombre_obra;
+//
+////$("#txtHint").hide();
+//}
+function tabla_select_onchange_showHint(id,cadena_link,href) {
+ 
+    
+    // valores por defecto    
+ href = href || ""     ;        // por defecto no hay msg
+
+       nuevo_valor=id ;      // es el id_valor seleccionado
+       //       
+       var xhttp = new XMLHttpRequest();
+     xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        
+        if (this.responseText.substr(0,5)=="ERROR")
+        { alert(this.responseText) ;}                   // mostramos el ERROR
+        else
+        {  
+            
+            if (href)  {js_href(href,1) ; }   // si hay algún href lo ejecutamos al terminar el UPDATE y refrescamos
+            location.reload(true); }  // refresco la pantalla tras edición
+       
+      }
+   };
+   xhttp.open("GET", "../include/update_ajax.php?"+cadena_link+nuevo_valor, true);
+   xhttp.send();   
+   
+}  
+
+// FIN  SELECT  SHOHINT *************
+
+
 
 
 function tabla_down_font_size(idtabla) {

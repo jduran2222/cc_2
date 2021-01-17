@@ -95,7 +95,7 @@ $content_crear_factura= "<div class='right2'>"
 
 //  $updates=['REF','FECHA', 'Observaciones']  ;
 //$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
-$links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES" ] ; 
+
 //  
 $formats["importe"]="moneda"  ;
 //  $formats["importe"]=getVar("juanillo")  ;
@@ -109,13 +109,6 @@ $id_fra_prov=$rs["ID_FRA_PROV"] ;
 $id_parte=$rs["ID_PARTE"] ;
 
 
-// $rs["ID_FRA_PROV"]=is_null($rs["ID_FRA_PROV"])?  0 :  $rs["ID_FRA_PROV"] ;  // elimino el error que da foreach por usar valores NULL
-// $id_fra_prov=$rs["ID_FRA_PROV"] ;
-//  $tabla_update="VALES" ;
-//  $id_update="id_vale" ;
-//  $id=$id_vale;
-//   
-  
     $titulo="ALBARAN  PROVEEDOR" ;
   
 //    $selects["ID_OBRA"]=["ID_OBRA","NOMBRE_OBRA","OBRAS"] ;   // datos para clave foránea
@@ -139,7 +132,7 @@ $delete_boton=1 ;
   
  
 //  if (!$rs["importe"])    //  NO HAY DETALLES, podemos cambiar de Proveedor o borrrar el Vale (CAMBIAR A Dcount(id detalles)
-  if (!$rs["importe"] OR $admin )    //  NO HAY DETALLES, podemos cambiar de Proveedor o borrrar el Vale (CAMBIAR A Dcount(id detalles)
+  if (!$rs["importe"] OR $admin )    //  NO HAY DETALLES, podemos cambiar de Proveedor o borrar el Vale (CAMBIAR A Dcount(id detalles)
   {
   $selects["ID_PROVEEDORES"]=["ID_PROVEEDORES","PROVEEDOR","Proveedores","../proveedores/proveedores_anadir.php","../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
   $etiquetas["ID_PROVEEDORES"]='PROVEEDOR' ; 
@@ -147,6 +140,8 @@ $delete_boton=1 ;
   }
   else
   {
+    $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES", "", "formato_sub"] ;
+    
     $disabled_delete=1;
     $delete_title="Para eliminar el ALBARAN  debe eliminar previamente los detalles" ;
 
@@ -265,7 +260,7 @@ echo "</div>" ;
 
 ///  DETALLES CONCEPTOS DEL ALBARAN
 
-$sql="SELECT id,ID_CONCEPTO,id_usub,ID_SUBOBRA, CONCEPTO,CANTIDAD,COSTE,IMPORTE,Obs,SUBOBRA,IF(id_usub,'uSub','') as Subc FROM ConsultaGastos_View  WHERE ID_VALE=$id_vale  AND $where_c_coste  ";
+$sql="SELECT id,ID_CONCEPTO,id_usub, CONCEPTO,CANTIDAD,COSTE,IMPORTE,Obs,ID_SUBOBRA,IF(id_usub,'uSub','') as Subc FROM ConsultaGastos_View  WHERE ID_VALE=$id_vale  AND $where_c_coste  ";
 //$sql="SELECT * FROM GASTOS_T  WHERE ID_VALE=$id_vale   ";
 //echo $sql;
 $result=$Conn->query($sql );
@@ -274,11 +269,12 @@ $sql_T="SELECT 'Total' AS A,'' AS A1,'' AS A2, SUM(IMPORTE) AS IMPORTE,'' AS A3 
 //echo $sql;
 $result_T=$Conn->query($sql_T );
 
-  $updates=['CANTIDAD','Obs','SUBOBRA']  ;
-//  $id_proveedor=$rs["ID_PROVEEDORES"] ;
-  $tabla_update="GASTOS_T" ;
-  $id_update="id" ;
-//  $id_valor=$id_vale ;
+  $updates=['CANTIDAD','Obs','ID_SUBOBRA']  ;
+  $visibles=['ID_SUBOBRA'] ;
+//  $ocultos=["SUBOBRA"];
+  
+$tabla_update="GASTOS_T" ;
+$id_update="id" ;
 $actions_row=[];
 $actions_row["id"]="id";
 $actions_row["delete_link"]="1";
@@ -289,13 +285,14 @@ $actions_row["delete_confirm"]="0";
 //$links["f_vto"] = ["fra_prov_pago.php?id_pago=", "id_pago"] ;
 $links["CONCEPTO"] = ["../proveedores/concepto_ficha.php?id_concepto=", "ID_CONCEPTO","ver Ficha del Concepto de proveedor","formato_sub"]  ;
 $links["Subc"] = ["../proveedores/usub_ficha.php?id=", "id_usub","ver Unidad subcontratada","formato_sub_vacio"]  ;
-$links["SUBOBRA"] = ["../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "ver Subobra", "icon"] ;
-
+//$links["SUBOBRA"] = ["../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "ver Subobra", "icon"] ;
+$selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 //
 $tooltips["Subc"] = "Unidad de Obra perteneciente a un Subcontrato" ;
 $aligns["Subc"] = "center" ;
 $formats["IMPORTE"] = "moneda" ;
 $formats["Obs"] = "text_edit" ;
+//$etiquetas["ID_SUBOBRA"] = "SUBOBRA2" ;
 $etiquetas["Obs"] = "Observaciones" ;
 $formats["COSTE"] = "moneda" ;
 $formats["CANTIDAD"] = "text_edit" ;
@@ -310,7 +307,8 @@ $formats["CANTIDAD"] = "text_edit" ;
 $titulo="" ;
 $msg_tabla_vacia="No hay ";
 
-
+require("../include/tabla.php");
+$TABLE_conceptos = $TABLE ;
 
 
 
@@ -365,7 +363,7 @@ $msg_tabla_vacia="No hay ";
     
 </div>     
 	
-<?php require("../include/tabla.php"); echo $TABLE ; ?>
+<?php  echo $TABLE_conceptos ; ?>
      <br><br>	
 </div>	 
 <!--              FIN pagos   -->	

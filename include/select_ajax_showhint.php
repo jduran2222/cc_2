@@ -21,6 +21,8 @@ require_once("../include/funciones.php");
 //print_r($_GET);
 //echo '</pre>';
 
+$tipo_pagina=isset($_GET["tipo_pagina"]) ? $_GET["tipo_pagina"] : "ficha" ;
+
 $url_enc=decrypt2($_GET['url_enc']) ;       // codigo encriptado desde el php
 $url_raw= ($_GET['url_raw']) ? rawurldecode(($_GET['url_raw'])) : ""  ; // codigo semi-encriptado desde javascript
 
@@ -45,7 +47,7 @@ $href= isset($_GET["href"]) ? trim($_GET["href"]) : "" ;// cadena codificada con
 $sql_sugerir= isset($_GET["sql_sugerir"]) ? $_GET["sql_sugerir"] : "" ;
 $javascript_code = isset($_GET["javascript_code"]) ? $_GET["javascript_code"] : "" ;
 
-
+//$tipo_pagina=isset($_GET["tipo_pagina"]) ? $_GET["tipo_pagina"] : "ficha" ;
 
 
 
@@ -79,7 +81,7 @@ $result = $Conn->query($sql);
 	 $valor_texto=str_replace($filtro ,"<b>$filtro</b>", $valor_texto);	     // idem minuscula
          
          if ($cadena_link) 
-         { echo  "<li><a href=# onclick=\"ficha_select_onchange_showHint($id_valor,'$cadena_link','$href')\">$valor_texto</a></li>"  ; 
+         { echo  "<li><a href=# onclick=\"{$tipo_pagina}_select_onchange_showHint($id_valor,'$cadena_link','$href')\">$valor_texto</a></li>"  ; 
          }else
          {    
              $javascript_code_valor = str_replace("_ID_VALOR_", $id_valor, $javascript_code) ;
@@ -93,25 +95,6 @@ $result = $Conn->query($sql);
  }	  
 
 
-//if ($result->num_rows > 0)
-//  { 
-//    $size = ( $result->num_rows > 10 ) ? 10: $result->num_rows ;
-//    echo "<select id='$select_id' name='$select_id' size=$size onchange=\"ficha_select_onchange('$select_id')\" >" ;
-//    $cadena_link= urldecode($cadena_link_encode) ;
-//    echo " <option value='$cadena_link'>Elija una opción de $campo_texto</option>"  ;              // primer options llevará la $cadena_link_ para uso en update_ajax.php
-//    //echo " <option value='$cadena_link_encode'>$cadena_link_encode</option>"  ;   
-//    while($rs = $result->fetch_array(MYSQLI_ASSOC))  
-//    {
-//     echo " <option value='{$rs[$campo_ID]}'>{$rs[$campo_texto]}</option>"  ; 
-//    }
-//    echo "</select>" ; 
-//  } 
-//   else
-//   { 
-//       //echo "___ERROR___" ;                           // mando mensaje de error
-//       echo "NO HAY VALORES: $sql" ;
-//   }
-   
  $Conn->close();
 
 
