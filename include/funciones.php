@@ -1851,7 +1851,7 @@ function setVar($variable, $valor)
 
 function clave_mail()
 {
-    return "111111Sw" ;
+    return $_SESSION["clave_mail"];
 } 
 
 function DInsert_into($tabla, $campos, $valores, $id_xxx = "", $where_xxx="", $logs=1)
