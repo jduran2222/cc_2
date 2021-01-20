@@ -29,6 +29,7 @@ $fecha_inicio=(date('Y')-1)."-01-01" ;  // 1 de enero del año anterior
 
 if (!$path_logo_empresa = Dfirst("path_logo", "Empresas_Listado", "$where_c_coste")) {$path_logo_empresa = "../img/no_logo_empresa.jpg";} ;
 
+ 
 
 //tareas
 $tareas = Dfirst("count(id)", "Tareas_View", "$where_c_coste AND Terminada=0 AND usuarios LIKE '%{$_SESSION["user"]}%' " );
