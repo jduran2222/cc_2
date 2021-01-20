@@ -27,9 +27,12 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 $id_cliente=$_GET["id_cliente"];
 
- require_once("../clientes/clientes_menutop_r.php");
 $result=$Conn->query($sql="SELECT * FROM Clientes WHERE id_cliente=$id_cliente AND $where_c_coste");
 $rs = $result->fetch_array(MYSQLI_ASSOC);
+
+$cliente=$rs["CLIENTE"] ;  
+ require_once("../clientes/clientes_menutop_r.php");
+
 
 if ($id_cliente!=$rs["ID_CLIENTE"]) cc_die("ERROR EN DATOS. EL CLIENTE NO ES DE ESTA EMPRESA") ;
 

@@ -47,7 +47,7 @@ $id_obra=$_GET["id_obra"];
 <?php 
 
 
-$result=$Conn->query($sql="SELECT * from Proyecto_View WHERE ID_OBRA=".$id_obra);
+$result=$Conn->query($sql="SELECT * from Proyecto_View WHERE ID_OBRA=".$id_obra); 
 
 $sql_update_precio = encrypt2("UPDATE Udos  SET  PRECIO=ROUND(PRECIO*_VARIABLE1_ , 2)  WHERE  ID_OBRA=".$id_obra ) ;
 $sql_update_precio_desde_coste_est = encrypt2("UPDATE Udos  SET  PRECIO=ROUND(COSTE_EST , 2)  WHERE  ID_OBRA=".$id_obra ) ;
@@ -76,7 +76,7 @@ $js_href="js_href( '$href', 1, '', '$href_prompt_update_precio', '', 1, '')"
           href=# onclick='corregir_precios_proyecto_desde_coste_est("<?php echo $sql_update_precio_desde_coste_est;?>" )'>Copiar Coste Estimado a Precio</a>
 <a class="btn btn-xs btn-primary" title="Ver listado de Subobras de esta Obra" target="_blank"
           href="../include/tabla_general.php?url_enc=<?php echo encrypt2("titulo=Subobras&sql=select * FROM Subobra_View WHERE id_c_coste=$id_c_coste AND ID_OBRA=$id_obra ORDER BY SUBOBRA,ID_SUBOBRA DESC &link=../obras/subobra_ficha.php?id_subobra=&campo=SUBOBRA&campo_id=ID_SUBOBRA") ; ?>" > 
-          Subobras<?php echo badge_sup(Dfirst("COUNT(ID_SUBOBRA)", "SubObras", "ID_OBRA=$id_obra")+1, 'info'); ?>
+          Subobras<?php echo badge_sup(Dfirst("COUNT(ID_SUBOBRA)", "SubObras", "ID_OBRA=$id_obra"), 'info'); ?>
 </a>
 
 <a class="btn btn-xs btn-primary" title="PDF" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=" target="_blank">imprimir</a>

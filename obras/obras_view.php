@@ -77,6 +77,9 @@ $activa  = isset($_GET["activa"]) ?  $_GET["activa"]   :    (isset($_POST["activ
 $agrupar  = isset($_GET["agrupar"]) ?  $_GET["agrupar"]   :    (isset($_POST["agrupar"]) ?  $_POST["agrupar"] :  "obras");  
 
 
+//debug
+//echo "ACTIVA: ".$activa ;
+
 // FORMATOS checkboxs
 $inicio_form = !isset($_POST["tipo_subcentro"]) ;       // variables que indica que hay que inicializar el form y los check boxs
 $fmt_prod_obra = isset($_GET["fmt_prod_obra"]) ? 
@@ -373,14 +376,14 @@ $union_sql4=0 ;  // decidirá si añadir UNION sql4 con prod origen y facturaci�
 $select_prod_origen="" ;
 $select_prod_origen_sql4="" ;
 $select_prod_origen_Union="" ;
-$select_prod_origen_Union_T="" ;
+$select_prod_origen_Union_T="" ; 
 $col_vacia="";
 
 $is_obra_unica=(Dfirst("COUNT(ID_OBRA)","OBRAS", $where )==1)  ; // miramos si es una única obra la seleccionada para añadir opciones de link y Cerrar Mes
 $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // cogemos el ID_OBRA de esa obra única
 
 
- switch ($agrupar) {
+ switch ($agrupar) { 
    case "obras":
 //     $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA,importe_sin_iva,Cartera_pdte "
 //         . "Cartera_pdte,Porcentaje_Plazo , Valoracion/importe_sin_iva as Porcentaje_ejecutado, Valoracion/importe_sin_iva-Porcentaje_Plazo as Porcentaje_DESFASE"
@@ -392,6 +395,7 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
       $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,IMPORTE AS importe_iva_inc  "
          . ",Plazo,F_Fin_Plazo,id_produccion_obra, 'ver Prod_Obra' as PRODUCCION_OBRA "
             . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
+      $sql_T="SELECT '' AS A,'' AS A1, 'SUMA:', SUM(IMPORTE) AS importe_iva_inc, '' AS A2, '' AS A21, '' AS A22 FROM Obras_View WHERE $where   " ;
 
 
 //     $sql_T="SELECT  '' as ID_OBRA,'' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma2' ,   SUM(IMPORTE) as IMPORTE , SUM(importe_sin_iva) as importe_sin_iva , "
