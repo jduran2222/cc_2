@@ -184,7 +184,7 @@ if ($fmt_clientes)
     $where_cli=$fecha1==""? $where_cli : $where_cli . " AND FECHA_EMISION >= '$fecha1' " ;
     $where_cli=$fecha2==""? $where_cli : $where_cli . " AND FECHA_EMISION <= '$fecha2' " ;
     $where_cli=$MES==""? $where_cli : $where_cli . " AND DATE_FORMAT(FECHA_EMISION, '%Y-%m') = '$MES' " ;
-    $where_cli=$Trimestre==""? $where_cli : $where_cli . " AND $select_trimestre = '$Trimestre' " ;
+    $where_cli=$Trimestre==""? $where_cli : $where_cli . " AND $select_trimestre_cli = '$Trimestre' " ;
     $where_cli=$Anno==""? $where_cli : $where_cli . " AND YEAR(FECHA_EMISION) = '$Anno' " ;
 
 }
@@ -318,27 +318,85 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
      $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
             . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
              . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
-     
-//     $sql=$sql_cli;
-    
+         
    }    
-
-
-
-
 
     $agrupados=1 ;
      break;
+     
+     
     case "trimestres":
-//    $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m') as MES,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
-    $sql="SELECT  $select_trimestre as Trimestre,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY TRIMESTRE  ORDER BY TRIMESTRE  " ;
+        
+   if(!$fmt_clientes)
+   {    
+    $sql="SELECT  $select_trimestre as Trimestre,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado"
+            . ",SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
+            . "  FROM Fras_Prov_View WHERE $where  GROUP BY Trimestre  ORDER BY Trimestre  " ;
     $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where   " ;
+   }
+   else
+   {
+    $sql_prov="SELECT  $select_trimestre as Trimestre,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
+            . ",SUM(IMPORTE_IVA) as IMPORTE_IVA"
+            . ", 0 as Base_Imp_cli , 0 as Iva_devengado , 0 as Importe_iva_cli, -(SUM(IMPORTE_IVA)  - SUM(Base_Imponible)) as Iva_a_ingresar         "
+            . " FROM Fras_Prov_View WHERE $where  GROUP BY Trimestre  " ;
+        
+    $sql_cli="SELECT  $select_trimestre_cli as Trimestre,0 AS Base_Imponible, 0 AS  iva_soportado, 0 AS IMPORTE_IVA "
+            . ", SUM(Base_Imponible) as Base_Imp_cli , SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado , SUM(IMPORTE_IVA) as Importe_iva_cli, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) as Iva_a_ingresar         "
+            . " FROM Facturas_View WHERE $where_cli  GROUP BY Trimestre  " ;
+        
+        
+    
+     $sql= "SELECT Trimestre , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA "
+             . ",' ' as ID_TH_COLOR "
+            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X GROUP BY Trimestre ORDER BY Trimestre" ; 
+     
+     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
+            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
+       
+   }    
     $agrupados=1 ;
      break;
     case "annos":
+
+
+    if(!$fmt_clientes)
+   {    
     $sql="SELECT  DATE_FORMAT(FECHA, '%Y') as Anno,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
-            . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY Anno  ORDER BY Anno  " ;
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;
+            . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
+            . "  FROM Fras_Prov_View WHERE $where  GROUP BY Anno  ORDER BY Anno  " ;
+    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,"
+            . " SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar "
+            . " FROM Fras_Prov_View WHERE $where  " ;
+   }
+   else
+   {
+    $sql_prov="SELECT  DATE_FORMAT(FECHA, '%Y') as Anno,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
+            . ",SUM(IMPORTE_IVA) as IMPORTE_IVA"
+            . ", 0 as Base_Imp_cli , 0 as Iva_devengado , 0 as Importe_iva_cli, -(SUM(IMPORTE_IVA)  - SUM(Base_Imponible)) as Iva_a_ingresar         "
+            . " FROM Fras_Prov_View WHERE $where  GROUP BY Anno  " ;
+        
+    $sql_cli="SELECT  DATE_FORMAT(FECHA_EMISION, '%Y') as Anno,0 AS Base_Imponible, 0 AS  iva_soportado, 0 AS IMPORTE_IVA "
+            . ", SUM(Base_Imponible) as Base_Imp_cli , SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado , SUM(IMPORTE_IVA) as Importe_iva_cli, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) as Iva_a_ingresar         "
+            . " FROM Facturas_View WHERE $where_cli  GROUP BY Anno  " ;
+        
+        
+    
+     $sql= "SELECT Anno , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA "
+             . ",' ' as ID_TH_COLOR "
+            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X GROUP BY Anno ORDER BY Anno" ; 
+     
+     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
+            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
+       
+   }    
+
+    
+    
     $agrupados=1 ;
      break;
     case "grupo":
