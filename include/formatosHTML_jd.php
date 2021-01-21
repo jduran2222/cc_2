@@ -1,6 +1,27 @@
 <?php
 
     // JUAND
+
+// Label para filtrar o generar PDFs
+function labelFormatos($array_fmt) {
+    $html = '';
+
+    foreach ($array_fmt as $fmt)
+    {
+        
+    $html .= '<div class="col">';
+    // $html .= '  <strong>Formato: </strong>';
+    $html .= '  <div class="d-inline custom-control custom-checkbox mr-sm-2">';
+    $html .= "      <input class='custom-control-input' type='checkbox' id='{$fmt[0]}' name='{$fmt[0]}' {$fmt[1]}>";
+    $html .= "      <label class='custom-control-label' for='{$fmt[0]}' title='{$fmt[3]}'><em>{$fmt[2]}</em></label>";
+    $html .= '  </div>';
+    $html .= '</div>';
+    }
+
+    return $html;
+}
+
+
 function filtroSimple($tipo=null, $nombre=null, $identificador=null, $clases=null, $label=null, $valor=null, $options=null) {
     $style = "style='font-size:x-small;color:silver;' " ;
     $html = '';

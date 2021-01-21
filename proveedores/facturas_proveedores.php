@@ -60,6 +60,7 @@ if ($iniciar_form) {
     $grupo=isset($_GET["grupo"])? $_GET["grupo"] :  "" ;
     $agrupar = isset($_GET["agrupar"])? $_grupoGET["agrupar"] :  'ultimas_fras_reg' ;     
     $fmt_pdf = isset($_GET["fmt_pdf"]) ?  $_GET["fmt_pdf"] :  "checked";
+    $fmt_clientes = isset($_GET["fmt_clientes"]) ?  $_GET["fmt_clientes"] :  "";
     $menu = isset($_GET["menu"]) ?  $_GET["menu"] :  "";
 }
 else {
@@ -85,6 +86,7 @@ else {
     $grupo=$_POST["grupo"] ;
     $agrupar =$_POST["agrupar"] ;    
     $fmt_pdf=isset($_POST["fmt_pdf"]) ? 'checked' : '' ;
+    $fmt_clientes=isset($_POST["fmt_clientes"]) ? 'checked' : '' ;
     $menu =  "";
 }
   
@@ -139,7 +141,7 @@ $where=$where_c_coste;
 if ($listado_global)                // Estamos en pantalla de LISTADO GLOBAL (toda la empresa no solo en un proveedor concreto)
 {    
 // adaptamos todos los filtros, quitando espacios a ambos lados con trim() y sustituyendo espacios por '%' para el LIKE 
-$where=$proveedor==""? $where : $where . " AND filtro LIKE '%".str_replace(" ","%",trim($proveedor))."%'" ;
+$where=$proveedor==""? $where : $where . " AND PROVEEDOR LIKE '%".str_replace(" ","%",trim($proveedor))."%'" ;
 }
 else 
 {
@@ -148,7 +150,6 @@ $where= $where . " AND ID_PROVEEDORES=$id_proveedor " ;    // Estamos en gastos 
 
 
 $select_trimestre="CONCAT(YEAR(FECHA), '-', QUARTER(FECHA),'T')"  ;
-
 
 $where=$n_fra==""? $where : $where . " AND CONCAT(ID_FRA_PROV,N_FRA) LIKE '%".str_replace(" ","%",trim($n_fra))."%'" ;
 $where=$NOMBRE_OBRA==""? $where : $where . " AND NOMBRE_OBRA LIKE '%".str_replace(" ","%",trim($NOMBRE_OBRA))."%'" ;
@@ -171,6 +172,25 @@ $where=$metadatos==""? $where : $where . " AND metadatos LIKE '%".str_replace(" 
 $where=$path_archivo==""? $where : $where . " AND path_archivo LIKE '%".str_replace(" ","%",trim($path_archivo))."%'" ;
 $where=$firmado==""? $where : $where . " AND firmado LIKE '%".str_replace(" ","%",trim($firmado))."%'" ;
 //$where=$FECHA2==""? $where : $where . " AND FECHA <= STR_TO_DATE('$FECHA2','%Y-%m-%d') " ;
+
+
+// calculo del where_clientes por si se hace la COMPARCION con fras_clientes
+if ($fmt_clientes)
+{
+    $select_trimestre_cli="CONCAT(YEAR(FECHA_EMISION), '-', QUARTER(FECHA_EMISION),'T')"  ;
+    $where_cli=$where_c_coste;
+
+    $where_cli=$NOMBRE_OBRA==""? $where_cli : $where_cli . " AND NOMBRE_OBRA LIKE '%".str_replace(" ","%",trim($NOMBRE_OBRA))."%'" ;
+    $where_cli=$fecha1==""? $where_cli : $where_cli . " AND FECHA_EMISION >= '$fecha1' " ;
+    $where_cli=$fecha2==""? $where_cli : $where_cli . " AND FECHA_EMISION <= '$fecha2' " ;
+    $where_cli=$MES==""? $where_cli : $where_cli . " AND DATE_FORMAT(FECHA_EMISION, '%Y-%m') = '$MES' " ;
+    $where_cli=$Trimestre==""? $where_cli : $where_cli . " AND $select_trimestre = '$Trimestre' " ;
+    $where_cli=$Anno==""? $where_cli : $where_cli . " AND YEAR(FECHA_EMISION) = '$Anno' " ;
+
+}
+
+
+
 
 ?>
  
@@ -266,8 +286,47 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     $agrupados=1 ;
      break;
     case "meses":
-    $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m') as MES,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
+    
+        
+        
+   if(!$fmt_clientes)
+   {    
+    $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m') as MES,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
+            . ",SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
+            . " FROM Fras_Prov_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
+
     $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where   " ;
+
+   }else
+   {
+    $sql_prov="SELECT  DATE_FORMAT(FECHA, '%Y-%m') as MES,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
+            . ",SUM(IMPORTE_IVA) as IMPORTE_IVA"
+            . ", 0 as Base_Imp_cli , 0 as Iva_devengado , 0 as Importe_iva_cli, -(SUM(IMPORTE_IVA)  - SUM(Base_Imponible)) as Iva_a_ingresar         "
+            . " FROM Fras_Prov_View WHERE $where  GROUP BY MES  " ;
+        
+    $sql_cli="SELECT  DATE_FORMAT(FECHA_EMISION, '%Y-%m') as MES,0 AS Base_Imponible, 0 AS  iva_soportado, 0 AS IMPORTE_IVA "
+            . ", SUM(Base_Imponible) as Base_Imp_cli , SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado , SUM(IMPORTE_IVA) as Importe_iva_cli, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) as Iva_a_ingresar         "
+            . " FROM Facturas_View WHERE $where_cli  GROUP BY MES  " ;
+        
+        
+    
+     $sql= "SELECT MES , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA "
+             . ",' ' as ID_TH_COLOR "
+            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X GROUP BY MES ORDER BY MES" ; 
+     
+     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
+            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
+     
+//     $sql=$sql_cli;
+    
+   }    
+
+
+
+
+
     $agrupados=1 ;
      break;
     case "trimestres":
@@ -350,8 +409,11 @@ $formats["Enero"] = "moneda" ; $formats["Febrero"] = "moneda" ; $formats["Marzo"
 $formats["Julio"] = "moneda" ; $formats["Agosto"] = "moneda" ; $formats["Septiembre"] = "moneda" ; $formats["Octubre"] = "moneda" ; $formats["Noviembre"] = "moneda" ; $formats["Diciembre"] = "moneda" ;
 
 $formats["Base_Imponible"] = "moneda" ;
+$formats["Base_Imp_cli"] = "moneda" ;
 $formats["firmado"] = "firmado" ;
 $formats["iva_soportado"] = "moneda" ;
+$formats["iva_devengado"] = "moneda" ;
+$formats["Iva_a_ingresar"] = "moneda" ;
 $formats["IMPORTE_IVA"] = "moneda" ;
 $formats["pdte_conciliar"] = "moneda" ;
 $etiquetas["IMPORTE_IVA"] = "Importe iva inc." ;
@@ -420,6 +482,20 @@ $btnAgrupaciones = array();
 //$agrupacionSeleccionada = $agrupar;
 $btnAgrupaciones['ultimas_fras_reg']=['ultimas registradas','muestra las últimas facturas registradas'] ;
 $btnAgrupaciones['facturas']=['facturas','Listado de todas las facturas según el filtro'] ;
+
+//Condicionales por tipo de listado
+if ($listado_global) { // Estamos en pantalla de LISTADO GLOBALES (es decir, en toda la empresa)
+    $tituloEncabezado = 'Facturas Proveedores';
+    $enlaceForm = '../proveedores/facturas_proveedores.php';
+    //agrupaciones globales
+    $btnAgrupaciones['proveedor']=['proveedor',''] ;
+    $btnAgrupaciones['prov_fras']=['prov-fras',''] ;
+}
+else {
+    $enlaceVolver = enlaceVolverCabeceraPagina('../proveedores/facturas_proveedores.php','(Volver a Facturas prov. global)');
+    $tituloEncabezado = 'Facturas de ' . $proveedor . ' '.$enlaceVolver;
+    $enlaceForm = '../proveedores/facturas_proveedores.php?id_proveedor='.$id_proveedor;
+}
 $btnAgrupaciones['obras']=['obras',''] ;
 $btnAgrupaciones['vacio3']=['','',''] ;
 $btnAgrupaciones['meses']=['meses',''] ;
@@ -429,20 +505,6 @@ $btnAgrupaciones['vacio2']=['','',''] ;
 $btnAgrupaciones['grupo']=['grupo','Agrupa las facturas por grupos '] ;
 $btnAgrupaciones['firmado']=['firmado','Agrupa las facturas según estén firmadas, conformes, pendientes... '] ;
 $btnAgrupaciones['cuadros']=["<span class='glyphicon glyphicon-th-large'></span> cuadros",'Muestra las facturas seleccionadas en forma de cuadros'] ;
-
-//Condicionales por tipo de listado
-if ($listado_global) { // Estamos en pantalla de LISTADO GLOBALES (es decir, en toda la empresa)
-    $tituloEncabezado = 'Facturas Proveedores';
-    $enlaceForm = '../proveedores/facturas_proveedores.php';
-    //agrupaciones globales
-    $btnAgrupaciones['prov_fras']=['prov-fras',''] ;
-    $btnAgrupaciones['proveedor']=['proveedor',''] ;
-}
-else {
-    $enlaceVolver = enlaceVolverCabeceraPagina('../proveedores/facturas_proveedores.php','(Volver a Facturas prov. global)');
-    $tituloEncabezado = 'Facturas de ' . $proveedor . ' '.$enlaceVolver;
-    $enlaceForm = '../proveedores/facturas_proveedores.php?id_proveedor='.$id_proveedor;
-}
 
 //Montaje de fragmentos:
 $html = '';
@@ -571,7 +633,14 @@ $agrupaciones = panelAgrupacionesFacturasProveedor($btnAgrupaciones,$agrupar);
         $datosResumen=$Conn->query($sql);
         $datosResumen = $datosResumen->fetch_array(MYSQLI_ASSOC);
 $resumen = panelResumenFacturasProveedor($datosResumen);
-$labels = labelVerPdf($fmt_pdf);
+//$labels = labelVerPdf($fmt_pdf);
+
+$array_fmt=[
+          ['fmt_pdf', $fmt_pdf , '(Ver PDF)', 'muestra los pdf de las factura']
+         ,['fmt_clientes', $fmt_clientes , 'Compara F.Clientes', 'Muestra las Facturas de Clientes para los mismos periodos para comparar IVAs, y facturaciones de Ingeros y Gastos']
+    ];
+
+$labels = labelFormatos($array_fmt);
 echo selectoresMenuFacturasProveedor($filtro_html,$operaciones,$agrupaciones,$resumen,$labels);
 echo botonNuevaFacturaProveedor();
 if (!empty($agrupar)) {

@@ -794,12 +794,10 @@ if (!$listado_global)
      
        
      $sql1=" (SELECT ID_SUBOBRA,SUBOBRA , SUM(IMPORTE) as importe, 0 AS gasto  FROM ConsultaProd WHERE $where   GROUP BY ID_SUBOBRA ) " ;
-//     $sql2=" (SELECT ID_SUBOBRA,SUBOBRA , 0 as importe, gasto AS gasto  FROM Subobra_gasto WHERE ID_OBRA=$id_obra ) " ;
      $sql2=" (SELECT ID_SUBOBRA,SUBOBRA , 0 as importe, SUM(IMPORTE) AS gasto  FROM ConsultaGastos_View WHERE $where_gasto AND ID_OBRA=$id_obra GROUP BY ID_OBRA) " ;
-//     $sql= $sql1 ." UNION  ". $sql2 ; 
+
      $sql= "SELECT ID_SUBOBRA,SUBOBRA , SUM(importe) as importe,SUM( gasto) AS gasto ,SUM(importe)-SUM( gasto) AS beneficio_real, 1-SUM( gasto)/SUM(importe) as margen "
              . " FROM (" . $sql1 ." UNION ALL ". $sql2 .") X GROUP BY ID_SUBOBRA" ; 
-//     $sql_T= "SELECT ID_SUBOBRA,SUBOBRA , SUM(importe) as importe,SUM( gasto) AS gasto  FROM (" . $sql1 ." UNION ALL ". $sql2 .") X GROUP BY ID_OBRA" ; 
      $sql_T= "SELECT 'Suma Ejecución Material...', SUM(importe) as importe,SUM( gasto) AS gasto FROM (" . $sql1 ." UNION ALL ". $sql2 .") X " ; 
    
 $sql_T2="SELECT  CONCAT('Suma Ejecución Contrata... GG+BI x COEF_BAJA:',$COEF_BAJA), SUM(importe)*(1+$GG_BI)*$COEF_BAJA as importe,SUM( gasto) AS gasto  ,SUM(importe)*(1+$GG_BI)*$COEF_BAJA-SUM( gasto) AS beneficio_real"
