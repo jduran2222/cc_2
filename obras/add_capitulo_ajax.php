@@ -5,9 +5,9 @@ $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
  //echo "El filtro es:{$_GET["filtro"]}";
 
 $id_obra=$_GET["id_obra"]  ;
-$capitulo= isset($_GET["capitulo"]) ? $_GET["capitulo"] : 'capitulo nuevo'  ;
+$capitulo= isset($_GET["capitulo"]) ? quita_simbolos_mysql( $_GET["capitulo"] ) : 'capitulo nuevo'  ;
 $id_udo= isset($_GET["id_udo"]) ? $_GET["id_udo"] : 0  ;
-$no_ajax= isset($_GET["no_ajax"])   ;  // para cuando lo llamamos por href y no por AJAX
+$no_ajax= isset($_GET["no_ajax"])   ;  // para cuando lo llamamos por href y no por AJAX 
 
 require_once("../../conexion.php");
 require_once("../include/funciones.php");

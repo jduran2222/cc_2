@@ -136,9 +136,8 @@ añadiendo content-wrapper al div hacemos el movimiento horizontal de la página
 juand , 7 agosto 2020-->
 <?php
 //sidebar-mini layout-fixed sidebar-collapse
-if (!isset($_SESSION["menu_lateral_collapse"])) {$_SESSION["menu_lateral_collapse"]=0 ; }  // inicializamos $_SESSION["menu_lateral_collapse"]
+if (!isset($_SESSION["menu_lateral_collapse"])) {$_SESSION["menu_lateral_collapse"]=1 ; }  // inicializamos $_SESSION["menu_lateral_collapse"]
 $menu_lateral_collapse_txt = ($_SESSION["menu_lateral_collapse"]) ? "sidebar-collapse" : "" ;
-//$menu_lateral_collapse_txt =  "sidebar-collapse" ;
 ?>
 <body class="hold-transition sidebar-mini layout-fixed <?php echo  $menu_lateral_collapse_txt; ?> ">
 <div class="wrapper">

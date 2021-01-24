@@ -176,7 +176,7 @@ if (href.match(/_VAR_HREF2_/g))
     var2_link = "" ;
 }  
 
-//    alert("href: "+href) ;
+//    alert("href: "+ href + var1_link + var2_link) ;
 
             
 //  xhttp.open("GET", href + var1_link + var2_link, true);  // hacemos el href y eventualmente le añadimos dos parametros llamados variable 1 y 2 que el PHP sabá interpretar
@@ -310,11 +310,11 @@ if (href.match(/_VAR_HREF1_/g))
             
 if (href.match(/_VAR_HREF2_/g))
 {   // sustituimos _VAR_HREF2_ por el valor del url var1_link
-    href = href.replace( "_VAR_HREF1_" ,  var1_link.replace("&variable2=","") ) ;
+    href = href.replace( "_VAR_HREF2_" ,  var1_link.replace("&variable2=","") ) ;
     var2_link = "" ;
 }  
 
-//    alert("href: "+href) ;
+//    alert("href: "+href+ var1_link + var2_link) ;
 
             
   xhttp.open("GET", href + var1_link + var2_link, true);  // hacemos el href y eventualmente le añadimos dos parametros llamados variable 1 y 2 que el PHP sabá interpretar

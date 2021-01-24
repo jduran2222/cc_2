@@ -686,9 +686,9 @@ $filtro_html = panelFiltros( $filtros);
 $operaciones = panelOperacionesFacturasProveedor($remesas,$cargas,$metalicos,$bancos,$grupos);
 $agrupaciones = panelAgrupacionesFacturasProveedor($btnAgrupaciones,$agrupar);
 //Para los elementos de resumen
-        $sql="SELECT SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) - SUM(Base_Imponible) AS importe_de_iva, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(importe_vales) AS importe_cargado,SUM(importe_pagado) AS importe_pagado,"
+        $sql_resumen="SELECT SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) - SUM(Base_Imponible) AS importe_de_iva, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(importe_vales) AS importe_cargado,SUM(importe_pagado) AS importe_pagado,"
         . "SUM(importe_cobrado) AS Importe_cobrado  FROM Fras_Prov_View WHERE $where  " ;   
-        $datosResumen=$Conn->query($sql);
+        $datosResumen=$Conn->query($sql_resumen);
         $datosResumen = $datosResumen->fetch_array(MYSQLI_ASSOC);
 $resumen = panelResumenFacturasProveedor($datosResumen);
 //$labels = labelVerPdf($fmt_pdf);

@@ -463,14 +463,14 @@ if ($uploadOk == 0)
                         // registramos el documento en la bbdd
         //		require_once("../../conexion.php"); 
                 
-                                // si es FOTO borramos el original para ahorrar
-                if ($es_foto AND $eliminar_original)
+                                // si es FOTO borramos el original para ahorrar 
+                if ($es_foto AND $eliminar_original AND $size > 1024*1024*2)   // si la foto es mayor de 2 mb
                     {
                       unlink($target_file_i) ;   // borramos el original
                       $size = filesize("{$target_file_i}_large.jpg") ;   // actualizamos el tamaño al _large.jpg
                     } 
 
-
+ 
                 if ($reemplazado)
                 {
                 $sql="UPDATE `Documentos` SET `documento` = $documento,  `tamano` = '$size', `Observaciones` = '$observaciones' "

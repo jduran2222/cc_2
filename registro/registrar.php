@@ -8,17 +8,6 @@ require_once( "../../conexion.php") ;
 require_once("../include/funciones.php"); 
 
   
- //Registramos en w_Accesos el acceso a la web
-//function registrar_acceso($user,$pass,$resultado)
-//{
-//  //extract($GLOBALS);
-//  
-//   $sql="insert into w_accesos (ip, usuario, clave,  sistema, resultado) values  ('{$_SERVER["REMOTE_ADDR"]}','$user','$pass','$resultado')";
-//         $result = $Conn->query($sql);
-//
-//  return $result;
-//} 
-
 
 //confirmo si es autologin para simular el logueado
 if (isset($_GET["login"]))

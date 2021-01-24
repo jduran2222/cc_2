@@ -56,7 +56,7 @@ echo "<script>window.print();</script>" ;
 	</style>
 </head>
 <body dir="ltr">
-  <?php     if (!$path_logo_empresa=Dfirst("path_archivo", "Documentos", "tipo_entidad='empresa' AND $where_c_coste")) $path_logo_empresa="../img/no_logo.jpg" ; ?>
+  <?php     if (!$path_logo_empresa=Dfirst("path_archivo", "Documentos", "tipo_entidad='empresa' AND $where_c_coste")."_large.jpg" ) $path_logo_empresa="../img/no_logo.jpg" ; ?>
 
     <p lang="zxx" align="left" style="margin-bottom: 0cm"><img width="300" src="<?php echo $path_logo_empresa; ?>" ></p>
             <p lang="zxx" align="right">
@@ -69,7 +69,7 @@ echo "<script>window.print();</script>" ;
 <p lang="zxx" align="right" style="margin-bottom: 0cm"><font face="Arial, serif"><font size="2" style="font-size: 9pt"><i><span style="font-weight: normal">TELF:
 <?php echo $rs_emp["tels"] ;?></span></i></font></font></p>
 <p lang="zxx" align="right" style="margin-bottom: 0cm"><font face="Arial, serif"><font size="2" style="font-size: 9pt"><i><b>CIF:
-<?php echo $rs_emp["cif"] ;?></b></i></font></font></p>
+<?php echo $rs_emp["cif"] ;?></b></i></font></font></p> 
 
 <p lang="zxx" style="margin-bottom: 0cm"><font face="Arial Black, sans-serif"><font size="6" style="font-size: 22pt">FACTURA
 </font></font>

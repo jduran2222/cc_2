@@ -82,10 +82,15 @@ $agrupar  = isset($_GET["agrupar"]) ?  $_GET["agrupar"]   :    (isset($_POST["ag
 
 // FORMATOS checkboxs
 $inicio_form = !isset($_POST["tipo_subcentro"]) ;       // variables que indica que hay que inicializar el form y los check boxs
+$fmt_cartera = isset($_GET["fmt_cartera"]) ? 
+                              ( $_GET["fmt_cartera"] ? "checked" : "" )
+                            : (isset($_POST["fmt_cartera"]) ?  "checked" : 
+                              ( $inicio_form ? "" : ""  )  );                // vaLor por defecto 'checked'
+
 $fmt_prod_obra = isset($_GET["fmt_prod_obra"]) ? 
                               ( $_GET["fmt_prod_obra"] ? "checked" : "" )
                             : (isset($_POST["fmt_prod_obra"]) ?  "checked" : 
-                              ( $inicio_form ? "checked" : ""  )  );                // vaor por defecto 'checked'
+                              ( $inicio_form ? "checked" : ""  )  );                // vaLor por defecto 'checked'
 
 $fmt_prod_origen = isset($_GET["fmt_prod_origen"]) ? 
                               ( $_GET["fmt_prod_origen"] ? "checked" : "" )
@@ -231,6 +236,7 @@ echo "<TR><TD>Activas</td><td>"
 
 <div class='noprint'>
 Formato:&nbsp; 
+        <label><INPUT type="checkbox" title="muestra solo la Cartera de Obra al agrupar por Estado Actual" id="fmt_cartera" name="fmt_cartera" <?php echo $fmt_cartera;?>  >&nbsp;solo Cartera&nbsp;&nbsp;</label>
         <label><INPUT type="checkbox" id="fmt_prod_obra" name="fmt_prod_obra" <?php echo $fmt_prod_obra;?>  >&nbsp;Producción periodo&nbsp;&nbsp;</label>
         <label><INPUT type="checkbox" id="fmt_gastos_estimados" name="fmt_gastos_estimados" <?php echo $fmt_gastos_estimados;?>  >&nbsp;Gastos Estimados&nbsp;&nbsp;</label>
         <label><INPUT type="checkbox" id="fmt_prod_origen" name="fmt_prod_origen" <?php echo $fmt_prod_origen;?>  >&nbsp;Producción a origen&nbsp;&nbsp;</label>
@@ -286,6 +292,7 @@ echo '</div>' ;
 
 $where=" $where_c_coste " ;
 $where_fecha=" 1=1 " ;
+$where_cartera= $fmt_cartera ? " Cartera_pdte > 1 "  :  " 1=1 " ;
 
 //$where=$tipo_subcentro==""? $where : $where . " AND LOCATE(tipo_subcentro,'$tipo_subcentro')>0 " ;
 
@@ -403,14 +410,14 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
    break;
    case "situacion":
 
-      $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,IMPORTE AS importe_iva_inc , importe_sin_iva "
-         . ", VENTAS , Cartera_pdte, VENTAS/importe_sin_iva as Porcentaje_ejecutado,F_Fin_Plazo,Porcentaje_Plazo ,  VENTAS/importe_sin_iva-Porcentaje_Plazo as Porcentaje_DESFASE"
+      $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS, importe_sin_iva,F_Fin_Plazo "
+         . ", VENTAS , Cartera_pdte, VENTAS/importe_sin_iva as Porcentaje_ejecutado,Porcentaje_Plazo ,  VENTAS/importe_sin_iva-Porcentaje_Plazo as Porcentaje_DESFASE"
            . ",' ' as ID_TH_COLOR,  "
            . "Facturado_iva , Facturado_iva/IMPORTE AS Porcentaje_Facturado , Pdte_Cobro , ' ' as ID_TH_COLOR2  "
-            . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
+            . " FROM Obras_View WHERE $where AND $where_cartera  ORDER BY NOMBRE_OBRA " ;
 
-     $sql_T="SELECT  '' as ID_OBRA,'' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma2' ,   SUM(IMPORTE) as IMPORTE , SUM(importe_sin_iva) as importe_sin_iva , "
-             . " SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_View WHERE $where    " ;
+     $sql_T="SELECT  '' as ID_OBRA,'' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma:' ,   SUM(importe_sin_iva) as importe_sin_iva ,'' as F_Fin_Plazo "
+             . ", SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_View WHERE $where AND $where_cartera   " ;
    break;
    case "obras2":
      $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,importe_sin_iva,Cartera_pdte,  Beneficio_pdte,Margen_estimado  "
@@ -702,6 +709,8 @@ $formats["Facturado_iva"] = "moneda" ;
 $formats["Estudio_Costes_inicial"] = "moneda" ;
 $etiquetas["Porcentaje_Plazo"] = "% plazo" ;
 $etiquetas["Porcentaje_ejecutado"] = "% ejecutado" ;
+$formats["Porcentaje_ejecutado"] = "progress" ;
+$formats["Porcentaje_Plazo"] = "progress" ;
 
 
 //$cols_string=["NOMBRE_OBRA"] ;

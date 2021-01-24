@@ -1,17 +1,6 @@
-<?php
-// cambios
-require_once("../include/session.php");
-$where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
-$id_c_coste = $_SESSION['id_c_coste'];
-
-$titulo = 'Tabla General';
-
-//INICIO
-include_once('../templates/_inc_privado1_header.php');
-include_once('../templates/_inc_privado2_navbar.php');
-
-?>
-
+ <!--HACEMOS EL REGISTRO DE SECSSION MAS ABAJO SEGUN QUERAMOS O NO-->
+ 
+ 
         <!-- Contenido principal 
         <div class="container-fluid bg-light">
             <div class="row">
@@ -25,50 +14,45 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 
 
-<?php // $id_cta_banco=$_GET["id_cta_banco"];?>
-
-<!-- CONEXION CON LA BBDD Y MENUS -->
-
-<div style="overflow:visible">	   
-   
-	<!--************ INICIO *************  -->
-
-<div id="main" class="mainc_100" style="background-color:#fff">
-	
 <?php 
      
-//foreach ($_GET as $clave => $valor)
-//{
-//    if(is_encrypt2($valor)) { $_GET[$clave]= decrypt2($valor) ;}      // desencriptamos cualquier get encriptado
-//}
+require_once("../../conexion.php");
+require_once("../include/funciones.php");
 
-
-echo '<BR><BR><BR><BR>';
-//echo '<BR>VALOR decrypt url<BR>';
-//echo  decrypt2($_GET['url']) ;
-//
-//
-//echo '<BR>PRIMER VALOR<BR>';
-//echo $_SERVER['QUERY_STRING'] ;
 
 //echo '<pre>';
 //print_r($_GET);
 //echo '</pre>';
 
+$sin_inicio_session=0;
 if (isset($_GET['url_enc']))         // Si venimos ENCRYPTADOS, desencriptamos, juntamos las dos url y metemos en GET las variables
 {    
     $url_dec=decrypt2($_GET['url_enc']) ;
     $url_raw= isset($_GET['url_raw']) ? rawurldecode(($_GET['url_raw'])) : ""  ;
 
     parse_str( $url_dec.$url_raw , $_GET ) ;
+    $sin_inicio_session= isset($_GET['sin_inicio_session']) ;   // ejecutamos el PHP sin INICIAR SESSION
 }
 
+if (!$sin_inicio_session)
+{
+    require_once("../include/session.php");
+    $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
+    $id_c_coste = $_SESSION['id_c_coste'];
+
+    $titulo = 'Tabla General';
+
+    //INICIO
+    include_once('../templates/_inc_privado1_header.php');
+    include_once('../templates/_inc_privado2_navbar.php');
+
+} else {
+   
+    include_once('../templates/_inc_registro1_header.php');
+    
+}   
 
 
-
-
-//echo '<BR>segundo valor tras cambios VALOR<BR>';
-//echo $_SERVER['QUERY_STRING'] ;
 
 $link= ''; 
 
@@ -109,7 +93,7 @@ $campo=  isset($_GET["campo"])? ( is_encrypt2($_GET["campo"]) ?  decrypt2($_GET[
 $titulo= isset($_GET["titulo"])? $_GET["titulo"] : ( isset($tabla) ? "$tabla" : "$titulo") ;
 $titulo="<h1>$titulo</h1>";
 
-if ($admin)  {echo "<span class='c_text'>solo admin: $sql </span> "; } ;
+//if ($admin)  {echo "<span class='c_text'>solo admin: $sql </span> "; } ;
 //logs("Tabla general: $sql") ; 
 $result=$Conn->query($sql) ;
 //$result_T=$Conn->query($sql_T) ;
@@ -135,7 +119,21 @@ $scroll='';
 
 $msg_tabla_vacia="No hay.";
 ?>
-<?php require("../include/tabla.php"); echo $TABLE ;?>
+<div style="overflow:visible">	   
+   
+  <div id="main" class="mainc_100" style="background-color:#fff">
+    <br><br><br><br>
+
+<?php
+
+    echo $sin_inicio_session?  boton_cerrar()
+                               :"";
+
+    if ($admin)  {echo "<span class='c_text'>solo admin: $sql </span> "; } ;
+
+    require("../include/tabla.php"); echo $TABLE ;
+
+?>
 
 </div>
 
@@ -162,4 +160,19 @@ $Conn->close();
 <?php 
 
 //FIN
-include_once('../templates/_inc_privado3_footer.php');
+
+if (!$sin_inicio_session)
+{
+   include_once('../templates/_inc_privado3_footer.php');
+
+} else {
+   
+   echo boton_cerrar();
+                               
+ 
+   include_once('../templates/_inc_registro3_footer.php');
+}   
+
+
+
+

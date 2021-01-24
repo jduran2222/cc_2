@@ -749,11 +749,15 @@ if (!$listado_global)
     $print_anadir_med=false ;
     
     $where_urlencode=base64_encode($where) ;
-//    $where_urlencode=$where ;
+//    $where_urlencode=$where ; 
     
-    
+    echo "<a class='btn btn-xs btn-link noprint' title='añadir Capitulo al proyecto' href=# onclick= 'add_capitulo($id_obra)' >"
+            . "<i class='fas fa-plus-circle'></i> añadir capítulo</a>";
+    echo "<a class='btn btn-xs btn-link noprint' title='añadir Unidad de Obra (UdO) al primer Capitulo' href=# onclick= 'add_udo($id_obra)' >"
+            . "<i class='fas fa-plus-circle'></i> añadir UdO</a>";
+
     echo "<a class='btn btn-xs btn-link noprint ' target='_blank' href='../obras/subobra_anadir.php?id_obra=$id_obra' ' "
-             . "title='Crea nueva Subobra' ><i class='fas fa-plus-circle'></i> añadir SUBOBRA</a>" ;
+             . "title='Crea nueva Subobra' ><i class='fas fa-plus-circle'></i> añadir SubObra</a>" ;
 
     echo " <a class='btn btn-xs btn-link  noprint ' href='#' onclick=\"copy_prod_consulta($id_obra,$id_produccion,'$where_urlencode','$PRODUCCION')\" "
             . "title='Crea una Relación Valorada nueva con la consulta actual' ><i class='fas fa-plus-circle'></i> copiar a nueva RV</a>" ;
@@ -1349,6 +1353,54 @@ $titulo="RESUMEN DE <B>$PRODUCCION<B>";
 
 ?>
  <script>
+     
+function add_capitulo(id_obra) {
+    var nuevo_valor=window.prompt("Capítulo nuevo " );
+//    alert("el nuevo valor es: "+valor) ;
+   if (!(nuevo_valor === null || nuevo_valor === ""))
+   { 
+       
+       var xhttp = new XMLHttpRequest();
+     xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        if (this.responseText.substr(0,5)=="ERROR")
+        { alert(this.responseText) ;}
+        else
+        { // alert(this.responseText) ;     //debug
+            location.reload(true); }  // refresco la pantalla con el n uevo caoítulo creado
+      }
+  };
+  xhttp.open("GET", "../obras/add_capitulo_ajax.php?id_obra="+id_obra+"&capitulo="+nuevo_valor, true);
+  xhttp.send();   
+   }
+   else
+   {return;}
+   
+}
+function add_udo(id_obra) {
+    var nuevo_valor=window.prompt("La UDO se asignará al primer capítulo. \n Descripción de Unidad de obra: " );
+//    alert("el nuevo valor es: "+valor) ;
+   if (!(nuevo_valor === null || nuevo_valor === ""))
+   { 
+       
+       var xhttp = new XMLHttpRequest();
+     xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        if (this.responseText.substr(0,5)=="ERROR")
+        { alert(this.responseText) ;}
+        else
+        { //alert(this.responseText) ;     //debug
+          location.reload(true); }  // refresco la pantalla con el n uevo capítulo creado
+      }
+  };
+  xhttp.open("GET", "../obras/add_udo_ajax.php?id_obra="+id_obra+"&udo="+nuevo_valor, true);
+  xhttp.send();   
+   }
+   else
+   {return;}
+   
+}
+
      
 function eval_coste_tabla(id_udo, elementId) {
     

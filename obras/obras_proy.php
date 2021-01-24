@@ -242,7 +242,8 @@ if ($result->num_rows > 0)
 	<TR >
             <TD colspan="7"><h4>CAPITULO <?php echo "<a target='_blank'  href='../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=$firstIdCapitulo' "
                   . "title='abrir ficha de Capítulo' >{$rs["CAPITULO"]}</a>";?>
-              <a class="btn btn-link btn-xs noprint transparente" title="añadir Unidad de Obra (UdO) al Capitulo" href=# <?php echo "onclick=\"add_udo({$rs["ID_CAPITULO"]},$id_obra)\" " ;?>  > <i class="fas fa-plus-circle"></i> UdO</a></h4></TD>
+              <a class="btn btn-link btn-xs noprint transparente" title="añadir Unidad de Obra (UdO) al Capitulo" href=# <?php echo "onclick=\"add_udo({$rs["ID_CAPITULO"]},$id_obra)\" " ;?>  > <i class="fas fa-plus-circle"></i> UdO</a></h4>
+            </TD>
 	</TR>
 	<TR>
 	   <TD style="background-color:LightCyan;color:grey;font-size:14px;" > Cod </TD>

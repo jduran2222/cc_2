@@ -321,10 +321,17 @@ $titulo_sin_html= strip_tags($titulo)   ;
        $spans_html_txt .= $is_EMAIL ? "<span class='btn btn-xs btn-link noprint transparente'  ><a  href='mailto:$valor'  title='enviar email a $valor' >"
                               . "<i class='far fa-envelope'></i></a></span>" : "" ;  
        // span de llamar y enviar whatsapp
-       $spans_html_txt .= ($is_TEL) ?  "<span class='btn btn-xs btn-link noprint transparente'  ><a  href='tel:$valor'  title='llamar por teléfono a $valor' >"
-                              . "<i class='fas fa-phone'></i></a></span>" : "" ;        
-       $spans_html_txt .= ($is_TEL) ?  "<span class='btn btn-xs btn-link noprint transparente'  ><a  href='https://wa.me/$valor'  title='enviar Whatsapp a $valor' >"
-                              . "<i class='fab fa-whatsapp'></i></a></span>" : "" ;        
+       if ($is_TEL)
+       {
+           
+           $valor_telefono= quita_simbolos_telefono($valor);
+           $spans_html_txt .=  "<span class='btn btn-xs btn-link noprint transparente'  ><a  href='tel:$valor_telefono'  title='llamar por teléfono a $valor_telefono' >"
+       
+                              . "<i class='fas fa-phone'></i></a></span>" ;        
+           $spans_html_txt .=  "<span class='btn btn-xs btn-link noprint transparente'  ><a  href='https://wa.me/$valor_telefono' target='_blank' title='enviar Whatsapp a $valor_telefono' >"
+                              . "<i class='fab fa-whatsapp'></i></a></span>" ;        
+       }
+       
        // span de copy a portapapeles  
        $valor_sin_comillas=  str_replace(">", "", $valor) ;
        $valor_sin_comillas=  str_replace('"', '\"', $valor_sin_comillas) ;

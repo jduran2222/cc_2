@@ -5,8 +5,11 @@ $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
  //echo "El filtro es:{$_GET["filtro"]}";
 
 $id_obra=$_GET["id_obra"]  ;
-$id_capitulo=$_GET["id_capitulo"]  ;
-$udo=$_GET["udo"]  ;
+//$id_capitulo=$_GET["id_capitulo"]  ;
+$id_capitulo= isset($_GET["id_capitulo"]) ? $_GET["id_capitulo"] : Dfirst("ID_CAPITULO", "Capitulos_View", "$where_c_coste AND ID_OBRA='$id_obra'")  ;
+
+$udo= quita_simbolos_mysql( $_GET["udo"] )  ; 
+
 
 require_once("../../conexion.php");
 require_once("../include/funciones.php");

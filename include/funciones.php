@@ -72,6 +72,15 @@ return ($hash_proyecto==$hash_estudio_costes);
 
 
 
+// funcion devuelve el HTML PARA CERRAR LA PAGINA
+function boton_cerrar()
+{
+  $html=   "<div>"
+           . "<button style='font-size:200%;background-color:orange;' onclick='javascript:window.close();' title='cerrar'>CERRAR</button>"
+         . "</div>";
+ 
+  return  $html ;
+}
 // funcion devuelve el HTML de una pagina de error
 function cc_page_error($msg)
 {
@@ -458,7 +467,6 @@ function logs($msg2='')
     return $_SESSION['logs'];
 }
 
-//function logs_db($msg, $tipo='info',$parametros='', $file= __FILE__ ,$line= __LINE__ )
 function logs_db($msg, $tipo='info',$parametros='', $file=__FILE__ ,$line=__LINE__ )
 {   
 
@@ -466,6 +474,8 @@ $id_c_coste  = isset($_SESSION["id_c_coste"]) ? $_SESSION["id_c_coste"] : 'id_c_
 $user  = isset($_SESSION["user"]) ? $_SESSION["user"] : 'user' ;   
 $email  = isset($_SESSION["email"]) ? $_SESSION["email"] : 'email' ;   
 $empresa  = isset($_SESSION["empresa"]) ? $_SESSION["empresa"] : 'empresa' ;   
+
+$msg= quita_simbolos_mysql($msg) ;
     
 $id_log_db= DInsert_into('logs_db', "(id_c_coste,user,email,file_php,msg, tipo, empresa, parametros)"
      . " ", "( '$id_c_coste', '$user','$email','$file  $line','$msg' ,'$tipo' ,'$empresa'  ,'$parametros' )" ,'' , '', '', 0  ) ; 
@@ -846,7 +856,7 @@ return $return;
 function json_geoip($ip)
 {
           // GEOLOCALIZACION
-        $ip = $_SERVER['REMOTE_ADDR'];
+//        $ip = $_SERVER['REMOTE_ADDR'];
         $access_key = '2cc3ac17c59e7be9495ada797e7ee53a';  // API KEY solicitada y gratuita
         $ch = curl_init('http://api.ipapi.com/'.$ip.'?access_key='.$access_key.'');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -1303,6 +1313,19 @@ switch ($format) {
                         $valor = ($valor==0)? "" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT) . "%"   ;
                         $format_style=" style='white-space: nowrap;text-align:right;' " ;
                         break;        
+             case "progress":
+                        $valor_txt = ($valor==0)? "" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT) . "%"   ;
+                        $valor = ($valor==0)? "0" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT)   ;
+                        $color= $valor >=100 ? 'success' : 'info' ;
+                 
+                        $valor="<div class='progress'>"
+                                   . "<div class='progress-bar progress-bar-$color' role='progressbar' aria-valuenow='$valor' "
+                                   ."     aria-valuemin='0' aria-valuemax='100' style='width:$valor%'> "
+                                   ."     $valor_txt"
+                                   ." </div>"
+                                ."</div>" ;
+                        $format_style=" style='white-space: nowrap;' " ;
+                        break;        
              case "kb":
                         $valor = str_pad(number_format($valor/1024,0,".",","),10," ", STR_PAD_LEFT) . "&nbsp;kb"   ;
                         $format_style=" style='white-space: nowrap;text-align:right;' " ;
@@ -1538,6 +1561,15 @@ switch ($format) {
 
 
 
+function quita_simbolos_telefono($string){
+ 
+    $string = str_replace(
+        array( "-", "/","*", "(", ")", " ",  ",", "'",".", "_"),
+        '',
+        $string
+    );
+return $string;
+}
 function quita_simbolos($string){
  
     $string =  quita_simbolos_no_matematicos($string) ;
@@ -2095,7 +2127,7 @@ function Dfirst($field, $select, $where = 1, $order_by = 0)
     return $return;
 }
 
-function DRow( $table, $where = 1, $order_by = 0)
+function DRow( $table, $where = 1, $order_by = '')
 {        // devuelvo valor o 0 si no encuentro nada
     if (!isset($GLOBALS["Conn"]))
     {                          // si no hay conexion abierta la abro yo
@@ -2124,7 +2156,7 @@ function DRow( $table, $where = 1, $order_by = 0)
     {
 //        echo "<br>VALOR NO ENCONTRADO" ;                            //debug    
         $return = 0;           // devuelvo 0 si no encuentro nada
-            logs( " Resultado DRow: ERROR") ;
+            logs( " Resultado DRow: VALOR NO ENCONTRADO") ;
 
     }
 

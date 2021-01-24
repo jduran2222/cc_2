@@ -37,12 +37,14 @@ $id_personal=$_GET["id_personal"];
 
   <?php              // DATOS   FICHA . PHP
  //echo "<pre>";
- $result=$Conn->query($sql="SELECT *   FROM Personal_View WHERE id_personal=$id_personal AND $where_c_coste");
+ $result=$Conn->query($sql="SELECT *   FROM Personal_View WHERE ID_PERSONAL=$id_personal AND $where_c_coste");
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;
  
- 
+ $id_personal=$rs["ID_PERSONAL"];   // COMPROBACION DE SEGURIDAD
+ $nombre=$rs["NOMBRE"];   // COMPROBACION DE SEGURIDAD
+
 // CONFIGURO EL MENU PERSONAL 
-$GET_listado_personal="?nombre={$rs["NOMBRE"]}&agrupar=cal_nombres" ;
+$GET_listado_personal="?nombre=$nombre&agrupar=cal_nombres" ;
 $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
  
  require_once("../personal/personal_menutop_r.php");
@@ -67,7 +69,7 @@ $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
   
   $delete_boton=1;
   
-  if ($rs['TEL']) { $whassapp_envio= quita_simbolos( $rs['TEL'] )   ; }    //para poder enviar al interesado documentos por whassapp directamente
+  if ($rs['TEL']) { $whassapp_envio= quita_simbolos_telefono( $rs['TEL'] )   ; }    //para poder enviar al interesado documentos por whassapp directamente
   
 //  $selects["id_obra"]=["ID_OBRA","NOMBRE_OBRA","OBRAS","","../obras/obras_ficha.php?id_obra=","id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 
@@ -99,7 +101,35 @@ $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
       
       
 	
-	<!-- WIDGET DOCUMENTOS  -->
+	<!-- BOTONERA  -->
+	
+<div class="right2">
+	
+<?php 
+
+$url_enc=encrypt2("id_personal=$id_personal") ;
+echo   "<a class='btn btn-xs btn-primary noprint' href='../personal/personal_registro.php?url_enc=$url_enc' target='_blank' >"
+                         . "+ Registrar nueva de Entrada o Salida</a>" ;
+$link_empleado="{$_SESSION['dir_raiz']}personal/personal_registro.php?url_enc=$url_enc" ;
+//echo   "<a class='btn btn-primary noprint' href=# onclick=\"js_href2('https://wa.me/_VAR_HREF1_/?text=$link_empleado',0,'','PROMPT_Número de WhatsApp:','','$whassapp_envio')\" target='_blank' >"
+//                         . "<i class='fab fa-whatsapp'></i> Enviar link por WhatsApp</a>" ;
+echo   "<br><small>link:</small> <input  type='text' value='$link_empleado' title='link a enviar al empleado para su Registro con smartphone'>" ;
+echo   "<a class='btn btn-xs  btn-default noprint ' "
+                            . "onclick=\"copyToClipboard('$link_empleado');this.style.color = '#000000' ;\"  title=\"copy link al portapapeles \" >"
+                              . "<i class='far fa-copy'></i></a>" ;
+echo   "<a class='btn btn-xs btn-success noprint' href=# onclick=\"js_href2('https://wa.me/?text=$link_empleado',0)\" target='_blank' >"
+                         . "<i class='fab fa-whatsapp'></i></a>" ;
+
+$url_enc=encrypt2("sql=SELECT *  FROM Personal_Registros  WHERE ID_PERSONAL=$id_personal ORDER BY fecha_creacion DESC ;"
+                 . "&titulo=Registros del Empleado: <b>$nombre</b>") ;
+echo   "<br><a class='btn btn-xs btn-link noprint' href='../include/tabla_general.php?url_enc=$url_enc' target='_blank' >"
+                         . " ver Registros de Entrada y Salida</a>" ;
+
+
+ ?>
+	 
+</div>
+	
 	
 <div class="right2">
 	
