@@ -71,7 +71,9 @@ else
 $url_ver_registros=encrypt2("titulo=Registros del empleado: {$rs_personal['NOMBRE']}&sin_inicio_session=1"
 . "&sql=select id_registro AS num_registro, fecha_entrada, TIME(fecha_entrada) AS hora_entrada, "
         . "IFNULL(fecha_salida,'') as fecha_salida ,IFNULL(TIME(fecha_salida),'pendiente')  AS hora_salida"
-        . " , TIMEDIFF(fecha_salida,fecha_entrada )  AS horas_trabajadas , coord_latitud, coord_longitud "
+        . " , TIMEDIFF(fecha_salida,fecha_entrada )  AS horas_minutos"
+        . " ,-(UNIX_TIMESTAMP(fecha_entrada)-UNIX_TIMESTAMP(IFNULL(fecha_salida,fecha_entrada)))/3600 AS horas "
+        . ", coord_latitud, coord_longitud "
         . " FROM Personal_Registros WHERE ID_PERSONAL=$id_personal ORDER BY fecha_creacion DESC ")
 ?>
 

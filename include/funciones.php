@@ -1420,6 +1420,11 @@ switch ($format) {
                         $valor = ($valor=="solo_icon") ? $icono : (($valor==0) ? "" : "$valor $icono" ) ;
                         $format_style=" style='text-align:center;' " ;
                         break;
+            case "icon_map":
+                        $icono=" <i class='fas fa-map-marker-alt'></i> "  ;
+                        $valor = ($valor<>"") ? $icono : "" ;
+                        $format_style=" style='text-align:center;' " ;
+                        break;
             case "boolean_txt":
                         $valor = $valor ? $txt : "" ;
                         $format_style=" style='text-align:center;' " ;

@@ -1,6 +1,63 @@
 <?php
 
     // JUAND
+// Creación de un trozo de código para la gestión de Fras. Proveedor.
+function selectoresMenu($array_menus) {
+  
+  $html = '';
+
+    
+  $html .= '<div class="col">';
+    // $html .= '    <div class="d-flex align-content-center flex-wrap bg-secondary">';
+    // $html .= '          <a class="btn btn-secondary" data-toggle="collapse" href="#aplicarFiltros" role="button" aria-expanded="false" aria-controls="aplicarFiltros">Aplicar filtros</a>';
+    // $html .= '          <a class="btn btn-secondary" data-toggle="collapse" href="#operarFrasSeleccionadas" role="button" aria-expanded="false" aria-controls="operarFrasSeleccionadas">Operar con facturas seleccionadas</a>';
+    // $html .= '          <a class="btn btn-secondary" data-toggle="collapse" href="#agruparResultados" role="button" aria-expanded="true" aria-controls="agruparResultados">Agrupar resultados</a>';
+    // $html .= '          <a class="btn btn-secondary" data-toggle="collapse" href="#verResumen" role="button" aria-expanded="false" aria-controls="verResumen">Ver resumen</a>';
+    // $html .= '          <a class="btn btn-secondary" data-toggle="collapse" href="#formatos" role="button" aria-expanded="false" aria-controls="formatos">Formatos</a>';
+    // $html .= '    </div>';
+  $html .= '    <div class="row mt-2 mb-4">';
+  foreach ($array_menus as $k => $v) 
+  {
+    $html .= '          <div class="col-12 align-content-center">';
+    $html .= "              <a class='mt-2 col-12 btn btn-secondary' data-toggle='collapse' href='#menu_$k' role='button' aria-expanded='false' aria-controls='menu_$k'>{$v[1]}</a>";
+    $html .= '          </div>';
+    $html .= '          <div class="col-12">';
+    $html .= "              <div class='collapse' id='menu_$k'>";
+    $html .= '              <div class="card card-body d-block">';
+    $html .= '                  '.$v[0];
+    $html .= '              </div>';
+    $html .= '              </div>';
+    $html .= '          </div>';
+  }  
+    
+    $html .= '    </div>';
+    $html .= '</div>';
+
+    return $html;
+}
+
+// Creación del panel de "Agrupaciones" en facturas de proveedores
+function panelAgrupaciones($agrupaciones=array(), $seleccionado=null) {
+    $html = '';
+
+    $html .= '<input type="hidden" id="agrupar" name="agrupar" value="'.$seleccionado.'"/>';
+    $html .= '<div id="myDIV" class="noprint">';
+    foreach ($agrupaciones as $k => $v) {
+        $activo = (($k==$seleccionado) ? ' bg-dark cc_active ' : '');  
+        if (substr($k,0,5)!='vacio') {
+            $html .= "<button class='cc_btnt $activo' title='{$v[1]}' onclick=\"getElementById('agrupar').value = '$k' ; document.getElementById('form1').submit();\"> ";
+            $html .=     ucwords($v[0]);
+            $html .= '</button>';
+        }
+        else {
+            $html .= '<span class="w50px"> </span>';
+        }
+        $html .= '';
+    }
+    $html .= '</div>';
+
+    return $html;
+}
 
 // Label para filtrar o generar PDFs
 function labelFormatos($array_fmt) {

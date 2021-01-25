@@ -1005,7 +1005,8 @@ if (isset($result_T)  )   // Hay TOTALES?
                 {          // hay link 
                 //         
                                
-                                $href_link= $links[$clave][0] . $rst[$links[$clave][1]] ."&_m=$_m" ;            // FASE EXPERIMENTAL PARA EL MIGAS
+//                                $href_link= $links[$clave][0] . $rst[$links[$clave][1]] ."&_m=$_m" ;            // FASE EXPERIMENTAL PARA EL MIGAS
+                                $href_link= $links[$clave][0] . $rst[$links[$clave][1]]  ;    //anulado provisionalmente, juand, ene21 FASE EXPERIMENTAL PARA EL MIGAS
                                 
                                  // creamos el div update_pencil_div por si el link fuera editable (update)
                                 
