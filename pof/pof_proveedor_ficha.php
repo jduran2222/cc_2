@@ -4,7 +4,18 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo = 'PoF Proveedor';
+
+
+
+////////////////
+
+$id=$_GET["id"];
+ $result=$Conn->query($sql="SELECT id,ID_POF,NUM,NOMBRE_POF,PROVEEDOR,id_proveedor,email,Enviado,Respondido,Importe,Observaciones "
+         . ",ID_OBRA,NOMBRE_OBRA FROM POF_prov_View WHERE id=$id AND $where_c_coste ");
+ $rs = $result->fetch_array(MYSQLI_ASSOC) ;
+ 
+
+$titulo = "Oferta {$rs["PROVEEDOR"]}";
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
@@ -25,16 +36,8 @@ include_once('../templates/_inc_privado2_navbar.php');
 <?php 
 
 
-$id=$_GET["id"];
-// require_once("../menu/menu_migas.php");
  
-           // DATOS   FICHA . PHP
- //echo "<pre>";
-// $result=$Conn->query($sql="SELECT *  FROM POF_DETALLE WHERE id=$id AND $where_c_coste");
-// $result=$Conn->query($sql="SELECT * FROM POF_DETALLE WHERE id=$id ");
- $result=$Conn->query($sql="SELECT id,ID_POF,NUM,NOMBRE_POF,PROVEEDOR,id_proveedor,email,Enviado,Respondido,Importe,Observaciones "
-         . ",ID_OBRA,NOMBRE_OBRA FROM POF_prov_View WHERE id=$id AND $where_c_coste ");
- $rs = $result->fetch_array(MYSQLI_ASSOC) ;
+ 
  
  // actualización de EMAIL
  if (!($rs["email"]) AND $rs["id_proveedor"])

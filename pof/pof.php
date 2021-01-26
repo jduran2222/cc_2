@@ -136,7 +136,7 @@ require("../include/ficha.php");
 
 <?php 
 
-// preparamos la TABLA para Generar la pof_PDF
+// IMPRIMIR POF PDF   preparamos la TABLA para Generar la IMPRIMIR POF PDF
 $sql="SELECT CANTIDAD, CONCAT('<b>',CONCEPTO,'</b><br><small>',IFNULL(DESCRIPCION,''),'</small>') AS CONCEPTO,"
         . " ' ' as _PRECIO ,"
         . " ' ' AS _IMPORTE "
@@ -235,7 +235,7 @@ require("../include/tabla.php"); echo $TABLE ;?>
 
 </div>	
 <!--************ FIN POF_DETALLE (SUBCONTRATOS) *************  -->	
-<!--************ INICIO POF_DETALLE (PROVEEDORES - #OFERTAS) *************  -->
+<!--************ INICIO OFERTAS POF_DETALLE (PROVEEDORES - #OFERTAS) *************  -->
 
 <div  class="mainc_100" >
 <!--<div  class="right2_60" >-->
@@ -245,9 +245,8 @@ require("../include/tabla.php"); echo $TABLE ;?>
 
 
 /// consulta para el listado de OFERTAS ordenadas de menor a mayor y las no respondidas al final
-$sql=("SELECT id,ID_POF, NUM, PROVEEDOR, path_archivo,Enviado, Respondido,Importe_Prov,Importe_Cobro, Observaciones "
+$sql=("SELECT id,ID_POF, NUM, PROVEEDOR,id_proveedor, path_archivo,Enviado, Respondido,Adjudicada,Importe_Prov,Importe_Cobro, Observaciones "
         . " FROM POF_prov_View WHERE ID_POF=$id_pof ORDER BY ((Importe_Prov<>0) AND NUM<=9) desc, Importe_prov, NUM" );
-
 
 
 $result=$Conn->query($sql );
@@ -256,7 +255,8 @@ $result_T=$Conn->query($sql="SELECT  COUNT(id) as total , 'Totales',' ',  SUM(En
 $titulo="OFERTAS";
 $msg_tabla_vacia="No hay";
 
-
+$selects["id_proveedor"]=["ID_PROVEEDORES","PROVEEDOR","Proveedores","../proveedores/proveedores_anadir.php","../proveedores/proveedores_ficha.php?id_proveedor=","id_proveedor"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+$visibles=['id_proveedor'];
 $etiquetas["PROVEEDOR"]='Oferta' ;
 $tooltips["PROVEEDOR"]='Nombre de la Oferta o del proveedor' ;
 
@@ -265,6 +265,7 @@ $links["PROVEEDOR"] = ["../pof/pof_proveedor_ficha.php?id=", "id", "ver POF",'fo
 
 $formats["Enviado"]="semaforo" ;
 $formats["Respondido"]="semaforo" ;
+$formats["Adjudicada"]="boolean" ;
 $formats["PDF"]="boolean" ;
 $formats["path_archivo"]="pdf_100_400" ;
 //$formats["ver"]="boolean_PDF" ;
@@ -281,7 +282,7 @@ $tooltips["Enviado"] = "Proveedores a los que se ha enviado peticion de oferta" 
 $tooltips["Respondido"] = "Proveedores que han respondido y presupuestado la POF" ;
 
 
- $updates=['NUM','','Enviado',  'Respondido', 'Observaciones']  ;
+ $updates=['NUM','','Enviado',  'Respondido', 'Adjudicada', 'Observaciones', 'id_proveedor']  ;
  // $id_proveedor=$rs["ID_PROVEEDORES"] ;
   $tabla_update="POF_DETALLE" ;
   $id_update="id" ;
@@ -290,7 +291,13 @@ $tooltips["Respondido"] = "Proveedores que han respondido y presupuestado la POF
 //  $id_valor=$id_pof ;
   $actions_row=[];
 $actions_row["id"]="id";
-  $actions_row["delete_link"]=1;
+$actions_row["delete_link"]=1;
+
+//echo "<a class='btn btn-primary' href='../proveedores/subcontrato_anadir_desde_pof.php?id_pof_proveedor=$id' target='_blank' $disabled > CREAR SUBCONTRATO </a><br>" ;   
+$actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs' title='Crea una Tarea con esta firma'"
+        . " href='../proveedores/subcontrato_anadir_desde_pof.php?id_pof_proveedor=_VAR_ID_'  target='_blank' "
+                             . "    >subcontratar</a> ";
+
   
 ?>
     

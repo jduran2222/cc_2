@@ -20,7 +20,11 @@ require_once("../include/funciones_js.php");
 $result_POF_prov=$Conn->query("SELECT * FROM POF_prov_View WHERE id=$id_pof_proveedor AND $where_c_coste ");
 $rs_POF_prov = $result_POF_prov->fetch_array(MYSQLI_ASSOC) ;
 
+
+
+
 $id_pof = $rs_POF_prov["ID_POF"];   // por seguridad
+$id_pof_oferta=$rs_POF_prov["id"] ;
 $num_prov=$rs_POF_prov["NUM"] ;
 $id_proveedor=$rs_POF_prov["id_proveedor"];
 $oferta=$rs_POF_prov["PROVEEDOR"];
@@ -58,6 +62,11 @@ $result=$Conn->query($sql);
         $result=$Conn->query($sql );
 
         $id_cuenta_auto = getVar("id_cuenta_auto") ;
+        
+        // marcamos la Oferta (POF_DETALLE) como adjudicada
+        $sql_update_adjudicada= "UPDATE `POF_DETALLE` SET Adjudicada=1  WHERE  id='$id_pof_oferta'  ; "  ;        
+        $Conn->query($sql_update_adjudicada ) ;   
+
 
         while ($rs = $result->fetch_array(MYSQLI_ASSOC)) 
         {
