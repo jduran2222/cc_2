@@ -12,7 +12,10 @@ function load() {
       map.addControl(new GLargeMapControl());
       map.setMapType(G_SATELLITE_MAP);
    
-      var point = new GPoint (-3.7034815549850464, 40.41689826118782);
+      var point = new GPoint (-3.034815549850464, 42.41689826118782);
+      var marker = new GMarker(point);
+      map.addOverlay(marker);
+     var point = new GPoint (-3.7034815549850464, 42.41689826118782);
       var marker = new GMarker(point);
       map.addOverlay(marker);
    }
@@ -21,7 +24,7 @@ function load() {
 </script>
 </head>
 <body onload="load()" onunload="GUnload()">
-<div id="map" style="width: 615px; height: 400px"></div>
-HOLA
+<div id="map" style="width: 1015px; height: 700px"></div>
+
 </body>
 </html>

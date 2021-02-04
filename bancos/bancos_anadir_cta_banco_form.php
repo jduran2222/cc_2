@@ -27,7 +27,7 @@ require_once("../bancos/bancos_menutop_r.php");
 
 ?>
       	
-<div class="mainc" style="background-color:white;align:center;width:70%;">
+<div class="mainc_100" style="background-color:white;align:center;">
 
 	
 <img style="display:block; margin:auto;" width="200" src="../img/construcloud64.svg">

@@ -8,6 +8,57 @@ $ICON = "<span class='glyphicon glyphicon" ;
 $SPAN = "'></span>"; 
 
 
+function boton_modal($boton, $titulo, $html)
+{
+   $random= random_int(10000, 99999) ;
+   $return = <<<EOT
+        
+    <span><button type="button" class="btn btn-link btn-xs noprint" data-toggle="modal" data-target="#myModal_$random">
+    $boton
+   </button>
+
+  <!-- The Modal -->
+  <div class="modal fade" id="myModal_$random">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">$titulo</h4>
+          <button type="button" class="close" data-dismiss="modal">×</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          $html
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">cerrar</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  </span>         
+           
+EOT;
+
+     return $return  ;
+}
+
+function boton_modal_2($boton, $titulo, $html)
+{
+     return "<span>juan</span>"  ;
+}
+
+function pMes($fecha='')
+{
+    $fecha= $fecha ? $fecha : date() ;
+    return date('Y-m', $fecha)."-01";
+}
+
 function pre($array)
 {
      return "<pre>".print_r($array,TRUE)."</pre>"  ;
@@ -1002,6 +1053,8 @@ function cc_formato_auto($clave)
     { $format='pdf_100_100' ; }       //formato provisional para Empresas_View 
     elseif (preg_match("/^tipo_remesa|^tipo_pago/i", $clave))
     { $format='tipo_pago' ; }       ///, &$valor , &$format_style)
+    elseif (preg_match("/^firmado/i", $clave))
+    { $format='firmado' ; }       ///, &$valor , &$format_style)
 
     return $format ;
 }
@@ -1551,6 +1604,11 @@ switch ($format) {
             case "array_pre":
 //                        $format_style = $valor ? " style='color: green; font-weight: bold;' "  : " style='color: red; font-weight: bold;' "  ;   
                         $valor = "<pre>". print_r( $valor, true ) . "</pre>" ;
+
+                        break;
+            case "boton_modal":
+//                        $format_style = $valor ? " style='color: green; font-weight: bold;' "  : " style='color: red; font-weight: bold;' "  ;   
+                        $valor = boton_modal( 'P', 'precio' ,$valor ) ;
 
                         break;
             case "vacio":

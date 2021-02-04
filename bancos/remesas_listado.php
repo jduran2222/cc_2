@@ -83,8 +83,7 @@ $grupo=isset($_POST["grupo"])?$_POST["grupo"] : 'listado' ;
 
  switch ($grupo) {
     case "listado":
-//     $sql="SELECT id_remesa,remesa,activa,Observaciones,Banco,importe,num_pagos  FROM Remesas_View WHERE  (filtro LIKE '%$filtro%') AND $conc AND $where_c_coste  ORDER BY id_remesa DESC LIMIT $limite" ;
-     $sql="SELECT id_remesa,activa,tipo_remesa,f_vto,remesa,Observaciones,doc_logo,Banco,importe,ingreso,num_pagos,firmado_TOOLTIP,firmado,firmada, cobrada "
+     $sql="SELECT id_remesa,activa,tipo_remesa,f_vto,remesa,Observaciones,path_logo,Banco,importe,ingreso,num_pagos,firmado_TOOLTIP,firmado,firmada, cobrada "
             . "  FROM Remesas_View WHERE remesa LIKE '%$filtro%' AND $conc  AND $cobradas AND $tipo_remesa AND $where_c_coste  ORDER BY f_vto,id_remesa DESC LIMIT $limite" ;
 
 

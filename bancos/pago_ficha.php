@@ -192,13 +192,6 @@ if ($rs["tipo_pago"]=='P')         // PAGO
     //echo $sql;
     $result=$Conn->query($sql );
 
-    //$sql_T="SELECT '' AS A,'' AS S,'' AS D,SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS C FROM Fras_Prov_Pagos_View WHERE  id_pago=$id_pago AND $where_c_coste ";
-    ////echo $sql;
-    //$result_T=$Conn->query($sql_T );
-
-//    $formats["FECHA_EMISION"]='fecha';
-    //$formats["IMPORTE_IVA"]='moneda';
-    //$formats["conc"]='semaforo_OK';
 
     $links["N_FRA_CLI"] = ["../clientes/factura_cliente.php?id_fra=", "ID_FRA_CLI", "", "formato_sub"] ;
     $links["CLIENTE"]=["../clientes/clientes_ficha.php?id_cliente=", "ID_CLIENTE", "", "formato_sub"] ;
@@ -273,8 +266,7 @@ echo  "<div class='right2_50' style='background-color:lightgreen' >" ;
 //        echo "</div>" ;
        
            // MOV. BANCOS CONCILIABLES
-        //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
-        $sql="SELECT id_mov_banco,id_cta_banco,doc_logo,Banco,fecha_banco,Concepto,cargo,ingreso,observaciones,fecha_creacion,user FROM MOV_BANCOS_View "
+        $sql="SELECT id_mov_banco,id_cta_banco,path_logo,Banco,fecha_banco,Concepto,cargo,ingreso,observaciones,fecha_creacion,user FROM MOV_BANCOS_View "
                 . " WHERE conc=0 AND fecha_banco>='2017-01-01' AND ingreso='$ingreso' AND cargo='$importe' AND $where_c_coste ORDER BY fecha_banco DESC " ;
 
         //echo $sql;
@@ -503,24 +495,12 @@ if ($id_mov_banco)
             $titulo="PAGOS conciliables...". badge_sup($num_pagos) ;
             $msg_tabla_vacia="";
 
-            //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
-            //echo "<div class='mainc'  >" ;
-
-            //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
 
             require("../include/tabla.php"); echo $TABLE ; 
-            //echo "<br>"  ;
-            //echo "</div>" ;
 
             // WIDGET DE REMESAS CONCILIABLES    
-            //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View "
-            //        . " WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND (importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ORDER BY f_vto DESC ";
-
-                // buscamos pagos en cualquier id_cta_banco y no solo en la del mov_banco en cuestion
-            //$sql="SELECT id_remesa,fecha_creacion,remesa,id_cta_banco,num_pagos FROM Remesas_View "
-            //        . " WHERE cobrada=0 AND id_cta_banco=$id_cta_banco AND firmada=1 AND importe='$importe' AND $where_c_coste ORDER BY fecha_creacion DESC ";
-            $sql="SELECT id_remesa,fecha_creacion,remesa,importe,id_cta_banco,num_pagos FROM Remesas_View "
-                    . " WHERE cobrada=0 AND id_cta_banco=$id_cta_banco AND firmada=1 AND importe=$importe AND  $where_c_coste ORDER BY fecha_creacion DESC ";
+            $sql="SELECT id_remesa,path_logo, banco, fecha_creacion,remesa,importe,id_cta_banco,num_pagos FROM Remesas_View "
+                    . " WHERE cobrada=0 AND firmada=1 AND importe=$importe AND  $where_c_coste ORDER BY (id_cta_banco=$id_cta_banco) DESC, fecha_creacion DESC ";
             //echo $sql;
             $result=$Conn->query($sql );
 

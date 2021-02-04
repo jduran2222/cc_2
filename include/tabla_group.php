@@ -431,7 +431,7 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
            foreach ($rs as $clave => $valor) //  encabezados
            {
                
-               if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND  !strpos($clave, '_FORMAT') AND  !strpos($clave, '_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
+               if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_MODAL') AND  !strpos($clave, '_FORMAT') AND  !strpos($clave, '_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
                {
 		   $not_id_var= (strtoupper(substr($clave,0,2))<>"ID") ;
                    
@@ -558,7 +558,7 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
 	  
 	  foreach ($rs as $clave => $valor)  //  ************************* VALORES SECUNDARIOS ******************
           { 
-              if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND  !strpos($clave, '_FORMAT') AND  !strpos($clave, '_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
+              if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_MODAL') AND  !strpos($clave, '_FORMAT') AND  !strpos($clave, '_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
               {
 
                    $not_id_var= (strtoupper(substr($clave,0,2))<>"ID") ;

@@ -90,9 +90,9 @@ $where .= ($activa=='') ? '' : " AND activa=$activa"  ;
 
 
 
-$result=$Conn->query(   $sql="SELECT ID_POF,NUMERO as Num,NOMBRE_POF,importe_estimado "
+$result=$Conn->query(   $sql="SELECT ID_POF,activa,NUMERO as Num,NOMBRE_POF,importe_estimado "
             . ", Prov_lista AS Prov_TOOLTIP, Env_lista AS Env_TOOLTIP, Resp_lista AS Re_TOOLTIP "
-            . ", Proveedores as Prov,Enviados as Env,Respondidos as Re,Observaciones,activa, Subcontratos "
+            . ", Proveedores as Prov,Enviados as Env,Respondidos as Re,Observaciones, Subcontratos "
             . " FROM POF_lista WHERE ID_OBRA=$id_obra AND $where ORDER BY numero " );
 $result_T=$Conn->query(   $sql_T="SELECT COUNT(ID_POF) as Num,'Suma' ,sum(importe_estimado) as importe,'' as aa4,'' as aa3,'' as aa2,'' as aa1 "
               . "FROM POF_lista WHERE ID_OBRA=$id_obra AND $where  " );

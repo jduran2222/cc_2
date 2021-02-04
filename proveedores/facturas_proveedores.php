@@ -227,12 +227,8 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
             . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,grupo,Observaciones "
             . " FROM Fras_Prov_View WHERE $where  ORDER BY Fecha_Creacion " ;
         
-//     $sql="SELECT $select_fmt_pdf  ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,"
-//         . "ID_OBRA, NOMBRE_OBRA,grupo,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago, concepto "
-//            . " FROM Fras_Prov_View WHERE $where  ORDER BY FECHA DESC " ;
      $sql_T="SELECT $select_fmt_pdf_T '' AS c,'Totales' AS d,'' AS f11,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a41,'' AS a1 "
              . ",SUM(pdte_conciliar) as pdte_conciliar,'' AS a31,'' AS a11,'' AS b1,'' AS c1,SUM(pdte_pago) AS pdte_pago  FROM Fras_Prov_View WHERE $where  " ;   
-     //$sql_T="SELECT '','Suma' , SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where    " ;
 //     echo $sql;
 
      $col_sel="ID_FRA_PROV" ;
@@ -247,19 +243,12 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
      $tabla_cuadros=1;   
      $div_size_width=500 ;
      $div_size_height=$div_size_width*1.5 ;
-//     $sql_T="SELECT '' AS b,'' AS b8,'' AS c,'' AS c2,'Totales' AS d,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a1,'' AS b1,'' AS c1,'' AS c3  FROM Fras_Prov_View WHERE $where  " ;   
-     //$sql_T="SELECT '','Suma' , SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where    " ;
-//     $col_sel="ID_FRA_PROV" ;
-//    $formats["pdf_500"]="pdf_500" ;                //"pdf_800" ;
 
     break;
     case "prov_fras":
-//     $sql="SELECT ID_PROVEEDORES,PROVEEDOR,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
-//     $sql_T="SELECT 'Totales' AS c,'' AS d,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;   
      $sql="SELECT $select_fmt_pdf ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,ID_OBRA, grupo, Observaciones,pdte_conciliar,conc as cargada,pagada,cobrada  FROM Fras_Prov_View WHERE $where  ORDER BY PROVEEDOR  " ;
      $sql_T="SELECT 'Totales' AS a,$select_fmt_pdf_T'' AS c,'' AS d,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a1,'' AS b1,'' AS b15,'' AS c1,'' AS c3,'' AS c6  FROM Fras_Prov_View WHERE $where  " ;   
 
-//     $sql_S="SELECT ID_CAPITULO,$select_global CAPITULO , SUM(IMPORTE) as importe,SUM(gasto_est) as gasto_est,(SUM(IMPORTE)- SUM(gasto_est)) as beneficio  FROM ConsultaProd WHERE $where   GROUP BY ID_CAPITULO ORDER BY CAPITULO " ;
      $sql_S="SELECT ID_PROVEEDORES,PROVEEDOR,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
 
      $id_agrupamiento="ID_PROVEEDORES" ;

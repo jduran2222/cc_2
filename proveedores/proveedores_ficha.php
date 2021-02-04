@@ -78,10 +78,10 @@ $links["TEL1"]=["tel:{$rs['TEL1']}", "","LLAMAR","html","<span class='glyphicon 
 
         
 $COD = substr($rs['IBAN'],4,4);      
-$BIC= $COD ?   DFirst('BIC' ,'Proveedores',"  SUBSTR(IBAN,5,4)='$COD' AND  BIC<>''  ") : '' ;
+$BIC= $COD ?   DFirst('BIC' ,'Proveedores',"  SUBSTR(IBAN,5,4)='$COD' AND  BIC<>''  ") : '' ; 
 
 // quitamos espacios, guiones y saltos de linea del IBAN
-$sql_format_CIF=encrypt2("UPDATE `Proveedores` SET `CIF` = REPLACE(REPLACE(REPLACE(CIF,' ',''),'-',''),'\n','')   WHERE $where_c_coste AND ID_PROVEEDORES=$id_proveedor ; ") ;
+$sql_format_CIF=encrypt2("UPDATE `Proveedores` SET `CIF` = REPLACE(REPLACE(REPLACE(REPLACE(CIF,'.',''),' ',''),'-',''),'\n','')   WHERE $where_c_coste AND ID_PROVEEDORES=$id_proveedor ; ") ;
 $sql_format_IBAN=encrypt2("UPDATE `Proveedores` SET `IBAN` = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(IBAN,' ',''),'-',''),'\r\n',''),'.',''),'\n',''),CHAR(13),''),CHAR(10),'')   WHERE $where_c_coste AND ID_PROVEEDORES=$id_proveedor ; ") ;
 //$sql_format_IBAN=encrypt2("UPDATE `Proveedores` SET `IBAN` = REGEXP_REPLACE(IBAN,'/ |-|\\r|\\n|\\r\\n|./,'')   WHERE $where_c_coste AND ID_PROVEEDORES=$id_proveedor ; ") ;
 //$sql_format_IBAN=encrypt2("UPDATE `Proveedores` SET `IBAN` = REGEXP_REPLACE(IBAN,'es','in')   WHERE $where_c_coste AND ID_PROVEEDORES=$id_proveedor ; ") ;
@@ -180,7 +180,7 @@ require("../menu/LRU_registro.php"); require("../include/widget_documentos.php")
 //
 //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
 $sql="SELECT ID_FRA_PROV,ID_PROVEEDORES,ID_OBRA,FECHA,N_FRA,NOMBRE_OBRA,IMPORTE_IVA,firmado,conc,pagada,cobrada,path_archivo as pdf,grupo,Observaciones "
-        . " FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC LIMIT 20 " ;
+        . " FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC, fecha_creacion DESC LIMIT 20 " ;
 $sql_T="SELECT '' as a, '' as aa, '' as aaa, SUM(IMPORTE_IVA) as IMPORTE_IVA,'' as a1, '' as aa1, '' as aaa1   FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC LIMIT 20 " ;
 
 //echo $sql;

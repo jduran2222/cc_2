@@ -46,19 +46,20 @@ $id_subobra=$_GET["id_subobra"];
   $titulo="SUBOBRA" ;
 //  $updates=['UDO','COD_PROYECTO','ud','TEXTO_UDO', 'PRECIO' ,'MED_PROYECTO', 'COSTE_EST', 'Estudio_coste', 'fecha_creacion', 'user' ]  ;
   $updates=['SUBOBRA' ]  ;
-  $id_udo=$rs["ID_SUBOBRA"] ;
+  $id_subobra=$rs["ID_SUBOBRA"] ;
   $tabla_update="SubObras" ;
   $id_update="ID_SUBOBRA" ;
   $id_valor=$id_subobra ;
-    $delete_boton=1;
+  $delete_boton= !(Dfirst("ID_OBRA", "OBRAS", " $where_c_coste AND id_subobra_auto=$id_subobra")) ; ;
   
+//  echo "DELETE BOTON: $delete_boton" ;
     
   ?>
   
                   
                     
   <div style="overflow:visible">	   
-  <div id="main" class="mainc"> 
+  <div class="mainc_100" class="mainc"> 
       
   <?PHP 
   
@@ -124,8 +125,8 @@ $actions_row["delete_link"]="1";
 ?>
 	
 <!--  <div class="right2"> -->
-<div  style="background-color:Khaki;float:left;width:60%;padding:0 20px;" >
-	
+<div class="mainc_100" style="background-color:Khaki;float:left;padding:0 20px;" > 
+    <br>	
 <?php 
 
 

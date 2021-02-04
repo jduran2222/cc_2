@@ -172,7 +172,7 @@ if (href.match(/_VAR_HREF1_/g))
             
 if (href.match(/_VAR_HREF2_/g))
 {   // sustituimos _VAR_HREF1_ por el valor del url var1_link
-    href = href.replace( "_VAR_HREF2_" ,  var1_link.replace("&variable2=","") ) ;
+    href = href.replace( "_VAR_HREF2_" ,  var2_link.replace("&variable2=","") ) ;
     var2_link = "" ;
 }  
 
@@ -197,14 +197,16 @@ if (href.match(/_VAR_HREF2_/g))
 
 
 // hacemos href con AJAX  
-function js_href( href,reload, msg, var1, var2 , var1_prompt_default, var2_prompt_default  ) { 
+function js_href( href,reload, msg, var1, var2 , var1_prompt_default, var2_prompt_default, var3 , var3_prompt_default  ) { 
    //valores por defecto
      reload = reload || 1  ;   // por defecto refrescamos
      msg = msg || ""     ;        // por defecto no hay msg
      var1 = var1 || ""   ;             // var 1  VARIABLE a incorporar al link
      var2 = var2 || ""   ;        // var 2
+     var3 = var3 || ""   ;        // var 2
      var1_prompt_default = var1_prompt_default || ""   ;             // var 1  VARIABLE a incorporar al link
      var2_prompt_default = var2_prompt_default || ""   ;        // var 2
+     var3_prompt_default = var3_prompt_default || ""   ;        // var 2
      
 // ANULAMOS ESTE SISTEMA confuso. usamos la sustitucion de _VARIABLEX_ en el propio javascript
         // 
@@ -231,34 +233,47 @@ function js_href( href,reload, msg, var1, var2 , var1_prompt_default, var2_promp
 var ejecutar= 1  ;  // por defecto ejecutamos el href
 var var1_link = "" ;
 var var2_link = "" ;
+var var3_link = "" ;
 
 
 // estudiamos las casuisticas posibles
 if (msg)          // si hay mensaje de Cofirmación, confirmo
     {  ejecutar= confirm(msg);
 }         // confirmo si hay que confirmar
-else if (var1.startsWith("PROMPT_"))     /// comprobamos si var1 es PROMPT 
+else    /// comprobamos si var1 es PROMPT 
 {
+     if (var1.startsWith("PROMPT_") && ejecutar ) 
+     {
      var1 = var1.replace("PROMPT_", "");
      nuevo_valor= var1_prompt_default?    window.prompt(var1,var1_prompt_default) :  window.prompt(var1)   ;
      var1_link =  "&variable1=" + nuevo_valor ;
-     var ejecutar = (!(nuevo_valor === null)) ; 
-
+     ejecutar = (!(nuevo_valor === null)) ; 
+     }
      // comprobamos  tambien la var2 es PROMPT
-     if (var2.startsWith("PROMPT_"))     // hay que preguntar el valor a pasar al link
+     if (var2.startsWith("PROMPT_") && ejecutar )     // hay que preguntar el valor a pasar al link
      {
          var2 = var2.replace("PROMPT_", "");
          nuevo_valor= var2_prompt_default?    window.prompt(var2,var2_prompt_default) :  window.prompt(var2)   ;
          var2_link =  "&variable2=" + nuevo_valor ;
-         var ejecutar = (!(nuevo_valor === null)) ; 
+         ejecutar = (!(nuevo_valor === null)) ; 
      }
+     
+     // comprobamos  tambien la var2 es PROMPT
+     if (var3.startsWith("PROMPT_") && ejecutar )     // hay que preguntar el valor a pasar al link
+     {
+         var3 = var3.replace("PROMPT_", "");
+         nuevo_valor= var3_prompt_default?    window.prompt(var3,var3_prompt_default) :  window.prompt(var3)   ;
+         var3_link =  "&variable3=" + nuevo_valor ;
+         ejecutar = (!(nuevo_valor === null)) ; 
+     }
+     
 
-}else if (var2.startsWith("PROMPT_"))     // comprobamos si var2 es PROMPT 
-{
-     var2 = var2.replace("PROMPT_", "");
-     nuevo_valor= var2_prompt_default?    window.prompt(var2,var2_prompt_default) :  window.prompt(var2)   ;
-     var2_link =  "&variable2=" + nuevo_valor ;
-     ejecutar = (!(nuevo_valor === null)) ; 
+//}else if (var2.startsWith("PROMPT_"))     // comprobamos si var2 es PROMPT 
+//{
+//     var2 = var2.replace("PROMPT_", "");
+//     nuevo_valor= var2_prompt_default?    window.prompt(var2,var2_prompt_default) :  window.prompt(var2)   ;
+//     var2_link =  "&variable2=" + nuevo_valor ;
+//     ejecutar = (!(nuevo_valor === null)) ; 
 }   
 
 
@@ -275,6 +290,10 @@ else if (var1.startsWith("PROMPT_"))     /// comprobamos si var1 es PROMPT
      if (var2_link == "" )
      {
          var2_link = var2.startsWith("id_") ?  "&variable2=" + document.getElementById( var2 ).value : (  var2.startsWith("table_selection_IN()") ? "&variable2=" + table_selection_IN() : "" ) ;     
+     }  
+     if (var3_link == "" )
+     {
+         var3_link = var3.startsWith("id_") ?  "&variable3=" + document.getElementById( var3 ).value : (  var3.startsWith("table_selection_IN()") ? "&variable3=" + table_selection_IN() : "" ) ;     
      }  
       
 //   document.body.style.cursor = 'wait';
@@ -310,14 +329,20 @@ if (href.match(/_VAR_HREF1_/g))
             
 if (href.match(/_VAR_HREF2_/g))
 {   // sustituimos _VAR_HREF2_ por el valor del url var1_link
-    href = href.replace( "_VAR_HREF2_" ,  var1_link.replace("&variable2=","") ) ;
+    href = href.replace( "_VAR_HREF2_" ,  var2_link.replace("&variable2=","") ) ;
     var2_link = "" ;
 }  
 
-//    alert("href: "+href+ var1_link + var2_link) ;
+if (href.match(/_VAR_HREF3_/g))
+{   // sustituimos _VAR_HREF2_ por el valor del url var1_link
+    href = href.replace( "_VAR_HREF3_" ,  var3_link.replace("&variable3=","") ) ;
+    var3_link = "" ;
+}  
+
+//    alert("href: "+href+ var1_link + var2_link + var3_link) ;
 
             
-  xhttp.open("GET", href + var1_link + var2_link, true);  // hacemos el href y eventualmente le añadimos dos parametros llamados variable 1 y 2 que el PHP sabá interpretar
+  xhttp.open("GET", href + var1_link + var2_link + var3_link, true);  // hacemos el href y eventualmente le añadimos dos parametros llamados variable 1 y 2 que el PHP sabá interpretar
 //  alert( href + var1_link + var2_link );  // debug
 //  windows.open( href + var1_link + var2_link, '_blank');  // sistema de abrir PHP directamente sin AJAX
   document.body.style.cursor = "wait" ;

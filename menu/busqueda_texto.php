@@ -119,6 +119,7 @@ $sqls["estudios"]=["estudios" , "Estudios_de_Obra" , "ID_ESTUDIO" , "`PLAZO ENTR
 $sqls["pof"]=["pof" , "POF_lista" , "ID_POF" , "fecha_creacion" , "CONCAT(NOMBRE_OBRA,'-',NOMBRE_POF)" , "Observaciones" ]    ;
 $sqls["pof_prov"]=["pof_prov" , "POF_prov_View" , "id" , "fecha_creacion" , "CONCAT(NOMBRE_OBRA,'-',NOMBRE_POF,'-',PROVEEDOR)" , "Observaciones" ]    ;
 $sqls["tarea"]=["tarea" , "Tareas_View" , "id" , "fecha_creacion" , "Tarea" , "Texto" ]    ;
+$sqls["mov_banco"]=["mov_banco" , "MOV_BANCOS_View" , "id_mov_banco" , "fecha_creacion" , "Concepto" , "observaciones" ]    ;
 //$sqls["chat"]=["chat" , "Tareas_View" , "id" , "fecha_creacion" , "Tarea" , "Texto" ]    ;
 //$sqls["pof_concepto"]="../pof/pof.php?id_pof=";
 //$sqls["proveedores"]="../proveedores/proveedores_ficha.php?id_proveedor=";

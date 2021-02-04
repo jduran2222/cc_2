@@ -372,7 +372,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                    $hide_id= $not_id_var ? "" : "hide_id" ;                 //class hide_id hace que se oculten las columnas hasta que pulsemos Show ID
                    
                    // evitamos las ETIQUETAS
-                   if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
+                   if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_MODAL') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
                    {
                        $TR_totales .=  "<th $class_hide_id  $style_th_color $format_style >{$valor}</th>"; 	
                    }elseif (strpos($clave, 'TH_COLOR'))
@@ -414,7 +414,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                   // $format_style.=" style='background-color: coral' ;" ;
 //		   $TR_totales .=  "<th {$format_style} style='font-style: italic; font-weight: bold '>{$valor}</th>"; 	
                    // evitamos las ETIQUETAS
-                   if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
+                   if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP')AND !strpos($clave, '_MODAL') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
                    {
                        $TR_totales .=  "<th   $style_th_color $format_style >{$valor}</th>"; 	
                    }elseif (strpos($clave, 'TH_COLOR'))
@@ -453,7 +453,7 @@ if (isset($result_T)  )   // Hay TOTALES?
 		   
                   // $format_style.=" style='background-color: coral' ;" ;
                    // evitamos las ETIQUETAS
-                   if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
+                   if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_MODAL') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
                    {
                        $TR_totales .=  "<th   $style_th_color $format_style >{$valor}</th>"; 	
                    }elseif (strpos($clave, 'TH_COLOR'))
@@ -646,7 +646,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                
 
                // confirmamos que no es una _ETIQUETA auxiliar
-               if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
+               if ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_MODAL') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  )      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
                { 
                    
                    //  ASIGNACION DE ETIQUETAS: POR CÓDIGO (sistema antiguo) por CLAVE_DB o por defecto
@@ -831,6 +831,7 @@ if (isset($result_T)  )   // Hay TOTALES?
       
       // inicializamos el array de tooltip de cada valor $vtooltips[]
       $vtooltips=[];
+      $mtooltips=[];
  
        // GOOGLE CHARTS
        $json_rows_chart.=" $comma_rows { c : [ " ;
@@ -869,15 +870,18 @@ if (isset($result_T)  )   // Hay TOTALES?
 
            if ($is_doc_logo = ( $clave=='doc_logo'  )) 
            {
+               logs("entramos a doc_logo");
                if ($valor) // si hay campo DOC_LOGO y su valor no es cero, calculamos el path_archivo del id_documento
                {             
                    $valor=Dfirst("path_archivo","Documentos"," id_documento=$valor ")  ;   //sustituimos el $valor por el path del archivo de id_documento = doc_logo
-                   $valor= ($valor==0) ? "" : $valor ; // para que no aparezca el CERO 
-                   $formats[$clave]= "pdf_100_100" ; 
+//                   $valor= ($valor==0) ? "" : $valor ; // para que no aparezca el CERO 
+                  
                }else
                {
-                   $valor=  ""  ; // para que no aparezca el CERO 
+                   $valor= "../img/no_image.jpg"  ; // para que no aparezca el CERO 
                }
+//               $formats[$clave]= "pdf_100_100" ; 
+               logs("entramos a doc_logo valor1: $valor");
            }    
 
 
@@ -913,6 +917,12 @@ if (isset($result_T)  )   // Hay TOTALES?
                $clave_formateada=substr($clave,0,$pos) ;    //Extraigo el nombre del campo a formatear
                $vtooltips[$clave_formateada]=$valor ;         // registro el VTOOLTIP  para la posterior impresión del CAMPO
            }                        
+           elseif ( $pos=strpos($clave, '_MODAL')  )   // FORMATO CONDICIONAL: comprobamos si el campo es un campo _FORMAT de otro campo posterior
+           {
+               // este campo es un VTOOLTIP 
+               $clave_formateada=substr($clave,0,$pos) ;    //Extraigo el nombre del campo a formatear
+               $mtooltips[$clave_formateada]=$valor ;         // registro el VTOOLTIP  para la posterior impresión del CAMPO
+           }                        
            // FORMATO CONDICIONAL  CAMPO : CAMPODEMITABLA_FORMAT  , XXXXXX_FORMAT
            elseif ( $pos=strpos($clave, '_FORMAT')  )   // FORMATO CONDICIONAL: comprobamos si el campo es un campo _FORMAT de otro campo posterior
            {
@@ -940,14 +950,19 @@ if (isset($result_T)  )   // Hay TOTALES?
                
                // si hay vtooltip lo construimos
                 $tooltip_txt = isset($vtooltips[$clave])? $vtooltips[$clave]  : ""  ;    
+                $mtooltip_txt = isset($mtooltips[$clave])? $mtooltips[$clave]  : ""  ;    
 //                $tooltip_txt= str_replace("'","", $tooltip_txt) ;
 //                $tooltip_txt= str_replace("<br>","\n", $tooltip_txt) ;
                 $tooltip_txt= preg_replace("/\s*<br>\s*/","\n", $tooltip_txt) ;  // quitamos los espacios alrededor de <br> y lo sustituimos por \n
                 $tooltip_txt_alert= str_replace("\n","\\n", $tooltip_txt) ;
                 $div_tooltip_html = ($tooltip_txt) ? "<span class='btn btn-xs btn-link noprint transparente'   onclick='alert(\"$tooltip_txt_alert\")' >"
                                         . "<i class='fas fa-info'  title=\"$tooltip_txt\"></i></span>"  : "" ; 
+                
+                $div_mtooltip_html = ($mtooltip_txt) ? boton_modal( 'D', 'Descompuesto' ,$mtooltip_txt)  : "" ; 
+                
 
                 $div_extras_html.=$div_tooltip_html ;      //añado los div de TOOLTIPS al onjunto de DIVS_EXTRAS
+                $div_extras_html.=$div_mtooltip_html ;      //añado los div de TOOLTIPS al onjunto de DIVS_EXTRAS
  
                 // si hay flags lo añadimos al div extra
                 $div_extras_html .= (isset($flags[$clave])) ? "<div style='float:right' >$flags[$clave]</div>" : "";  //añado los div de FLAGS al onjunto de DIVS_EXTRAS

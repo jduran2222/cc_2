@@ -152,7 +152,7 @@ if($_SESSION['admin'])
         }
         else
         {
-            echo "<BR>sentencia sql errónea:" ;
+            echo "<BR>sentencia sql errónea:" .$Conn->error;
         }
         }
 

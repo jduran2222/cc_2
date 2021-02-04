@@ -131,7 +131,7 @@ echo "<br><br><br><br><br><a class='btn btn-link btn-xs noprint ' href='#' "
 // ----- div Pagos_View   tabla.php   -----
 
 $sql="SELECT id_pago,id_remesa,id_mov_banco,id_cta_banco,id_proveedor,ID_CLIENTE,ID_FRA_PROV,ID_FRA_CLI,tipo_pago,Banco,observaciones "
-        . ",PROVEEDOR,N_FRA_PROV,FECHA AS FECHA_FRA_PROV,CLIENTE,N_FRA_CLI,f_vto as f_vto_pago,importe,ingreso,"
+        . ",PROVEEDOR,N_FRA_PROV,FECHA AS FECHA_FRA_PROV, firmado_TOOLTIP, firmado, CLIENTE,N_FRA_CLI,f_vto as f_vto_pago,importe,ingreso,"
         . "IBAN,BIC,email_pagos,FProv,Obs,fecha_banco,concepto as concepto_banco "
         . " FROM Pagos_View WHERE  id_remesa=$id_remesa AND $where_c_coste ";
 //echo $sql;

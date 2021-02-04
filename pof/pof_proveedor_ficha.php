@@ -91,6 +91,9 @@ include_once('../templates/_inc_privado2_navbar.php');
   $selects["id_proveedor"]=["ID_PROVEEDORES","PROVEEDOR","Proveedores"
       ,"../proveedores/proveedores_anadir.php?proveedor=$oferta&id_pof_proveedor=$id" 
       ,"../proveedores/proveedores_ficha.php?id_proveedor=","id_proveedor"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+  $selects["id_proveedor"]["valor_null"]=0;
+  $selects["id_proveedor"]["valor_null_texto"]='quitar proveedor';
+  
   $etiquetas["NUM"]='Número proveedor' ;
   $tooltips["NUM"]='Número de oferta o proveedor de la POF' ;
   

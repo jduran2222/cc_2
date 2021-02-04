@@ -323,7 +323,8 @@ function panelOperacionesFacturasProveedor($remesas=null, $cargas=null, $metalic
     $html .= '          <a class="btn btn-link btn-xs" href="#" onclick="window.open(\'../bancos/remesa_ficha.php?id_remesa=\'+document.getElementById(\'id_remesa\').value);" title="Abre la remesa seleccionada">(Ver remesa)</a>';
     $html .= '      </div>';
     $html .= '  </div>';
-    $html .= '  <div class="clearfix"></div>';
+    $html .= '  <div class="clearfix"></div>'
+            . '<hr>';
 
     
     $html .= '  <div class="col-12 mt-2">';
@@ -339,7 +340,8 @@ function panelOperacionesFacturasProveedor($remesas=null, $cargas=null, $metalic
     $html .= '          <a class="btn btn-warning btn-xs" href="#" onclick="cargar_a_obra_sel_href();" title="Carga las facturas seleccionadas a una obra">Cargar en obra</a>';
     $html .= '      </div>';
     $html .= '  </div>';
-    $html .= '  <div class="clearfix"></div>';
+   $html .= '  <div class="clearfix"></div>'
+            . '<hr>';
 
     
     $html .= '  <div class="col-12 mt-2">';
@@ -352,7 +354,8 @@ function panelOperacionesFacturasProveedor($remesas=null, $cargas=null, $metalic
     $html .= '          <a class="btn btn-warning btn-xs" href="#" onclick="mov_bancos_conciliar_fras_caja_metalico();" title="Registra las facturas como pagadas en metálico. Crea id_pago y un mov.banco en la Cuenta Metalico">Pagar con "Caja Metálico"</a>';
     $html .= '      </div>';
     $html .= '  </div>';
-    $html .= '  <div class="clearfix"></div>';
+   $html .= '  <div class="clearfix"></div>'
+            . '<hr>';
 
     
     $html .= '  <div class="col-12 mt-2">';
@@ -368,12 +371,13 @@ function panelOperacionesFacturasProveedor($remesas=null, $cargas=null, $metalic
     $html .= '          <a class="btn btn-warning btn-xs" href="#" onclick="mov_bancos_conciliar_fras_cta();" title="Pagar con el banco seleccionado">Realizar pago</a>';
     $html .= '      </div>';
     $html .= '  </div>';
-    $html .= '  <div class="clearfix"></div>';
+   $html .= '  <div class="clearfix"></div>'
+            . '<hr>';
 
     
     $html .= '  <div class="col-12 mt-2">';
     $html .= '      <div class="col-12 col-sm-4 pull-left">';
-    $html .= '          <span>Cambiar el grupo de las facturas seleccionadas:</span>';
+    $html .= '          <span>Cambiar el grupo de las facturas seleccionadas:</span>'; 
     $html .= '      </div>';
     $html .= '      <div class="col-12 col-sm-4 pull-left">';
     $html .= '      </div>';

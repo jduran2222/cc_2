@@ -128,6 +128,20 @@ echo "<a ".($active=='obras_ficha'? "class='cc_active'" : "" ) ." href='../obras
         echo "<a ".($active=='obras_fotos'? "class='cc_active'" : "" ) ."  target='_blank'  href=\"../obras\obras_fotos.php?id_obra=$id_obra\">Fotos ".badge_sup($num_fotos,'info') ."</a>  ";
        
         break;
+    case 'X':
+        echo  $id_estudio ?  "<a ".($active=='estudios_ficha'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../estudios/estudios_ficha.php?id_estudio=$id_estudio\">Licitación</a>  " : "";        
+        echo "<a ".($active=='obras_proy'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\obras_proy.php?id_obra=$id_obra\">Proyecto ".badge_sup($num_udos,'info') ."</a>  " ;
+//        echo "<a target='_blank'  href=\"../obras\obras_proy2.php?id_obra=$id_obra\">Proyecto2</a>  " ;
+        echo "<a ".($active=='obras_prod'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\obras_prod.php?id_obra=$id_obra\"  title='Relaciones Valoradas (Producciones)'>Rel.Valoradas ".badge_sup($num_rel_valoradas,'info') ."</a>  ";
+        echo "<a ".($active=='obras_peticiones'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\obras_peticiones.php?id_obra=$id_obra\"  title='Peticiones de Oferta'>POF ".badge_sup($num_pofs,'info') ."</a>  ";
+        echo "<a ".($active=='obras_subcontratos'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\obras_subcontratos.php?id_obra=$id_obra\">Subcontratos ".badge_sup($num_subcontratos,'info') ."</a>  ";
+        echo "<a ".($active=='partes'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../personal\partes.php?id_obra=$id_obra\">Partes ".badge_sup($num_partes,'info') ."</a>  ";
+        echo "<a ".($active=='gastos'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\gastos.php?id_obra=$id_obra\">Gastos</a>  ";
+        echo "<a ".($active=='facturas_proveedores'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../proveedores/facturas_proveedores.php?id_obra=$id_obra&menu=obras&NOMBRE_OBRA=$nombre_obra\">Fras proveedores ".badge_sup($num_fras_prov,'info') ."</a>  ";
+//        echo "<a ".($active=='gastos'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\gastos.php?importe1=0&importe2=0&agrupar=albaranes_pdf&id_obra=$id_obra\">Albaranes pdte valorar</a>  ";
+        echo "<a ".($active=='obras_ventas'? "class='cc_active'" : "" ) ." target='_blank'  href=\"../obras\obras_ventas.php?id_obra=$id_obra\" title='Factura a Clientes, certificaciones, Ventas...'>Ventas ".badge_sup($num_fras_cli,'info') ."</a>  ";
+        echo "<a ".($active=='obras_fotos'? "class='cc_active'" : "" ) ."  target='_blank'  href=\"../obras\obras_fotos.php?id_obra=$id_obra\">Fotos ".badge_sup($num_fotos,'info') ."</a>  ";
+        break;
   
    }
    

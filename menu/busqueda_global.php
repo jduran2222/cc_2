@@ -39,8 +39,8 @@ $filtro = isset($_GET["filtro"]) ? urldecode($_GET["filtro"]) : $_POST["filtro"]
 
 if(substr($filtro, 0, 1)=='#')
 {
- header("Location: busqueda_texto.php");
- echo "<script>window.open('busqueda_texto.php?ht=1&filtro=".str_replace("#","",$filtro)."');</script>" ;
+// header("Location: busqueda_texto.php");
+ echo "<script>window.open('busqueda_texto.php?ht=1&filtro=".str_replace("#","",$filtro)."');window.close();</script>" ;
 }else
 {   
 

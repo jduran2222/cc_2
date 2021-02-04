@@ -53,7 +53,7 @@ echo   "<br><br><br><a class='btn btn-link btn-xs noprint' href=# onclick=\" js_
 
 
 $result=$Conn->query($sql="SELECT id, FECHA, FECHA AS MES ,PLAN,  IMPORTE , GASTOS_EX,(IMPORTE-GASTOS_EX) AS BENEFICIO, OBSERVACIONES from VENTAS WHERE ID_OBRA=$id_obra ORDER BY FECHA " );
-$result_T=$Conn->query("SELECT  'Totales',SUM(IMPORTE)/($importe_obra/(1+$iva_obra)) as p_Ventas,'' AS B11,  SUM(IMPORTE) as VENTAS , SUM(GASTOS_EX) AS IMPORTE_GASTOS, SUM(IMPORTE-GASTOS_EX) AS BENEFICIO,SUM(IMPORTE-GASTOS_EX)/SUM(IMPORTE) as Margen from VENTAS WHERE ID_OBRA=$id_obra  " );
+$result_T=$Conn->query("SELECT  'Totales',SUM(IMPORTE)/($importe_obra/(1+$iva_obra)) as p_Ventas, SUM(PLAN) as importe_PLAN ,SUM(IMPORTE) as VENTAS , SUM(GASTOS_EX) AS IMPORTE_GASTOS, SUM(IMPORTE-GASTOS_EX) AS BENEFICIO,SUM(IMPORTE-GASTOS_EX)/SUM(IMPORTE) as Margen from VENTAS WHERE ID_OBRA=$id_obra  " );
 $titulo="VENTAS MENSUALES";
 $idtabla="VENTAS";
 //$dblclicks["MES"]='mes' ;    // pruebas

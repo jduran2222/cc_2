@@ -125,6 +125,7 @@ if ($iniciar_form)
 //  $PRODUCCION="";
   $CAPITULO= isset($_GET["CAPITULO"]) ?  $_GET["CAPITULO"] :  "" ;
   $UDO = isset($_GET["UDO"]) ?  $_GET["UDO"] :  "" ;
+  $Estudio_coste = isset($_GET["Estudio_coste"]) ?  $_GET["Estudio_coste"] :  "" ;
   $FECHA1 = isset($_GET["FECHA1"]) ?  $_GET["FECHA1"] :  "" ;
   $FECHA2 = isset($_GET["FECHA2"]) ?  $_GET["FECHA2"] :  "" ;
   
@@ -142,6 +143,7 @@ if ($iniciar_form)
   $fmt_subobras = isset($_GET["fmt_subobras"]) ?  $_GET["fmt_subobras"] :  "checked";
   $fmt_mensual = isset($_GET["fmt_mensual"]) ?  $_GET["fmt_mensual"] :  "";
   $fmt_no_print = isset($_GET["fmt_no_print"]) ?  $_GET["fmt_no_print"] :  "";
+  $fmt_pre_med = isset($_GET["fmt_pre_med"]) ?  $_GET["fmt_pre_med"] :  "";
   $id_prod_comparada = isset($_GET["id_prod_comparada"]) ?  $_GET["id_prod_comparada"] : 0;  
   $agrupar = isset($_GET["agrupar"]) ?  $_GET["agrupar"] : "capitulos";  
 
@@ -153,6 +155,7 @@ $FECHA1=$_POST["FECHA1"];
 $FECHA2=$_POST["FECHA2"];
 //$PRODUCCION=$_POST["PRODUCCION"];
 $UDO=str_replace(" ","%",$_POST["UDO"]);
+$Estudio_coste=str_replace(" ","%",$_POST["Estudio_coste"]);
 $SUBOBRA=$_POST["SUBOBRA"];
 $DETALLE=$_POST["DETALLE"];
 
@@ -168,6 +171,7 @@ $fmt_doc=isset($_POST["fmt_doc"]) ? 'checked' : '' ;
 $fmt_subobras=isset($_POST["fmt_subobras"]) ? 'checked' : '' ;
 $fmt_mensual=isset($_POST["fmt_mensual"]) ? 'checked' : '' ;
 $fmt_no_print=isset($_POST["fmt_no_print"]) ? 'checked' : '' ;
+$fmt_pre_med=isset($_POST["fmt_pre_med"]) ? 'checked' : '' ;
 
 $id_prod_comparada = isset($_POST["id_prod_comparada"]) ?  $_POST["id_prod_comparada"] : 0; 
 $agrupar=$_POST["agrupar"];   
@@ -305,8 +309,9 @@ function formato_prod_obra()
     $('#fmt_subobras').prop('checked',false) ;  
     $('#fmt_mensual').prop('checked',false) ;  
     $('#fmt_no_print').prop('checked',false) ;  
-    
-   $('#agrupar').val("EDICION") ;  //agrupar  document.getElementById("number").value
+    $('#fmt_pre_med').prop('checked',false) ;  
+
+    $('#agrupar').val("EDICION") ;  //agrupar  document.getElementById("number").value
     
 //        alert($('#agrupar').val())  ;
 //    document.getElementById("form1").submit();
@@ -331,7 +336,8 @@ function formato_certif()
     $('#fmt_doc').prop('checked',false) ;  
     $('#fmt_mensual').prop('checked',false) ;  
     $('#fmt_no_print').prop('checked',true) ;  
-
+    $('#fmt_pre_med').prop('checked',false) ;  
+    
     $('#agrupar').val("udos") ;  
     document.getElementById('form1').submit();
     
@@ -351,6 +357,7 @@ function formato_estudio_costes()
     $('#fmt_subobras').prop('checked',true) ;  //agrupar
     $('#fmt_mensual').prop('checked',false) ;  
     $('#fmt_no_print').prop('checked',false) ;  
+    $('#fmt_pre_med').prop('checked',true) ;  
     
 //    alert($('#agrupar').val())  ;
 //    alert(document.getElementById("agrupar").value)  ;
@@ -426,6 +433,7 @@ function formato_estudio_costes()
 <!--<TR><TD>CAPITULO   </TD><TD><INPUT class="form-control" type="text" id="CAPITULO" name="CAPITULO" value="<?php echo $CAPITULO;?>"><button type="button" onclick="document.getElementById('CAPITULO').value='' ; ">*</button></TD></TR>-->    
 <TR><TD>CAPITULO   </TD><TD><INPUT  type="text" id="CAPITULO" name="CAPITULO" value="<?php echo $CAPITULO;?>"><button type="button" onclick="document.getElementById('CAPITULO').value='' ; ">*</button></TD></TR>
 <TR><TD>Unidad de obra (UDO)</TD><TD><INPUT   type="text" id="UDO" name="UDO" value="<?php echo $UDO;?>"><button type="button" onclick="document.getElementById('UDO').value='' ; ">*</button></TD></TR>
+<TR><TD>Estudio Coste</TD><TD><INPUT   type="text" id="Estudio_coste" name="Estudio_coste" value="<?php echo $Estudio_coste;?>"><button type="button" onclick="document.getElementById('Estudio_coste').value='' ; ">*</button></TD></TR>
 
 </TABLE></div><div class='col-lg-4'><TABLE> 
 
@@ -487,6 +495,7 @@ function formato_estudio_costes()
 <label style="font-size: xx-small;color:grey;" title='Muestra los documentos , pdf, jpg... asociados a una Udo'><INPUT type="checkbox" id="fmt_doc" title='Muestra los documentos , pdf, jpg... asociados a una Udo' name="fmt_doc" <?php echo $fmt_doc;?>  >&nbsp;Doc. udo&nbsp;&nbsp;</label>
 <label style="font-size: xx-small;color:grey;" title='Muestra todas las Subobras aunque no tengan Udos asignadas'><INPUT type="checkbox" id="fmt_subobras"  name="fmt_subobras" <?php echo $fmt_subobras;?>  >&nbsp;Subobras vacias&nbsp;&nbsp;</label>
 <label style="font-size: xx-small;color:grey;" title='No muestra los capítulos con la etiqueta _NO_PRINT_ (ó simplificada _NP_ ), para poder imprimir certificaciones sin los capítulos auxiliares como p.ej. COSTES INDIRECTOS'><INPUT type="checkbox" id="fmt_no_print"  name="fmt_no_print" <?php echo $fmt_no_print;?>  >&nbsp;Quitar NP&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Permite ver los Descompuestos de Precio y Mediciones'><INPUT type="checkbox" id="fmt_pre_med"  name="fmt_pre_med" <?php echo $fmt_pre_med;?>  >&nbsp;Descompuestos&nbsp;&nbsp;</label>
 
  
 <!--</div>-->          
@@ -570,6 +579,7 @@ $DETALLE_filtro= str_replace(" ", "%", $DETALLE) ;
 
 $where=$CAPITULO==""? $where : $where . " AND CAPITULO LIKE '%$CAPITULO_filtro%'" ;
 $where=$UDO==""? $where : $where . " AND CONCAT_WS(' ',UDO,IFNULL(TEXTO_UDO,'')) LIKE '%$UDO%'" ;
+$where=$Estudio_coste==""? $where : $where . " AND CONCAT_WS(' ',UDO,IFNULL(Estudio_coste,'')) LIKE '%$Estudio_coste%'" ;
 $where=$SUBOBRA==""? $where : $where . " AND SUBOBRA LIKE '%$SUBOBRA_filtro%'" ;
 $where=$DETALLE==""? $where : $where . " AND Observaciones LIKE '%$DETALLE_filtro%'" ;
 //$where=$TIPO_GASTO==""? $where : $where . " AND TIPO_GASTO LIKE '%$TIPO_GASTO%'" ;
@@ -622,6 +632,10 @@ $select_agrupar_CAPITULO_T = $fmt_agrupar_cap ? "" : "'' as acap,"  ;
 $udo_flags= "CONCAT(IF(path_archivo<>'','<i class=\"far fa-file-alt\"></i>','') , IF(ID_POF<>'',' (POF) ','')) ";
 $select_UDO = $fmt_texto_udo ? " ,CONCAT('<b>',UDO,' ',$udo_flags,'</b><br><small>',COALESCE(TEXTO_UDO,''),'</small>') AS UDO "
         . "" : " ,TEXTO_UDO AS UDO_TOOLTIP ,$udo_flags AS UDO_FLAG , CONCAT('<b>',UDO,' ',$udo_flags,'</b>') AS UDO "  ;               
+
+$select_UDO .= $fmt_pre_med ? " ,Descompuesto_PRECIO AS PRECIO_MODAL, Descompuesto_MED AS MED_PROYECTO_MODAL " : "" ;               
+
+
 
 $select_doc = $fmt_doc ? ",path_archivo" : "" ;
 
@@ -1134,6 +1148,8 @@ $updates[]='Fecha' ;
 //$links["SUBOBRA"] = ["../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "ver Subobra", "formato_sub"] ;
 
 
+//$formats["Descompuesto_MED"] = "boton_modal" ;
+//$formats["Descompuesto_PRECIO"] = "boton_modal" ;
 $formats["Estudio_coste"] = "text_edit" ;
 $formats["COSTE_EST"] = "text_moneda" ;
 $tooltips["COSTE_EST"] = "Admite formula matemática a calcular y comentarios, anteponer =,  ejemplo\n = hormigon 50*.15 + mallazo 2.5" ;

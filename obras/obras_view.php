@@ -236,7 +236,7 @@ echo "<TR><TD>Activas</td><td>"
 
 <div class='noprint'>
 Formato:&nbsp; 
-        <label><INPUT type="checkbox" title="muestra solo la Cartera de Obra al agrupar por Estado Actual" id="fmt_cartera" name="fmt_cartera" <?php echo $fmt_cartera;?>  >&nbsp;solo Cartera&nbsp;&nbsp;</label>
+        <label><INPUT type="checkbox" title="muestra solo las obras conCartera de Obra " id="fmt_cartera" name="fmt_cartera" <?php echo $fmt_cartera;?>  >&nbsp;solo Cartera&nbsp;&nbsp;</label>
         <label><INPUT type="checkbox" id="fmt_prod_obra" name="fmt_prod_obra" <?php echo $fmt_prod_obra;?>  >&nbsp;Producción periodo&nbsp;&nbsp;</label>
         <label><INPUT type="checkbox" id="fmt_gastos_estimados" name="fmt_gastos_estimados" <?php echo $fmt_gastos_estimados;?>  >&nbsp;Gastos Estimados&nbsp;&nbsp;</label>
         <label><INPUT type="checkbox" id="fmt_prod_origen" name="fmt_prod_origen" <?php echo $fmt_prod_origen;?>  >&nbsp;Producción a origen&nbsp;&nbsp;</label>
@@ -259,7 +259,7 @@ echo "<div id='myDIV' class='noprint' style='margin-top: 25px; padding:10px'>" ;
 
 $btnt['obras']=['Datos generales','', ''] ;
 $btnt['vacio']=['','',''] ;
-$btnt['situacion']=['Estado actual','', ''] ;
+$btnt['cartera']=['Cartera','Cartera de Obra pendiente de ejecutar', ''] ;
 $btnt['vacio3']=['','',''] ;
 $btnt['prod_gasto_obras']=['Obras','Produccion de Obra - Gastos',''] ;
 $btnt['prod_gasto_dias']=['dias','',''] ;
@@ -400,15 +400,15 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 //            . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
 
       $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,IMPORTE AS importe_iva_inc  "
-         . ",Plazo,F_Fin_Plazo,id_produccion_obra, 'ver Prod_Obra' as PRODUCCION_OBRA "
-            . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
+         . ",Plazo,F_Fin_Plazo "
+            . " FROM OBRAS WHERE $where  ORDER BY NOMBRE_OBRA " ;
       $sql_T="SELECT '' AS A,'' AS A1, 'SUMA:', SUM(IMPORTE) AS importe_iva_inc, '' AS A2, '' AS A21, '' AS A22 FROM Obras_View WHERE $where   " ;
 
 
 //     $sql_T="SELECT  '' as ID_OBRA,'' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma2' ,   SUM(IMPORTE) as IMPORTE , SUM(importe_sin_iva) as importe_sin_iva , "
 //             . " SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_View WHERE $where    " ;
    break;
-   case "situacion":
+   case "cartera":
 
       $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS, importe_sin_iva,F_Fin_Plazo "
          . ", VENTAS , Cartera_pdte, VENTAS/importe_sin_iva as Porcentaje_ejecutado,Porcentaje_Plazo ,  VENTAS/importe_sin_iva-Porcentaje_Plazo as Porcentaje_DESFASE"
@@ -418,6 +418,34 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 
      $sql_T="SELECT  '' as ID_OBRA,'' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma:' ,   SUM(importe_sin_iva) as importe_sin_iva ,'' as F_Fin_Plazo "
              . ", SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_View WHERE $where AND $where_cartera   " ;
+     
+       if (1) // si estamos viendo la cartera de obra
+       {
+//            $fecha_ventas=$Mes."-01" ;   // fecha del mes a cerrar
+//            $onclick_VAR_TABLA1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+            $onclick_VAR_TABLA1_="Cartera_pdte" ;     // idem
+            $onclick_VAR_TABLA2_="F_Fin_Plazo" ;     // idem
+
+            // anulado antiguo sistema que borraba la VENTA y creaba una nueva sin respetar posible PLAN mensual, juand, enero21
+//            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VAR_SQL1_' AND FECHA='$fecha_ventas' ;"  ;
+//            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
+//                         " VALUES ( '_VAR_SQL1_', '$fecha_ventas','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
+//
+//            $sql_insert=encrypt2($sql_insert) ;
+
+//            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
+//                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_ID_&var_sql2=_VAR_TABLA2_&var_sql3=_VAR_TABLA3_ \")'  "
+//                    . " >cerrar mes</a> ";
+            
+            $fecha_pMes = date('Y-m')."-01";
+            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Planifica la obra pendiente, es decir, reparte la Cartera de Obra pendiente en los meses sucesivos' "
+                    . " href=# onclick=\"js_href('../obras/plan_obra_ajax.php?ID_OBRA=_VAR_ID_&Cartera_pdte=_VAR_HREF1_&F_Inicio_Plazo=_VAR_HREF2_&F_Fin_Plazo=_VAR_HREF3_', 0,'', 'PROMPT_Cartera?',  'PROMPT_Fecha Inicio planificación?','_VAR_TABLA1_','$fecha_pMes' ,  'PROMPT_Fecha fin obra?', '_VAR_TABLA2_' );\"    "
+                    . " >Planificar</a> ";
+            $actions_row["id"]="ID_OBRA";
+       }   
+   
+     
+     
    break;
    case "obras2":
      $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,importe_sin_iva,Cartera_pdte,  Beneficio_pdte,Margen_estimado  "
@@ -434,11 +462,11 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
        
        
        // produccion a origen
-       $select_prod_origen = $fmt_prod_origen ? " 0 as prod_origen, 0 as gastos_origen," : "" ;
-       $select_prod_origen_sql4 = $fmt_prod_origen ? " Valoracion as prod_origen, Gastos as gastos_origen," : "" ;
-       $select_prod_origen_Union = $fmt_prod_origen ?  " SUM(prod_origen) as prod_origen , SUM(gastos_origen) as gastos_origen "
+       $select_prod_origen = $fmt_prod_origen ? " 0 as prod_origen,0 as porc_origen, 0 as gastos_origen," : "" ;
+       $select_prod_origen_sql4 = $fmt_prod_origen ? " Valoracion as prod_origen,Valoracion/importe_sin_iva as porc_origen, Gastos as gastos_origen," : "" ;
+       $select_prod_origen_Union = $fmt_prod_origen ?  " SUM(prod_origen) as prod_origen ,SUM(porc_origen) as porc_origen , SUM(gastos_origen) as gastos_origen "
                               . " , SUM(prod_origen) - SUM(gastos_origen) as benef_origen , (SUM(prod_origen) - SUM(gastos_origen))/SUM(prod_origen) as margen_origen ," : "" ;
-       $select_prod_origen_Union_T = $fmt_prod_origen ? " '' as prod_origen , '' as gastos_origen ,'' as benef_origen , '' as margen_origen , " : "" ;
+       $select_prod_origen_Union_T = $fmt_prod_origen ? " '' as prod_origen , '' as porc_origen , '' as gastos_origen ,'' as benef_origen , '' as margen_origen , " : "" ;
        $union_sql4 = ($fmt_prod_origen OR $fmt_facturacion) ;
        
        $col_vacia=" '' as activa2, " ;
@@ -460,22 +488,25 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 //        echo $sql ;
 
         // CIERRE MES: si filtramos por Mes mostramos el boton de CERRAR Mes
-       if ($Mes) // PROVISIONAL
+       if ($Mes AND $fmt_prod_obra) // PROVISIONAL
        {
             $fecha_ventas=$Mes."-01" ;   // fecha del mes a cerrar
-            $onclick_VAR_TABLA1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+//            $onclick_VAR_TABLA1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
             $onclick_VAR_TABLA2_="importe_prod" ;     // idem
             $onclick_VAR_TABLA3_="gasto_real" ;     // idem
 
-            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VAR_SQL1_' AND FECHA='$fecha_ventas' ;"  ;
-//            $sql_insert="UPDATE VENTAS SET PLAN=999999 WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
-            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
-                      " VALUES ( '_VAR_SQL1_', '$fecha_ventas','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
+            // anulado antiguo sistema que borraba la VENTA y creaba una nueva sin respetar posible PLAN mensual, juand, enero21
+//            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VAR_SQL1_' AND FECHA='$fecha_ventas' ;"  ;
+//            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
+//                         " VALUES ( '_VAR_SQL1_', '$fecha_ventas','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
+//
+//            $sql_insert=encrypt2($sql_insert) ;
 
-            $sql_insert=encrypt2($sql_insert) ;
-
+//            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
+//                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_ID_&var_sql2=_VAR_TABLA2_&var_sql3=_VAR_TABLA3_ \")'  "
+//                    . " >cerrar mes</a> ";
             $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
-                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_TABLA1_&var_sql2=_VAR_TABLA2_&var_sql3=_VAR_TABLA3_ \")'  "
+                    . " href=# onclick='js_href(\"../obras/cerrar_mes_ajax.php?Mes=$Mes&ID_OBRA=_VAR_ID_&IMPORTE=_VAR_TABLA2_&GASTOS_EX=_VAR_TABLA3_ \")'  "
                     . " >cerrar mes</a> ";
             $actions_row["id"]="ID_OBRA";
        }   

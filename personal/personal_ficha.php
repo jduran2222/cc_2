@@ -46,6 +46,9 @@ $id_personal=$_GET["id_personal"];
 // CONFIGURO EL MENU PERSONAL 
 $GET_listado_personal="?nombre=$nombre&agrupar=cal_nombres" ;
 $GET_Nominas="?id_proveedor={$rs["id_proveedor_nomina"]}" ;
+$badget_partes=badge_sup(DFirst('COUNT(id)', 'PARTES_PERSONAL', "ID_PERSONAL=$id_personal"),'info') ;
+$badget_nominas=badge_sup(DFirst('COUNT(ID_FRA_PROV)', 'FACTURAS_PROV', "ID_PROVEEDORES='{$rs["id_proveedor_nomina"]}' "),'info') ;
+
  
  require_once("../personal/personal_menutop_r.php");
 
