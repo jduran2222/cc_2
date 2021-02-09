@@ -208,8 +208,12 @@ table th {
             }
          }
    
-  th.hide_id_<?php echo $idtabla;?> { display: none; }
+         
+  th.hide_id_<?php echo $idtabla;?> { display: none; } // intento de controlar la tabla para independizar los show_ID
   td.hide_id_<?php echo $idtabla;?> { display: none; }
+  
+  th.hide_id { display: none; }
+  td.hide_id { display: none; }
   
          
     
@@ -368,7 +372,8 @@ if (isset($result_T)  )   // Hay TOTALES?
                    $is_visible = ( (!preg_match("/^ID_|^ID$/i", $clave) OR in_array($clave,$visibles) ) AND ( !in_array($clave,$ocultos) ))  ; 
                    $not_id_var= isset($print_id)?  $print_id : $is_visible  ;         // $print_id indica que se imprima los campos ID_ tambien
                    // Lo metemos en COLUMNAS OCULTAS POR SI SE QUIEREN MOSTRAR POR JAVASCRIPT
-                   $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla'" ;     
+//                   $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla'" ;   // intento de controlar los diferentes show_ID para varias tablas en la misma pagina  
+                   $class_hide_id= $not_id_var ? "" : "class='hide_id'" ;     
                    $hide_id= $not_id_var ? "" : "hide_id" ;                 //class hide_id hace que se oculten las columnas hasta que pulsemos Show ID
                    
                    // evitamos las ETIQUETAS
@@ -501,7 +506,8 @@ if (isset($result_T)  )   // Hay TOTALES?
    //  BOTON SELECTION
    if (isset($col_sel)) {$TABLE .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=ver_table_selection()  >seleccion</button>" ;  }  
 
-   if ($_SESSION["admin"]) {$TABLE .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=show_ID_$idtabla()  >show ID adm</button>" ;  }  
+//   if ($_SESSION["admin"]) {$TABLE .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=show_ID_$idtabla()  >show ID adm</button>" ;  } #show_ID
+   if ($_SESSION["admin"]) {$TABLE .= "<button type='button' class='btn btn-link btn-xs noprint transparente' onclick=show_ID()  >show ID adm</button>" ;  }  
 //   $TABLE .= "<button type='button' class='btn btn-link btn-lg noprint transparente'  title='ver Gráficos' onclick=google.charts.setOnLoadCallback(drawChart);  >"
 //                   . "<i class='fas fa-chart-bar'></i></button>" ;  
    
@@ -639,7 +645,8 @@ if (isset($result_T)  )   // Hay TOTALES?
                $is_visible = ( (!preg_match("/^ID_|^ID$/i", $clave) OR in_array($clave,$visibles) ) AND ( !in_array($clave,$ocultos) ))  ; 
                
                $not_id_var= isset($print_id)?  $print_id : $is_visible  ;         // $print_id indica que se imprima los campos ID_ tambien
-               $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla'" ;
+//               $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla'" ;
+               $class_hide_id= $not_id_var ? "" : "class='hide_id'" ;
                $hide_id= $not_id_var ? "" : "hide_id" ;
                
                // inicializamos variables
@@ -842,7 +849,8 @@ if (isset($result_T)  )   // Hay TOTALES?
       $columna_ficha_html='';   // inicializamos la celda de la columna_ficha 
       foreach ($rst as $clave => $valor)  //  ******** VALORES ***************** VALORES ******************
        {
-          $TD_td =  "<td  class='class_$idtabla'  >" ;  // ponemos por defecto el <td>, luego podemos cambiarlo
+//          $TD_td =  "<td  class='class_$idtabla'  >" ;  // ponemos por defecto el <td>, luego podemos cambiarlo
+          $TD_td =  "<td  >" ;  // ponemos por defecto el <td>, luego podemos cambiarlo
 
           $tipo_formato_por_clave=cc_formato_auto($clave);
           
@@ -898,7 +906,8 @@ if (isset($result_T)  )   // Hay TOTALES?
            $not_id_var= isset($print_id)?  $print_id : $is_visible  ;         // $print_id indica que se imprima los campos ID_ tambien
 
            // Lo metemos en COLUMNAS OCULTAS POR SI SE QUIEREN MOSTRAR POR JAVASCRIPT
-           $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla class_$idtabla'" ;     
+//           $class_hide_id= $not_id_var ? "" : "class='hide_id_$idtabla class_$idtabla'" ;     
+           $class_hide_id= $not_id_var ? "" : "class='hide_id'" ;     
            $hide_id= $not_id_var ? "" : "hide_id" ;                 //class hide_id hace que se oculten las columnas hasta que pulsemos Show ID
           
            
@@ -1083,7 +1092,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                elseif ( $is_update )   // IS_UPDATE, CELDA EDITABLE
                { 
                                // fabricamos la cadena_link
-                               if ($is_boolean)  
+                               if ($is_boolean )  
                                {
                                  $checked= $valor ? 'checked' : '' ;
 //                                 $valor_txt= $valor ? '1' : '0' ;
@@ -1096,8 +1105,10 @@ if (isset($result_T)  )   // Hay TOTALES?
                                  $TD_html =   "<div style='cursor: pointer;text-align:center;$background_color' id='td_$cont_TD' value='$checked'   "
                                          .    "onclick=\"tabla_update_onchange('$cadena_link',document.getElementById('span_$cont_TD').style.display,'$tipo_dato','span_$cont_TD','td_$cont_TD' )\"  >"
                                          . "$span_sort"
-                                         . "<span id='span_$cont_TD' style='$display' ><i class='fas fa-check'></i></span>"
+                                         . "<p id='span_$cont_TD' style='$display' ><i class='fas fa-check'></i></p>"
                                        . "{$div_extras_html} </div>"  ;
+
+//                                  $TD_html = "juan" ;
 
  
 
@@ -1183,7 +1194,7 @@ if (isset($result_T)  )   // Hay TOTALES?
                                   
                                   $add_link_select_ver = $link_ver ? "<a href='{$link_ver}{$rst[$id_campo]}&_m=$_m' target='_blank'>$valor_txt_sel</a>" : "$valor_txt_sel" ;
 
-                                  if ($is_update)
+                                  if ($is_update)   // INCOHERENCIA, está dentro de un if ($is_update) ?? (lo mantengo por precaución, juand feb21)
                                   {
                             //              LINKS EN CASO DE EL SELECT SER EDITABLE (UPDATES)  (entiendo que siempre el SELECT es EDITABLE!!)
                                           $add_link_select= $link_nuevo ? "<a class='btn btn-xs btn-link noprint transparente' href=\"$link_nuevo\"   $link_nuevo_target_blank    title='nuevo'>"
@@ -1491,7 +1502,7 @@ EOT;
 //echo "{ $json_cols_chart , $json_rows_chart } " ;        
         
 ?>
- 
+  
  <script>
 
 $(document).ready(function(){
@@ -1531,6 +1542,31 @@ if ( show_ID.show == 1)
 //   alert('hola') ;
  
  
+  return ;
+}
+function show_ID()
+ { 
+// $('table th.hide').each( function() { $(this).show() ; }   );
+// $('table td.hide').each( function() { $(this).show() ; }   );
+if ( typeof show_ID.show == 'undefined' ) {
+        // It has not... perform the initialization
+        show_ID.show = 1;
+    }
+ 
+
+if ( show_ID.show == 1) 
+{   
+ $('th.hide_id').show() ;
+ $('td.hide_id').show() ;
+ show_ID.show = 0 ;
+ }
+ else
+{   
+ $('th.hide_id').hide() ;
+ $('td.hide_id').hide() ;
+ show_ID.show = 1 ;
+ }
+     
   return ;
 }
 
@@ -1590,6 +1626,8 @@ function tabla_update_onchange(cadena_link, nuevo_valor, tipo_dato , elementId ,
       
 //    alert(cadena_link+nuevo_valor) ; 
  
+var refrescar=false ;  // en principio NO REFRESCAMOS , salvo que se necesite
+
  
 // if (tipo_dato=='semaforo' || tipo_dato=='semaforo_not' || tipo_dato=='boolean')
  if (tipo_dato=='boolean')

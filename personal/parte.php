@@ -120,7 +120,8 @@ if ($id_parte_anterior)
 
  echo $html_anterior_siguiente ;
      
-     
+// $formats["Observaciones"] = "div_edit";
+    
 
 
   
@@ -186,7 +187,7 @@ if ($id_parte_anterior)
 
 
 //$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX,MD,DC,Observaciones FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
-$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX, ID_SUBOBRA , Observaciones  FROM Partes_Personal_View  WHERE ID_PERSONAL<>0 AND ID_PARTE=$id_parte  AND $where_c_coste    ";
+$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX, ID_SUBOBRA , observaciones  FROM Partes_Personal_View  WHERE ID_PERSONAL<>0 AND ID_PARTE=$id_parte  AND $where_c_coste    ";
 //echo $sql;
 $result=$Conn->query($sql );
 
@@ -194,10 +195,10 @@ $sql_T="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO, '' FROM Partes_Per
 //echo $sql;
 $result_T=$Conn->query($sql_T );
 
-$updates=['HO','HX','MD','DC','ID_SUBOBRA','Observaciones','DDDD']  ;
+$updates=['HO','HX','MD','DC','ID_SUBOBRA','Observaciones']  ;
 $visibles=['ID_SUBOBRA'] ;
 
-$tabla_update="PARTES_PERSONAL" ;
+$tabla_update="PARTES_PERSONAL" ; 
 $id_update="id" ;
 
 $actions_row=[];
@@ -208,6 +209,7 @@ $actions_row["delete_link"]="1";
 $selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 
 $links["NOMBRE"] = ["../personal/personal_ficha.php?id_personal=", "ID_PERSONAL"] ;
+$formats["observaciones"] = "text_edit";
 
 
 $titulo="Personal de Obra ($result->num_rows". cc_format( "solo_icon", "icon_usuarios") ." )" ;

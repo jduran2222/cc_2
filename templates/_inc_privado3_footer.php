@@ -60,11 +60,9 @@
     </div>
   </div>
 
-  
-  <!-- Script activo para las funcionalidades básicas de la web: debería ir en un main.js -->
-  <script type="text/javascript">
-    // COPIA LIETRAL
-    function dfirst_ajax(id,field,tabla,wherecond)
+
+<!--  FUNCION DEJADA DE UTILIZAR PROVISIONALMENTE, FALL EN SEGURIDAD, HAY QUE CODIFICARLA juand, feb2021
+function dfirst_ajax(id,field,tabla,wherecond)
     {
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -74,7 +72,15 @@
       };
       xhttp.open("GET", "../include/dfirst_ajax.php?field="+field+"&tabla="+tabla+"&wherecond="+wherecond+"", true);       //hacemos la consulta ajax
       xhttp.send();   
-    }
+    }-->
+
+
+
+
+  
+  <!-- Script activo para las funcionalidades básicas de la web: debería ir en un main.js -->
+  <script type="text/javascript">
+    // COPIA LITERAL
     function tour()
     {
       alert("prueba3"); 
@@ -84,7 +90,7 @@
                             {
                               element: "#filtro",
                               title: "Construcloud.es prueba Tour",
-                              content: "Aquí podemos buscar cualquier entidad: Obras, Proveedor, Persoanl..."
+                              content: "Aquí podemos buscar cualquier entidad: Obras, Proveedor, Personal..."
                             },
                             {
                               element: "#buscar",

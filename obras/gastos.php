@@ -300,14 +300,8 @@ $tabla_group=0 ;
 
 $select_NOMBRE_OBRA= $gastos_global ? ", NOMBRE_OBRA " : "" ;
 
-$c_importe='importe';
-$c_fecha='FECHA';
-$select_MENSUAL= $fmt_mensual ? ", SUM(importe*(MONTH($c_fecha)=1)) AS Enero, SUM(importe*(MONTH($c_fecha)=2)) AS Febrero, SUM(importe*(MONTH($c_fecha)=3)) AS Marzo "
-        . ", SUM(importe*(MONTH($c_fecha)=4)) AS Abril, SUM(importe*(MONTH($c_fecha)=5)) AS Mayo, SUM(importe*(MONTH($c_fecha)=6)) AS Junio"
-        . ", SUM(importe*(MONTH($c_fecha)=7)) AS Julio, SUM(importe*(MONTH($c_fecha)=8)) AS Agosto, SUM(importe*(MONTH($c_fecha)=9)) AS Septiembre"
-        . ", SUM(importe*(MONTH($c_fecha)=10)) AS Octubre, SUM(importe*(MONTH($c_fecha)=11)) AS Noviembre, SUM(importe*(MONTH($c_fecha)=12)) AS Diciembre"  
-        : "";
-            
+
+$select_MENSUAL = $fmt_mensual ? desglose_mensual(", SUM(importe*(MONTH(FECHA)={m} )) AS importe_{mes} ")  :"" ;
         
 // IMPUTACION A SUBOBRA
 if (!$gastos_global)

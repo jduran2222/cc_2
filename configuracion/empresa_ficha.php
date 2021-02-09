@@ -182,21 +182,21 @@ $result=$Conn->query($sql="SELECT * FROM Empresas_View WHERE id_c_coste=$id_empr
 //echo "</pre>";
   $titulo="ESTADISTICAS DE LA EMPRESA" ;
   
-   
-  
-  $updates=[]  ; 
-//  $id_pago=$rs["id_remesa"] ;
-  $tabla_update="C_COSTES" ;
-  $id_update="id_c_coste" ; 
-  $id_valor=$id_empresa ; 
-      
+//   
+//  
+//  $updates=[]  ; 
+////  $id_pago=$rs["id_remesa"] ;
+//  $tabla_update="C_COSTES" ;
+//  $id_update="id_c_coste" ; 
+//  $id_valor=$id_empresa ; 
+//      
       
  ?>
       
       
   <div id="main" class="mainc"> 
       
-  <?PHP require("../include/ficha.php"); ?>
+  <?PHP // require("../include/ficha.php"); ?>
    
       <!--// FIN     **********    FICHA.PHP-->
  </div>

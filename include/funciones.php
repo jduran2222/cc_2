@@ -7,6 +7,21 @@ define ("ICON_NUEVO", "<i class='fas fa-plus-circle'></i>");
 $ICON = "<span class='glyphicon glyphicon" ;
 $SPAN = "'></span>"; 
 
+// funcion para generar SELECTS de desglodse mensual
+function desglose_mensual( $patron )
+{
+    $a_meses=[ "Ene","Feb", "Mar" , "Abr", "May", "Jun", "Jul", "Ago", "Sep","Oct","Nov","Dic"];  
+
+    $return='';
+    foreach ($a_meses as $n => $mes)
+    {
+//       $return.= ", SUM($c_importe*(MONTH($c_fecha)=($n+1))) AS $prefijo_mes{$mes}$anno_txt " ;
+       $return .= str_replace('{m}', $n+1 , str_replace('{mes}', $mes , $patron) ) ;  //sustituimos MES y M
+    }
+
+     return $return  ;
+}
+
 
 function boton_modal($boton, $titulo, $html)
 {
@@ -1032,7 +1047,7 @@ function cc_formato_auto($clave)
 //              OR strtoupper(substr($clave,0,5))=="BENEF" OR strtoupper(substr($clave,0,7))=="IMPORTE" OR strtoupper(substr($clave,0,5))=="COSTE"
 //             OR strtoupper(substr($clave,0,6))=="PRECIO" OR strtoupper(substr($clave,0,7))=="INGRESO" OR strtoupper(substr($clave,0,5))=="GASTO"
 //             OR strtoupper(substr($clave,0,5))=="VENTA" OR strtoupper(substr($clave,0,10))=="VALORACION")
-    elseif (preg_match("/^BASE_IMPONIBLE|^OFERTA|^CARTERA|^VALORACION|^VENTA|^GASTO|^INGRESO|^PRECIO|^COSTE|^IMPORTE|^BENEF|^PDTE_COBRO/i", $clave))       
+    elseif (preg_match("/^BASE_IMPONIBLE|^OFERTA|^CARTERA|^VALORACION|^VENTA|^GASTO|^INGRESO|^PRECIO|^COSTE|^IMPORTE|^BENEF|^PLAN|^PDTE_COBRO/i", $clave))       
     { $format='moneda' ; }          ///, &$valor , &$format_style)
     elseif (strtoupper(substr($clave,0,3))=="IVA")
     { $format='porcentaje0' ; }          ///, &$valor , &$format_style)
@@ -1055,6 +1070,8 @@ function cc_formato_auto($clave)
     { $format='tipo_pago' ; }       ///, &$valor , &$format_style)
     elseif (preg_match("/^firmado/i", $clave))
     { $format='firmado' ; }       ///, &$valor , &$format_style)
+    elseif (preg_match("/^Ene|^Feb|^Mar|^Abr|^May|^Jun|^Jul|^Ago|^Sep|^Oct|^Nov|^Dic/i", $clave))       
+    { $format='moneda_mensual' ; }          ///, &$valor , &$format_style)
 
     return $format ;
 }
@@ -1164,19 +1181,19 @@ function cc_format($valor , $format="" , &$format_style="", $clave="")     ///, 
      {  $txt=substr($format,8)   ;
         $format="boolean_txt" ;
      }  
-  elseif (substr($format,0,13)=="semaforo_txt_")                 // formato boolean_txt
+  elseif (substr($format,0,13)=="semaforo_txt_")                 // 
      {  $txt=substr($format,13)   ;
         $format="semaforo_txt" ;
      }  
-  elseif (substr($format,0,14)=="semaforo_txt2_")                 // formato boolean_txt
+  elseif (substr($format,0,14)=="semaforo_txt2_")                 // 
      {  $txt=substr($format,14)   ;
         $format="semaforo_txt2" ;
      }  
-//  elseif (substr($format,0,5)=="icon_")                 // formato boolean_txt
+//  elseif (substr($format,0,5)=="icon_")                 // 
 //     {  $icon=substr($format,5)   ;
 //        $format="icon" ;
 //     }  
-  elseif (substr($format,0,12)=="textarealert")                 // formato boolean_txt
+  elseif (substr($format,0,12)=="textarealert")                 // 
      {  
         $tooltip_txt_alert= str_replace("\n","\\n", $valor) ;  
 //        $tooltip_txt="<i class='fas fa-info-circle btn-link' style='opacity:0.3' onclick=\"alert('$tooltip_txt_alert')\" title='$valor'></i>" ;
@@ -1189,7 +1206,7 @@ function cc_format($valor , $format="" , &$format_style="", $clave="")     ///, 
         $format="textarea_" ;
         
      }  
-  elseif (substr($format,0,8)=="textarea")                 // formato boolean_txt
+  elseif (substr($format,0,8)=="textarea")                 // 
      {  
         $tooltip_txt_alert= "" ;  
 //        $tooltip_txt="<i class='fas fa-info-circle btn-link' style='opacity:0.3' onclick=\"alert('$tooltip_txt_alert')\" title='$valor'></i>" ;
@@ -1204,7 +1221,7 @@ function cc_format($valor , $format="" , &$format_style="", $clave="")     ///, 
         $format="textarea_" ;
         
      }  
-  elseif (substr($format,0,4)=="pdf_")                 // formato boolean_txt
+  elseif (substr($format,0,4)=="pdf_")                 // 
      {  
         $a=explode("_", $format);   // exploto el string en un array de 2 o 3 elementos
         $pdf_size= $a[1]   ;
@@ -1212,7 +1229,7 @@ function cc_format($valor , $format="" , &$format_style="", $clave="")     ///, 
      
         $format="pdf_" ;
      }  
-  elseif (substr($format,0,8)=="pdflink_")                 // formato boolean_txt
+  elseif (substr($format,0,8)=="pdflink_")                 // 
      {  
         $a=explode("_", $format);   // exploto el string en un array de 2 o 3 elementos
         $pdf_size= $a[1]   ;
@@ -1272,6 +1289,14 @@ switch ($format) {
                         $color_numero= ($valor<0) ? "red" : "black" ;
                         $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,".",",") ,10," ", STR_PAD_LEFT)." ".$_SESSION["Moneda_simbolo"]  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
                         $format_style=" style='white-space: nowrap;text-align:right; color: $color_numero' " ;
+                        break;
+            case "moneda_mensual": 
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+                        $valor = round($valor,2) ;
+                        $color_numero= ($valor<0) ? "red" : "black" ;
+                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,".",",") ,10," ", STR_PAD_LEFT)." ".$_SESSION["Moneda_simbolo"]  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        $background= ($valor==0)? "" : "background-color: #F2F4F4;" ;
+                        $format_style=" style='font-size:small;$background white-space: nowrap;text-align:right; color: $color_numero' " ;
                         break;
             case "moneda_europeo":
                         //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;

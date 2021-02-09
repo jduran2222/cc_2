@@ -109,6 +109,9 @@ $fmt_ventas = isset($_GET["fmt_ventas"]) ?
 $fmt_facturacion = isset($_GET["fmt_facturacion"]) ? 
                               ( $_GET["fmt_facturacion"] ? "checked" : "" )
                             : (isset($_POST["fmt_facturacion"]) ?  "checked" : "");  
+$fmt_desglose_mensual = isset($_GET["fmt_desglose_mensual"]) ? 
+                              ( $_GET["fmt_desglose_mensual"] ? "checked" : "" )
+                            : (isset($_POST["fmt_desglose_mensual"]) ?  "checked" : "");  
 
 //
 ////debug
@@ -243,6 +246,7 @@ Formato:&nbsp;
         <label><INPUT type="checkbox" id="fmt_plan" name="fmt_plan" <?php echo $fmt_plan;?>  >&nbsp;Plan mes&nbsp;&nbsp;</label>
         <label><INPUT type="checkbox" id="fmt_ventas" name="fmt_ventas" <?php echo $fmt_ventas;?>  >&nbsp;Ventas&nbsp;&nbsp;</label>
         <label><INPUT type="checkbox" id="fmt_facturacion" name="fmt_facturacion" <?php echo $fmt_facturacion;?>  >&nbsp;Facturacion a origen&nbsp;&nbsp;</label>
+        <label><INPUT type="checkbox" id="fmt_desglose_mensual" name="fmt_desglose_mensual" <?php echo $fmt_desglose_mensual;?>  >&nbsp;Desglose mensual&nbsp;&nbsp;</label>
 <!--         <a class="btn btn-link btn-xs noprint" title="formato para realizar un Estudio de costes de un Proyecto o Liciación" href=#  onclick="formato_estudio_costes();"><i class="fas fa-euro-sign"></i> modo Estudio de Costes</a>
          <a class="btn btn-link btn-xs noprint" title="formato de formulario para registrar Producciones de Obra" href=#  onclick="formato_prod_obra();"><i class="fas fa-hard-hat"></i> modo Producción Obra</a>
          <a class="btn btn-link btn-xs noprint" title="imprimir la producción con formato de Certificación sin costes, con texto_udo y con resumen" href=#  onclick="formato_certif();"><i class="fas fa-print"></i> modo Certificacion</a>-->
@@ -314,9 +318,9 @@ $where_fecha = $fecha1 ==""? $where_fecha : $where_fecha . " AND fecha >= '$fech
 $where_fecha = $fecha2 ==""? $where_fecha : $where_fecha . " AND fecha <= '$fecha2' " ;
 $where_fecha = $Dia == ""?   $where_fecha : $where_fecha . " AND DATE_FORMAT(FECHA, '%Y-%m-%d')='$Dia' " ;
 $where_fecha = $Semana ==""? $where_fecha : $where_fecha . " AND $select_semana = '$Semana' " ;
-$where_fecha = $Mes == ""?   $where_fecha : $where_fecha . " AND DATE_FORMAT(fecha, '%Y-%m') = '$Mes' " ;
+$where_fecha = $Mes == ""?   $where_fecha : $where_fecha . " AND DATE_FORMAT(FECHA, '%Y-%m') = '$Mes' " ;
 $where_fecha = $Trimestre==""? $where_fecha : $where_fecha . " AND $select_trimestre = '$Trimestre' " ;
-$where_fecha = $Anno==""?   $where_fecha : $where_fecha . " AND YEAR(fecha) = '$Anno' " ;
+$where_fecha = $Anno==""?   $where_fecha : $where_fecha . " AND YEAR(FECHA) = '$Anno' " ;
 
 // CADENA_URL PARA LINK DEL PERIODO
 $cadena_link_periodo="v=1" ;
@@ -426,7 +430,7 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
             $onclick_VAR_TABLA1_="Cartera_pdte" ;     // idem
             $onclick_VAR_TABLA2_="F_Fin_Plazo" ;     // idem
 
-            // anulado antiguo sistema que borraba la VENTA y creaba una nueva sin respetar posible PLAN mensual, juand, enero21
+            // anulado antiguo sistema que borraba la VENTA y creaba una nueva sin respetar posible PLAN mensual, juand, ene21
 //            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VAR_SQL1_' AND FECHA='$fecha_ventas' ;"  ;
 //            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
 //                         " VALUES ( '_VAR_SQL1_', '$fecha_ventas','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
@@ -563,7 +567,6 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
             $onclick_VAR_TABLA3_="gasto_real" ;     // idem
 
             $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA=$id_obra_unica AND FECHA='_VAR_SQL1_-01' ;"  ;
-//            $sql_insert="UPDATE VENTAS SET PLAN=999999 WHERE ID_OBRA='_VARIABLE1_' AND FECHA='$fecha_ventas' ;"  ;
             $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
                       " VALUES ( '$id_obra_unica', '_VAR_SQL1_-01','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
 
@@ -624,9 +627,27 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
    }
    
    
-   
-   
-   
+ // sistema de desglose mensual
+
+//$c_importe='PLAN';
+//$c_fecha='FECHA';
+//$c_importe='1';
+//$c_fecha="'2020-09-01'";
+//$fmt_desglose_mensual=$fmt_plan;   
+
+
+$select_PLAN_MENSUAL   = ($fmt_desglose_mensual AND $fmt_plan) ? ",'' as ID_TH_COLOR22 " . desglose_mensual(", SUM(PLAN*(MONTH(FECHA)={m} )) AS {mes} ") . ",'' as ID_TH_COLOR25 " :"" ;
+$select_PLAN_0         = ($fmt_desglose_mensual AND $fmt_plan) ?  ",'' as ID_TH_COLOR22" .desglose_mensual(", 0 AS {mes} ")  . ",'' as ID_TH_COLOR25 "  :"" ;
+$select_PLAN_MENSUAL_union = ($fmt_desglose_mensual AND $fmt_plan) ? ",'' as ID_TH_COLOR22" . desglose_mensual(", SUM({mes}) AS {mes} ")  . ",'' as ID_TH_COLOR25 "  :"" ;
+
+$select_VENTAS_MENSUAL   = ($fmt_desglose_mensual AND $fmt_ventas) ? ",'' as ID_TH_COLOR23 " . desglose_mensual(", SUM(IMPORTE*(MONTH(FECHA)={m} )) AS {mes} ")  . ",'' as ID_TH_COLOR26 "  :"" ;
+$select_VENTAS_0         = ($fmt_desglose_mensual AND $fmt_ventas) ?  ",'' as ID_TH_COLOR23" .desglose_mensual(", 0 AS {mes} ")  . ",'' as ID_TH_COLOR26 "  :"" ;
+$select_VENTAS_MENSUAL_union = ($fmt_desglose_mensual AND $fmt_ventas) ? ",'' as ID_TH_COLOR23" . desglose_mensual(", SUM({mes}) AS {mes} ")  . ",'' as ID_TH_COLOR26 "  :"" ;
+
+
+
+
+//-----------------------------            
    
   
  // componemos los SQL para las prod_gasto*  
@@ -635,25 +656,25 @@ if (like($agrupar,'prod_gasto%'))
      // sql produccion
      $sql1=" (SELECT $select_PPAL SUM(importe*COEF_BAJA*(1+GG_BI)) as importe_prod,SUM(gasto_est) as gasto_est, $select_prod_origen "
            . " SUM(importe*COEF_BAJA*(1+GG_BI))-SUM(gasto_est) as benef_est , 1-SUM(gasto_est)/(SUM(importe*COEF_BAJA*(1+GG_BI))) as margen_est, 0 AS gasto_real,"
-           . " 0 AS PLAN, 0 AS VENTAS, 0 AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro "
+           . " 0 AS PLAN $select_PLAN_0, 0 AS VENTAS $select_VENTAS_0, 0 AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro "
             . " FROM ConsultaProd WHERE $where AND $where_fecha AND ID_PRODUCCION=id_produccion_obra $group_order ) " ;
 
        //sql gasto
      $sql2=" (SELECT $select_PPAL  0 as importe_prod,0 as gasto_est, $select_prod_origen "
            . " 0 as benef_est , 0 as margen_est, SUM(IMPORTE) AS gasto_real, "
-             . " 0 AS PLAN, 0 AS VENTAS, 0 AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro   "
+             . " 0 AS PLAN $select_PLAN_0, 0 AS VENTAS $select_VENTAS_0, 0 AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro   "
             . " FROM ConsultaGastos_View WHERE $where AND $where_fecha $group_order ) " ;
        
        //sql VENTAS
      $sql3=" (SELECT $select_PPAL  0 as importe_prod,0 as gasto_est, $select_prod_origen "
            . " 0 as benef_est , 0 as margen_est, 0 AS gasto_real, "
-             . " SUM(PLAN) AS PLAN, SUM(IMPORTE) AS VENTAS, SUM(GASTOS_EX) AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro " 
+             . " SUM(PLAN) AS PLAN  $select_PLAN_MENSUAL, SUM(IMPORTE) AS VENTAS $select_VENTAS_MENSUAL, SUM(GASTOS_EX) AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro " 
             . " FROM Ventas_View WHERE $where AND $where_fecha $group_order ) " ;
        
        //sql PROD-GASTO ORIGEN
      $sql4=" (SELECT $select_PPAL  0 as importe_prod,0 as gasto_est, $select_prod_origen_sql4   "
            . " 0 as benef_est , 0 as margen_est, 0 AS gasto_real, "
-             . " 0 AS PLAN,0 AS VENTAS, 0 AS GASTOS_EX ,Facturado,Facturado_iva,Pdte_Cobro " 
+             . " 0 AS PLAN $select_PLAN_0 ,0 AS VENTAS $select_VENTAS_0, 0 AS GASTOS_EX ,Facturado,Facturado_iva,Pdte_Cobro " 
             . " FROM Obras_View WHERE $where $group_order ) " ;
      
      $union_all_sql4 =  $union_sql4 ?  " UNION ALL ". $sql4 : "" ;
@@ -662,7 +683,7 @@ if (like($agrupar,'prod_gasto%'))
              . " , SUM(gasto_real) AS gasto_real,SUM(importe_prod)- SUM(gasto_real) AS benef_real , 1-SUM(gasto_real)/SUM(importe_prod) as margen_real "
              . " ,' ' as ID_TH_COLOR1, $select_prod_origen_Union "
              . "  ' ' as ID_TH_COLOR2,SUM( gasto_est) AS gasto_est ,SUM(benef_est) AS benef_est ,  1-SUM(gasto_est)/SUM(importe_prod) as margen_est , "
-             . " ' ' as ID_TH_COLOR3, SUM(PLAN) AS PLAN, SUM(VENTAS) AS VENTAS, SUM(GASTOS_EX) AS GASTOS_EX ,  SUM(VENTAS)-SUM(GASTOS_EX) AS Beneficio, "
+             . " ' ' as ID_TH_COLOR3, SUM(PLAN) AS PLAN $select_PLAN_MENSUAL_union, SUM(VENTAS) AS VENTAS $select_VENTAS_MENSUAL_union, SUM(GASTOS_EX) AS GASTOS_EX ,  SUM(VENTAS)-SUM(GASTOS_EX) AS Beneficio, "
              . " (SUM(VENTAS)-SUM(GASTOS_EX))/SUM(VENTAS) as Margen"
              . "  ,SUM(Facturado) as Facturado, SUM(Facturado_iva) as Facturado_iva, SUM(Pdte_Cobro) as Pdte_Cobro  "
              . " FROM (" . $sql1 ." UNION ALL ". $sql2 ." UNION ALL ". $sql3 . $union_all_sql4 ."  ) X $group_order" ; 
@@ -671,7 +692,7 @@ if (like($agrupar,'prod_gasto%'))
      $sql_T= "SELECT $col_vacia '' as ID_OBRA, 'Suma...' , SUM(importe_prod) as importe_prod "
              . ", SUM(gasto_real) AS gasto_real,SUM(importe_prod)- SUM(gasto_real) AS benef_real , 1-SUM(gasto_real)/SUM(importe_prod) as margen_real "
              . ",$select_prod_origen_Union_T SUM( gasto_est) AS gasto_est ,SUM(benef_est) AS benef_est ,  1- SUM(gasto_est)/SUM(importe_prod) as margen_est ,"
-             . "  SUM(PLAN) AS PLAN, SUM(VENTAS) AS VENTAS, SUM(GASTOS_EX) AS GASTOS_EX,  SUM(VENTAS)-SUM(GASTOS_EX) AS Beneficio, (SUM(VENTAS)-SUM(GASTOS_EX))/SUM(VENTAS) as Margen   "
+             . "  SUM(PLAN) AS PLAN $select_PLAN_MENSUAL_union, SUM(VENTAS) AS VENTAS $select_VENTAS_MENSUAL_union, SUM(GASTOS_EX) AS GASTOS_EX,  SUM(VENTAS)-SUM(GASTOS_EX) AS Beneficio, (SUM(VENTAS)-SUM(GASTOS_EX))/SUM(VENTAS) as Margen   "
              . " FROM (" . $sql1 ." UNION ALL ". $sql2 ." UNION ALL ". $sql3 . $union_all_sql4 .") X " ; 
 
    

@@ -114,8 +114,8 @@ if ($_SESSION["is_desarrollo"]) {
                 <!--</div>-->
 
                 <!--****************** BUSQUEDA GLOBAL  *****************-->
-                <div class="col-12 col-md-4 bg-light text-center">
-                    <div style='margin: 20px;'><img style='max-width:400px; max-height:200px;' src='<?php echo $path_logo_empresa;?>_large.jpg' 
+                <div class="col-12 col-md-4 bg-light text-center"> 
+                    <div style='margin: 20px;'><img style='max-width:300px; max-height:200px;' src='<?php echo $path_logo_empresa;?>_large.jpg' 
                                                     title='Para cambiar el logo ir a Herramientas->Mi Empresa y Subir un Doc. con el logo y hacerlo documento Predeterminado' >
                     </div>
                     <form action="busqueda_global.php" method="post" id="form1" name="form1" target='_blank'>
@@ -178,8 +178,8 @@ if ($_SESSION["is_desarrollo"]) {
 
 
 // calculo de variables AJAX de FACTURAS PDTES
-echo "<script>dfirst_ajax('.num_fras_prov_NC','count(ID_FRA_PROV)','Fras_Prov_View','conc=0 AND fecha_creacion>=\'$fecha_inicio\'  AND  $where_c_coste');</script>" ;
-echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_View','pagada=0 AND fecha_creacion>=\'$fecha_inicio\'  AND  $where_c_coste');</script>" ;
+//echo "<script>dfirst_ajax('.num_fras_prov_NC','count(ID_FRA_PROV)','Fras_Prov_View','conc=0 AND fecha_creacion>=\'$fecha_inicio\'  AND  $where_c_coste');</script>" ;
+//echo "<script>dfirst_ajax('.num_fras_prov_NP','count(ID_FRA_PROV)','Fras_Prov_View','pagada=0 AND fecha_creacion>=\'$fecha_inicio\'  AND  $where_c_coste');</script>" ;
 
 ?>
 

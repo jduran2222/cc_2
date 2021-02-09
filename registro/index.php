@@ -49,12 +49,12 @@ if ($credenciales == 'false') {
             </div>
           </div>
           <div class="row">
-            <div class="col-8">
+            <div class="col-6"> 
             </div>
             <!-- /.col -->
-            <div class="col-4">
+            <div class="col-6">
               <input class="d-none" type="hidden" name="Submit" value="Aceptar"/>
-              <button type="submit" class="btn btn-success btn-block">Ingresar</button>
+              <button type="submit" class="btn  btn-success btn-block">Iniciar sesión</button>
             </div>
             <!-- /.col -->
           </div>
@@ -65,10 +65,13 @@ if ($credenciales == 'false') {
         </p>
         <hr>
         <p class="mb-0">
-          <strong>¿Aún no tienes empresa creada?</strong>
+          <strong>¿Aún no tienes empresa creada?</strong> 
         </p>
-        <p class="mb-0 text-center">
-          <a class="text-muted" href="../registro/empresa_nueva_form.php" class="text-center">Crear empresa GRATIS</a>
+        <br>
+        <p class="mb-0 text-center"> 
+            <a class="text-muted text-center" href="../registro/empresa_nueva_form.php" >Crea tu perfil de empresa GRATIS. <b>Regístrate</b></a>
+            <BR>ó<br><a class="text-muted text-center" href="../registro/registrar.php?login=crypt_4a36334d6a7475686d525279646e4d55796a2f724848422b5a6638566b7a33694d6251554976504f7066615861644f735a75386e37786d55352b515156395954">
+                Visita nuestra empresa de ejemplo <b>DEMO, S.L.</b></a>
         </p>
       </div>
       <!-- /.login-card-body -->

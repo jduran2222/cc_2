@@ -29,7 +29,7 @@ $id_concepto=$_GET["id_concepto"];
  
  // DATOS   FICHA . PHP
  //echo "<pre>";
-$sql="SELECT ID_CONCEPTO,CONCEPTO,COSTE,ID_PROVEEDOR,ID_CUENTA,ID_OBRA,user,Fecha_Creacion FROM Conceptos_View WHERE ID_CONCEPTO=$id_concepto AND $where_c_coste";
+//$sql="SELECT ID_CONCEPTO,CONCEPTO,COSTE,ID_PROVEEDOR,ID_CUENTA,ID_OBRA,user,Fecha_Creacion FROM Conceptos_View WHERE ID_CONCEPTO=$id_concepto AND $where_c_coste";
 $sql="SELECT * FROM Conceptos_View WHERE ID_CONCEPTO=$id_concepto AND $where_c_coste";
  $result=$Conn->query($sql);
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;

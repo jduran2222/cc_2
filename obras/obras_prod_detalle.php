@@ -495,7 +495,7 @@ function formato_estudio_costes()
 <label style="font-size: xx-small;color:grey;" title='Muestra los documentos , pdf, jpg... asociados a una Udo'><INPUT type="checkbox" id="fmt_doc" title='Muestra los documentos , pdf, jpg... asociados a una Udo' name="fmt_doc" <?php echo $fmt_doc;?>  >&nbsp;Doc. udo&nbsp;&nbsp;</label>
 <label style="font-size: xx-small;color:grey;" title='Muestra todas las Subobras aunque no tengan Udos asignadas'><INPUT type="checkbox" id="fmt_subobras"  name="fmt_subobras" <?php echo $fmt_subobras;?>  >&nbsp;Subobras vacias&nbsp;&nbsp;</label>
 <label style="font-size: xx-small;color:grey;" title='No muestra los capítulos con la etiqueta _NO_PRINT_ (ó simplificada _NP_ ), para poder imprimir certificaciones sin los capítulos auxiliares como p.ej. COSTES INDIRECTOS'><INPUT type="checkbox" id="fmt_no_print"  name="fmt_no_print" <?php echo $fmt_no_print;?>  >&nbsp;Quitar NP&nbsp;&nbsp;</label>
-<label style="font-size: xx-small;color:grey;" title='Permite ver los Descompuestos de Precio y Mediciones'><INPUT type="checkbox" id="fmt_pre_med"  name="fmt_pre_med" <?php echo $fmt_pre_med;?>  >&nbsp;Descompuestos&nbsp;&nbsp;</label>
+<label style="font-size: xx-small;color:grey;" title='Permite ver los Descompuestos de Precio y Mediciones del Proyecto'><INPUT type="checkbox" id="fmt_pre_med"  name="fmt_pre_med" <?php echo $fmt_pre_med;?>  >&nbsp;Descompuestos&nbsp;&nbsp;</label>
 
  
 <!--</div>-->          

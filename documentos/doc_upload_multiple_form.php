@@ -90,8 +90,6 @@ else {   $tipo_doc="Enviar FOTO o DOCUMENTO" ; }
 	<input type="hidden" name="id_entidad"  value="<?php echo $id_entidad ;?>" >
 	<input type="hidden" name="id_subdir"  value="<?php echo $id_subdir ;?>" >
 	<input type="hidden" name="fecha_doc"  value="<?php echo $fecha_doc ;?>" >
-        
-        
 
 	
     <input type="file" multiple style="font-size:40px;width: 100%; " class="btn btn-primary btn-lg" id="input_element" name="fileToUpload_1[]" ><br>

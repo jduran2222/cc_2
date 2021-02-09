@@ -24,8 +24,6 @@ include_once('../templates/_inc_privado2_navbar.php');
 
 
 <!-- CONEXION CON LA BBDD Y MENUS -->
-<?php // require_once("../bancos/bancos_menutop_r.php");?>
-
 
 <div style="overflow:visible">	   
    
@@ -135,9 +133,12 @@ $tipo_tabla='';
 
  switch ($agrupar) {
     case "listado":
-//     $sql="SELECT id_remesa,remesa,activa,Observaciones,Banco,importe,num_pagos  FROM Remesas_View WHERE  (filtro LIKE '%$filtro%') AND $conc AND $where_c_coste  ORDER BY id_remesa DESC LIMIT $limite" ;
      $sql="SELECT  *, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=',id_entidad) as id_entidad_link  FROM Firmas_View "
             . "WHERE  id_usuario=$id_usuario AND $where AND $where_c_coste  ORDER BY fecha_creacion DESC " ;
+        
+//     $sql="SELECT usuario , pdte  FROM Firmas_View "
+//            . "WHERE  id_usuario=$id_usuario AND $where AND $where_c_coste  ORDER BY fecha_creacion DESC " ;
+        
 //    echo $sql ;
 
 //     $sql_T="SELECT '' AS A1 , '' AS A2,SUM(importe) as importe,SUM(ingreso) as ingreso,'' AS B,'' AS C,'' as d,'' as f  FROM Pagos_View WHERE tipo_pago='$tipo' AND (filtro LIKE '%$filtro%') AND $conc AND $where_c_coste  ORDER BY f_vto LIMIT $limite" ;

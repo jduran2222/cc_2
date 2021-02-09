@@ -84,11 +84,11 @@ $js_href="js_href( '$href', 1, '', '$href_prompt_update_precio', '', 1, '')"
 <a class="btn btn-primary" title="exportar proyecto a PDF" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=pdf">pdf</a>-->
 <a class="btn btn-xs btn-primary" title="exportar proyecto a XLS" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=xls">xls</a>
 <a class="btn btn-xs btn-primary" title="exportar proyecto a DOC" href="obras_proy_PDF.php?id_obra=<?php echo $id_obra;?>&ext=doc">doc</a>
-<a class="btn btn-xs btn-primary" title="Elimina las Udos con medición de proyecto CERO" href=# onclick="js_href( '../obras/obras_proy_delete.php?solo_udo_vacias=1&id_obra=<?php echo $id_obra;?>'  ,1, '¿Eliminar las Unidades de Obra (Udos) vacías?'  );"  >Eliminas Udos vacías</a><br>
+<a class="btn btn-xs btn-primary" title="Elimina las Udos con medición de proyecto CERO" href=# onclick="js_href( '../obras/obras_proy_delete.php?solo_udo_vacias=1&id_obra=<?php echo $id_obra;?>'  ,1, '¿Eliminar las Unidades de Obra (Udos), Capítulos y Subobras vacías?'  );"  >Eliminar Udos vacías</a><br>
 <a class="btn btn-xs btn-danger" title="Borrar proyecto completo" href=# onclick="js_href( '../obras/obras_proy_delete.php?id_obra=<?php echo $id_obra;?>'  ,1, '¿Borrar el proyecto completo? \n\n Recuerde borrar previamente todas las Relaciones Valoradas del proyecto \n No se borrarán las Udos que estén en una Rel. Valorada '  );"  >Borrar proyecto</a><br>
 <br><br>
 
-  
+   
 <script>
 
 function corregir_precios_proyecto_desde_coste_est(sql)

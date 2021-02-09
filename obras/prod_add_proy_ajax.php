@@ -21,13 +21,14 @@ $sql2 = "INSERT INTO PRODUCCIONES_DETALLE ( ID_PRODUCCION, Fecha, ID_UDO, MEDICI
     
 
 if ($Conn->query($sql2))
-    {  echo "$sql" ; }
+    {
+        echo "1" ;   
+        logs("anexar proyecto OK: $sql2 ") ;
+    }
     else
-    {  echo "ERROR: $sql" ; }
+    {  
+        echo "ERROR: $sql2" . ( $_SESSION["admin"] ? " mysql_error(): ". $Conn->mysql_error() : "" ) ;         
+    }
     
-        
-       
-
- 
 
 ?>

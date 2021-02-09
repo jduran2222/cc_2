@@ -77,7 +77,8 @@ include_once('../templates/_inc_privado2_navbar.php');
  }       
  else     
  {
-        // el Usuario NO AUTORIZADO solo ve su perfil    
+        // el Usuario NO AUTORIZADO solo ve su perfil
+        $cambio_password = $_SESSION["email"]=="demo@demo.com" ? 0 : $cambio_password ;  // el usuario DEMO no puede cambiar el password
         $id_usuario =  $_SESSION["id_usuario"] ;
         $sql="SELECT  id_usuario,usuario,email,nombre_completo,fecha_creacion FROM Usuarios  WHERE id_usuario=$id_usuario AND $where_c_coste" ;
  }    
@@ -148,7 +149,7 @@ include_once('../templates/_inc_privado2_navbar.php');
                          . " Enviar invitación a usuario</a>" : ""; // BOTON CAMBIO PASSWORD
         echo  $cambio_password ? "<br><a class='btn btn-primary noprint' href='../registro/cambiar_password.php{$href_get}' target='_blank' >"
                          . " Cambiar password</a>" : ""; // BOTON CAMBIO PASSWORD
-        echo   "<br><a class='btn btn-primary noprint' href='../registro/generar_link_autologin.php' target='_blank' >"
+        echo   "<br><a class='btn btn-primary noprint' href='../registro/generar_link_autologin.php' target='_blank' Title='Genera un link que simplifica el logueo desde Escritorio y smartphone>"
                          . " Generar link autologin</a>" ;
         $url_enc=encrypt2("sql=SELECT usuario,  fecha_creacion,ip, android, pais  FROM w_Accesos  WHERE id_c_coste='$id_c_coste' AND usuario='$usuario' ORDER BY fecha_creacion DESC ;"
                          . "&titulo=Accesos del Usuario: <b>$usuario</b>") ;
