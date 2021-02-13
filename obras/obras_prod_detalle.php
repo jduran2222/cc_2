@@ -1130,12 +1130,11 @@ $links["SUBOBRA"] = ["../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "ve
 
 if (!$listado_global)
 {
-//$links["UDO"] = ["../obras/udo_prod.php?id_produccion=$id_produccion&id_udo=", "ID_UDO","ver detalles de medición de la Unidad de Obra" ,"formato_sub"] ;    
-$links["UDO"] = ["../obras/udo_prod.php?id_produccion=$id_produccion&id_udo=", "ID_UDO" ,"ver detalles de medición de la Unidad de Obra", 'formato_sub'] ;    
+$links["UDO"] = ["../obras/udo_prod.php?id_produccion=$id_produccion&id_udo=", "ID_UDO" ,"ver detalles de medición de la Unidad de Obra", ''] ;    
 }    
 else
 {
-$links["UDO"] = ["../obras/udo_prod.php?id_udo=", "ID_UDO", "ver ficha de la unidad de obra", "formato_sub"] ;  
+$links["UDO"] = ["../obras/udo_prod.php?id_udo=", "ID_UDO", "ver ficha de la unidad de obra", ""] ;   
 $links["PRODUCCION"]=["../obras/obras_prod_detalle.php?id_produccion=", "ID_PRODUCCION"] ;
 
 }    

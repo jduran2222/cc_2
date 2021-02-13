@@ -138,7 +138,7 @@ include_once('../templates/_inc_privado2_navbar.php');
   </div>
       
     <div class="right2">
-      <?php    
+      <?php     
 
         echo  $anadir_usuario ? "<br><a class='btn btn-primary noprint' href='../configuracion/usuario_anadir.php' target='_blank' "
                              . "title='Envía email al usuario con nuevo password invitándolo a acceder a Construcloud.es' >"
@@ -149,7 +149,7 @@ include_once('../templates/_inc_privado2_navbar.php');
                          . " Enviar invitación a usuario</a>" : ""; // BOTON CAMBIO PASSWORD
         echo  $cambio_password ? "<br><a class='btn btn-primary noprint' href='../registro/cambiar_password.php{$href_get}' target='_blank' >"
                          . " Cambiar password</a>" : ""; // BOTON CAMBIO PASSWORD
-        echo   "<br><a class='btn btn-primary noprint' href='../registro/generar_link_autologin.php' target='_blank' Title='Genera un link que simplifica el logueo desde Escritorio y smartphone>"
+        echo   "<br><a class='btn btn-primary noprint' href='../registro/generar_link_autologin.php' target='_blank' Title='Genera un link que simplifica el logueo desde Escritorio y smartphone'>"
                          . " Generar link autologin</a>" ;
         $url_enc=encrypt2("sql=SELECT usuario,  fecha_creacion,ip, android, pais  FROM w_Accesos  WHERE id_c_coste='$id_c_coste' AND usuario='$usuario' ORDER BY fecha_creacion DESC ;"
                          . "&titulo=Accesos del Usuario: <b>$usuario</b>") ;
@@ -183,23 +183,22 @@ include_once('../templates/_inc_privado2_navbar.php');
 ?>
 
         <!--<div id="main" class="mainc">-->
-<div  style="background-color:Khaki;float:left;width:60%;padding:0 20px;" >
+<!--<div  style="background-color:Khaki;float:left;width:60%;padding:0 20px;" >
 
 
  <div class="container">
-  <!--<h2>Vales donde aparece el Concepto</h2>-->
+  <h2>Vales donde aparece el Concepto</h2>
 
-</div>
+</div>-->
 
      
 <?php 
 //require("../include/tabla.php"); echo $TABLE ; 
 ?>
  
-    <br><br><br>
+<!--    <br><br><br>
 </div>    
-    <!--//////   MAQUINARIA PROPIA  ///////-->
-    
+    -->
  
 
 
@@ -214,8 +213,8 @@ $Conn->close();
                 </div>
                 <!--****************** BUSQUEDA GLOBAL  *****************-->
             </div>
-            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            
+              <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+          
         <!--</div>-->
         <!-- FIN Contenido principal 
 

@@ -1,8 +1,12 @@
 <?php
 
-$titulo = 'Cambio de credenciales';
+$titulo = 'Cambio password';
 
-include_once('../templates/_inc_registro1_header.php');
+//include_once('../templates/_inc_registro1_header.php');
+
+include_once('../templates/_inc_privado1_header.php');
+include_once('../templates/_inc_privado2_navbar.php');
+
 
 include_once('../../conexion.php');
 include_once('../include/funciones.php');
@@ -41,7 +45,7 @@ if(!empty($new_password) && !empty($new_password_confirm) && $new_password == $n
   $new_password_hash= cc_password_hash($new_password) ;
   $sql="UPDATE `Usuarios` SET `password_hash` = '$new_password_hash' WHERE id_usuario='{$id_usuario}' ";
   if ($Conn->query($sql)) {
-    $htmlAlert = '<div class="alert alert-success small" role="alert">Password cambiada correctamente.</div>';
+    $htmlAlert = '<div class="alert alert-info small" role="alert">Password cambiada correctamente.</div>';
   }
   else {
     $htmlAlert = '<div class="alert alert-danger small" role="alert">Error inserperado con la BBDD. Inténtelo de nuevo más tarde.</div>';
@@ -56,8 +60,8 @@ else {
   $htmlAlert = '';
 }
 ?>
-
-  <div class="login-box">
+<!--<body class="hold-transition login-page">-->
+  <div class="login-box " style='margin: 0 auto;'>
     <div class="login-logo">
 
       <img width="128px" src="../img/logo_cc_blanco.svg" alt="Logo ConstruCloud 2.0"/>
@@ -68,8 +72,8 @@ else {
     <div class="card">
       <div class="card-body login-card-body">
         <p class="login-box-msg">
-          Cambio de credenciales para 
-          <strong class="text-uppercase small"><?php echo $usuario?></strong>
+          Cambio de password de: 
+          <strong ><?php echo $usuario?></strong>
         </p>
 
         <?php echo $htmlAlert; ?>
@@ -93,7 +97,7 @@ else {
           </div>
           <div class="row">
             <div class="col-8">
-              <a class="btn btn-secondary small text-white" href="../">Volver</a>
+              <button class="btn btn-secondary small text-white" onclick="javascript:window.close();" >Cerrar</button>
             </div>
             <!-- /.col -->
             <div class="col-4">
@@ -107,7 +111,10 @@ else {
       <!-- /.login-card-body -->
     </div>
   </div>
+<br><br><br><br><br><br><br><br><br><br>
   <!-- /.login-box -->
 
 <?php 
-include_once('../templates/_inc_registro3_footer.php');
+//include_once('../templates/_inc_registro3_footer.php');
+
+include_once('../templates/_inc_privado3_footer.php');
