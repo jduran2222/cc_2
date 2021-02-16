@@ -35,7 +35,7 @@ $id_obra=Dfirst("id_obra", "Subcontratos_obra", "id_subcontrato=$id_subcontrato 
  //require("../proveedores/proveedores_menutop_r.php");
 $result=$Conn->query($sql="SELECT id_subcontrato,id_obra,id_pof,id_proveedor,subcontrato,Importe_subcontrato,Condiciones, Observaciones,"
         . "Importe_cobro ,Importe_subcontrato,Margen,Importe_ejecutado,Porc_ej "
-        . " ,RAZON_SOCIAL,CIF,f_subcontrato,NOMBRE_COMPLETO,Situacion, fecha_creacion, user FROM Subcontratos_todos_View WHERE id_subcontrato=$id_subcontrato AND $where_c_coste");
+        . " ,RAZON_SOCIAL,CIF,f_subcontrato,DATE_FORMAT(f_subcontrato, '%d/%m/%Y') AS TXT_FECHA,NOMBRE_OBRA, NOMBRE_COMPLETO,Situacion, fecha_creacion, user FROM Subcontratos_todos_View WHERE id_subcontrato=$id_subcontrato AND $where_c_coste");
 
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;
 

@@ -112,6 +112,15 @@ $select_plantillas.= "  </select>" ;
 $content_form_generar .= $select_plantillas ;
 
 $array_plantilla = isset($array_plantilla) ? $array_plantilla : "" ;
+
+if (is_array($array_plantilla))
+{
+    // SI NO HAY FECHA COGEMOS LA DE HOY
+    if( !isset($array_plantilla["TXT_FECHA"]) ) { $array_plantilla["TXT_FECHA"] = date("d/m/Y") ; }
+    // VARIABLES llevará un array para presentar todas las variables para ayudar a confeccionar las plantillas
+    $array_plantilla["VARIABLES"] = pre($array_plantilla) ;
+}    
+
 $array_plantilla_json= json_encode($array_plantilla) ;        // pasamos el array a JSON
 $content_form_generar .= "<input type='hidden'  id='array_plantilla_json'  name='array_plantilla_json' value='$array_plantilla_json'>"   ;
 

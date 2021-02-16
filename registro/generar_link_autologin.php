@@ -99,6 +99,7 @@ $id_c_coste_empresa = isset($_POST["id_c_coste"]) ? $_POST["id_c_coste"] : '0' ;
               <button class="btn btn-default" onclick="copyToClipboard('<?php echo $link ; ?>');this.style.color = '#C8C4C3' ;" title='copy a portapapeles' ><i class='far fa-copy'></i></button>      
               <a class="btn btn-default" href='https://wa.me/?<?php echo $link ; ?>' target='_blank' title='enviar link por Whatsapp' ><i class='fab fa-whatsapp'></i></a>      
               <a class="btn btn-default" href="mailto:?subject=ConstruCloud.es link Autologin&body=Link autologin de acceso a ConstruCloud:<br> <?php echo $link ; ?>"  title='enviar link por email' ><i class='far fa-envelope'></i></a> 
+              <a class="btn btn-default" href="<?php echo $link ; ?>" target='_blank' title='abrir en nueva pestaña' ><i class='fas fa-external-link-alt'></i></a> 
             </div>
             <!-- /.col -->
 

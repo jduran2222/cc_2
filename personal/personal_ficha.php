@@ -90,6 +90,12 @@ $badget_nominas=badge_sup(DFirst('COUNT(ID_FRA_PROV)', 'FACTURAS_PROV', "ID_PROV
   if ($result->num_rows > 0) {                        // hacemos el if para evitar mostrar un error si la ficha o la consulta NO EXISTE
   $plantilla_get_url= "&" . http_build_query($rs) ;
   }
+  
+  // GENERAR_DOC relleno con espacios los elementos del array vacíos  futura ARRAY_QUITA_VACIOS
+foreach ($rs as $key => $value){  if (!$value) {$rs[$key]=' ';} }
+$array_plantilla = $rs ;      // copiamos array para datos para la Generación de Documentos con PLANTILLAS HTML
+
+  
   ?>
   
                   

@@ -325,8 +325,14 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
      break;
 
    case "nombres":
-      $sql="SELECT id,ID_OBRA,ID_PARTE,ID_PERSONAL,Fecha,NOMBRE  $select_NOMBRE_OBRA,HO,HX FROM Partes_Personal_View WHERE $where AND $where_nombre  ORDER BY  Fecha  " ;
+      $sql="SELECT id,ID_OBRA,ID_PARTE,ID_PERSONAL,Fecha,NOMBRE  $select_NOMBRE_OBRA,HO,HX,Observaciones FROM Partes_Personal_View WHERE $where AND $where_nombre  ORDER BY  Fecha  " ;
       $sql_T="SELECT '' AS a,'' AS b,'' AS c,SUM(HO),SUM(HX) FROM Partes_Personal_View WHERE $where AND $where_nombre ORDER BY  Fecha  " ;
+      
+//      $updates=['Observacione2s','HO','HX']  ;
+//      $tabla_update="PARTES_PERSONAL" ;
+//      $id_update="id" ;
+      
+      $formats["Observaciones"]="div_edit";
      break;
     case "nombres_grupo":
       $sql="SELECT id,ID_PARTE,ID_PERSONAL,NOMBRE,SUM(HO) AS HO,SUM(HX) AS HX FROM Partes_Personal_View WHERE $where AND $where_nombre GROUP BY ID_PERSONAL ORDER BY  NOMBRE  " ;
