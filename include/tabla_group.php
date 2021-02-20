@@ -516,7 +516,7 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
                                      }else    // FORMATO link ICON
                                      {  
                                          $update_onclick=isset($update_onclick) ? $update_onclick : "" ;
-                                         echo "<td width='{$anchos_ppal[$c]}%'  $format_style >{$valor}&#8204;<a class='dentro_tabla_ppal noprint' href=\"{$links[$clave][0]}{$rs[$links[$clave][1]]}\"     title='$title' target='_blank'><i class='fas fa-external-link-alt'></i></a>{$update_onclick}</td>"; 
+                                         echo "<td width='{$anchos_ppal[$c]}%'  $format_style >{$valor}&#8204;<a class='transparente noprint' href=\"{$links[$clave][0]}{$rs[$links[$clave][1]]}\"     title='$title' target='_blank'><i class='fas fa-external-link-alt'></i></a>{$update_onclick}</td>"; 
                                      }
 
                                 }    
@@ -633,13 +633,14 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
                            if (isset($links[$clave]))                                 
                               { // hay link 
                                         // title del link  por defecto 'ver ficha'
-                                 $title=(isset($links[$clave][2]))? "{$links[$clave][2]}": "ver ficha" ;
+                                 $title=(isset($links[$clave][2]))? "{$links[$clave][2]}": "ver ficha" ; 
                                  if (isset($links[$clave][3]))
                                  { // hay formato especial de link
                                      if ($links[$clave][3]=='formato_sub')   // FORMATO TRADICIONAL DE SUBRRAYADO (es incompatible con sortTable (ordenar tabla))
                                      { echo "<td $format_style $dblclick_text ><a  href= {$links[$clave][0]}{$rs[$links[$clave][1]]} title='$title' target='_blank'>{$valor}</a>{$update_onclick}</td>";        
-                                      }elseif ($links[$clave][3]=='ppal')     // FORMATO link principal
-                                     {  echo "<td $format_style $dblclick_text >{$valor}&#8204;<a class='dentro_tabla_ppal noprint' href=\"{$links[$clave][0]}{$rs[$links[$clave][1]]}\"     title='$title' target='_blank'><i class='fas fa-external-link-alt'></i></a>{$update_onclick}</td>";  }
+//                                      }elseif ($links[$clave][3]=='ppal')     // FORMATO link principal
+                                      }else     // FORMATO link principal
+                                     {  echo "<td $format_style $dblclick_text >{$valor}&#8204;<a class='transparente noprint' href=\"{$links[$clave][0]}{$rs[$links[$clave][1]]}\"     title='$title' target='_blank'><i class='fas fa-external-link-alt'></i></a>{$update_onclick}</td>";  }
 
                                 }    
                                  else

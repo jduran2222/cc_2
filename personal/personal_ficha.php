@@ -112,27 +112,31 @@ $array_plantilla = $rs ;      // copiamos array para datos para la Generación d
 	
 	<!-- BOTONERA  -->
 	
-<div class="right2">
+<div class="right2" style="background-color: white">
 	
 <?php 
 
 $url_enc=encrypt2("id_personal=$id_personal") ;
 echo   "<a class='btn btn-xs btn-primary noprint' href='../personal/personal_registro.php?url_enc=$url_enc' target='_blank' >"
-                         . "+ Registrar nueva de Entrada o Salida</a>" ;
+                         . "Registrar Jornada</a>" ;
 $link_empleado="{$_SESSION['dir_raiz']}personal/personal_registro.php?url_enc=$url_enc" ;
 //echo   "<a class='btn btn-primary noprint' href=# onclick=\"js_href2('https://wa.me/_VAR_HREF1_/?text=$link_empleado',0,'','PROMPT_Número de WhatsApp:','','$whassapp_envio')\" target='_blank' >"
 //                         . "<i class='fab fa-whatsapp'></i> Enviar link por WhatsApp</a>" ;
-echo   "<br><small>link:</small> <input  type='text' value='$link_empleado' title='link a enviar al empleado para su Registro con smartphone'>" ;
+$url_enc=encrypt2("sql=SELECT *  FROM Personal_Registros  WHERE ID_PERSONAL=$id_personal ORDER BY fecha_creacion DESC ;"
+                 . "&titulo=Registros del Empleado: <b>$nombre</b>") ;
+echo   "<br><a class='btn btn-xs btn-link noprint' href='../include/tabla_general.php?url_enc=$url_enc' target='_blank' title='ver Registros de Jornada de este empleado' >"
+                         . " ver Registros de Jornada</a>" ;
+
+
+echo   "<hr><small title='link a enviar a empleado por whatsApp o email para uso en smartphone desde obra' >link a enviar a empleado:</small>"
+          . "<input class='form-control form-control-sm' type='text' value='$link_empleado' title='link a enviar al empleado para su Registro con smartphone'>" ;
 echo   "<a class='btn btn-xs  btn-default noprint ' "
                             . "onclick=\"copyToClipboard('$link_empleado');this.style.color = '#000000' ;\"  title=\"copy link al portapapeles \" >"
                               . "<i class='far fa-copy'></i></a>" ;
-echo   "<a class='btn btn-xs btn-success noprint' href=# onclick=\"js_href2('https://wa.me/?text=$link_empleado',0)\" target='_blank' >"
-                         . "<i class='fab fa-whatsapp'></i></a>" ;
+echo   "<a class='btn btn-xs btn-success noprint' href=# onclick=\"js_href2('https://wa.me/?text=$link_empleado',0)\" target='_blank' title='enviar por whastapp'  >"
+                         . "<i class='fab fa-whatsapp'></i></a>"
+        . "<hr>" ;
 
-$url_enc=encrypt2("sql=SELECT *  FROM Personal_Registros  WHERE ID_PERSONAL=$id_personal ORDER BY fecha_creacion DESC ;"
-                 . "&titulo=Registros del Empleado: <b>$nombre</b>") ;
-echo   "<br><a class='btn btn-xs btn-link noprint' href='../include/tabla_general.php?url_enc=$url_enc' target='_blank' >"
-                         . " ver Registros de Entrada y Salida</a>" ;
 
 
  ?>

@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo = 'REGISTROS PERSONAL';
+$titulo = 'REGISTROS JORNADA';
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
@@ -51,7 +51,7 @@ include_once('../templates/_inc_privado2_navbar.php');
   $Trimestre   = isset($_GET["Trimestre"]) ?  $_GET["Trimestre"]     :    (isset($_POST["Trimestre"]) ?  $_POST["Trimestre"] :  "") ;
   $Anno= isset($_GET["Anno"]) ?  $_GET["Anno"] :  (isset($_POST["Anno"]) ?  $_POST["Anno"] :  "") ;
   $asignada_obra    = isset($_GET["asignada_obra"]) ?  $_GET["asignada_obra"]     :    (isset($_POST["asignada_obra"]) ?  $_POST["asignada_obra"] :  "") ;
-  $agrupar  = isset($_GET["agrupar"]) ?  $_GET["agrupar"]   :    (isset($_POST["agrupar"]) ?  $_POST["agrupar"] :  "ultimas_registros");  
+  $agrupar  = isset($_GET["agrupar"]) ?  $_GET["agrupar"]   :    (isset($_POST["agrupar"]) ?  $_POST["agrupar"] :  "ultimos_registros");  
 
 
 
@@ -106,7 +106,8 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
 
     break;
     case "registros":
-     $sql="SELECT * FROM Personal_Registros_View WHERE $where  ORDER BY fecha_entrada  " ;
+//     $sql="SELECT * FROM Personal_Registros_View WHERE $where  ORDER BY fecha_entrada  " ;
+     $sql="SELECT *,CONCAT( 'https://www.google.es/maps/place/',coord_latitud,',', coord_longitud) AS URL_Google_Maps FROM Personal_Registros_View WHERE $where  ORDER BY fecha_creacion DESC  " ;
      $sql_T="SELECT 'SUMA...', COUNT(id_registro) AS num_registros, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where    " ;
         
  //     echo $sql;
@@ -144,51 +145,48 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
      $sql_T="SELECT '' as aa1,'' as aa2,COUNT(id_registro) AS num_registros, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where GROUP BY ID_PERSONAL ORDER BY NOMBRE  " ;
     $agrupados=1 ;
      break;
+    case "semanas":
+     $sql="SELECT DATE_FORMAT(fecha_entrada, '%Y semana %u') as Semana, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where GROUP BY Semana ORDER BY Semana  " ;
+     $sql_T="SELECT COUNT(id_registro) AS num_registros, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where   " ;
+    $agrupados=1 ;
+     break;
     case "obras":
      $sql="SELECT ID_OBRA,NOMBRE_OBRA,COUNT(id_registro) AS num_registros, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where GROUP BY ID_OBRA ORDER BY NOMBRE_OBRA  " ;
      $sql_T="SELECT '' as aa1,'' as aa2,COUNT(id_registro) AS num_registros, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where GROUP BY ID_OBRA  " ;
     $agrupados=1 ;
      break;
     case "meses":
-    
-    $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m') as MES,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
-            . ",SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
-            . " FROM Fras_Prov_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
+     $sql="SELECT DATE_FORMAT(fecha_entrada, '%Y-%m') as MES, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where GROUP BY MES ORDER BY MES  " ;
+     $sql_T="SELECT COUNT(id_registro) AS num_registros, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where   " ;
 
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where   " ;
-
- 
     $agrupados=1 ;
      break;
      
      
     case "trimestres":
         
-   
-    $sql="SELECT  $select_trimestre as Trimestre,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado"
-            . ",SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
-            . "  FROM Fras_Prov_View WHERE $where  GROUP BY Trimestre  ORDER BY Trimestre  " ;
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where   " ;
+     $sql="SELECT DCONCAT(YEAR(fecha_entrada), '-', QUARTER(fecha_entrada),'T') as Trimestre, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where GROUP BY Trimestre ORDER BY Trimestre  " ;
+     $sql_T="SELECT COUNT(id_registro) AS num_registros, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where   " ;
     
     $agrupados=1 ;
      break;
     case "annos":
    
-    $sql="SELECT  DATE_FORMAT(FECHA, '%Y') as Anno,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
-            . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
-            . "  FROM Fras_Prov_View WHERE $where  GROUP BY Anno  ORDER BY Anno  " ;
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,"
-            . " SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar "
-            . " FROM Fras_Prov_View WHERE $where  " ;
-   
+     $sql="SELECT DATE_FORMAT(fecha_entrada, '%Y') as Anno, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where GROUP BY Anno ORDER BY Anno  " ;
+     $sql_T="SELECT COUNT(id_registro) AS num_registros, SUM(horas) AS horas FROM Personal_Registros_View WHERE $where   " ;
     
     $agrupados=1 ;
+     break;
+    case "mapa":
+     $tabla_mapa=1 ;
+
      break;
  }
 
 //echo "PDF es $pdf"  ;
 //echo $sql ;
-$result=$Conn->query($sql) ;
+//$result=$Conn->query($sql) ;
+if (isset($sql)) {$result=$Conn->query($sql) ; }    // consulta para los TOTALES
 if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
 if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
 if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
@@ -232,7 +230,7 @@ $dblclicks["Trimestre"]="Trimestre" ;
 $dblclicks["Anno"]="Anno" ;
 
 
-
+$links["NOMBRE"] = ["../personal/personal_ficha.php?id_personal=", "ID_PERSONAL"] ;
 $links["NOMBRE_OBRA"] = ["../obras/obras_ficha.php?id_obra=", "ID_OBRA","ver Obra","formato_sub_vacio"] ;
 //$links["PROVEEDOR"] = ["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES","ver Proveedor","formato_sub"] ;
 //$links["N_FRA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura","formato_sub"] ;
@@ -245,7 +243,7 @@ $links["NOMBRE_OBRA"] = ["../obras/obras_ficha.php?id_obra=", "ID_OBRA","ver Obr
 //$formats["Enero"] = "moneda" ; $formats["Febrero"] = "moneda" ; $formats["Marzo"] = "moneda" ; $formats["Abril"] = "moneda" ; $formats["Mayo"] = "moneda" ; $formats["Junio"] = "moneda" ;
 //$formats["Julio"] = "moneda" ; $formats["Agosto"] = "moneda" ; $formats["Septiembre"] = "moneda" ; $formats["Octubre"] = "moneda" ; $formats["Noviembre"] = "moneda" ; $formats["Diciembre"] = "moneda" ;
 
-//$formats["Base_Imponible"] = "moneda" ;
+$formats["horas"] = "fijo" ;
 //$formats["Base_Imp_cli"] = "moneda" ;
 //$formats["firmado"] = "firmado" ;
 //$formats["iva_soportado"] = "moneda" ;
@@ -315,7 +313,7 @@ $tabla_expandible=0;          // evitamos la tabla expandible que da problemas
 
 
 
-$tituloEncabezado = 'Registro de Entrada y Salidas';
+$tituloEncabezado = "<i class='fas fa-signature'></i> Registro de Jornada";
 $enlaceForm = '../personal/registros_view.php';
 
 //Montaje de fragmentos:
@@ -460,7 +458,7 @@ if (!empty($agrupar)) {
     $comentario = 'Agrupado por: '.$agrupar;
     echo comentarioPrevioTabla($comentario);
 }
-if ($result->num_rows == 0) {
+if (!isset($result) OR $result->num_rows == 0) {
     $comentario = 'Sin filas';
 }
 else {
@@ -481,6 +479,10 @@ if ($tabla_group) {
 }
 elseif ($tabla_cuadros) {
     require("../include/tabla_cuadros.php");
+}
+elseif ($tabla_mapa) {
+//    require("../include/tabla_mapa.php");
+    echo "<h1><br><br><br><br>MAPA PENDIENTE DE DESARROLLO</H1>";
 }
 else {
     require("../include/tabla.php");

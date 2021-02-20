@@ -31,7 +31,8 @@ include_once('../templates/_inc_privado2_navbar.php');
 <TABLE class="table-bordered table-hover" style="font-size: 20px">
 <FORM action="../estudios/estudios_ficha_nueva.php?update=N" method=POST id=form1 name=form1 enctype="multipart/form-data">
 
-    <TR><TD colspan="2" style="background: beige " ><h3 >REGISTRO MANUAL <?php echo span_wiki("A%C3%B1adir_Estudio_o_Licitaci%C3%B3n"); ?></h3>  </TD></TR>    
+    <TR><TD colspan="2" style="background: beige " ><h3><input type="radio" id="huey" name="drone"  >
+                REGISTRO MANUAL <?php echo span_wiki("A%C3%B1adir_Estudio_o_Licitaci%C3%B3n"); ?></h3>  </TD></TR>    
 <TR><TD >*NOMBRE   </TD><TD><INPUT type="text" name="NOMBRE"></TD></TR>
 <TR><TD title='Fecha límite de entrega'>*PLAZO ENTREGA </TD><TD><INPUT type="date" name="F_Presentacion"></TD></TR>
 <TR><TD title='Presupuesto tipo de licitación sin iva'>PRESUPUESTO TIPO  </TD><TD><INPUT type="text" name="PRESUPUESTO" ></TD></TR>
@@ -50,14 +51,15 @@ include_once('../templates/_inc_privado2_navbar.php');
 <br><br>-->
 
 
-
+<HR>
 
 
 <TABLE class="table-bordered table-hover" style="font-size: 30px"> 
-    <TR><TD  style="background: beige " ><h3 >REGISTRO URL de ANUNCIO <?php echo span_wiki("A%C3%B1adir_Estudio_o_Licitaci%C3%B3n"); ?></h3> <h5 align='center'>copiar url de plataforma 
+    <TR><TD  style="background: beige " ><h3><input type="radio" id="huey" name="drone"
+         checked>REGISTRO URL de ANUNCIO <?php echo span_wiki("A%C3%B1adir_Estudio_o_Licitaci%C3%B3n"); ?></h3> <h5 align='center'>copiar url de plataforma 
                 <a target="_blank" href="https://contrataciondelestado.es">https://contrataciondelestado.es </a><small>(solo España)</small></h5>  </TD></TR>    
 
-<TR><TD >pegar la url del Anuncio visto en formato xml<input type="text" name="xml_url_file" /></TD></TR>
+<TR><TD >pegar la url del Anuncio visto en formato xml <input type="text" name="xml_url_file" /></TD></TR>
 
 
 </TABLE>

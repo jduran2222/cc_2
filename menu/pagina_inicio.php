@@ -261,6 +261,11 @@ if ($_SESSION["is_desarrollo"]) {
                             Partes Diarios
                         </a>
                         <br>
+                        <a target="_blank" class="btn btn-link text-info text-left" href="../personal/registros_view.php" >
+                            <i class="fas fa-signature"></i>
+                            Registro Jornada
+                        </a>
+                        <br>
                         <a target="_blank" class="btn btn-link text-info text-left" href="../obras/gastos.php?_m=<?php echo $_m; ?>&fecha1=<?php echo $fecha_inicio; ?>" >
                             <i class="fas fa-shopping-cart"></i>
                             Gastos

@@ -1,6 +1,6 @@
 <?php
 
-$titulo = 'Registro Entrada';
+$titulo = 'Registro Jornada';
 
 include_once('../templates/_inc_registro1_header.php');
 
@@ -88,7 +88,7 @@ $url_ver_registros=encrypt2("titulo=Registros del empleado: {$rs_personal['NOMBR
     <!-- /.login-logo -->
     <div class="card">
       <div class="card-body login-card-body">
-        <p class="login-box-msg">Registro Entrada y Salida</p>
+        <p class="login-box-msg">Registro de Jornada</p>
 
           <div class="input-group mb-3">
               <p>Nombre: <b><?php echo $rs_personal['NOMBRE']; ?></b></p>
