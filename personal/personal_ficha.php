@@ -124,11 +124,11 @@ $link_empleado="{$_SESSION['dir_raiz']}personal/personal_registro.php?url_enc=$u
 //                         . "<i class='fab fa-whatsapp'></i> Enviar link por WhatsApp</a>" ;
 $url_enc=encrypt2("sql=SELECT *  FROM Personal_Registros  WHERE ID_PERSONAL=$id_personal ORDER BY fecha_creacion DESC ;"
                  . "&titulo=Registros del Empleado: <b>$nombre</b>") ;
-echo   "<br><a class='btn btn-xs btn-link noprint' href='../include/tabla_general.php?url_enc=$url_enc' target='_blank' title='ver Registros de Jornada de este empleado' >"
+echo   "<br><a class='btn btn-xs btn-link noprint' href='../include/tabla_general.php?url_enc=$url_enc' target='_blank' title='ver Registros de Jornada de este empleado' >" 
                          . " ver Registros de Jornada</a>" ;
 
 
-echo   "<hr><small title='link a enviar a empleado por whatsApp o email para uso en smartphone desde obra' >link a enviar a empleado:</small>"
+echo   "<hr><small title='link a enviar a empleado por whatsApp o email para uso en smartphone desde obra' >link a enviar a empleado:</small>".span_wiki('Registro_de_Jornada')
           . "<input class='form-control form-control-sm' type='text' value='$link_empleado' title='link a enviar al empleado para su Registro con smartphone'>" ;
 echo   "<a class='btn btn-xs  btn-default noprint ' "
                             . "onclick=\"copyToClipboard('$link_empleado');this.style.color = '#000000' ;\"  title=\"copy link al portapapeles \" >"
