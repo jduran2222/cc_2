@@ -1,4 +1,8 @@
 <?php 
+
+if(!$modal_ajax)
+{        
+
 //incluimos códigos y datos de cálculo y consultas para el menú superior
 include_once('../templates/_inc_privado2_1_topbar.php');
 include_once('../include/funciones_js.php');
@@ -41,8 +45,9 @@ include_once('../include/funciones_js.php');
 
       <?php 
       //Para revisar elementos en caso de ser administrador:
+        $htmlAdmin = '';
       if ($admin) {
-        $htmlAdmin = '
+        $htmlAdmin .= '
       <li class="nav-item d-inline-block border-left">
         <a href="../debug/debug_logs.php" class="px-1 px-sm-2 btn btn-link" target="_blank" title="Abrir debugger">
             <i class="fab fa-dyalog"></i>
@@ -53,6 +58,13 @@ include_once('../include/funciones_js.php');
         <a href="../debug/debug_reset.php" target="_blank" title="Realizar reset" class="px-1 px-sm-2 btn btn-link ">
             <i class="fas fa-registered"></i>
             <span class="d-none d-sm-inline"><span class="d-none">R</span></span>
+        </a>
+      </li>';
+      }
+      if ($admin OR $_SESSION["admin_debug"]) {
+         $htmlAdmin .= '
+      <li class="nav-item d-inline-block"  style="border:none;color:silver" >
+        Tiempo: <br><input style="border:none;color:silver"  type="text" id="tiempo_total" size="3">
         </a>
       </li>
         ';
@@ -182,6 +194,20 @@ include_once('../include/funciones_js.php');
                 $htmlMenuPermisoLicitacion .= '        <p>Calendario Licit.</p>';
                 $htmlMenuPermisoLicitacion .= '      </a>';
                 $htmlMenuPermisoLicitacion .= '    </li>';
+               if (isset($_SESSION["admin_debug"]) AND $_SESSION["admin_debug"]){ 
+                $htmlMenuPermisoLicitacion .= '    <li class="nav-item">';
+                $htmlMenuPermisoLicitacion .= '      <a href="#" onClick="modal_ajax_cargar(\'../estudios/estudios_calendar.php?_m='.$_m.'&fecha='.date("Y-m-d").'\');" class="nav-link">';
+                $htmlMenuPermisoLicitacion .= '        <i class="far fa-calendar-alt nav-icon"></i>';
+                $htmlMenuPermisoLicitacion .= '        <p>Calendario Licit2.</p>';
+                $htmlMenuPermisoLicitacion .= '      </a>';
+                $htmlMenuPermisoLicitacion .= '    </li>';
+               $htmlMenuPermisoLicitacion .= '    <li class="nav-item">';
+                $htmlMenuPermisoLicitacion .= '      <a href="#" onClick="carga_ajax( \'div_main\',    \'../estudios/estudios_calendar.php?_m='.$_m.'&fecha='.date("Y-m-d").'\');" class="nav-link">';
+                $htmlMenuPermisoLicitacion .= '        <i class="far fa-calendar-alt nav-icon"></i>';
+                $htmlMenuPermisoLicitacion .= '        <p>Calendario Licit3.</p>';
+                $htmlMenuPermisoLicitacion .= '      </a>';
+                $htmlMenuPermisoLicitacion .= '    </li>';
+               }
                 $htmlMenuPermisoLicitacion .= '    <li class="nav-item">';
                 $htmlMenuPermisoLicitacion .= '      <a href="../estudios/estudios_buscar.php" class="nav-link">';
                 $htmlMenuPermisoLicitacion .= '        <i class="fas fa-list nav-icon"></i>';
@@ -539,4 +565,8 @@ include_once('../include/funciones_js.php');
     <!-- /.sidebar -->
   </aside>
   
-  <div class="content-wrapper">
+  <div id="div_main"   class="content-wrapper">
+      
+ <?php
+}
+?>

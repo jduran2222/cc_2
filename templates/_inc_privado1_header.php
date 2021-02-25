@@ -32,6 +32,8 @@ else {
   include_once('../include/session.php');
 }
 
+
+
 // juand, agosto 2020
 //if ( preg_match("/ingenop|www2/i", $_SERVER['HTTP_HOST'])) {
 if ( $_SESSION["is_desarrollo"] )  {
@@ -43,7 +45,14 @@ if ( $_SESSION["is_desarrollo"] )  {
 //Limites de memoria:
 ini_set('memory_limit', '256M');
 
+//modal_ajax
+$time_total0=microtime(true);
 
+$modal_ajax = (isset($_GET['modal_ajax']) AND ($_GET['modal_ajax'] == '1'));
+if(!$modal_ajax)     
+{        
+    
+    
 
 // [FJSL 2020-12-05]: inclusión de fragmentos HTML
 //Incluir los elementos de generación de gragmentos HTML
@@ -88,6 +97,7 @@ include_once('../include/formatosHTML.php');
   <!-- Icono por defecto -->
   <link rel="icon" type="image/svg+xml" href="../img/construcloud64.svg" sizes="any">
 
+  <link rel="stylesheet" type="text/css" href="../css/estilos2.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>">
 
 
 <!-- jQuery -->
@@ -141,3 +151,6 @@ $menu_lateral_collapse_txt = ($_SESSION["menu_lateral_collapse"]) ? "sidebar-col
 ?>
 <body class="hold-transition sidebar-mini layout-fixed <?php echo  $menu_lateral_collapse_txt; ?> ">
 <div class="wrapper">
+<?php
+}
+?>

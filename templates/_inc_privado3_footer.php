@@ -1,3 +1,9 @@
+<?php
+
+if(!$modal_ajax)
+{        
+
+?>
 
   <!-- /.content-wrapper -->
   <footer class="main-footer noprint bg-secondary">
@@ -179,3 +185,9 @@ function dfirst_ajax(id,field,tabla,wherecond)
   </script>
 </body>
 </html>
+<?php
+}
+//$content= "<BR>Tiempo carga: ".number_format(microtime(true)-$time_total0,3)." segundos " ;
+$content= "<script>$('#tiempo_total').val(' ".number_format(microtime(true)-$time_total0,3)." sg');</script> " ;
+echo  $content;
+?>

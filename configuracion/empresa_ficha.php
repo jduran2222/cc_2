@@ -56,7 +56,7 @@ elseif ($_SESSION['autorizado'])
  
 
 $sql="SELECT id_c_coste,C_Coste_Texto,nombre_centro_coste,domicilio,cod_postal,Municipio,Provincia,Estado_Pais,Moneda_simbolo,tels"
-         . ",cif,email,web,Banco_fras,IBAN_fras,BIC_fras,doc_logo,id_doc_clave_privada,id_doc_clave_publica,pais,fecha_creacion FROM C_COSTES WHERE  id_c_coste=$id_empresa";
+         . ",cif,email,web,Banco_fras,IBAN_fras,BIC_fras,doc_logo,id_doc_clave_privada,id_doc_clave_publica,pais,reg_mercantil,fecha_creacion FROM C_COSTES WHERE  id_c_coste=$id_empresa";
 
 
 

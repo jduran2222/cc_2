@@ -195,6 +195,7 @@ function registra_session($rs)
    $_SESSION["id_usuario"]=$rs["id_usuario"] ;
    $_SESSION["admin"]=$rs["admin"] ;
    $_SESSION["admin_chat"]=$rs["admin_chat"] ;
+   $_SESSION["admin_debug"]=$rs["admin_debug"] ;
    $_SESSION["autorizado"]=$rs["autorizado"] ;
    $_SESSION["Moneda_simbolo"]=trim($rs["Moneda_simbolo"]) ;
    $_SESSION["permiso_licitacion"]=$rs["permiso_licitacion"] ;

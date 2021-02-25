@@ -6,31 +6,39 @@ $id_c_coste = $_SESSION['id_c_coste'];
 
 require_once("../../conexion.php");
 
-switch ($_POST['accion']) {
+switch ($_POST['accion']) { 
 
 
 	
 	case 'CARGAR':
-		$xSql="Select subcontratos.*, peticion_de_ofertas.NOMBRE_POF, proveedores.PROVEEDOR, proveedores.RAZON_SOCIAL, proveedores.CIF, "; 
-		$xSql.="sum(subcontrato_conceptos.cantidad_max * conceptos.COSTE) as importe ";
-		$xSql.="From ((((subcontratos ";
-		$xSql.="left join peticion_de_ofertas on subcontratos.id_pof=peticion_de_ofertas.id_pof) ";
-		$xSql.="left join proveedores on subcontratos.id_proveedor=proveedores.ID_PROVEEDORES) ";
-		$xSql.="left join subcontrato_conceptos on subcontratos.id_subcontrato = subcontrato_conceptos.id_subcontrato) ";
-		$xSql.="left join conceptos on subcontrato_conceptos.ID_CONCEPTO=conceptos.ID_CONCEPTO) ";
-		$xSql.="where subcontratos.id_obra=".$_POST['id_obra']." ";
+		$xSql="Select Subcontratos.*, PETICION_DE_OFERTAS.NOMBRE_POF, Proveedores.PROVEEDOR, Proveedores.RAZON_SOCIAL, Proveedores.CIF, "; 
+		$xSql.="sum(Subcontrato_conceptos.cantidad_max * CONCEPTOS.COSTE) as importe ";
+		$xSql.="From ((((Subcontratos ";
+		$xSql.="left join PETICION_DE_OFERTAS on Subcontratos.id_pof=PETICION_DE_OFERTAS.id_pof) ";
+		$xSql.="left join Proveedores on Subcontratos.id_proveedor=Proveedores.ID_PROVEEDORES) ";
+		$xSql.="left join Subcontrato_conceptos on Subcontratos.id_subcontrato = Subcontrato_conceptos.id_subcontrato) ";
+		$xSql.="left join CONCEPTOS on Subcontrato_conceptos.ID_CONCEPTO=CONCEPTOS.ID_CONCEPTO) ";
+		$xSql.="where Subcontratos.id_obra=".$_POST['id_obra']." ";
+                
+ 
+
 		if (!empty($_POST['filtro'])){
 			if (is_numeric($_POST['filtro'])) {
-				$xSql.="and (subcontratos.id_subcontrato=".$_POST['filtro'].") ";}
+				$xSql.="and (Subcontratos.id_subcontrato=".$_POST['filtro'].") ";}
 			else {
-				$xSql.="and (peticion_de_ofertas.NOMBRE_POF like '%".$_POST['filtro']."%') ";
+				$xSql.="and (PETICION_DE_OFERTAS.NOMBRE_POF like '%".$_POST['filtro']."%') ";
 			}	
 		}
 		if ($_POST['id_proveedor']<>0){
-			$xSql.="and subcontratos.id_proveedor=".$_POST['id_proveedor']." ";
+			$xSql.="and Subcontratos.id_proveedor=".$_POST['id_proveedor']." ";
 		}
 		$xSql.="group by id_subcontrato ";
 		$xSql.="order by fecha_creacion desc ";
+                
+                   $xSql="SELECT id_subcontrato,id_proveedor ,subcontrato,PROVEEDOR ,fecha_creacion as fecha, Importe_cobro, p_contrato, Importe_subcontrato as importe , Margen "
+                     . " ,Importe_ejecutado,  Porc_ej FROM Subcontratos_todos_View WHERE ID_OBRA=".$_POST['id_obra']." AND (filtro LIKE '%".$_POST['filtro']."%') ORDER BY fecha_creacion DESC " ;
+            
+                
 		$resul= mysqli_query($Conn, $xSql) or die ("Error SQL: " . mysqli_error($Conn) . "<br/><br/>" . $xSql . "<br/><br/>");
 		//$xtabla="<div class='altoLista1'>";
 		$xtabla="";
@@ -52,12 +60,12 @@ switch ($_POST['accion']) {
    			do { 
 				$xtabla.="<tr onclick='ficha1(".$fila["id_subcontrato"].")'>";
 				$xtabla.="<td class='txtResaltado'>".$fila["id_subcontrato"]."</td>";			
-				$xtabla.="<td>".$fila["NOMBRE_POF"]."</td>";
+				$xtabla.="<td>".$fila["subcontrato"]."</td>";
 				$xtabla.="<td>".$fila["PROVEEDOR"]."</td>";
 				$xtabla.="<td>".date_format(date_create($fila["f_pof"]),'d/m/Y')."</td>";
 				$xtabla.="<td style='text-align:right;'>".number_format($fila["importe"], 2, ',','.')."</td>";
-				$xtabla.="<td style='text-align:right;'>".number_format(0, 2, ',','.')."</td>";
-				$xtabla.="<td style='text-align:right;'>".number_format(0, 2, ',','.')."%</td>";
+				$xtabla.="<td style='text-align:right;'>".number_format($fila["Importe_ejecutado"], 2, ',','.')."</td>";
+				$xtabla.="<td style='text-align:right;'>".number_format($fila["Porc_ej"]*100, 2, ',','.')."%</td>";
 
 				$xtabla.= "</tr>";
 				$son += 1;
@@ -85,7 +93,7 @@ switch ($_POST['accion']) {
 		$xtabla="";
 
 		//Buscar el sub contrato
-		$xSql="Select * from subcontratos where subcontratos.id_obra=".$_POST['id_obra']." and subcontratos.id_subcontrato=".$_POST['id_subcontrato'];
+		$xSql="Select * from Subcontratos where Subcontratos.id_obra=".$_POST['id_obra']." and Subcontratos.id_subcontrato=".$_POST['id_subcontrato'];
 		$resul=mysqli_query($Conn, $xSql) or die ("Error SQL: ".mysqli_error($Conn)."<br/><br/>".$xSql."<br/>");
 		if ($fila=mysqli_fetch_array($resul, MYSQLI_ASSOC)){
 			$nueva=0;}
@@ -111,7 +119,7 @@ switch ($_POST['accion']) {
 		$xtabla.="<div class='col1 pt'>Subcontrato (POF):</div>";
 		$xtabla.="<div class='col2'>";
 		if ($fila['id_pof']=="") {$fila['id_pof']=0;}
-		$xSql="Select peticion_de_ofertas.NOMBRE_POF from peticion_de_ofertas where ID_POF=".$fila['id_pof'];
+		$xSql="Select PETICION_DE_OFERTAS.NOMBRE_POF from PETICION_DE_OFERTAS where ID_POF=".$fila['id_pof'];
 		$resul2= mysqli_query($Conn, $xSql) or die ("Error SQL: " . mysqli_error($Conn));
 		$xtabla.="<div id='d_id_pof' class='etiqueE pt'>";
 		if ($fila2=mysqli_fetch_array($resul2, MYSQLI_ASSOC)){
@@ -128,7 +136,7 @@ switch ($_POST['accion']) {
 		$xtabla.="<div class='col1 pt'>Proveedor:</div>";
 		$xtabla.="<div class='col2'>";
 		if ($fila['id_proveedor']==""){$fila['id_proveedor']=0;}
-		$xSql="Select proveedores.PROVEEDOR, proveedores.RAZON_SOCIAL, proveedores.CIF from proveedores where ID_PROVEEDORES=".$fila['id_proveedor'];
+		$xSql="Select Proveedores.PROVEEDOR, Proveedores.RAZON_SOCIAL, Proveedores.CIF from Proveedores where ID_PROVEEDORES=".$fila['id_proveedor'];
 		$resul2= mysqli_query($Conn, $xSql) or die ("Error SQL: " . mysqli_error($Conn));
 		$xtabla.="<div id='d_id_proveedor' class='etiqueE pt'><b>";
 		if ($fila2=mysqli_fetch_array($resul2, MYSQLI_ASSOC)){
@@ -180,11 +188,11 @@ switch ($_POST['accion']) {
 		
 		$xtabla.="<div id='lista2' class='altoLista2'>";
 
-		$xSql="Select subcontrato_conceptos.*, "; 
-		$xSql.="conceptos.CONCEPTO, conceptos.COSTE "; 
-		$xSql.="From (subcontrato_conceptos ";
-		$xSql.="left join conceptos on subcontrato_conceptos.ID_CONCEPTO=conceptos.ID_CONCEPTO) ";
-		$xSql.="where subcontrato_conceptos.id_subcontrato=".$_POST['id_subcontrato'];
+		$xSql="Select Subcontrato_conceptos.*, "; 
+		$xSql.="CONCEPTOS.CONCEPTO, CONCEPTOS.COSTE "; 
+		$xSql.="From (Subcontrato_conceptos ";
+		$xSql.="left join CONCEPTOS on Subcontrato_conceptos.ID_CONCEPTO=CONCEPTOS.ID_CONCEPTO) ";
+		$xSql.="where Subcontrato_conceptos.id_subcontrato=".$_POST['id_subcontrato'];
 
 		$resul= mysqli_query($Conn, $xSql) or die ("Error SQL: " . mysqli_error($Conn) . "<br/><br/>" . $xSql . "<br/><br/>");
 
@@ -264,11 +272,11 @@ switch ($_POST['accion']) {
 	case "GUARDAR1": //Subcontrato
 		$ahora=date("Y-m-d H:i:s");
 		if ($_POST['id_subcontrato']==0){
-			$xSql="Insert into subcontratos set ";
+			$xSql="Insert into Subcontratos set ";
 			$xSql.="id_obra=".$_POST['id_obra'].", ";
 		}
 		else {
-			$xSql="Update subcontratos set ";
+			$xSql="Update Subcontratos set ";
 		}
 		$xSql.="id_pof=".$_POST['id_pof'].", ";
 		$xSql.="subcontrato='".$_POST['subcontrato']."', ";
@@ -283,7 +291,7 @@ switch ($_POST['accion']) {
 
 		//buscar el nuevo id del subcontrato creado 
 		if ($_POST['id_subcontrato']==0){
-			$xSql="Select id_subcontrato from subcontratos where id_pof=".$_POST['id_pof']." and id_proveedor=".$_POST['id_proveedor']." and fecha_creacion='".$ahora."' limit 1";
+			$xSql="Select id_subcontrato from Subcontratos where id_pof=".$_POST['id_pof']." and id_proveedor=".$_POST['id_proveedor']." and fecha_creacion='".$ahora."' limit 1";
 			$resul=mysqli_query($Conn, $xSql) or die ("Error SQL: ".mysqli_error($Conn)."<br/><br/>".$xSql."<br/>");
 			$fila= mysqli_fetch_array($resul, MYSQLI_ASSOC);
 			echo $fila['id_subcontrato'];}
@@ -293,10 +301,10 @@ switch ($_POST['accion']) {
 
 
 	case "ELIMINAR1": //Subcontrato
-		$xSql="delete from subcontratos where id_subcontrato=".$_POST['id_subcontrato'];
+		$xSql="delete from Subcontratos where id_subcontrato=".$_POST['id_subcontrato'];
 		$resul=mysqli_query($Conn, $xSql) or die ("Error SQL: ".mysqli_error($Conn)."<br/><br/>".$xSql."<br/>");
 
-		$xSql="delete from subcontrato_conceptos where id_subcontrato=".$_POST['id_subcontrato'];
+		$xSql="delete from Subcontrato_conceptos where id_subcontrato=".$_POST['id_subcontrato'];
 		$resul=mysqli_query($Conn, $xSql) or die ("Error SQL: ".mysqli_error($Conn)."<br/><br/>".$xSql."<br/>");
 		break;
 
@@ -306,13 +314,13 @@ switch ($_POST['accion']) {
 		$cols=2;
 		switch ($_POST['buscar']) {
 			case 1: //pof
-				$xSql="Select ID_POF as id, NOMBRE_POF as nombre from peticion_de_ofertas where id_obra=".$_POST['id_obra']." and NOMBRE_POF like '%".$_POST['filtro']."%' order by NOMBRE_POF";
+				$xSql="Select ID_POF as id, NOMBRE_POF as nombre from PETICION_DE_OFERTAS where id_obra=".$_POST['id_obra']." and NOMBRE_POF like '%".$_POST['filtro']."%' order by NOMBRE_POF";
 				break;
 			case 2: //Proveedor
-				$xSql="Select ID_PROVEEDORES as id, PROVEEDOR as nombre from proveedores where id_c_coste=".$id_c_coste." and PROVEEDOR like '%".$_POST['filtro']."%' order by PROVEEDOR";
+				$xSql="Select ID_PROVEEDORES as id, PROVEEDOR as nombre from Proveedores where id_c_coste=".$id_c_coste." and PROVEEDOR like '%".$_POST['filtro']."%' order by PROVEEDOR";
 				break;
 			case 3: //Concepto
-				$xSql="Select ID_CONCEPTO as id, CONCEPTO as nombre, COSTE from conceptos where id_obra=".$_POST['id_obra']." and ID_PROVEEDOR=".$_POST['id_proveedor']." and CONCEPTO like '%".$_POST['filtro']."%' order by CONCEPTO";
+				$xSql="Select ID_CONCEPTO as id, CONCEPTO as nombre, COSTE from CONCEPTOS where id_obra=".$_POST['id_obra']." and ID_PROVEEDOR=".$_POST['id_proveedor']." and CONCEPTO like '%".$_POST['filtro']."%' order by CONCEPTO";
 				$cols=3;
 				break;
 		}
@@ -354,11 +362,11 @@ switch ($_POST['accion']) {
 		$xtabla="";
 
 		//Buscar la Unidades Subcontratadas
-		$xSql="Select subcontrato_conceptos.*, "; 
-		$xSql.="conceptos.CONCEPTO, conceptos.COSTE "; 
-		$xSql.="From (subcontrato_conceptos ";
-		$xSql.="left join conceptos on subcontrato_conceptos.id_concepto=conceptos.ID_CONCEPTO) ";
-		$xSql.="where subcontrato_conceptos.id=".$_POST['id_usc'];
+		$xSql="Select Subcontrato_conceptos.*, "; 
+		$xSql.="CONCEPTOS.CONCEPTO, CONCEPTOS.COSTE "; 
+		$xSql.="From (Subcontrato_conceptos ";
+		$xSql.="left join CONCEPTOS on Subcontrato_conceptos.id_concepto=CONCEPTOS.ID_CONCEPTO) ";
+		$xSql.="where Subcontrato_conceptos.id=".$_POST['id_usc'];
 
 		$resul=mysqli_query($Conn, $xSql) or die ("Error SQL: ".mysqli_error($Conn)."<br/><br/>".$xSql."<br/>");
 		if ($fila=mysqli_fetch_array($resul, MYSQLI_ASSOC)){
@@ -438,11 +446,11 @@ switch ($_POST['accion']) {
 
 	case "GUARDAR3": //Unidad Subcontratada
 		if ($_POST['id_usc']==0){
-			$xSql="Insert into subcontrato_conceptos set ";
+			$xSql="Insert into Subcontrato_conceptos set ";
 			$xSql.="id_subcontrato=".$_POST['id_subcontrato'].", ";
 		}
 		else {
-			$xSql="Update subcontrato_conceptos set ";
+			$xSql="Update Subcontrato_conceptos set ";
 		}
 		$xSql.="id_concepto=".$_POST['id_concepto'].", ";
 		if ($_POST['precio_cobro']<>"") { $xSql.="precio_cobro=".$_POST['precio_cobro'].", "; }
@@ -454,7 +462,7 @@ switch ($_POST['accion']) {
 
 
 	case "ELIMINAR3": //Unidad Subcontratada
-		$xSql="delete from subcontrato_conceptos where id=".$_POST['id_usc'];
+		$xSql="delete from Subcontrato_conceptos where id=".$_POST['id_usc'];
 		$resul=mysqli_query($Conn, $xSql) or die ("Error SQL: ".mysqli_error($Conn)."<br/><br/>".$xSql."<br/>");
 		break;
 

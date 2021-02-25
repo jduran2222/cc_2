@@ -37,7 +37,7 @@ $id_personal=$_GET["id_personal"];
 
   <?php              // DATOS   FICHA . PHP
  //echo "<pre>";
- $result=$Conn->query($sql="SELECT *   FROM Personal_View WHERE ID_PERSONAL=$id_personal AND $where_c_coste");
+ $result=$Conn->query($sql="SELECT *, 0 as prueba   FROM Personal_View WHERE ID_PERSONAL=$id_personal AND $where_c_coste");
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;
  
  $id_personal=$rs["ID_PERSONAL"];   // COMPROBACION DE SEGURIDAD
@@ -53,6 +53,8 @@ $badget_nominas=badge_sup(DFirst('COUNT(ID_FRA_PROV)', 'FACTURAS_PROV', "ID_PROV
  require_once("../personal/personal_menutop_r.php");
 
  
+$formats["prueba"]="boolean" ; 
+
 //while ($a = $result->fetch_field()) {
 
 //print_r ($rs);
@@ -70,7 +72,7 @@ $badget_nominas=badge_sup(DFirst('COUNT(ID_FRA_PROV)', 'FACTURAS_PROV', "ID_PROV
   $id_valor=$id_personal ;  
   
   
-  $delete_boton=1;
+  $delete_boton=1;  
   
   if ($rs['TEL']) { $whassapp_envio= quita_simbolos_telefono( $rs['TEL'] )   ; }    //para poder enviar al interesado documentos por whassapp directamente
   
@@ -83,7 +85,7 @@ $badget_nominas=badge_sup(DFirst('COUNT(ID_FRA_PROV)', 'FACTURAS_PROV', "ID_PROV
       ,"../proveedores/proveedores_anadir.php?id_personal=$id_personal&proveedor={$rs['NOMBRE']}&cif={$rs['DNI']}","../proveedores/proveedores_ficha.php?id_proveedor=","id_proveedor_nomina"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
   $tooltips["id_proveedor_nomina"]= 'Proveedor asociado al empleado para el pago de nóminas, notas de gastos... ';   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 
-  $formats["BAJA"]="boolean" ;
+//  $formats["BAJA"]="moneda" ; 
   $etiquetas["BAJA"]= ["Baja laboral","indica si el trabajador está de Alta o Baja actualmente en la empresa"] ;
 //  $etiqueta["BAJA"]="Baja laboral" ;
 
@@ -91,9 +93,9 @@ $badget_nominas=badge_sup(DFirst('COUNT(ID_FRA_PROV)', 'FACTURAS_PROV', "ID_PROV
   $plantilla_get_url= "&" . http_build_query($rs) ;
   }
   
-  // GENERAR_DOC relleno con espacios los elementos del array vacíos  futura ARRAY_QUITA_VACIOS
-foreach ($rs as $key => $value){  if (!$value) {$rs[$key]=' ';} }
+// GENERAR_DOC relleno con espacios los elementos del array vacíos  futura ARRAY_QUITA_VACIOS
 $array_plantilla = $rs ;      // copiamos array para datos para la Generación de Documentos con PLANTILLAS HTML
+foreach ($array_plantilla as $key => $value){  if (!$value) {$array_plantilla[$key]=' ';} }
 
   
   ?>

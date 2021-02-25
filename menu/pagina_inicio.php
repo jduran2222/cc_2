@@ -10,7 +10,7 @@ $titulo_pagina=$_SESSION["empresa"];
 
 $titulo = $titulo_pagina;
 
-//INICIO
+//INICIO        content-wrapper
 include_once('../templates/_inc_privado1_header.php');
 include_once('../templates/_inc_privado2_navbar.php');
 
@@ -638,6 +638,11 @@ if ($admin)
                 </script>
 
               </div>
+               <button type="button" class="btn btn-tool btn-sm" 
+                       onClick="modal_ajax_cargar('../obras/obras_subcontratos.php?v=1');">
+                    <i class="fas fa-times"></i>MODAL AJAX
+                  </button>
+ 
               <!-- /.card-body -->
             </div>
             <!-- /.card -->
@@ -652,8 +657,67 @@ if ($admin)
 
     </div>  
     <!-- FIN PARTES DE HOY -->
+    
+    
+     <!-- MODO AJAX -->
+
+<div id="espera" class="espera"></div>
+<div id="fondo" class="capaoscura" onClick="cerrarVentana();"></div>
+
+<div id="modal_ajax" class="ventanEmergente ventanEmergenteAncha_90 animate">
+    <div class="tituloEmergente">
+        <h3 id="titulo1">Modal</h3>
+        <i class="fas fa-times botonEmergente" onClick="cerrarVentana();"></i>
+    </div>
+    <div class="ventanEmergenteInterno" id="modal_ajax1"><img src='../img/esperar2.gif' ></div>
+</div>
+
+  <!-- FIN MODO AJAX -->
+   
+  
+  <script>   
+      
+    function modal_ajax_cargar(href){
+//        var parametros = {
+//            "accion": "FICHA1",
+//            "id_obra": id_obra,
+//            "id_subcontrato": id_subcontrato
+//        };
+        document.getElementById('fondo').classList.add('mostrar');
+//        document.getElementById('espera').style.display='block';
+        document.getElementById('modal_ajax').classList.add('mostrar');
+//        $.ajax({ async:true, method: 'POST', url: 'obras_subcontratos2_sql.php',  data: parametros, success:  function (response) {
+//            document.getElementById('espera').style.display='none';
+//            switch (response.substr(0, 1)) {
+//                case "0":
+//                    document.location.href='login.php';
+//                    break;
+//                default:
+//                    $("#dataficha1").html(response);
+//                    document.getElementById('titulo1').innerHTML="Subcontrato id "+id_subcontrato;
+//                    document.getElementById('ficha1').classList.add('mostrar');
+//                    document.getElementById('fondo').classList.add('mostrar');
+//                    break;
+//            }
+//        }});
         
-        
+        carga_ajax('modal_ajax1',href+'&modal_ajax=1&id_obra=1262');
+//        document.getElementById('espera').style.display='none';
+    }
+
+    function cerrarVentana() {
+        document.getElementById('fondo').classList.remove('mostrar');
+        document.getElementById('modal_ajax').classList.remove('mostrar');
+    }  
+
+</script>  
+  
+  
+  
+  
+  
+  
+  
 <?php 
 
 //FIN

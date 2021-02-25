@@ -1191,6 +1191,27 @@ function ficha_update_boolean(cadena_link, nuevo_valor, tipo_dato , elementId , 
  }
  
  var xhttp = new XMLHttpRequest();
+ 
+      xhttp.onreadystatechange =
+     function()
+     {   if (this.readyState == 4 && this.status == 200)
+         
+         {    if (this.responseText.substr(0,5)=="ERROR")
+               {
+                   alert(this.responseText) ;
+               }                   // mostramos el ERROR
+               else
+               {  
+//                   alert(this.responseText) ;
+//                   document.getElementById(elementId).innerHTML = this.responseText ;  // redibujamos el campo con lo guardado en bbdd
+//                   document.getElementById(elementId).value = this.responseText ;
+                }  
+          }
+      };
+
+
+ 
+// alert("../include/update_ajax.php?"+cadena_link+nuevo_valor);
  xhttp.open("GET", "../include/update_ajax.php?"+cadena_link+nuevo_valor, true);
  xhttp.send();   
    

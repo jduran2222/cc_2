@@ -6,13 +6,20 @@ $id_c_coste = $_SESSION['id_c_coste'];
 $id_obra=$_GET["id_obra"];
 
 //Proveedores de la obra
-$xSql="Select DISTINCT subcontratos.id_proveedor, proveedores.PROVEEDOR ";
-$xSql.="From (subcontratos ";
-$xSql.="left join proveedores on subcontratos.id_proveedor=proveedores.ID_PROVEEDORES) ";
-$xSql.="where subcontratos.id_obra=".$id_obra." ";
-$xSql.="order by  proveedores.PROVEEDOR";
-$s_proveedores="<option value=0 selected>* TODOS *</option>";
+$xSql="Select DISTINCT Subcontratos.id_proveedor, Proveedores.PROVEEDOR ";
+$xSql.="From (Subcontratos ";
+$xSql.="left join Proveedores on Subcontratos.id_proveedor=Proveedores.ID_PROVEEDORES) ";
+$xSql.="where Subcontratos.id_obra=".$id_obra." ";
+$xSql.="order by  Proveedores.PROVEEDOR";
+$s_proveedores="<option value=0 selected>* TODOS *</option>"; 
+
+//$xSql="Select * FROM OBRAS WHERE $where_c_coste ";
+
 $resul= mysqli_query($Conn, $xSql) or die ("Error SQL: " . mysqli_error($Conn) . "<br/><br/>" . $xSql . "<br/><br/>");
+//$resul= $Conn->query($xSql) or die ("Error SQL2: " . mysqli_error($Conn) . "<br/><br/>" . $xSql . "<br/><br/>");
+//$resul= $Conn->query($xSql);
+//$result=$Conn->query($xSql);
+
 if ($fila=mysqli_fetch_array($resul, MYSQLI_ASSOC)) {
     do {
         $s_proveedores.="<option value=".$fila['id_proveedor'].">".$fila['PROVEEDOR']."</option>";
@@ -20,14 +27,14 @@ if ($fila=mysqli_fetch_array($resul, MYSQLI_ASSOC)) {
 }
 
 //INICIO
-$titulo="Subcontratos";
+$titulo="SUBCONTRATOS";
 include_once('../templates/_inc_privado1_header.php');
 include_once('../templates/_inc_privado2_navbar.php');
 require_once("../obras/obras_menutop_r.php"); 
 ?>
 
 <!-- El css debe estar en _inc_privado1_header.php -->
-<link rel="stylesheet" type="text/css" href="../css/estilos2.css?v=0.1">
+<!--<link rel="stylesheet" type="text/css" href="../css/estilos2.css?v=0.1">-->
 
 <div style="overflow:visible;">	   
     <div id="main" class="mainc_100" style="background-color:#fff; padding:10px;">
@@ -66,7 +73,7 @@ require_once("../obras/obras_menutop_r.php");
 <div id="espera" class="espera"></div>
 <div id="fondo" class="capaoscura" onClick="cerrarVentana();"></div>
 
-<div id="ficha1" class="ventanEmergente ventanEmergenteAncha_60 animate">
+<div id="ficha1" class="ventanEmergente ventanEmergenteAncha_90 animate">
     <div class="tituloEmergente">
         <h3 id="titulo1">Subcontrato</h3>
         <i class="fas fa-times botonEmergente" onClick="cerrarVentana();"></i>

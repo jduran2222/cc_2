@@ -4,7 +4,7 @@
 .panel {display:block; margin-bottom: 15px; overflow:auto; padding:8px 10px; 
 background-color:#efefef; 
 border:1px solid #dddddd; 
-box-shadow:2px 2px 3px 0px rgba(0,0,0,0.08);
+box-shadow:2px 2px 3px 0px rgba(0,0,0,0.08); 
 -webkit-overflow-scrolling: touch; 
 line-height: normal;
 font-family: "Roboto";

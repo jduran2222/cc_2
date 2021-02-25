@@ -358,7 +358,7 @@ elseif ($tabla_cuadros)
     $formats["path_archivo"] = ($agrupar=='cuadros2')? "pdf_350" : "pdf_250"  ;
     $div_size_width = substr($formats["path_archivo"], 4) + 20 ;                        // pixeles de ancho que queremos para el cuadro
     $div_size_height = $div_size_width  ;                        // pixeles de ancho que queremos para el cuadro
-    
+//     $actions_row=[];
 //    $formats["path_archivo"] = 'textarea_10' ;
     require("../include/tabla_cuadros.php"); }    
 else

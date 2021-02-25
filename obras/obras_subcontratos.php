@@ -23,7 +23,7 @@ include_once('../templates/_inc_privado2_navbar.php');
                 <!--<div class="col-12 col-md-4 col-lg-9">-->
 
 
-    <h1>SUBCONTRATOS</h1>
+  
 
 <?php
 
@@ -34,7 +34,7 @@ require_once("../obras/obras_menutop_r.php");
 
 ?>
 
-
+  <h1>SUBCONTRATOS</h1>
 <div style="overflow:visible">	   
    
 	<!--************ INICIO SUBCONTRATOS *************  -->
@@ -58,8 +58,15 @@ require_once("../obras/obras_menutop_r.php");
 <?php   // Iniciamos variables para tabla.php  background-color:#B4045
 
 
-$result=$Conn->query($sql="SELECT id_subcontrato,id_proveedor ,subcontrato,PROVEEDOR ,fecha_creacion as fecha, Importe_cobro, p_contrato, Importe_subcontrato, Margen "
-        . " ,Importe_ejecutado,  Porc_ej FROM Subcontratos_todos_View WHERE ID_OBRA=$id_obra AND (filtro LIKE '%$filtro%') ORDER BY fecha_creacion DESC " );
+$sql="SELECT id_subcontrato,id_proveedor ,subcontrato,PROVEEDOR ,fecha_creacion as fecha, Importe_cobro, p_contrato, Importe_subcontrato, Margen "
+        . " ,Importe_ejecutado,  Porc_ej FROM Subcontratos_todos_View WHERE ID_OBRA=$id_obra AND (filtro LIKE '%$filtro%') ORDER BY fecha_creacion DESC " ;
+
+//$result=$Conn->query($sql );
+
+
+$result= mysqli_query($Conn, $sql)  ;
+
+
 $result_T=$Conn->query($sql_T="SELECT 'Suma', '' as a,'' as b, SUM(Importe_cobro) as importe_cobro,IF(IMPORTE<>0,SUM(Importe_cobro)/IMPORTE,0) AS p_contrato, SUM( Importe_subcontrato) as importe_subcontrato "
         . ",(SUM(Importe_cobro)-SUM( Importe_subcontrato))/SUM(Importe_cobro) Margen "
         . " ,SUM(Importe_ejecutado) AS Importe_ejecutado,SUM(Importe_ejecutado)/SUM( Importe_subcontrato) AS  Porc_ej FROM Subcontratos_todos_View "

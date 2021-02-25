@@ -5,7 +5,7 @@ $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
 $titulo_pagina="Obra " . Dfirst("NOMBRE_OBRA","OBRAS", "ID_OBRA={$_GET["id_obra"]} AND $where_c_coste"  ) ;
-$titulo = $titulo_pagina;
+$titulo = $titulo_pagina; 
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
@@ -53,27 +53,27 @@ if (!cc_is_ESTUDIO_COSTE_actualizado($id_obra))  {  cc_actualiza_ESTUDIO_COSTE($
  
 if ($tipo_subcentro=='O')     // consulta para las OBRAS
 {
- $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,NOMBRE_COMPLETO,EXPEDIENTE,ID_CLIENTE,TIPO_LICITACION,IMPORTE,BAJA,COEF_BAJA,iva_obra, importe_sin_iva   "
-         . ",GG_BI,ID_ESTUDIO,id_prod_estudio_costes,id_produccion_obra"
-         . ",Plazo,Situacion,URL_Google_Maps ,Agenda_Obra,GRUPOS, Observaciones "
-         . ",'Fechas' as EXPAND_1 , F_Contrato,Fecha_Plan_SS,F_Aper_C_Trabajo "
-         . " ,F_Acta_Rep,F_Fin_Plazo,Plazo_dias, Porcentaje_Plazo"
-         . " ,F_A_Recepcion"
-              . " , '-' AS FIN_EXPAND, 'Control Económico' as EXPAND_2 ," 
-         . "importe_sin_iva as Importe_Obra,Estudio_Costes_inicial,importe_sin_iva - Estudio_Costes_inicial AS  Beneficio_Inicial"
-         . ", Cartera_pdte,Porcentaje_Plazo as Porcentaje_Plazo_ , Valoracion  ,Gastos as Gasto_real,Valoracion-Gastos as Beneficio_real,Valoracion-Gasto_est as Beneficio_estimado "
-         . ", VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
-         . ", Facturado,Facturado_iva,Cobrado,Pdte_Cobro"
-         . ",'' AS FIN_EXPAND_2,'Datos certificaciones' as EXPAND_3, id_subobra_auto,D_OBRA ,Pie_CERTIFCACION,'' AS FIN_EXPAND_3, user,fecha_creacion FROM Obras_View WHERE ID_OBRA=$id_obra AND $where_c_coste";
+// $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,NOMBRE_COMPLETO,EXPEDIENTE,ID_CLIENTE,TIPO_LICITACION,IMPORTE,BAJA,COEF_BAJA,iva_obra, importe_sin_iva   "
+//         . ",GG_BI,ID_ESTUDIO,id_prod_estudio_costes,id_produccion_obra"
+//         . ",Plazo,Situacion,URL_Google_Maps ,Agenda_Obra,GRUPOS, Observaciones "
+//         . ",'Fechas' as EXPAND_1 , F_Contrato,Fecha_Plan_SS,F_Aper_C_Trabajo "
+//         . " ,F_Acta_Rep,F_Fin_Plazo,Plazo_dias, Porcentaje_Plazo"
+//         . " ,F_A_Recepcion"
+//              . " , '-' AS FIN_EXPAND, 'Control Económico' as EXPAND_2 ," 
+//         . "importe_sin_iva as Importe_Obra,Estudio_Costes_inicial,importe_sin_iva - Estudio_Costes_inicial AS  Beneficio_Inicial"
+//         . ", Cartera_pdte,Porcentaje_Plazo as Porcentaje_Plazo_ , Valoracion  ,Gastos as Gasto_real,Valoracion-Gastos as Beneficio_real,Valoracion-Gasto_est as Beneficio_estimado "
+//         . ", VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
+//         . ", Facturado,Facturado_iva,Cobrado,Pdte_Cobro"
+//         . ",'' AS FIN_EXPAND_2,'Datos certificaciones' as EXPAND_3, id_subobra_auto,D_OBRA ,Pie_CERTIFCACION,'' AS FIN_EXPAND_3, user,fecha_creacion FROM Obras_View WHERE ID_OBRA=$id_obra AND $where_c_coste";
  // PROVISIONALMENTE USAMOS ESTE SQL MENOS CARGADO PARA AGILIZAR LA CARGA.
  // HABRIA QUE CARGAR POR AJAX LA PARTE ECONOMICA QUE HAY EN OBRAS_VIEW
-// $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,NOMBRE_COMPLETO,EXPEDIENTE,ID_CLIENTE,TIPO_LICITACION,IMPORTE,BAJA,COEF_BAJA,iva_obra"
-//         . " ,GG_BI,ID_ESTUDIO,id_prod_estudio_costes,id_produccion_obra"
-//         . " ,Plazo,Situacion,URL_Google_Maps ,Agenda_Obra, Observaciones "
-//         . " ,F_Contrato,Fecha_Plan_SS,F_Aper_C_Trabajo "
-//         . " ,F_Acta_Rep,F_Fin_Plazo"
-//         . " ,F_A_Recepcion"
-//         . " ,user,fecha_creacion FROM OBRAS WHERE ID_OBRA=$id_obra AND $where_c_coste"; 
+ $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,NOMBRE_COMPLETO,EXPEDIENTE,ID_CLIENTE,TIPO_LICITACION,IMPORTE/(1+iva_obra) AS importe_sin_iva,IMPORTE,BAJA,COEF_BAJA,iva_obra"
+         . " ,GG_BI,ID_ESTUDIO,id_prod_estudio_costes,id_produccion_obra"
+         . " ,Plazo,Situacion,URL_Google_Maps ,Agenda_Obra, Observaciones "
+         . " ,F_Contrato,Fecha_Plan_SS,F_Aper_C_Trabajo "
+         . " ,F_Acta_Rep,F_Fin_Plazo"
+         . " ,F_A_Recepcion"
+         . " ,user,fecha_creacion FROM OBRAS WHERE ID_OBRA=$id_obra AND $where_c_coste"; 
  
 // $sql="SELECT * FROM OBRAS WHERE ID_OBRA=$id_obra AND $where_c_coste";
  
