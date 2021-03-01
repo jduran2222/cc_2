@@ -85,11 +85,73 @@ div.div_edit:hover {
     background-color: white;
 }
 
+div.div_edit {
+  /*border: 1px solid lightblue;*/
+    /*background-color: white;*/
+    min-height: 50px;
+}
+
 
 
 table {
-  font-size: 13px;     
+    font-size: 13px;   
+    border-collapse: collapse;
+    width: 100%;
 }
+
+table td {
+ 
+    /*text-align: center;*/
+     border-bottom: 1px solid #ddd;
+    padding: 3px;
+    /*white-space: nowrap;*/
+    /*height: 20px;*/
+}
+
+td.nowrap{
+  white-space: nowrap;
+
+}
+
+
+ table  tr:hover {background-color: #ddd;}
+
+
+
+table th {
+        /*text-align: center;*/
+     border: 1px solid #ddd;
+    padding: 3px;
+    /*height: 20px;*/
+
+    /*cursor: pointer;*/
+    padding-top: 6px;
+    padding-bottom: 6px;
+    text-align: center; 
+    /*color del fondo de TH*/
+    background-color: #F2F4F4;      
+    /*color: white;*/
+    font-weight: bold;
+      /*white-space: nowrap;*/
+  
+    
+ }
+ 
+ .float_left {
+    /*border: 1px solid blue;*/
+    float: left;
+    /*cursor: pointer;*/
+}
+
+.textarea_tabla {
+    /*height: 4em;*/
+    width: auto;
+    border-width: 0px ;
+
+}
+
+
+
 
 .only_print {
        display:none;
@@ -402,12 +464,32 @@ cc_center
 
 
 @media only screen and (max-width:980px) {
+    
+    
     /* For mobile phones: */
+    
+    
 body
 {
-	 font-size: 6vw;
+	 font-size: 4vw;
 	 background-color: white ;
 }
+
+
+   table {
+    font-size: 4vw; 
+  }
+   div {
+     overflow: scroll;
+  }
+/*  option {
+   font-size: 4.2vw;   
+  transform: scale(2);  
+}*/
+  
+
+
+
 span.badge {
         font-size: 2vw; 
 
@@ -424,23 +506,23 @@ span.badge {
 
 .glyphicon , .fas, .far, .fab {
 /*    text-align: center;*/
-    font-size: 6vw;
+    font-size: 4vw;
 } 
 
  .h1, h1
 {
     /*text-align: center;*/
-    font-size: 12vw;
+    font-size: 6vw;
 } 
  .h2,h2
 {
     /*text-align: center;*/
-    font-size: 10vw;
+    font-size: 6vw;
 } 
 .h3,h3
 {
     /*text-align: center;*/
-    font-size: 8vw;
+    font-size: 6vw;
 } 
 .h4,h4
 {
@@ -471,12 +553,12 @@ span.badge {
 table, td, p, label, button, input,select,option
 {
     /*font-family: arial;*/
-    font-size: 6vw;
+    font-size: 4vw;
 }
 .btn
 {
     /*font-family: arial;*/
-    font-size: 6vw;
+    font-size: 4vw;
 }
 /*.discreto
 {
@@ -487,7 +569,7 @@ table, td, p, label, button, input,select,option
 
 input.form-control
 {
-    font-size: 6vw;
+    font-size: 4vw;
 }
 
 
@@ -507,27 +589,27 @@ div.sugerir ul li a{
 }
 
  a {
-    font-size: 6vw; 
+    font-size: 4vw; 
   }
   
   input[type=date] {
   /*transform: scale(3);*/
-  font-size: 6vw;   
+  font-size: 4vw;   
 }
  input[type=checkbox] {
   /*transform: scale(3);*/
-  font-size: 6vw;   
+  font-size: 4vw;   
 }
 input {
   /*transform: scale(1.5);*/
-   font-size: 6vw;   
+   font-size: 4vw;   
 }
 
 .textarea_ficha {
 
    width: 19em; 
    /*width: 10em;*/ 
-   font-size: 6vw;   
+   font-size: 4vw;   
    border-width: 0px ;
 
   /*transform: scale(2);*/  
@@ -542,14 +624,14 @@ textarea:focus {
 select {
      /*height:100px;*/
      /*transform: scale(1.5);*/  
-   font-size: 6vw;   
+   font-size: 4vw;   
 
 }
 
-option {
+/*option {
    font-size: 6vw;   
-  /*transform: scale(4);*/  
-}
+  transform: scale(4);  
+}*/
 
   /*.topnav a:not(:first-child) {display: none;}*/
   .topnav a {display: none;}
@@ -609,6 +691,76 @@ option {
        display:none;
    }
    
- 
+    font-size: 4.2vw; 
+    a[href]:after {
+      display: none;
+      visibility: hidden;
+   }
+   
+    a:link
+    {
+    color: black ;
+    text-decoration:none;
+    }
+
+   
+    
+    textarea { border: none; }
+    
+
+   thead {
+            display:table-header-group;
+            margin-bottom:2px;
+             /*padding-top: 500px ;*/
+            
+/*            top:8cm;*/
+        }
+   table td {
+            border : none ;
+            /*font-size: 8pt ;*/
+            /*font-family:arial;*/
+        }
+
+    div.divHeader {
+                
+                position: fixed;
+                top: 0cm;
+                /*padding-top: 500px ;*/
+                padding-bottom: 500px ;
+/*                height: 320px;
+                display:block;*/
+              
+                
+            }
+            
+     div.divFooter {
+                position: fixed;
+                bottom: 0cm;
+                
+                
+            }
+            
   
 }
+  @page
+    {margin-top:3cm;
+     margin-left:1.5cm;
+     margin-right:1.5cm;
+     margin-bottom:3cm;
+     
+    }
+
+   @media screen {
+            div.divHeader {
+                display: none;
+            }
+            
+           div.divFooter {
+                display: none;
+            }
+         }
+
+  th.hide_id { display: none; }
+  td.hide_id { display: none; }
+
+

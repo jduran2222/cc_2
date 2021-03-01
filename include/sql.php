@@ -4,8 +4,8 @@ $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
 
  //echo "El filtro es:{$_GET["filtro"]}";
 
- require_once("../../conexion.php");
- require_once("../include/funciones.php");
+// require_once("../../conexion.php");
+// require_once("../include/funciones.php");
 
 // logs("Ejecutamos sql.php")	;
  
@@ -69,7 +69,7 @@ $error_txt="";
 $array_sql=  explode("_CC_NEW_SQL_", $sql);       // cambiamos el caracter ; punto y coma por esta cadena _CC_NEW_SQL_ para separar varias consultas SQL
 foreach ($array_sql as $sql_item) {
   // ejecutamos las sentencias SQL $sql_item
-  if (trim($sql_item)!='') {$error_txt.= !($Conn->query($sql_item)) ? "ERROR : $sql_item  \n" : ""  ;}
+  if (trim($sql_item)!='') {$error_txt.= !($Conn->query($sql_item)) ? "\n SQL:\n $sql_item \n\n Mysql: \n {$Conn->error} \n" : ""  ;}
 }
 
  
@@ -87,7 +87,7 @@ foreach ($array_sql as $sql_item) {
        //echo "___ERROR___" ;                           // mando mensaje de error
 //       echo "ERROR : $sql" ;
       $id_log_db= logs_db( "ERROR en SQL.PHP: $error_txt" , 'cc_error');
-       echo $_SESSION["admin"] ? "ERROR en SQL.PHP: id_log_db: $id_log_db, SQL: $error_txt" : "ERROR en SQL.PHP avise administrador. LOG_DB $id_log_db" ;
+       echo $_SESSION["admin_debug"] ? "ERROR en SQL.PHP: id_log_db:  $id_log_db \n  $error_txt  "  : "ERROR en SQL.PHP avise administrador. LOG_DB $id_log_db" ;
 
 //       echo $error_txt ;
    }	  

@@ -60,8 +60,10 @@ function copyToClipboard(e) {
 
 
 // carga en el innerHTML del elemento 'id' el resultado de ejecutar href.php  vía AJAX
-function carga_ajax(id,href)
+function cargar_ajax(id,href)
 {
+document.getElementById(id).innerHTML="<img src='../img/espere.gif' style='display: block; margin-left: auto; margin-right: auto; ' >" ;    
+    
  var xhttp = new XMLHttpRequest();
  xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {

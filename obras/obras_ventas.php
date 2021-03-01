@@ -52,8 +52,9 @@ $href='../include/sql.php?sql=' . encrypt2("INSERT INTO VENTAS (ID_OBRA,FECHA ) 
 echo   "<br><br><br><a class='btn btn-link btn-xs noprint' href=# onclick=\" js_href('$href') \"  ><i class='fas fa-plus-circle'></i> Añadir Venta mensual</a>" ; // BOTON AÑADIR FACTURA
 
 
-$result=$Conn->query($sql="SELECT id, FECHA, FECHA AS MES ,PLAN,  IMPORTE , GASTOS_EX,(IMPORTE-GASTOS_EX) AS BENEFICIO, OBSERVACIONES from VENTAS WHERE ID_OBRA=$id_obra ORDER BY FECHA " );
-$result_T=$Conn->query("SELECT  'Totales',SUM(IMPORTE)/($importe_obra/(1+$iva_obra)) as p_Ventas, SUM(PLAN) as importe_PLAN ,SUM(IMPORTE) as VENTAS , SUM(GASTOS_EX) AS IMPORTE_GASTOS, SUM(IMPORTE-GASTOS_EX) AS BENEFICIO,SUM(IMPORTE-GASTOS_EX)/SUM(IMPORTE) as Margen from VENTAS WHERE ID_OBRA=$id_obra  " );
+$sql="SELECT id, FECHA, FECHA AS MES ,PLAN,  IMPORTE , GASTOS_EX,(IMPORTE-GASTOS_EX) AS BENEFICIO, OBSERVACIONES from VENTAS WHERE ID_OBRA=$id_obra ORDER BY FECHA " ;
+$sql_T="SELECT  'Totales',SUM(IMPORTE)/($importe_obra/(1+$iva_obra)) as p_Ventas, SUM(PLAN) as importe_PLAN ,SUM(IMPORTE) as VENTAS , SUM(GASTOS_EX) AS IMPORTE_GASTOS "
+        . ", SUM(IMPORTE-GASTOS_EX) AS BENEFICIO,SUM(IMPORTE-GASTOS_EX)/SUM(IMPORTE) as Margen from VENTAS WHERE ID_OBRA=$id_obra  " ;
 $titulo="VENTAS MENSUALES";
 $idtabla="VENTAS";
 //$dblclicks["MES"]='mes' ;    // pruebas
@@ -79,7 +80,7 @@ $updates=["FECHA","PLAN","IMPORTE","GASTOS_EX","OBSERVACIONES"] ;
 
 $msg_tabla_vacia="No hay ventas";
 ?>
-<?php require("../include/tabla.php"); echo $TABLE ;?>
+<?php require("../include/tabla_ajax.php"); echo $TABLE ;?>
 
 </div>
 <!--************ FIN VENTAS *************  -->
@@ -102,8 +103,8 @@ echo "<br><br><a class='btn btn-link btn-xs noprint ' href='#'  onclick=\"js_hre
 //echo   "<br><br><a class='btn btn-link noprint' href=# onclick='add_venta($id_obra)' target='_blank' ><i class='fas fa-plus-circle'></i> Certificación nueva</a>" ; // BOTON AÑADIR FACTURA
 
 
-$result=$Conn->query($sql="SELECT id,NUM,FECHA, FECHA AS MES,concepto,importe from CERTIFICACIONES WHERE ID_OBRA=$id_obra ORDER BY FECHA" );
-$result_T=$Conn->query("SELECT '' AS A,'Total:','' AS A2,SUM(importe)/$importe_obra as p_facturado,SUM(importe) as importe_certificado  from CERTIFICACIONES WHERE ID_OBRA=$id_obra " );
+$sql="SELECT id,NUM,FECHA, FECHA AS MES,concepto,importe from CERTIFICACIONES WHERE ID_OBRA=$id_obra ORDER BY FECHA" ;
+$sql_T="SELECT '' AS A,'Total:','' AS A2,SUM(importe)/$importe_obra as p_facturado,SUM(importe) as importe_certificado  from CERTIFICACIONES WHERE ID_OBRA=$id_obra " ;
 
 $updates=["NUM","concepto","importe","FECHA"] ; 
 
@@ -130,7 +131,7 @@ $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' target='_blank' ti
 
 
 ?>
-<?php require("../include/tabla.php"); echo $TABLE ;?>
+<?php require("../include/tabla_ajax.php"); echo $TABLE ;?>
 
 </div>
 
@@ -143,10 +144,15 @@ $actions_row["onclick1_link"]="<a class='btn btn-link btn-xs' target='_blank' ti
 
 
 
-$result=$Conn->query($sql="SELECT ID_FRA,N_FRA,FECHA_EMISION,concepto,importe_sin_iva as Base_Imponible "
-        . ",IMPORTE_IVA, Cobrado,Pdte_Cobro,Observaciones FROM Facturas_View WHERE ID_OBRA=$id_obra ORDER BY FECHA_EMISION" );
-$result_T=$Conn->query("SELECT 'Total facturado','' as aa, SUM(IMPORTE_IVA)/$importe_obra as p_facturado, SUM(importe_sin_iva) as Base_Imponible "
-        . ",  SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(Cobrado)as Cobrado, SUM(Pdte_Cobro) AS Pdte_Cobro,'' AS A FROM Facturas_View WHERE ID_OBRA=$id_obra " );
+$sql="SELECT ID_FRA,N_FRA,FECHA_EMISION,concepto,importe_sin_iva as Base_Imponible "
+        . ",IMPORTE_IVA, Cobrado,Pdte_Cobro,Observaciones FROM Facturas_View WHERE ID_OBRA=$id_obra ORDER BY FECHA_EMISION" ;
+$sql_T="SELECT 'Total facturado','' as aa, SUM(IMPORTE_IVA)/$importe_obra as p_facturado, SUM(importe_sin_iva) as Base_Imponible "
+        . ",  SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(Cobrado)as Cobrado, SUM(Pdte_Cobro) AS Pdte_Cobro,'' AS A FROM Facturas_View WHERE ID_OBRA=$id_obra " ;
+
+//$tabla_sumatorias["Importe_subcontrato"]=0 ;
+//$tabla_sumatorias["Importe_subcontrato"]=0 ;
+//$tabla_sumatorias["Importe_subcontrato"]=0 ;
+
 $format=[] ;
 $formats["IMPORTE_IVA"]='moneda' ;
 $formats["Cobrado"]='moneda' ;
@@ -166,11 +172,11 @@ $links["CONCEPTO"]=["../clientes/factura_cliente.php?id_fra=", "ID_FRA","ver fac
   $id_update="ID_FRA" ;
 //  $id_valor=$id_vale ;
   
- 
+//$tabla_footer='prueba de tabla_footer' ; 
 echo   "<a class='btn btn-link noprint' href='../clientes/factura_cliente_anadir.php?_m=$_m&id_obra=$id_obra' target='_blank' ><i class='fas fa-plus-circle'></i> añadir Factura</a>" ; // BOTON AÑADIR FACTURA
 
   
-  require("../include/tabla.php"); echo $TABLE ;
+  require("../include/tabla_ajax.php"); echo $TABLE ;
  
  
  ?>

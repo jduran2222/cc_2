@@ -110,14 +110,14 @@ a:hover + .box_wiki,.box_wiki:hover{
   /* For mobile phones: antes 500px */
  
    .tabla_ficha2  {
-    font-size: 6vw; 
+    font-size: 4vw; 
   }
     td p label {
-    font-size: 6vw; 
+    font-size: 4vw; 
   }
 
  .no_update {
-    font-size: 6vw; 
+    font-size: 4vw; 
   }
 
  } 
@@ -925,18 +925,20 @@ $content_FICHA .=  "</table>" ;
 
 
 <?php 
-echo   "</div>" ;   
+echo   "</div>" ;    
 
 
 //   eliminamos variables usadas
-unset( $titulo, $msg_tabla_vacia,  $add_link,  $links, $formats, $format_style, $tooltips, $actions_row, $updates,$dblclicks ,$id_agrupamiento, $sin_botones ) ;
+unset($idtabla, $titulo, $msg_tabla_vacia,  $add_link,  $links, $formats, $format_style, $tooltips, $actions_row, $updates,$dblclicks ,$id_agrupamiento, $sin_botones 
+        , $tabla_footer,$add_link_html, $add_link, $ficha_expandida,$tabla_expandible, 
+         $array_sumas,$valign,$colspan,$col_subtotal,$print_id,  $buttons ) ;
 //unset de TABLA.PHP
 // unset(  $tabla_update, $id_update ) ;  // NO LAS UNSET PARA USARLAS EN WIDGET_DOCUMENTOS PARA EL DOC PREDETERMINADO
+unset( $tabla_sumatorias,$idtabla, $tabla_style, $tabla_footer,$add_link_html, $add_link,$sql, $sql_T, $sql_T2, $sql_T3,$sql_S,$result_S,  $result, $result_T, $rs_T,$result_T2, $rs_T2,$result_T3, $rs_T3, $tabla_expandida,$tabla_expandible, $col_sel,$array_sumas,$valign,$colspan,$col_subtotal,$print_id, 
+        $titulo, $msg_tabla_vacia,  $add_link,  $links, $formats, $format_style, $tooltips, $actions_row,
+        $updates,$dblclicks ,$id_agrupamiento, $buttons ,$cols_string,$cols_number,$chart_ON,$ocultos,$cols_line) ;
 
- unset(  $tabla_footer,$add_link_html, $add_link, $ficha_expandida,$tabla_expandible, 
-         $array_sumas,$valign,$colspan,$col_subtotal,$print_id,  $buttons ) ;
-
-
+ 
 ?>
  
       <!--   UPDATE `FACTURAS_PROV` SET `Modo_Envio_Pagare` = 'METALICO_' WHERE `FACTURAS_PROV`.`ID_FRA_PROV` = 3;-->

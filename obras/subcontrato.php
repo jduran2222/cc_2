@@ -90,9 +90,11 @@ $sql="SELECT id,cantidad_max as Cantidad,  CONCAT('<b>',Concepto,'</b><br>', des
 //echo $sql;
 $result=$Conn->query($sql );
 
-$sql_T="SELECT '' as a,'Suma' as a1,'' as a33,SUM(cantidad_max*COSTE) as Importe  FROM Subcontratos_Web  WHERE id_subcontrato=$id_subcontrato AND $where_c_coste" ;
+//$sql_T="SELECT '' as a,'Suma' as a1,'' as a33,SUM(cantidad_max*COSTE) as Importe  FROM Subcontratos_Web  WHERE id_subcontrato=$id_subcontrato AND $where_c_coste" ;
 //echo $sql;
-$result_T=$Conn->query($sql_T );
+//$result_T=$Conn->query($sql_T );
+
+$tabla_sumatorias["Importe"]=0 ;
 
 $titulo='';
 $msg_tabla_vacia="No hay";
@@ -119,11 +121,14 @@ require("../menu/LRU_registro.php"); require("../include/widget_documentos.php")
 $sql="SELECT id,cantidad_max,  concepto, descripcion as concepto_TOOLTIP, precio_cobro, importe_cobro,COSTE,importe_sub,cantidad_suma,importe_ejec,Observaciones "
         . " FROM Subcontratos_Web  WHERE id_subcontrato=$id_subcontrato AND $where_c_coste ORDER BY id ";
 //echo $sql;
-$result=$Conn->query($sql );
+//$result=$Conn->query($sql );
 
-$sql_T="SELECT '' as a,'Suma' as a1,'' as a3,SUM( importe_cobro ) as importe_cobro,''as a22 ,SUM( importe_sub ) as importe_sub,'' as a33,SUM(importe_ejec) as importe_ejec  FROM Subcontratos_Web  WHERE id_subcontrato=$id_subcontrato AND $where_c_coste" ;
+//$sql_T="SELECT '' as a,'Suma' as a1,'' as a3,SUM( importe_cobro ) as importe_cobro,''as a22 ,SUM( importe_sub ) as importe_sub,'' as a33,SUM(importe_ejec) as importe_ejec  FROM Subcontratos_Web  WHERE id_subcontrato=$id_subcontrato AND $where_c_coste" ;
 //echo $sql;
-$result_T=$Conn->query($sql_T );
+//$result_T=$Conn->query($sql_T );
+$tabla_sumatorias["importe_cobro"]=0 ;
+$tabla_sumatorias["importe_sub"]=0 ;
+$tabla_sumatorias["importe_ejec"]=0 ;
 
 $updates=['precio_cobro','cantidad_max','descripcion','Observaciones'] ;
 //$links["concepto"] = ["../include/ficha_general.php?id=", "id_detalle",'', "formato_sub"] ;
@@ -133,7 +138,7 @@ $links["nid"] = ["../proveedores/usub_ficha.php?id=", "id",'ver Unidad Subcontra
 
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Unidades Subcontratadas ($result->num_rows Usub)" ;
+$titulo="Unidades Subcontratadas (_NUM_ Usub)" ;
 $msg_tabla_vacia="No hay ";
 
 $tabla_update="Subcontrato_conceptos" ;
@@ -154,7 +159,7 @@ $actions_row["delete_link"]="1";
 
  <div class="mainc_100">
 	
-<?php require("../include/tabla.php"); echo $TABLE ; ?>
+<?php require("../include/tabla_ajax.php"); echo $TABLE ; ?>
 	
 </div>	 
 <!--              FIN pagos   -->	

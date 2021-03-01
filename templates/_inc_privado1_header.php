@@ -97,7 +97,7 @@ include_once('../include/formatosHTML.php');
   <!-- Icono por defecto -->
   <link rel="icon" type="image/svg+xml" href="../img/construcloud64.svg" sizes="any">
 
-  <link rel="stylesheet" type="text/css" href="../css/estilos2.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>">
+  <link rel="stylesheet" type="text/css" href="../css/estilos2.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?dd".date("u") : "" ; ?>">
 
 
 <!-- jQuery -->
@@ -136,7 +136,7 @@ include_once('../include/formatosHTML.php');
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
   <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
   <!--<link href="../chat/chat_style.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" rel="stylesheet" id="bootstrap-css">-->
-  <link href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?d=".date("ts") : "" ; ?>" rel=stylesheet type="text/css">
+  <link href="../css/estilos.css<?php echo (isset($_SESSION["is_desarrollo"]) AND $_SESSION["is_desarrollo"])? "?dtd=".date("ts") : "" ; ?>" rel=stylesheet type="text/css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 

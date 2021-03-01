@@ -272,18 +272,18 @@ require("../menu/LRU_registro.php"); require("../include/widget_documentos.php")
 	
 <?php   // Iniciamos tabla_div  de ************ PRODUCCIONES *************
 
-//$sql="SELECT ID_PRODUCCION, PRODUCCION, Ej_Material  from prod_PEM_f_view WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY PRODUCCION LIMIT 7 ";  //sustituimos por la de abajo para ahorrar cálculos
-$sql="SELECT ID_PRODUCCION, PRODUCCION   from PRODUCCIONES WHERE ID_OBRA=$id_obra  ORDER BY PRODUCCION LIMIT 7 ";
+$sql="SELECT ID_PRODUCCION, PRODUCCION, Ej_Material,p_ejecucion  from Prod_view WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY PRODUCCION LIMIT 10 ";  //sustituimos por la de abajo para ahorrar cálculos
+//$sql="SELECT ID_PRODUCCION, PRODUCCION   from PRODUCCIONES WHERE ID_OBRA=$id_obra  ORDER BY PRODUCCION LIMIT 7 ";
 //$sql_T="SELECT '' AS AA, SUM(Ej_Material)  from prod_PEM_f_view WHERE ID_OBRA=$id_obra AND $where_c_coste ORDER BY PRODUCCION LIMIT 7 ";
 
 $formats["Ej_Material"]='moneda' ;
 
 $links["PRODUCCION"] = ["../obras/obras_prod_detalle.php?id_obra={$id_obra}&id_produccion=", "ID_PRODUCCION" ,'','formato_sub'] ;
 //echo $sql;
-$result=$Conn->query($sql );
+//$result=$Conn->query($sql );
 //$result_T=$Conn->query($sql_T );
 
-$titulo="Relaciones Valoradas";
+$titulo="Relaciones Valoradas (_NUM_)";
 $msg_tabla_vacia="No hay";
 
 ?>
@@ -291,7 +291,7 @@ $msg_tabla_vacia="No hay";
 <!--  <div class="right2"> -->
  <div class="right2">
 	
-<?php require("../include/tabla.php"); echo $TABLE ; 
+<?php require("../include/tabla_ajax.php"); echo $TABLE ; 
 
 echo "<a class='btn btn-link btn-xs' href=\"../obras/obras_prod.php?_m=$_m&id_obra=$id_obra\">ver todas las Relaciones Valoradas</a>" ;
 
@@ -303,8 +303,8 @@ echo "<a class='btn btn-link btn-xs' href=\"../obras/obras_prod.php?_m=$_m&id_ob
 
 <?php   // Iniciamos tabla_div  de ************ AVALES *************
 
-$result=$Conn->query($sql="SELECT ID_AVAL , MOTIVO, Importe from Avales WHERE ID_OBRA=$id_obra AND $where_c_coste" );
-$titulo="Avales ($result->num_rows)";
+$sql="SELECT ID_AVAL , MOTIVO, Importe from Avales WHERE ID_OBRA=$id_obra AND $where_c_coste" ;
+$titulo="Avales (_NUM_)";
 $msg_tabla_vacia="No hay avales";
 $format=[];
 $formats["Importe"]="moneda" ;
@@ -321,7 +321,7 @@ echo "<br><br><br><br>"
 	
 <?php 
 
-require("../include/tabla.php"); echo $TABLE ; ?>
+require("../include/tabla_ajax.php"); echo $TABLE ; ?>
 	
 <!--  </div> -->
  </div>

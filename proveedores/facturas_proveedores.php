@@ -227,19 +227,20 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
             . "IMPORTE_IVA,ID_OBRA, NOMBRE_OBRA, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada,pdte_pago,grupo,Observaciones "
             . " FROM Fras_Prov_View WHERE $where  ORDER BY Fecha_Creacion " ;
         
-     $sql_T="SELECT $select_fmt_pdf_T '' AS c,'Totales' AS d,'' AS f11,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a41,'' AS a1 "
-             . ",SUM(pdte_conciliar) as pdte_conciliar,'' AS a31,'' AS a11,'' AS b1,'' AS c1,SUM(pdte_pago) AS pdte_pago  FROM Fras_Prov_View WHERE $where  " ;   
+//     $sql_T="SELECT $select_fmt_pdf_T '' AS c,'Totales' AS d,'' AS f11,SUM(Base_Imponible) AS Base_Imponible,'' AS f, SUM(IMPORTE_IVA) AS IMPORTE_IVA,'' AS a41,'' AS a1 "
+//             . ",SUM(pdte_conciliar) as pdte_conciliar,'' AS a31,'' AS a11,'' AS b1,'' AS c1,SUM(pdte_pago) AS pdte_pago  FROM Fras_Prov_View WHERE $where  " ;   
 //     echo $sql;
+
 
      $col_sel="ID_FRA_PROV" ;
 
     break;
     case "cuadros":
-     $sql="SELECT path_archivo as pdf_500,ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,"
-         . "ID_OBRA, NOMBRE_OBRA,grupo,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada, concepto "
-            . " FROM Fras_Prov_View WHERE $where  ORDER BY FECHA DESC " ;
-     $formats["pdf_500"] = 'pdf_500_500' ;   
-     $linkss["pdf_500"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura",""] ;
+     $sql="SELECT path_archivo ,ID_FRA_PROV,ID_PROVEEDORES,PROVEEDOR,N_FRA,FECHA,Base_Imponible, iva, IMPORTE_IVA,"
+            . "ID_OBRA, NOMBRE_OBRA,grupo,Observaciones, firmado_TOOLTIP, firmado, pdte_conciliar,conc as cargada,pagada,cobrada "
+             . " FROM Fras_Prov_View WHERE $where  ORDER BY Fecha_Creacion DESC " ;
+     $formats["path_archivo"] = 'pdf_500_500' ;   
+     $links["pdf_500"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV","ver factura",""] ;
      $tabla_cuadros=1;   
      $div_size_width=500 ;
      $div_size_height=$div_size_width*1.5 ;
@@ -265,18 +266,18 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     
      break; 
     case "proveedor":
-     $sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF, COUNT(ID_FRA_PROV) AS Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
-     $sql_T="SELECT 'Totales' AS c,'' as a  , COUNT(ID_FRA_PROV) AS Fras, SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;   
+     $sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF, COUNT(ID_FRA_PROV) AS Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado"
+            . ",SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
+//     $sql_T="SELECT 'Totales' AS c,'' as a  , COUNT(ID_FRA_PROV) AS Fras, SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado"
+//             . ", SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;   
     $agrupados=1 ;
      break;
     case "obras":
      $sql="SELECT ID_OBRA,NOMBRE_OBRA,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_OBRA  ORDER BY NOMBRE_OBRA " ;
-     $sql_T="SELECT 'Totales' AS c,'' AS d,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;   
+//     $sql_T="SELECT 'Totales' AS c,'' AS d,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;   
     $agrupados=1 ;
      break;
     case "meses":
-    
-        
         
    if(!$fmt_clientes)
    {    
@@ -284,7 +285,8 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
             . ",SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
             . " FROM Fras_Prov_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
 
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where   " ;
+//    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado"
+//            . ", SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where   " ;
 
    }else
    {
@@ -294,7 +296,8 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
             . " FROM Fras_Prov_View WHERE $where  GROUP BY MES  " ;
         
     $sql_cli="SELECT  DATE_FORMAT(FECHA_EMISION, '%Y-%m') as MES,0 AS Base_Imponible, 0 AS  iva_soportado, 0 AS IMPORTE_IVA "
-            . ", SUM(Base_Imponible) as Base_Imp_cli , SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado , SUM(IMPORTE_IVA) as Importe_iva_cli, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) as Iva_a_ingresar         "
+            . ", SUM(Base_Imponible) as Base_Imp_cli , SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado , SUM(IMPORTE_IVA) as Importe_iva_cli"
+            . ", SUM(IMPORTE_IVA)  - SUM(Base_Imponible) as Iva_a_ingresar         "
             . " FROM Facturas_View WHERE $where_cli  GROUP BY MES  " ;
         
         
@@ -304,9 +307,9 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
             . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
              . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X GROUP BY MES ORDER BY MES" ; 
      
-     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
-            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
-             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
+//     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
+//            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+//             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
          
    }    
 
@@ -321,7 +324,7 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     $sql="SELECT  $select_trimestre as Trimestre,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado"
             . ",SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
             . "  FROM Fras_Prov_View WHERE $where  GROUP BY Trimestre  ORDER BY Trimestre  " ;
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where   " ;
+//    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where   " ;
    }
    else
    {
@@ -341,9 +344,9 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
             . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
              . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X GROUP BY Trimestre ORDER BY Trimestre" ; 
      
-     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
-            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
-             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
+//     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
+//            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+//             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
        
    }    
     $agrupados=1 ;
@@ -356,9 +359,9 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     $sql="SELECT  DATE_FORMAT(FECHA, '%Y') as Anno,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
             . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar"
             . "  FROM Fras_Prov_View WHERE $where  GROUP BY Anno  ORDER BY Anno  " ;
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,"
-            . " SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar "
-            . " FROM Fras_Prov_View WHERE $where  " ;
+//    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado,"
+//            . " SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar "
+//            . " FROM Fras_Prov_View WHERE $where  " ;
    }
    else
    {
@@ -378,9 +381,9 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
             . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
              . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X GROUP BY Anno ORDER BY Anno" ; 
      
-     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
-            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
-             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
+//     $sql_T= "SELECT 'Suma:' , SUM(Base_Imponible) AS Base_Imponible,SUM(iva_soportado) AS iva_soportado,SUM(IMPORTE_IVA) as IMPORTE_IVA  "
+//            . ", SUM(Base_Imp_cli) as Base_Imp_cli , SUM(iva_devengado)  AS  iva_devengado , SUM(Importe_iva_cli) as Importe_iva_cli, SUM(Iva_a_ingresar) as Iva_a_ingresar         "             
+//             . " FROM ( ( $sql_prov ) UNION ALL ($sql_cli ) ) X " ; 
        
    }    
 
@@ -391,25 +394,40 @@ $agrupados=0 ;               // determina si cada línea es una factura_prov o r
     case "grupo":
     $sql="SELECT  grupo,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
             . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY grupo  ORDER BY grupo  " ;
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;
+//    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;
     $agrupados=1 ;
      break;
     case "firmado":
     $sql="SELECT  firmado,COUNT( ID_FRA_PROV ) as Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado "
             . " , SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  GROUP BY firmado  ORDER BY firmado  " ;
-    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;
+//    $sql_T="SELECT 'Totales' AS D,COUNT( ID_FRA_PROV ),SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_soportado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where  " ;
     $agrupados=1 ;
      break;
  }
 
 //echo "PDF es $pdf"  ;
 //echo $sql ;
-$result=$Conn->query($sql) ;
-if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
-if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
-if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
-if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
+//$result=$Conn->query($sql) ;
+//if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
+//if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
+//if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
+//if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
+ // sumatorias
+$tabla_sumatorias["Base_Imponible"]=0 ;
+$tabla_sumatorias["IMPORTE_IVA"]=0 ;
+$tabla_sumatorias["pdte_conciliar"]=0 ;
+$tabla_sumatorias["pdte_pago"]=0 ;
+$tabla_sumatorias["iva_soportado"]=0 ;
+$tabla_sumatorias["iva_devengado"]=0 ;
+$tabla_sumatorias["Importe_iva_cli"]=0 ;
+$tabla_sumatorias["Iva_a_ingresar"]=0 ;
+$tabla_sumatorias["Base_Imp_cli"]=0 ;
+        
+
+ 
+ 
+ 
 // AÑADE BOTON DE 'BORRAR' FACTURA . SOLO BORRARÁ SI ESTÁ VACÍO DE PERSONAL 
 if (!$agrupados)
 {    
@@ -674,12 +692,15 @@ $filtro_html = panelFiltros( $filtros);
     $grupos='../include/sql.php?sql=' . encrypt2($sql_update);
 $operaciones = panelOperacionesFacturasProveedor($remesas,$cargas,$metalicos,$bancos,$grupos);
 $agrupaciones = panelAgrupacionesFacturasProveedor($btnAgrupaciones,$agrupar);
-//Para los elementos de resumen
-        $sql_resumen="SELECT SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) - SUM(Base_Imponible) AS importe_de_iva, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(importe_vales) AS importe_cargado,SUM(importe_pagado) AS importe_pagado,"
-        . "SUM(importe_cobrado) AS Importe_cobrado  FROM Fras_Prov_View WHERE $where  " ;   
-        $datosResumen=$Conn->query($sql_resumen);
-        $datosResumen = $datosResumen->fetch_array(MYSQLI_ASSOC);
-$resumen = panelResumenFacturasProveedor($datosResumen);
+
+//Para los elementos de resumen  ANULAMOS RESUMEN por optimizacion , juand,. feb21
+//        $sql_resumen="SELECT SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) - SUM(Base_Imponible) AS importe_de_iva, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(importe_vales) AS importe_cargado,SUM(importe_pagado) AS importe_pagado,"
+//        . "SUM(importe_cobrado) AS Importe_cobrado  FROM Fras_Prov_View WHERE $where  " ;   
+//        $datosResumen=$Conn->query($sql_resumen);
+//        $datosResumen = $datosResumen->fetch_array(MYSQLI_ASSOC);
+//        $resumen = panelResumenFacturasProveedor($datosResumen);
+          $resumen = '';
+        
 //$labels = labelVerPdf($fmt_pdf);
 
 $array_fmt=[
@@ -694,13 +715,14 @@ if (!empty($agrupar)) {
     $comentario = 'Agrupado por: '.$agrupar;
     echo comentarioPrevioTabla($comentario);
 }
-if ($result->num_rows == 0) {
-    $comentario = 'Sin filas';
-}
-else {
-    $comentario = $result->num_rows . 'fila'.($result->num_rows == 1 ? '' : 's');
-}
-echo comentarioPrevioTabla($comentario);
+//if ($result->num_rows == 0) {
+//    $comentario = 'Sin filas';
+//}
+//else {
+//    $comentario = $result->num_rows . 'fila'.($result->num_rows == 1 ? '' : 's');
+//}
+$titulo="_NUM_ filas" ;
+//echo comentarioPrevioTabla($comentario);
 // echo iniciaTabla('', '', 'seleccion');
 // echo finalizaTabla();
 
@@ -717,7 +739,7 @@ elseif ($tabla_cuadros) {
     require("../include/tabla_cuadros.php");
 }
 else {
-    require("../include/tabla.php");
+    require("../include/tabla_ajax.php");
     echo $TABLE;
 }
 echo finalizaDivision();

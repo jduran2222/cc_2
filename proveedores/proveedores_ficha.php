@@ -181,11 +181,13 @@ require("../menu/LRU_registro.php"); require("../include/widget_documentos.php")
 //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
 $sql="SELECT ID_FRA_PROV,ID_PROVEEDORES,ID_OBRA,FECHA,N_FRA,NOMBRE_OBRA,IMPORTE_IVA,firmado,conc,pagada,cobrada,path_archivo as pdf,grupo,Observaciones "
         . " FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC, fecha_creacion DESC LIMIT 20 " ;
-$sql_T="SELECT '' as a, '' as aa, '' as aaa, SUM(IMPORTE_IVA) as IMPORTE_IVA,'' as a1, '' as aa1, '' as aaa1   FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC LIMIT 20 " ;
+//$sql_T="SELECT '' as a, '' as aa, '' as aaa, SUM(IMPORTE_IVA) as IMPORTE_IVA,'' as a1, '' as aa1, '' as aaa1   FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC LIMIT 20 " ;
+
+$tabla_sumatorias["IMPORTE_IVA"]=0 ;
 
 //echo $sql;
-$result=$Conn->query($sql );
-$result_T=$Conn->query($sql_T );
+//$result=$Conn->query($sql );
+//$result_T=$Conn->query($sql_T );
 
 $updates=['Observaciones','grupo'];
 $tabla_update="FACTURAS_PROV" ;
@@ -214,13 +216,16 @@ $links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
 $titulo="Ultimas facturas " ;
 $msg_tabla_vacia="No hay";
 
+$tabla_footer= "<a class='btn btn-link btn-xs noprint' href='../proveedores/facturas_proveedores.php?_m=$_m&id_proveedor=$id_proveedor' target='_blank' >ver todas las facturas</a>" ; // BOTON AÑADIR FACTURA
+
+
 //echo "<div id='main' class='mainc' style='background-color:orange'>" ;
 echo "<div  class='mainc_50' style='background-color:pink;float:left;padding:0 20px;' >" ;
 echo   "<a class='btn btn-link noprint' href='../proveedores/factura_proveedor_anadir.php?_m=$_m&id_proveedor=$id_proveedor' target='_blank' ><i class='fas fa-plus-circle'></i> factura nueva</a>" ; // BOTON AÑADIR FACTURA
      
 //echo "<a class='btn btn-primary' target='_blank' href= '../bancos/aval_anadir.php?id_linea_avales=$id_linea_avales' ><i class='fas fa-plus-circle'></i>Añadir Aval</a><br>" ;
 
-require("../include/tabla.php"); echo $TABLE ; 
+require("../include/tabla_ajax.php"); echo $TABLE ; 
 echo "<br>"  ;
 echo "</div>" ;
 

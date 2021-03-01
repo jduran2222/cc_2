@@ -206,15 +206,27 @@ echo "\$id_agrupamiento".var_dump($id_agrupamiento)."<br>";
 
 // FIN DEBUG
 
+logs("TABLA GROUP inicializamos $sql  "); 
 
- 
+// inicializamos la consulta si no existen los results o venimos por AJAX sin objetos
+if (!isset($result) AND isset($sql)) {  $result=$Conn->query( $sql ); }
+if (!isset($result_T) AND isset($sql_T)) {  $result_T=$Conn->query( $sql_T ); }
+if (!isset($result_T2) AND isset($sql_T2)) {  $result_T2=$Conn->query( $sql_T2 ); }
+if (!isset($result_T3) AND isset($sql_T3)) {  $result_T3=$Conn->query( $sql_T3 ); }
+if (!isset($result_S) AND isset($sql_S)) {  $result_S=$Conn->query( $sql_S ); } 
+
+
+
 
 if (!isset($updates)) {$updates=[] ;}
 if (!isset($anchos_ppal)) { $anchos_ppal=[30,20,20,20,20] ;}
 
 
 
-$titulo=isset($titulo) ? $titulo : "" ;
+//$titulo=isset($titulo) ? $titulo : "" ;
+$titulo= isset($titulo) ? $titulo : ( !isset($print_pdf)?  'tabla' : '' ) ;
+$titulo= str_replace("_NUM_",$result->num_rows , $titulo) ;                  // añadimos el número de filas al título si marcamos titulo_num=true
+
  
 $add_link_html= (isset($add_link)) ? "<a class='btn btn-primary' href='#' onclick=\"tabla_add_row( '{$tabla_update}' , '{$add_link['field_parent']}', '{$add_link['id_parent']}'  ) ;\"  >añadir fila</a> " : "" ;
 echo  "<P>$titulo $add_link_html</P>" ; 
@@ -660,7 +672,7 @@ if (isset($result_S))       // Hay subgrupos DESPLEGABLES a anidar, creamos el A
               }
         } 
            // ACCION ROW botones de acciones en ULTIMA COLUMNA que compenten a toda la fila (edit, delete...)
-           if (isset($actions_row["id"])  AND isset($rs[$actions_row["id"]]))                          
+           if (isset($actions_row["id"])  AND isset($rst[$actions_row["id"]]))                          
                      {
                       $var_id=$rst[$actions_row["id"]] ;
                       echo "<td>" ;

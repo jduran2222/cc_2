@@ -226,7 +226,7 @@ function add_proyecto(id_obra,id_produccion) {
             location.reload(true); }  // refresco la pantalla tras editar Producción
       }
   };
-  xhttp.open("GET", "../obras/prod_add_proy_ajaax.php?id_obra="+id_obra+"&id_produccion="+id_produccion+"&fecha="+nuevo_valor+"&factor="+factor, true);
+  xhttp.open("GET", "../obras/prod_add_proy_ajax.php?id_obra="+id_obra+"&id_produccion="+id_produccion+"&fecha="+nuevo_valor+"&factor="+factor, true);
   xhttp.send();   
    }
    else

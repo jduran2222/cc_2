@@ -15,7 +15,7 @@ include_once('../include/funciones_js.php');
     <input id="auxiliar" type="hidden">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"  onclick="carga_ajax('auxiliar','../menu/menu_lateral_collapse_ajax.php');">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"  onclick="cargar_ajax('auxiliar','../menu/menu_lateral_collapse_ajax.php');">
           <i class="fas fa-bars"></i>
         </a>
       </li>
@@ -65,7 +65,6 @@ include_once('../include/funciones_js.php');
          $htmlAdmin .= '
       <li class="nav-item d-inline-block"  style="border:none;color:silver" >
         Tiempo: <br><input style="border:none;color:silver"  type="text" id="tiempo_total" size="3">
-        </a>
       </li>
         ';
         echo $htmlAdmin;
@@ -202,7 +201,7 @@ include_once('../include/funciones_js.php');
                 $htmlMenuPermisoLicitacion .= '      </a>';
                 $htmlMenuPermisoLicitacion .= '    </li>';
                $htmlMenuPermisoLicitacion .= '    <li class="nav-item">';
-                $htmlMenuPermisoLicitacion .= '      <a href="#" onClick="carga_ajax( \'div_main\',    \'../estudios/estudios_calendar.php?_m='.$_m.'&fecha='.date("Y-m-d").'\');" class="nav-link">';
+                $htmlMenuPermisoLicitacion .= '      <a href="#" onClick="cargar_ajax( \'div_main\',    \'../estudios/estudios_calendar.php?_m='.$_m.'&fecha='.date("Y-m-d").'\');" class="nav-link">';
                 $htmlMenuPermisoLicitacion .= '        <i class="far fa-calendar-alt nav-icon"></i>';
                 $htmlMenuPermisoLicitacion .= '        <p>Calendario Licit3.</p>';
                 $htmlMenuPermisoLicitacion .= '      </a>';

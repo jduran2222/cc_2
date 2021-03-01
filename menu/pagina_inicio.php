@@ -634,7 +634,7 @@ if ($admin)
 <!--                <div id="calendar" style="width: 100%"></div>-->
                 <img src='../img/espere.gif' >
                 <script>
-                    carga_ajax('div_ajax','../menu/menu_app_ajax2.php');
+                    cargar_ajax('div_ajax','../menu/menu_app_ajax2.php');
                 </script>
 
               </div>
@@ -701,7 +701,7 @@ if ($admin)
 //            }
 //        }});
         
-        carga_ajax('modal_ajax1',href+'&modal_ajax=1&id_obra=1262');
+        cargar_ajax('modal_ajax1',href+'&modal_ajax=1&id_obra=1262');
 //        document.getElementById('espera').style.display='none';
     }
 

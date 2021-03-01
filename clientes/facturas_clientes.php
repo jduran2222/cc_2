@@ -22,6 +22,216 @@ include_once('../templates/_inc_privado2_navbar.php');
                 <!--****************** BUSQUEDA GLOBAL  *****************
                 <!--<div class="col-12 col-md-4 col-lg-9">-->
 
+<style>
+
+/*  <a> boton dentro_tabla prueba */ 
+/*div.div_edit:hover {
+  border: 1px solid lightblue;
+    background-color: white;
+    min-height: 50px;
+}*/
+
+/*div.div_edit {
+  border: 1px solid lightblue;
+    background-color: white;
+    min-height: 50px;
+}*/
+
+
+/*.box_wiki{
+    display: none;
+    width: 100%;
+}*/
+
+/*a:hover + .box_wiki,.box_wiki:hover{
+    display: block;
+    position: relative;
+    position: absolute;
+    z-index: 100;
+}*/
+
+	
+/*	
+table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: "Verdana", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+     tamaño fuente tabla 
+    font-size: 0.8vw;                          
+    width: 100%;
+}*/
+
+/*table td {
+ 
+    text-align: center;
+     border-bottom: 1px solid #ddd;
+    padding: 3px;
+    white-space: nowrap;
+    height: 20px;
+}
+
+td.nowrap{
+  white-space: nowrap;
+
+}
+
+
+ table  tr:hover {background-color: #ddd;}
+
+
+
+table th {
+        text-align: center;
+     border: 1px solid #ddd;
+    padding: 3px;
+    height: 20px;
+
+    cursor: pointer;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    text-align: center; 
+    color del fondo de TH
+    background-color: #F2F4F4;      
+    color: white;
+    font-weight: bold;
+      white-space: nowrap;
+  
+    
+ }
+ */
+/*.float_left {
+    border: 1px solid blue;
+    float: left;
+    cursor: pointer;
+}
+
+.textarea_tabla {
+    height: 4em;
+    width: auto;
+    border-width: 0px ;
+
+}*/
+
+ 
+/*@media only screen and (max-width:980px) {
+   For mobile phones: antes 500px 
+   table {
+    font-size: 4vw; 
+  }
+   div {
+     overflow: scroll;
+  }
+  option {
+   font-size: 4.2vw;   
+  transform: scale(2);  
+}
+  
+}*/
+
+@media print{
+/*    font-size: 4.2vw; 
+    a[href]:after {
+      display: none;
+      visibility: hidden;
+   }
+   
+    a:link
+    {
+    color: black ;
+    text-decoration:none;
+    }
+
+   
+    
+    textarea { border: none; }
+    
+   .noprint{
+       display:none;
+   }
+   .topnav{
+       display:none;
+   }
+   
+   .sidenav{
+       display:none;
+   }
+   
+   .glyphicon {
+       display:none;
+   }
+   .dentro_tabla_ppal {
+       display:none;
+   }
+   .dentro_tabla {
+       display:none;
+   }
+   
+   thead {
+            display:table-header-group;
+            margin-bottom:2px;
+             padding-top: 500px ;
+            
+            top:8cm;
+        }
+   table td {
+            border : none ;
+            font-size: 8pt ;
+            font-family:arial;
+        }
+*/
+} 
+
+ 
+/*  @page
+    {margin-top:3cm;
+     margin-left:1.5cm;
+     margin-right:1.5cm;
+     margin-bottom:3cm;
+     
+    }
+    */
+       @media print {
+/*            div.divHeader {
+                
+                position: fixed;
+                top: 0cm;
+                padding-top: 500px ;
+                padding-bottom: 500px ;
+                height: 320px;
+                display:block;
+              
+                
+            }
+            
+            div.divFooter {
+                position: fixed;
+                bottom: 0cm;
+                
+                
+            }
+            */
+        }
+        
+/*           @media screen {
+            div.divHeader {
+                display: none;
+            }
+            
+           div.divFooter {
+                display: none;
+            }
+         }
+   */
+         
+/*  th.hide_id_<?php // echo $idtabla;?> { display: none; } // intento de controlar la tabla para independizar los show_ID
+  td.hide_id_<?php // echo $idtabla;?> { display: none; }
+  */
+/*  th.hide_id { display: none; }
+  td.hide_id { display: none; }*/
+  
+         
+    
+</style>
 
 <?php 
 
@@ -302,7 +512,7 @@ $where=$cobrada==""? $where : $where . " AND  Cobrada=$cobrada" ;
     $sql_T="SELECT '' AS D,COUNT(ID_FRA) AS Fras,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA)  - SUM(Base_Imponible) AS  iva_devengado, SUM(IMPORTE_IVA) as IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  " ;
     
     // google chart
-    $cols_chart['Anno']=["Años","string"] ;  // columnas con las que realizar el gráfico
+    $cols_chart['anno']=["Años","string"] ;  // columnas con las que realizar el gráfico
     $cols_chart['Base_Imponible']=["Facturacion","number"] ;  // columnas con las que realizar el gráfico
     
     break;
@@ -311,7 +521,7 @@ $where=$cobrada==""? $where : $where . " AND  Cobrada=$cobrada" ;
      //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
      $sql_T="SELECT '' AS d,SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  " ;   
      $sql_S="SELECT anno, SUM(Base_Imponible) AS Base_Imponible, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(Pdte_Cobro) AS Pdte_Cobro  FROM Facturas_View WHERE $where  GROUP BY anno ORDER BY anno  " ;      
-     $id_agrupamiento="Anno" ;
+     $id_agrupamiento="anno" ;
      $anchos_ppal=[30,20,20,20,20] ;
     
 //     $tabla_update="Udos" ;
@@ -385,7 +595,18 @@ $tabla_expandible=0;
 if (isset($tabla_group))
 { require("../include/tabla_group.php"); }
 else
-{ require("../include/tabla.php"); echo $TABLE ; }
+{ 
+   
+
+    
+    
+    require("../include/tabla_ajax.php");
+
+//    require("../include/tabla.php");
+//    echo $TABLE ;
+    
+    
+}
  
  echo "</form>" ;
 

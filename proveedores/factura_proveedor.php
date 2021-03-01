@@ -377,11 +377,11 @@ if (!$factura_registrada )     // si ID_PROVEEDOR es diferente a <proveedor pted
 
 $sql="SELECT ID_VALE,FECHA, ID_OBRA, NOMBRE_OBRA, REF,importe,path_archivo as pdf , Observaciones FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ORDER BY FECHA ";
 //echo $sql;
-$result=$Conn->query($sql );
+//$result=$Conn->query($sql );
 
-$sql="SELECT '' as a,'' as b,'Suma' as c, SUM(importe) as importe, '' as c1 FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
+//$sql_T="SELECT '' as a,'' as b,'Suma' as c, SUM(importe) as importe, '' as c1 FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
 //echo $sql;
-$result_T=$Conn->query($sql );
+//$result_T=$Conn->query($sql_T );
 
 $formats["FECHA"]='fecha';
 $formats["importe"]='moneda';
@@ -397,11 +397,11 @@ $aligns["Pdte_conciliar"] = "right" ;
 //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-//$num_vales=Dfirst("COUNT(ID_VALE)","VALES", "ID_FRA_PROV=$id_fra_prov") ;
-$num_vales= $result->num_rows;
+$num_vales=Dfirst("COUNT(ID_VALE)","VALES", "ID_FRA_PROV=$id_fra_prov") ;
+//$num_vales= $result->num_rows;
 
 
-$titulo="<span>Albaranes conciliados ($num_vales <span class='glyphicon glyphicon-tags'></span>):</span>" ; 
+$titulo="<span>Albaranes conciliados (_NUM_ <i class='fas fa-tags'></i>):</span>" ; //<i class="fas fa-tags"></i>
 
 if ($conc AND ($num_vales>0))              // está conciliado y hay albaranes
 {
@@ -440,6 +440,7 @@ $actions_row["id"]="ID_VALE";
 $actions_row["delete_link"]="1";
 
 
+$tabla_sumatorias["importe"]=0 ;
 
 
 // accion de DESCONCILIAR el ALBARAN (vale) de la FRA_PROV
@@ -456,7 +457,9 @@ $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs noprint' target=
     
 $msg_tabla_vacia="No hay albaranes cargados a obra en esta factura";
 
- require("../include/tabla.php"); echo $TABLE ; //  VALES 
+ require("../include/tabla_ajax.php");
+// echo $TABLE ; //  VALES 
+// require("../include/tabla.php"); echo $TABLE ; //  VALES 
 
 
  
@@ -492,16 +495,12 @@ $sql="SELECT ID_VALE,FECHA, ID_OBRA, NOMBRE_OBRA, REF,importe,path_archivo as pd
         . " WHERE ID_PROVEEDORES=$id_proveedor AND ISNULL(ID_FRA_PROV) AND $where_c_coste AND FECHA>='2017-01-01' ORDER BY FECHA DESC  ";
 $col_sel="ID_VALE";
 //echo $sql;
+$result=$Conn->query($sql );
 $sql_T="SELECT '' as a2,'' as a3,'Total',SUM(importe) as importe  FROM Vales_view "
         . " WHERE ID_PROVEEDORES=$id_proveedor AND ISNULL(ID_FRA_PROV) AND $where_c_coste AND FECHA>='2017-01-01'  ";
-//echo $sql;
-$result=$Conn->query($sql );
-$result_T=$Conn->query($sql_T );
+//$result_T=$Conn->query($sql_T );
 $importe_pdte_conc=dfirst('SUM(importe)', "Vales_view","ID_PROVEEDORES=$id_proveedor AND ISNULL(ID_FRA_PROV) AND $where_c_coste AND FECHA>='2017-01-01'") ;
 
-//$sql="SELECT '' as a,'' as b,'' as c, SUM(importe) as importe FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
-////echo $sql;
-//$result_T=$Conn->query($sql );
 
 
 
@@ -534,13 +533,14 @@ $actions_row["onclick1_link"]="<br><a class='btn btn-warning btn-xs' target='_bl
   
 $num_vales_sin_conc= $result->num_rows;
 
- $titulo="<span>Albaranes sin conciliar  ($num_vales_sin_conc <span class='glyphicon glyphicon-tags'></span>) <br><small>Alb. sin conciliar:  ".cc_format($importe_pdte_conc,"moneda")."</small></span>" ; 
+ $titulo="<span>Albaranes sin conciliar  ($num_vales_sin_conc <i class='fas fa-tags'></i>) <br><small>Alb. sin conciliar:  ".cc_format($importe_pdte_conc,"moneda")."</small></span>" ; 
 
  $msg_tabla_vacia="No hay Albaranes sin conciliar de este proveedor";
 
 
  
- require("../include/tabla.php"); echo $TABLE ;         // vales pdtes de conciliar
+ require("../include/tabla_ajax.php"); echo $TABLE ;         // vales pdtes de conciliar
+// require("../include/tabla.php"); echo $TABLE ;         // vales pdtes de conciliar
 
 //  VALES
 ?>
@@ -587,17 +587,18 @@ require("../include/widget_firmas.php");          // FIRMAS
 <div class="right2_50" style="background-color: #ffcc99"> 
 
 	
-<?php            //  div PAGOS  tabla.php
+<?php            //  div #PAGOS  tabla.php
 
 //$sql="SELECT id_pago,Banco, tipo_doc, f_vto, importe,id_mov_banco,if(conc,'<small>mov_banco</small>','') as cobrado,if(FProv > 1, 'X' , '') as P_multiple FROM Fras_Prov_Pagos_View  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ORDER BY f_vto   ";
 $sql="SELECT id_pago,id_cta_banco,id_remesa, id_pago as nid_pago,Banco,  remesa, f_vto, importe,id_mov_banco,conc as cobrado,tipo_doc,fecha_banco,concepto as concepto_banco "
         . " FROM Fras_Prov_Pagos_View  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ORDER BY f_vto   ";
 //echo $sql;
-$result=$Conn->query($sql );
+//$result=$Conn->query($sql );
 
-$sql_T="SELECT '','' as a,'' as a1,'' as a11, SUM(importe) as importe,'' as a2,'' as a111 FROM Fras_Prov_Pagos_View  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
+//$sql_T="SELECT '','' as a,'' as a1,'' as a11, SUM(importe) as importe,'' as a2,'' as a111 FROM Fras_Prov_Pagos_View  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
 //echo $sql;
-$result_T=$Conn->query($sql_T );
+//$result_T=$Conn->query($sql_T );
+$tabla_sumatorias["importe"]=0 ;
 
 $formats["f_vto"]='fecha';
 $formats["cobrado"]='boolean';
@@ -655,11 +656,11 @@ $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs noprint' target=
   
   ////////////  PAGOS REALIZADOS  /////////
  
-$num_pagos= $result->num_rows;
+//$num_pagos= $result->num_rows;
 
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Pagos ($num_pagos) " ;   
+$titulo="Pagos (_NUM_) " ;   
 $pdte_pago_txt= $pdte_pago<>0 ?  "(Pdte:" .  trim(cc_format($pdte_pago,'moneda')) .")" : "" ;   
 
 if ($pagada)
@@ -794,7 +795,8 @@ $msg_tabla_vacia="No hay Pagos emitidos en esta factura";
 
 $tabla_expandida= 0;
 	
- require("../include/tabla.php"); echo $TABLE ;  // PAGOS
+  require("../include/tabla_ajax.php"); echo $TABLE ;         // vales pdtes de conciliar
+//require("../include/tabla.php"); echo $TABLE ;  // PAGOS
  
  ?>
 

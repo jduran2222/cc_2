@@ -25,37 +25,22 @@ if ($_GET["id_produccion"]=="PRODUCCION_OBRA" OR $_GET["id_produccion"]=="ESTUDI
 }
 
 
-$titulo_pagina="Rv " . Dfirst("PRODUCCION","Prod_view", "ID_PRODUCCION={$_GET["id_produccion"]} AND $where_c_coste"  ) ;
-$titulo = $titulo_pagina;
+
+
+$listado_global= (!isset($_GET["id_produccion"])) ;
+$iniciar_form=(!isset($_POST["CAPITULO"])) ;  // determinamos si debemos de inicializar el FORM con valores vacíos
+
+$titulo_pagina="Rv " . Dfirst("PRODUCCION","Prod_c_coste", "ID_PRODUCCION={$_GET["id_produccion"]} AND $where_c_coste"  ) ;
+//$titulo_pagina="Rv " . Dfirst("PRODUCCION","PRODUCCIONES", "ID_PRODUCCION={$_GET["id_produccion"]} AND ID_OBRA="  ) ;
+$titulo=$titulo_pagina ;  // para compatibiliidad con _inc_privado1_header  (pdte de homogeneizar , juand, feb21)
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
 include_once('../templates/_inc_privado2_navbar.php');
 
-?>
-
-        <!-- Contenido principal 
-        <div class="container-fluid bg-light">
-            <div class="row">
-                <!--****************** ESPACIO LATERAL  *****************
-                <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************
-
-                <!--****************** BUSQUEDA GLOBAL  *****************
-                <!--<div class="col-12 col-md-4 col-lg-9">-->
-
-
-<!-- CONEXION CON LA BBDD Y MENUS -->
-<?php 
 
 require_once("../include/NumeroALetras.php"); 
-
-// require_once("../obras/obras_menutop_r.php");
 //require_once("../menu/menu_migas.php");
-
-
-$listado_global= (!isset($_GET["id_produccion"])) ;
-$iniciar_form=(!isset($_POST["CAPITULO"])) ;  // determinamos si debemos de inicializar el FORM con valores vacíos
 
 $style_hidden_if_global=$listado_global? " disabled " : ""  ; 
 
@@ -63,8 +48,8 @@ if (!$listado_global)
   {
  $id_produccion=$_GET["id_produccion"];
 
-     $id_obra=Dfirst("ID_OBRA", "Prod_view","ID_PRODUCCION=$id_produccion AND $where_c_coste" ) ;
-     $PRODUCCION= Dfirst("PRODUCCION", "Prod_view","ID_PRODUCCION=$id_produccion AND $where_c_coste" ) ;
+     $id_obra=Dfirst("ID_OBRA", "Prod_c_coste","ID_PRODUCCION=$id_produccion AND $where_c_coste" ) ;
+     $PRODUCCION= Dfirst("PRODUCCION", "Prod_c_coste","ID_PRODUCCION=$id_produccion AND $where_c_coste" ) ;
      
      
      
@@ -276,9 +261,15 @@ if (!$listado_global)
     
     // crear cetificacion
    $fecha=date('Y-m-d');
-   $importe_final=Dfirst("importe_final","Prod_view"," $where_c_coste AND ID_PRODUCCION=$id_produccion ")  ;
+//   $importe_final=Dfirst("importe_final","Prod_view"," $where_c_coste AND ID_PRODUCCION=$id_produccion ")  ;
+//   $importe_final="(SELECT importe_final FROM Prod_view $where_c_coste AND ID_PRODUCCION=$id_produccion )"  ;
+//   $sql_insert= encrypt2( "INSERT INTO `CERTIFICACIONES` (`ID_OBRA`, `ID_PRODUCCION`, `NUM`, `FECHA`, `CONCEPTO`, `IMPORTE`, user)" 
+//             ." VALUES ( '$id_obra', '$id_produccion', '1', '$fecha', '$PRODUCCION' ,$importe_final, '{$_SESSION['user']}');" ) ;    
+
    $sql_insert= encrypt2( "INSERT INTO `CERTIFICACIONES` (`ID_OBRA`, `ID_PRODUCCION`, `NUM`, `FECHA`, `CONCEPTO`, `IMPORTE`, user)" 
-             ." VALUES ( '$id_obra', '$id_produccion', '1', '$fecha', '$PRODUCCION' ,'$importe_final', '{$_SESSION['user']}');" ) ;    
+             ." SELECT $id_obra , $id_produccion , 1 , '$fecha' , '$PRODUCCION'  ,importe_final , '{$_SESSION['user']}' "
+             . "FROM Prod_view WHERE $where_c_coste AND ID_PRODUCCION=$id_produccion           ;" ) ;    
+             
    $href="../include/sql.php?code=1&sql=$sql_insert ";
       
 //      echo "<a class='btn btn-link'  href='#'  onclick=\"js_href('$href' )\" >"
@@ -290,7 +281,7 @@ if (!$listado_global)
      <?php echo $boton_global; ?>
      <a class="btn btn-link btn-xs noprint" title="imprimir" href=#  onclick="window.print();"><i class="fas fa-print"></i> Imprimir pantalla</a>
      <a class="btn btn-link btn-xs noprint" title="ver datos generales de la Relacion Valorada actual" target='_blank' href="../obras/prod_ficha.php?_m=$_m&id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><i class="far fa-calendar-alt"></i> ficha Rel. Valorada</a>    
-     <a class="btn btn-link btn-xs noprint" title="Crea una Certificación con el importe de esta Relación Valorada" href="#" onclick="js_href('<?php echo $href; ?>' )" ><i class="fas fa-pen-nib"></i> Certificar Rel.Val.</a>    
+     <a class="btn btn-link btn-xs noprint" title="Crea una Certificación con el importe de esta Relación Valorada" href="#" onclick="js_href('<?php echo $href; ?>',0,'Va a crear una Certificación nueva.\nUna vez creada vaya a Ventas para verla' )" ><i class="fas fa-pen-nib"></i> Certificar Rel.Val.</a>    
      <br><br>
  </div>
  
@@ -315,11 +306,11 @@ function formato_prod_obra()
     
 //        alert($('#agrupar').val())  ;
 //    document.getElementById("form1").submit();
-    document.getElementById('form1').submit();
+    document.getElementById('form1').submit(); 
 
 //    $('#btn_agrupar_udos').click() ;  
 //   document.getElementbyID("btn_agrupar_udos").click();
-//   document.getElementById('agrupar').value = 'udos'; document.getElementById('form1').submit();
+//   document.getElementById('agrupar').value = 'udos'; document.getElementById('form1').submit(); 
 
 //    window.print();
 }
@@ -357,7 +348,7 @@ function formato_estudio_costes()
     $('#fmt_subobras').prop('checked',true) ;  //agrupar
     $('#fmt_mensual').prop('checked',false) ;  
     $('#fmt_no_print').prop('checked',false) ;  
-    $('#fmt_pre_med').prop('checked',true) ;  
+    $('#fmt_pre_med').prop('checked',false) ;   
     
 //    alert($('#agrupar').val())  ;
 //    alert(document.getElementById("agrupar").value)  ;
@@ -641,9 +632,7 @@ $select_doc = $fmt_doc ? ",path_archivo" : "" ;
 
 
 
-//$select_JOIN_med_proyecto = $fmt_med_proyecto ? " JOIN Capitulos_importe ON ConsultaProd.ID_CAPITULO=Capitulos_importe.ID_CAPITULO  " : ""  ;               
-//$select_MED_PROYECTO = $fmt_med_proyecto ? ", MED_PROYECTO,MED_PROYECTO*PRECIO as importe_proy, (MED_PROYECTO >= SUM(MEDICION) ) AS exceso,(MED_PROYECTO*PRECIO - SUM(MEDICION)*PRECIO) as importe_pdte " : ""  ;               
-$select_MED_PROYECTO = $fmt_med_proyecto ? ",IF(MED_PROYECTO=MEDICION,'fijo_gris','fijo') AS MEDICION_FORMAT, MED_PROYECTO,MED_PROYECTO*PRECIO as importe_proy, (MED_PROYECTO*PRECIO - SUM(MEDICION)*PRECIO) as importe_pdte_ej " : ""  ;               
+$select_MED_PROYECTO = $fmt_med_proyecto ? ",IF(MED_PROYECTO=MEDICION,'fijo_gris','fijo') AS MEDICION_FORMAT, MED_PROYECTO,MED_PROYECTO*PRECIO as importe_proyecto, (MED_PROYECTO*PRECIO - SUM(MEDICION)*PRECIO) as importe_pdte_ej " : ""  ;               
 $select_MED_PROYECTO_detalle = $fmt_med_proyecto ? ", MED_PROYECTO " : ""  ;               
 $select_importe_proyecto = $fmt_med_proyecto ? ", importe_proyecto,  SUM(IMPORTE)/importe_proyecto AS P_ejec,importe_proyecto - SUM(IMPORTE) as importe_pdte_ej " : ""  ;               
 $select_importe_proyecto_T = $fmt_med_proyecto ? ", SUM(importe_proyecto),  SUM(IMPORTE)/SUM(importe_proyecto) AS P_ejec ,SUM(importe_proyecto) - SUM(IMPORTE) as importe_pdte_ej " : ""  ;               
@@ -781,7 +770,7 @@ if (!$listado_global)
  switch ($agrupar) {
    case "obras":
      $sql="SELECT ID_OBRA,NOMBRE_OBRA , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where   GROUP BY ID_OBRA ORDER BY NOMBRE_OBRA " ;
-     $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
+//     $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
    break;
    case "subobras":
      
@@ -795,7 +784,7 @@ if (!$listado_global)
      
 //    echo $sql ;
      
-     $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
+//     $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
      
      $tabla_update="SubObras" ;
      $id_update="ID_SUBOBRA" ;
@@ -816,7 +805,7 @@ if (!$listado_global)
 
      $sql= "SELECT ID_SUBOBRA,SUBOBRA , SUM(importe) as importe,SUM( gasto) AS gasto ,SUM(importe)-SUM( gasto) AS beneficio_real, 1-SUM( gasto)/SUM(importe) as margen "
              . " FROM (" . $sql1 ." UNION ALL ". $sql2 .") X GROUP BY ID_SUBOBRA" ; 
-     $sql_T= "SELECT 'Suma Ejecución Material...', SUM(importe) as importe,SUM( gasto) AS gasto FROM (" . $sql1 ." UNION ALL ". $sql2 .") X " ; 
+//     $sql_T= "SELECT 'Suma Ejecución Material...', SUM(importe) as importe,SUM( gasto) AS gasto FROM (" . $sql1 ." UNION ALL ". $sql2 .") X " ; 
    
 $sql_T2="SELECT  CONCAT('Suma Ejecución Contrata... GG+BI x COEF_BAJA:',$COEF_BAJA), SUM(importe)*(1+$GG_BI)*$COEF_BAJA as importe,SUM( gasto) AS gasto  ,SUM(importe)*(1+$GG_BI)*$COEF_BAJA-SUM( gasto) AS beneficio_real"
         . ",( 1-SUM(gasto)/(SUM(importe)*(1+$GG_BI)*$COEF_BAJA)) as margen   FROM (" . $sql1 ." UNION ALL ". $sql2 .") X   " ;
@@ -959,29 +948,29 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
 
    case "dias":
     $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m-%d') as fecha,SUM(importe) as importe  FROM ConsultaProd WHERE $where   GROUP BY fecha  ORDER BY fecha  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
      break;
    case "semanas":
     $sql="SELECT  $select_semana as Semana,SUM(importe) as importe  FROM ConsultaProd WHERE $where   GROUP BY Semana ORDER BY Semana  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
     break;
    case "meses":
     $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m') as MES,SUM(importe) as importe  FROM ConsultaProd WHERE $where   GROUP BY MES  ORDER BY MES  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
     break;
    case "trimestres":
     $sql="SELECT  $select_trimestre as Trimestre,SUM(importe) as importe  FROM ConsultaProd WHERE $where   GROUP BY Trimestre  ORDER BY Trimestre  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  " ;
     break;
    case "annos":
     $sql="SELECT  YEAR(FECHA) as Anno,SUM(importe) as importe $select_MENSUAL FROM ConsultaProd WHERE $where   GROUP BY Anno  ORDER BY Anno  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaProd WHERE $where  " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaProd WHERE $where  " ;
     break;
    case "detalle":
    $sql="SELECT id, FECHA , $select_global CAPITULO,ID_UDO,ud $select_UDO,Observaciones $select_MED_PROYECTO_detalle, "
           . " MEDICION , PRECIO,COSTE_EST, IMPORTE  FROM ConsultaProd WHERE $where ORDER BY CAPITULO,ID_UDO " ;
    
-   $sql_T="SELECT $select_global_T '' as a122,'' as a112,'' as a12,'' as a31,'' as a39,'' as a14,'' as a15,'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
+//   $sql_T="SELECT $select_global_T '' as a122,'' as a112,'' as a12,'' as a31,'' as a39,'' as a14,'' as a15,'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
    $actions_row["id"]="id";
    $actions_row["delete_link"]="1";
    $updates=['MEDICION','FECHA','Observaciones']  ;
@@ -1006,7 +995,7 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
    $print_anadir_med=true ;
 //   echo $sql ;
 //   $sql_T="SELECT '' as a122,'' as a112,'' as a12,'' as a31,'' as a39,'' as a14,'' as a15,'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE ID_PRODUCCION=$id_produccion  " ;
-   $sql_T="SELECT '' as a122,'' as a112,'' as a12,'' as a31,'' as a39,'' as a14 $select_COSTE_EST_T,'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE ID_PRODUCCION=$id_produccion AND $where  " ;
+//   $sql_T="SELECT '' as a122,'' as a112,'' as a12,'' as a31,'' as a39,'' as a14 $select_COSTE_EST_T,'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE ID_PRODUCCION=$id_produccion AND $where  " ;
 //   echo "<br>$sql_T" ;
    $updates=[]  ;
   $tabla_update="PRODUCCIONES_DETALLE" ;
@@ -1033,11 +1022,11 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
                      . "   LEFT JOIN ($sql2)  AS SQL2 ON Udos_View.ID_UDO=SQL2.ID_UDO "
                      . "  WHERE ID_OBRA=$id_obra AND (SQL0.suma_medicion<>0 OR SQL2.suma_medicion <> 0) " ;   
    
-   $sql_T="SELECT '' AS a,'' AS a2,'' AS a3,'' AS a4,'' AS a5,'' AS a6,'' AS a7,'' AS a8,'' AS a9, "
-           . " SUM(SQL0.suma_medicion*PRECIO) AS importe1,  SUM(SQL2.suma_medicion*PRECIO) AS importe2, SUM(SQL0.suma_medicion*PRECIO - SQL2.suma_medicion*PRECIO) AS importe_DIFERENCIA "
-        . " FROM Udos_View LEFT JOIN ($sql0)  AS SQL0 ON Udos_View.ID_UDO=SQL0.ID_UDO"
-                     . "   LEFT JOIN ($sql2)  AS SQL2 ON Udos_View.ID_UDO=SQL2.ID_UDO "
-                     . "  WHERE ID_OBRA=$id_obra AND (SQL0.suma_medicion<>0 OR SQL2.suma_medicion <> 0) " ;   
+//   $sql_T="SELECT 'Suma' AS a,'' AS a2,'' AS a3,'' AS a4,'' AS a5,'' AS a6,'' AS a7,'' AS a8,'' AS a9, "
+//           . " SUM(SQL0.suma_medicion*PRECIO) AS importe1,  SUM(SQL2.suma_medicion*PRECIO) AS importe2, SUM(SQL0.suma_medicion*PRECIO - SQL2.suma_medicion*PRECIO) AS importe_DIFERENCIA "
+//        . " FROM Udos_View LEFT JOIN ($sql0)  AS SQL0 ON Udos_View.ID_UDO=SQL0.ID_UDO"
+//                     . "   LEFT JOIN ($sql2)  AS SQL2 ON Udos_View.ID_UDO=SQL2.ID_UDO "
+//                     . "  WHERE ID_OBRA=$id_obra AND (SQL0.suma_medicion<>0 OR SQL2.suma_medicion <> 0) " ;   
    
    
    $etiquetas["medicion1"]="Medición $PRODUCCION" ;
@@ -1064,7 +1053,7 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
    case "subobras":
        
      $sql="SELECT ID_SUBOBRA, $select_global SUBOBRA , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where   GROUP BY ID_SUBOBRA ORDER BY SUBOBRA " ;
-     $sql_T="SELECT $select_global_T 'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
+//     $sql_T="SELECT $select_global_T 'Suma' , SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where    " ;
     break;
    case "solo_resumen":
        
@@ -1079,7 +1068,40 @@ $sql_T3="SELECT  'Porcentaje de Ejecución:' as leyenda,(SUM(importe)*(1+$GG_BI)
    }
 ///////////// FIN CASE ///////////
  
+   // sumatorias
+ $tabla_sumatorias["importe"]=0 ;
+ $tabla_sumatorias["gasto"]=0 ;
+ $tabla_sumatorias["pdte_conciliar"]=0 ;
+ $tabla_sumatorias["pdte_pago"]=0 ;
+ $tabla_sumatorias["beneficio_real"]=0 ;
+ $tabla_sumatorias["margen"]=0 ;
+ $tabla_sumatorias["importe_proyecto"]=0 ;
+ $tabla_sumatorias["importe_pdte_ej"]=0 ;
+ $tabla_sumatorias["gasto_est"]=0 ;
+ $tabla_sumatorias["beneficio_est"]=0 ;
+ $tabla_sumatorias["P_ejec"]="= @@importe@@ / @@importe_proyecto@@ " ;
+ $tabla_sumatorias["margen"]=0 ;
+ $tabla_sumatorias["margen"]=0 ;
  
+ $tabla_sumatorias["importe1"]=0 ;
+ $tabla_sumatorias["importe2"]=0 ;
+ $tabla_sumatorias["importe_DIFERENCIA"]=0 ;
+ 
+ // si UDO está filtrado, también sumamos las mediciones
+ if ($UDO<>"")
+ {
+    $tabla_sumatorias["MEDICION"]=0 ;
+    $tabla_sumatorias["medicion1"]=0 ;
+    $tabla_sumatorias["medicion2"]=0 ;
+
+ }
+        
+   
+$tabla_sumatorias_resumen = $tabla_sumatorias ;     
+   
+ 
+   
+   
 $formats["Enero"] = "moneda" ; $formats["Febrero"] = "moneda" ; $formats["Marzo"] = "moneda" ; $formats["Abril"] = "moneda" ; $formats["Mayo"] = "moneda" ; $formats["Junio"] = "moneda" ;
 $formats["Julio"] = "moneda" ; $formats["Agosto"] = "moneda" ; $formats["Septiembre"] = "moneda" ; $formats["Octubre"] = "moneda" ; $formats["Noviembre"] = "moneda" ; $formats["Diciembre"] = "moneda" ;
    
@@ -1114,15 +1136,19 @@ $formats["Julio"] = "moneda" ; $formats["Agosto"] = "moneda" ; $formats["Septiem
 //echo $sql_T ;
 //echo $sql ;
 //echo $sql ;
-$result=$Conn->query($sql) ;
+ 
+// ANULADO LO HACEMOS EN TABLA.PHP (por php o ajax) ya que no es necesario aquí (juand, feb21)
+//$result=$Conn->query($sql) ;
+//
+//echo "<br><div class='noprint' style='opacity:0.4;'><small>Filas: {$result->num_rows} </small></div>" ;
+////echo $sql ;
+//
+//if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
+//if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
+//if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
+//if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
-echo "<br><div class='noprint' style='opacity:0.4;'><small>Filas: {$result->num_rows} </small></div>" ;
-//echo $sql ;
 
-if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
-if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
-if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
-if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
 $links["NOMBRE_OBRA"] = ["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
 $links["SUBOBRA"] = ["../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "ver Subobra", "icon"] ;
@@ -1149,7 +1175,7 @@ $updates[]='Fecha' ;
 
 //$formats["Descompuesto_MED"] = "boton_modal" ;
 //$formats["Descompuesto_PRECIO"] = "boton_modal" ;
-$formats["Estudio_coste"] = "text_edit" ;
+$formats["Estudio_coste"] = "div_edit" ;
 $formats["COSTE_EST"] = "text_moneda" ;
 $tooltips["COSTE_EST"] = "Admite formula matemática a calcular y comentarios, anteponer =,  ejemplo\n = hormigon 50*.15 + mallazo 2.5" ;
 $formats["margen"] = "porcentaje" ;
@@ -1188,6 +1214,8 @@ $styles["importe"] = "vertical-align: bottom;" ;
 //$tooltips["Banco_Neg"] = "Indica el banco o línea de descuento donde está negociada" ;
 //echo '</form>' ;
 
+$titulo = $titulo_pagina . " (_NUM_)";
+
 
 //$titulo="<small>Produccion por $agrupar</small>";
 $msg_tabla_vacia="No hay.";
@@ -1197,12 +1225,22 @@ if (isset($fmt_anadir_med) AND $print_anadir_med)  echo $content_anadir_med ;   
 
 $tabla_expandible=0;
 
+
+//echo "AQUI ESTA: ". isset($result) ;
+
+unset($result);  // sigo sin encontrar quien crea el $result
+
 if ($tipo_tabla=='group')
 { require("../include/tabla_group.php"); }
 else if ($tipo_tabla=='pdf')
 { require("../include/tabla_pdf.php"); }
 else 
-{ require("../include/tabla.php"); echo $TABLE ; }
+{
+    require("../include/tabla_ajax.php"); 
+//    require("../include/tabla.php"); echo $TABLE ; 
+    
+    
+}
  
 
 
@@ -1210,37 +1248,31 @@ else
 
 if ($fmt_resumen_cap AND !$listado_global)
 {
-    $sql="SELECT $select_global ID_OBRA,ConsultaProd.ID_CAPITULO, CAPITULO $select_importe_proyecto , SUM(IMPORTE) as importe $select_costes   "
+    $sql="SELECT $select_global ID_OBRA,ConsultaProd.ID_CAPITULO, CAPITULO  , SUM(IMPORTE) as importe $select_importe_proyecto $select_costes   "
            . " FROM ConsultaProd  JOIN Capitulos_importe ON ConsultaProd.ID_CAPITULO=Capitulos_importe.ID_CAPITULO "
            . " WHERE $where  GROUP BY ID_CAPITULO ORDER BY CAPITULO " ;
 
     
-     $sql_T="SELECT $select_global_T 'Suma Ejecución Material........................' $select_MED_PROYECTO_hueco_doble  , SUM(IMPORTE) as importe $select_costes_T "
-             . "  FROM ConsultaProd WHERE $where    " ;
+//     $sql_T="SELECT $select_global_T 'Suma Ejecución Material........................' $select_MED_PROYECTO_hueco_doble  , SUM(IMPORTE) as importe $select_costes_T "
+//             . "  FROM ConsultaProd WHERE $where    " ;
 
      $sql_Prod="SELECT A_DEDUCIR,CERT_ANTERIOR,F_certificacion,OPC_DEDUCIR  FROM PRODUCCIONES WHERE ID_PRODUCCION=$id_produccion    " ;
 //     $sql_Obra="SELECT Pie_CERTIFCACION,iva_obra,COEF_BAJA,GG_BI,IMPORTE  FROM OBRAS WHERE ID_OBRA=$id_obra    " ;
      
-     $result=$Conn->query($sql) ;
-     $result_T=$Conn->query($sql_T) ;     // consulta para los TOTALES
+//     $result=$Conn->query($sql) ;
+//     $result_T=$Conn->query($sql_T) ;     // consulta para los TOTALES
 //     $result_Obra=$Conn->query($sql_Obra) ;     // consulta para los TOTALES
-     $result_Prod=$Conn->query($sql_Prod) ;     // consulta para los TOTALES
      
-//     $rs_Obra= $result_Obra->fetch_array(MYSQLI_ASSOC)  ;
+     $result_Prod=$Conn->query($sql_Prod) ;     // consulta para prod
      $rs_Prod= $result_Prod->fetch_array(MYSQLI_ASSOC)  ;
      
      
      
-     $formats["margen"] = "porcentaje" ;
-     $formats["P_ejec"] = "porcentaje" ;
-//     $formats["importe"] = "moneda" ;
+$formats["margen"] = "porcentaje" ;
+$formats["P_ejec"] = "porcentaje" ;
 $formats["beneficio_real"] = "moneda" ;
 $formats["beneficio_est"] = "moneda" ;
 $formats["gasto_est"] = "moneda" ;
-//$formats["COSTE"] = "moneda" ;
-//$formats["COSTE_EST"] = "moneda" ;
-//$formats["MED_PROYECTO"] = "fijo" ;
-//$formats["MEDICION"] = "fijo" ;
    
 
 ///////////////     CALCULO DE IMPORTES TOTALES     
@@ -1278,12 +1310,16 @@ $formats["gasto_est"] = "moneda" ;
      
 //     $importe_a_descontar=Dfirst("","","") ;
 
-     
-     
  echo "<br><br>";
-$titulo="RESUMEN DE <B>$PRODUCCION<B>";
+
+     
+ echo "<p style='PAGE-BREAK-AFTER: always' ></p>";        // SALTO DE PAGINA AL IMPRIMIR
  
-    require("../include/tabla.php"); echo $TABLE ;
+$titulo="RESUMEN DE <B>$PRODUCCION<B>";
+$tabla_sumatorias = $tabla_sumatorias_resumen ;     // copiamos las mismas sumatorias que en el informe detallado
+ 
+    require("../include/tabla_ajax.php"); 
+//    require("../include/tabla.php"); echo $TABLE ;
  
 //    for ($i = 0; $i <= 100; $i++) {
 //     echo '<br>' ;   

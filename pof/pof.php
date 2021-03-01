@@ -145,9 +145,8 @@ $sql="SELECT CANTIDAD, CONCAT('<b>',CONCEPTO,'</b><br><small>',IFNULL(DESCRIPCIO
 $result=$Conn->query( $sql );
 $titulo='';
 $msg_tabla_vacia="No hay";
-require("../include/tabla.php");
+require("../include/tabla.php");                // tabla.php para generar doc
 //echo $TABLE ;
-
 $array_plantilla["HTML_TABLA1"]=urlencode($TABLE) ;
 //$plantilla_get_url.= "&" . http_build_query($array) ;      // datos para la Generación de Documentos con PLANTILLAS HTML
 
@@ -194,12 +193,12 @@ require("../include/widget_firmas.php");          // FIRMAS
 
 <div  class="right2_30" >
 
-<?php   // Iniciamos variables para tabla.php  
+<?php   // Iniciamos variables para tabla.php  SUBCONTRATOS
 $sql="SELECT id_subcontrato,id_proveedor,PROVEEDOR, subcontrato,Importe_subcontrato,Porc_ej,Observaciones FROM Subcontratos_todos_View WHERE id_pof=$id_pof AND $where_c_coste ORDER BY id_subcontrato";
-$result=$Conn->query($sql );
-$result_T=$Conn->query($sql="SELECT '' as a,'' as a1,sum(Importe_subcontrato) as Importe_subcontrato,'' as a2,'' as a21  FROM Subcontratos_todos_View WHERE id_pof=$id_pof AND $where_c_coste " );
+//$result=$Conn->query($sql );
+//$sql_T="SELECT '' as a,'' as a1,sum(Importe_subcontrato) as Importe_subcontrato,'' as a2,'' as a21  FROM Subcontratos_todos_View WHERE id_pof=$id_pof AND $where_c_coste " ;
 
-$titulo="SUBCONTRATOS ($result->num_rows)";
+$titulo="SUBCONTRATOS (_NUM_)";
 $msg_tabla_vacia="No hay subcontratos";
 
 $links["PROVEEDOR"] = ["../proveedores/proveedores_ficha.php?id_proveedor=", "id_proveedor", "ver Proveedor",''] ;
@@ -207,21 +206,12 @@ $links["subcontrato"] = ["../obras/subcontrato.php?id_subcontrato=", "id_subcont
 //$links["ver"] = [ '', 'path_archivo', "ver Pdf", 'ppal'] ;
 
 //$formats["Enviado"]="semaforo" ;
-//$formats["Respondido"]="semaforo" ;
-//$formats["PDF"]="boolean" ;
-//$formats["path_archivo"]="pdf_200_500" ;
-//$formats["ver"]="boolean_PDF" ;
-
 //$aligns["Num"] = "center" ;
-//$aligns["Prov"] = "center" ;
-////$aligns["Enviado"] = "center" ;
-////$aligns["Respondido"] = "center" ;
-//$aligns["Adj"] = "center" ;
-//$aligns["Enviado"] = "center" ;
-//$aligns["Respondido"] = "center" ;
-//$tooltips["Prov"] = "Proveedores seleccionados para pedirles presupuesto" ;
-//$tooltips["Enviado"] = "Proveedores a los que se ha enviado peticion de oferta" ;
-//$tooltips["Respondido"] = "Proveedores que han respondido y presupuestado la POF" ;
+
+$tabla_sumatorias["PROVEEDOR"]="Suma:" ;
+$tabla_sumatorias["Importe_subcontrato"]=0 ;
+//$tabla_sumatorias["Importe_subcontrato"]+=0.123 ;
+//echo "TIPO DATO;" . gettype($tabla_sumatorias["Importe_subcontrato"]) ;
 
 
  $updates=[ 'Observaciones']  ;
@@ -231,7 +221,10 @@ $links["subcontrato"] = ["../obras/subcontrato.php?id_subcontrato=", "id_subcont
   $id_clave="id_subcontrato" ;
 //  $id_valor=$id_pof ;
   
-require("../include/tabla.php"); echo $TABLE ;?>
+require("../include/tabla_ajax.php"); echo $TABLE ;
+//require("../include/tabla.php"); echo $TABLE ;
+
+?>
 
 </div>	
 <!--************ FIN POF_DETALLE (SUBCONTRATOS) *************  -->	
@@ -240,7 +233,7 @@ require("../include/tabla.php"); echo $TABLE ;?>
 <div  class="mainc_100" >
 <!--<div  class="right2_60" >-->
 
-<?php   // Iniciamos variables para tabla.php  
+<?php   // Iniciamos variables para tabla.php  OFERTAS
 
 
 
@@ -249,10 +242,10 @@ $sql=("SELECT id,ID_POF, NUM, PROVEEDOR,id_proveedor, path_archivo,Enviado, Resp
         . " FROM POF_prov_View WHERE ID_POF=$id_pof ORDER BY ((Importe_Prov<>0) AND NUM<=9) desc, Importe_prov, NUM" );
 
 
-$result=$Conn->query($sql );
-$result_T=$Conn->query($sql="SELECT  COUNT(id) as total , 'Totales',' ',  SUM(Enviado), SUM(Respondido)   FROM POF_DETALLE WHERE ID_POF=$id_pof " );
+//$result=$Conn->query($sql );
+$sql_T="SELECT  COUNT(id) as total , 'Totales',' ',  SUM(Enviado), SUM(Respondido)   FROM POF_DETALLE WHERE ID_POF=$id_pof " ;
 
-$titulo="OFERTAS";
+$titulo="OFERTAS (_NUM_)";
 $msg_tabla_vacia="No hay";
 
 $selects["id_proveedor"]=["ID_PROVEEDORES","PROVEEDOR","Proveedores","../proveedores/proveedores_anadir.php","../proveedores/proveedores_ficha.php?id_proveedor=","id_proveedor"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
@@ -316,7 +309,11 @@ $cols_line=["Importe_Cobro"] ;
 //$chart_ON=1;
 
 
-require("../include/tabla.php"); echo $TABLE ;?>
+require("../include/tabla_ajax.php"); echo $TABLE ;
+//require("../include/tabla.php"); echo $TABLE ;
+
+
+?>
 
 </div>	
 <!--************ FIN POF_DETALLE (PROVEEDORES) *************  -->	
@@ -641,7 +638,10 @@ $cols_line=["Importe_Cobro"] ;
 //$chart_ON=1;
 
 
-require("../include/tabla.php"); echo $TABLE ;?>
+require("../include/tabla_ajax.php"); echo $TABLE ;
+//require("../include/tabla.php"); echo $TABLE ;
+
+?>
     
     <br><br><br><br> 
 

@@ -281,12 +281,23 @@ echo "\$id_agrupamiento".var_dump($id_agrupamiento)."<br>";
 
 // FIN DEBUG
 
+logs("TABLA CUADROS inicializamos $sql  "); 
+
+// inicializamos la consulta si no existen los results o venimos por AJAX sin objetos
+//  $result=$Conn->query( $sql ); 
+if (!isset($result) AND isset($sql)) {  $result=$Conn->query( $sql ); }
+if (!isset($result_T) AND isset($sql_T)) {  $result_T=$Conn->query( $sql_T ); }
+if (!isset($result_T2) AND isset($sql_T2)) {  $result_T2=$Conn->query( $sql_T2 ); }
+if (!isset($result_T3) AND isset($sql_T3)) {  $result_T3=$Conn->query( $sql_T3 ); }
+if (!isset($result_S) AND isset($sql_S)) {  $result_S=$Conn->query( $sql_S ); }  
 
  
 
+
 if (!isset($updates)) {$updates=[] ;}                  // si no existe $updates lo inicializo vacío para poder hacer llamadas sin que dé error
 
-$titulo=isset($titulo) ? $titulo : "" ;
+$titulo= isset($titulo) ? $titulo : ( !isset($print_pdf)?  'tabla' : '' ) ;
+$titulo= str_replace("_NUM_",$result->num_rows , $titulo) ;                  // añadimos el número de filas al título si marcamos titulo_num=true
 
 $add_link_html= (isset($add_link)) ? "<a class='btn btn-warning noprint' href='#' onclick=\"tabla_add_row( '{$tabla_update}' , '{$add_link['field_parent']}', '{$add_link['id_parent']}'  ) ;\"  ><i class='fas fa-plus-circle'></i> añadir fila</a> " : "" ;
 echo  "<P class='noprint'>$titulo $add_link_html</P>" ; 

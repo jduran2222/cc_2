@@ -185,7 +185,7 @@ $id_c_coste = $_SESSION['id_c_coste'];
 
 //$("#div_ajax").innerHTML="HOLA SOY JUAN DURAN" ;
 //document.getElementById('div_ajax').innerHTML="HOLA SOY JUAN DURAN" ;
-carga_ajax('div_ajax','../menu/menu_app_ajax1.php');
+cargar_ajax('div_ajax','../menu/menu_app_ajax1.php');
 
 	var recognition;
 	var recognizing = false;

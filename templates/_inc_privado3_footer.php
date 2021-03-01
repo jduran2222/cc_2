@@ -188,6 +188,6 @@ function dfirst_ajax(id,field,tabla,wherecond)
 <?php
 }
 //$content= "<BR>Tiempo carga: ".number_format(microtime(true)-$time_total0,3)." segundos " ;
-$content= "<script>$('#tiempo_total').val(' ".number_format(microtime(true)-$time_total0,3)." sg');</script> " ;
+$content= "<script>$('#tiempo_total').val(' ".number_format(microtime(true)-$time_total0,3)." s');</script> " ;
 echo  $content;
 ?>

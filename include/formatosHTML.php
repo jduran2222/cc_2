@@ -83,16 +83,16 @@ function selectoresMenuFacturasProveedor($filtros=null, $operaciones=null, $agru
     $html .= '              </div>';
     $html .= '          </div>';
 
-    $html .= '          <div class="col-12 align-content-center">';
-    $html .= '              <a class="mt-2 col-12 btn btn-secondary" data-toggle="collapse" href="#verResumen" role="button" aria-expanded="false" aria-controls="verResumen">Ver resumen</a>';
-    $html .= '          </div>';
-    $html .= '          <div class="col-12">';
-    $html .= '              <div class="collapse" id="verResumen">';
-    $html .= '              <div class="card card-body">';
-    $html .= '                  '.$resumen;
-    $html .= '              </div>';
-    $html .= '              </div>';
-    $html .= '          </div>';
+//    $html .= '          <div class="col-12 align-content-center">';
+//    $html .= '              <a class="mt-2 col-12 btn btn-secondary" data-toggle="collapse" href="#verResumen" role="button" aria-expanded="false" aria-controls="verResumen">Ver resumen</a>';
+//    $html .= '          </div>';
+//    $html .= '          <div class="col-12">';
+//    $html .= '              <div class="collapse" id="verResumen">';
+//    $html .= '              <div class="card card-body">';
+//    $html .= '                  '.$resumen;
+//    $html .= '              </div>';
+//    $html .= '              </div>';
+//    $html .= '          </div>';
 
     $html .= '          <div class="col-12 align-content-center">';
     $html .= '              <a class="mt-2 col-12 btn btn-secondary" data-toggle="collapse" href="#formatos" role="button" aria-expanded="false" aria-controls="formatos">Formatos</a>';

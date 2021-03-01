@@ -58,21 +58,34 @@ require_once("../obras/obras_menutop_r.php");
 <?php   // Iniciamos variables para tabla.php  background-color:#B4045
 
 
-$sql="SELECT id_subcontrato,id_proveedor ,subcontrato,PROVEEDOR ,fecha_creacion as fecha, Importe_cobro, p_contrato, Importe_subcontrato, Margen "
-        . " ,Importe_ejecutado,  Porc_ej FROM Subcontratos_todos_View WHERE ID_OBRA=$id_obra AND (filtro LIKE '%$filtro%') ORDER BY fecha_creacion DESC " ;
+$sql="SELECT id_subcontrato,id_proveedor ,subcontrato,PROVEEDOR ,fecha_creacion as fecha, Importe_cobro, P_contrato, Importe_subcontrato, Margen "
+        . " ,Importe_ejecutado,  Porc_ej  FROM Subcontratos_todos_View WHERE ID_OBRA=$id_obra AND (filtro LIKE '%$filtro%') ORDER BY fecha_creacion DESC " ;
 
 //$result=$Conn->query($sql );
 
 
-$result= mysqli_query($Conn, $sql)  ;
+//$result= mysqli_query($Conn, $sql)  ;
 
 
-$result_T=$Conn->query($sql_T="SELECT 'Suma', '' as a,'' as b, SUM(Importe_cobro) as importe_cobro,IF(IMPORTE<>0,SUM(Importe_cobro)/IMPORTE,0) AS p_contrato, SUM( Importe_subcontrato) as importe_subcontrato "
-        . ",(SUM(Importe_cobro)-SUM( Importe_subcontrato))/SUM(Importe_cobro) Margen "
-        . " ,SUM(Importe_ejecutado) AS Importe_ejecutado,SUM(Importe_ejecutado)/SUM( Importe_subcontrato) AS  Porc_ej FROM Subcontratos_todos_View "
-        . "WHERE ID_OBRA=$id_obra AND (filtro LIKE '%$filtro%') ORDER BY fecha_creacion DESC " );
+//$result_T=$Conn->query($sql_T="SELECT 'Suma', '' as a,'' as b, SUM(Importe_cobro) as importe_cobro,IF(IMPORTE<>0,SUM(Importe_cobro)/IMPORTE,0) AS p_contrato"
+//        . ", SUM( Importe_subcontrato) as Importe_subcontrato "
+//        . ",(SUM(Importe_cobro)-SUM( Importe_subcontrato))/SUM(Importe_cobro) Margen "
+//        . " ,SUM(Importe_ejecutado) AS Importe_ejecutado,SUM(Importe_ejecutado)/SUM( Importe_subcontrato) AS  Porc_ej, '' as ddd FROM Subcontratos_todos_View "
+//        . "WHERE ID_OBRA=$id_obra AND (filtro LIKE '%$filtro%') ORDER BY fecha_creacion DESC " );
 
-echo "<br> {$result->num_rows} filas" ;
+ $tabla_sumatorias["Importe_cobro"]=0 ;
+ $tabla_sumatorias["Importe_subcontrato"]=0 ;
+ $tabla_sumatorias["Importe_ejecutado"]=0 ;
+ $tabla_sumatorias["P_contrato"]=0 ;
+ $tabla_sumatorias["Margen"]="=1-@@Importe_subcontrato@@/@@Importe_cobro@@" ;
+ $tabla_sumatorias["Porc_ej"]="=Importe_ejecutado/Importe_subcontrato" ;
+// $tabla_sumatorias["Importe_iva_cli"]=0 ;
+// $tabla_sumatorias["Iva_a_ingresar"]=0 ;
+// $tabla_sumatorias["Base_Imp_cli"]=0 ;
+        
+
+
+//echo "<br> {$result->num_rows} filas" ;
 
 $formats["Importe_subcontrato"]='moneda' ;
 $formats["Importe_cobro"]='moneda' ;
@@ -95,10 +108,10 @@ $tooltips["Porc_ej"] = "Porcentaje de subcontrato ejecutado" ;
 echo   "<a class='btn btn-link btn-lg noprint' href='../obras/obras_subcontrato_anadir.php?_m=$_m&id_obra=$id_obra' target='_blank' ><i class='fas fa-plus-circle'></i> añadir Subcontrato</a>" ; // BOTON AÑADIR FACTURA
 
 
-$titulo="SUBCONTRATOS";
+$titulo="Subcontratos (_NUM_)";
 $msg_tabla_vacia="No hay.";
 ?>
-<?php require("../include/tabla.php"); echo $TABLE ;?>
+<?php require("../include/tabla_ajax.php"); echo $TABLE ;?>
 
 </div>
 

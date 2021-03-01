@@ -135,7 +135,9 @@ $sql="SELECT id_pago,id_remesa,id_mov_banco,id_cta_banco,id_proveedor,ID_CLIENTE
         . "IBAN,BIC,email_pagos,FProv,Obs,fecha_banco,concepto as concepto_banco "
         . " FROM Pagos_View WHERE  id_remesa=$id_remesa AND $where_c_coste ";
 //echo $sql;
-$result=$Conn->query($sql );
+//$result=$Conn->query($sql );
+$tabla_sumatorias["importe"]=0 ;
+$tabla_sumatorias["ingreso"]=0 ;
 
 
 if ($tipo_remesa=="P")
@@ -149,10 +151,10 @@ if ($tipo_remesa=="P")
     
 }
 
-$sql_T="SELECT $remesa_pagos_select '' AS A322,'' AS A31,'' AS A4,'' AS A5,'' AS A51,'Suma' AS D,'' AS A4,'' AS A2,SUM(importe) AS importe,SUM(ingreso) AS ingreso,'cobrados' AS C, COUNT(conc) as cobrados "
-        . " FROM Pagos_View WHERE  id_remesa=$id_remesa AND $where_c_coste ";
+//$sql_T="SELECT $remesa_pagos_select '' AS A322,'' AS A31,'' AS A4,'' AS A5,'' AS A51,'Suma' AS D,'' AS A4,'' AS A2,SUM(importe) AS importe,SUM(ingreso) AS ingreso,'cobrados' AS C, COUNT(conc) as cobrados "
+//        . " FROM Pagos_View WHERE  id_remesa=$id_remesa AND $where_c_coste ";
 //echo $sql;
-$result_T=$Conn->query($sql_T );
+//$result_T=$Conn->query($sql_T );
 
 
 
@@ -201,7 +203,7 @@ $firmada_disabled= ($rs["firmada"]? "disabled" : "") ;
 //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Pagos asociados a la remesa" ;
+$titulo="Pagos asociados a la remesa (_NUM_)" ;
 $msg_tabla_vacia="No hay pagos asociados a esta Remesa";
 
 ?>

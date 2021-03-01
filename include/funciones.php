@@ -7,6 +7,23 @@ define ("ICON_NUEVO", "<i class='fas fa-plus-circle'></i>");
 $ICON = "<span class='glyphicon glyphicon" ;
 $SPAN = "'></span>"; 
 
+
+function cc_add_style($style_actual, $style_add)
+{      // añadimos un style al style actual
+    $style_actual=str_replace(" ","", $style_actual ) ;     // quito todos los espacios
+    return ( preg_match ("/^style='/" ,$style_actual ) )? str_replace("style='","style='$style_add;", $style_actual ) : "style='$style_add;'" ;
+} 
+
+function is_FLAG($clave)
+{      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
+    return (preg_match('/_FLAG|_TOOLTIP|_MODAL|_FORMAT|_COLOR|TH_COLOR/i', $clave)) ;
+
+//    return  ( !strpos($clave, '_FLAG') AND !strpos($clave, '_TOOLTIP') AND !strpos($clave, '_MODAL') AND !strpos($clave, '_FORMAT') AND !strpos($clave, '_COLOR') AND !strpos($clave, 'TH_COLOR')  ) ;     // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
+
+} 
+
+
+
 // funcion para generar SELECTS de desglodse mensual
 function desglose_mensual( $patron )
 {
@@ -527,11 +544,18 @@ function close_java()
 
 function logs($msg2='')
 {
-    $_SESSION['logs'] = isset($_SESSION['logs']) ?  $_SESSION['logs'] : '' ;     // inicializo SESSION LOGS si no existe
-        
-//    $_SESSION['logs'].=date("Y-m-d H:i:s ")."</small></i>  ".__FILE__ ." ". __LINE__ ."    $msg2<br><small><i>" ;
-    $_SESSION['logs'].=date("Y-m-d H:i:s ")."</small></i>  $msg2<br><small><i>" ;   // eliminamos FILE y LINE, siempre son funciones.php y linea 67
+  if( $_SESSION["admin"] OR 1 )  // solo para admin, así evitamos saturar el sistema con variables SESSION
+  {   
+      $_SESSION['logs'] = isset($_SESSION['logs']) ?  $_SESSION['logs'] : '' ;     // inicializo SESSION LOGS si no existe        
+//      $_SESSION['logs'].=date("Y-m-d H:i:s ")."</small></i>  ".__FILE__ ." ". __LINE__ ."    $msg2<br><small><i>" ;
+      $_SESSION['logs'].=date("Y-m-d H:i:s ")."</small></i>  $msg2<br><small><i>" ;   // eliminamos FILE y LINE, siempre son funciones.php y linea 67
+  
     return $_SESSION['logs'];
+ }else
+ {
+     return ;  
+ }   
+     
 }
 
 function logs_db($msg, $tipo='info',$parametros='', $file=__FILE__ ,$line=__LINE__ )
@@ -646,7 +670,7 @@ function evalua_expresion_mysql($expresion)
           }
           else
           {
-               $nuevo_valor= 0 ; 
+               $nuevo_valor= "ERROR: expresión errónea" ; 
           }   
 //      $nuevo_valor=evalua_expresion($nuevo_valor ) ;  // los datos numericos pueden meterse como formulas
 //       
@@ -1646,6 +1670,379 @@ switch ($format) {
        } 
 
    return $valor;                                       
+ }
+
+function cc_format_style_ERROR( $format, $clave="" )     ///, &$valor , &$format_style   $clave == NOMBRE DEL CAMPO, Ej: Importe)
+{
+// función para dar formato a $valor 
+//
+//    ej:  $valor=cc_format( $valor) ;            la función tratará de averiguar que tipo de dato contiene (numerico, fecha...)
+//         $valor=cc_format( $valor, $format) ;   indicamos el formato que queremos
+//         $valor=cc_format( $valor, $formats[$clave], $format_style) ; pasamos el parámetro opcional '$format_style' por referencia para ver qué alineación viene mejor en una tabla
+
+    
+$format_style=0;  // por defecto no tenemos estilo    
+    
+    
+    
+// // provisional
+//    $pdf_size=100 ;
+    
+ // provisionalmente cambiamos todos los semaforos a semaforo_OK, con el tiempo anulamos el formato semaforo a secas
+ $format = ($format==="boolean") ? "semaforo_OK" : $format ; 
+ $format = ($format==="semaforo") ? "semaforo_OK" : (($format=="semaforo_not") ? "semaforo_not_OK" : $format) ;
+    
+    
+ $color_style="";  
+    
+//   $format= str_replace('boolean', 'semaforo', $format)  ;  //provisional probamos a cambiar a saco los boolean (X) por semaforos rojo/verde
+   if ($format=='auto' OR $format=='')
+      {
+//           preg_match () ;
+         //  $format=/\d\d\d\d-\d\d-\d\d/.test(text)  ;
+        $format=cc_formato_auto($clave) ;        // miramos el nombre del campo para determinar el formato
+      }
+  elseif (substr($format,0,8)=="boolean_")                 // formato boolean_txt
+     {  
+        $format="boolean_txt" ;
+     }  
+  elseif (substr($format,0,13)=="semaforo_txt_")                 // 
+     {  ;
+        $format="semaforo_txt" ;
+     }  
+  elseif (substr($format,0,14)=="semaforo_txt2_")                 // 
+     {  ;
+        $format="semaforo_txt2" ;
+     }  
+//  elseif (substr($format,0,5)=="icon_")                 // 
+//     {  $icon=substr($format,5)   ;
+//        $format="icon" ;
+//     }  
+  elseif (substr($format,0,12)=="textarealert")                 // 
+     {  
+
+        $format="textarea_" ;
+        
+     }  
+  elseif (substr($format,0,8)=="textarea")                 // 
+     {  
+
+        $format="textarea_" ;
+        
+     }  
+  elseif (substr($format,0,4)=="pdf_")                 // 
+     {  
+
+        $format="pdf_" ;
+     }  
+  elseif (substr($format,0,8)=="pdflink_")                 // 
+     {  
+   
+        $format="pdflink_" ;
+     }  
+    elseif (like($format,"moneda_porcentaje_sobre_%"))      //moneda_porcentaje_
+    {
+      $format= "moneda_porcentaje_sobre" ;
+    }        
+    elseif (preg_match("/^h[0-9]_/i" ,  $format ))      //h1, ... h5
+    {
+//      $color_style = preg_replace("/^h[0-9]_/i","", $format);             // quito el hX_
+      $color_style = "color:". substr($format,3) .";" ;             // quito el hX_
+      $format= substr($format,0,2) ;      // cojo los dos primeros chars
+    }        
+     
+    
+// pdte desarrollar una funcion que trata de identificar el tipo de dato y su formato: numerico (999,999.99), fecha(01/01/2017 , 2018-01-01 0:00:00 , ...) , textarea...
+switch ($format) {
+//            case "icon":
+//                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+//                        $valor = "<span class='glyphicon glyphicon-$icon'></span>" ;
+//                        $format_style=" style='text-align:left;' " ;
+//                        break;
+            case "num2txt":
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+//                        $valor = num2txt($valor) ;
+                        $format_style=" style='text-align:left;' " ;
+                        break;
+            case "num2txt_eur":
+                        $valor = num2txt_eur($valor) ;
+                        $format_style=" style='text-align:left;' " ;
+                        break;
+            case "int":
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,0,".",",") ,10," ", STR_PAD_LEFT) ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        $format_style=" style='text-align:right;' " ;
+                        break;
+            case "firmado": 
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+//                        $valor = round($valor,2) ;
+//                        $color= ($valor=='PDTE') ? "blue" : (($valor=='CONFORME') ? "green" : "red") ;
+//                        $valor = ($valor) ? "" : str_pad(number_format($valor,2,".",",") ,10," ", STR_PAD_LEFT)." ".$_SESSION["Moneda_simbolo"]  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+//                        $format_style=" style='font-weight: bold;text-align:center; ' " ;
+                        break;
+            case "tipo_pago": 
+//                        $color= ($valor=='P') ? "red" : (($valor=='C') ? "green" : (($valor=='T') ? "blue" : "brown")) ;
+//                        $valor= ($valor=='P') ? "PAGO" : (($valor=='C') ? "COBRO" : (($valor=='T') ? "TRASPASO" : "OTRO")) ;
+//                        $format_style=" style='font-weight: bold;text-align:center;' " ;
+                        break;
+            case "moneda": 
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+//                        $valor = round($valor,2) ;
+//                        $color_numero= ($valor<0) ? "red" : "black" ;
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,".",",") ,10," ", STR_PAD_LEFT)." ".$_SESSION["Moneda_simbolo"]  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+//                        $format_style=" style='white-space: nowrap;text-align:right; ' " ;
+                        break;
+            case "moneda_mensual": 
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+//                        $valor = round($valor,2) ;
+//                        $color_numero= ($valor<0) ? "red" : "black" ;
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,".",",") ,10," ", STR_PAD_LEFT)." ".$_SESSION["Moneda_simbolo"]  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+//                        $background= ($valor==0)? "" : "background-color: #F2F4F4;" ;
+//                        $format_style=" style='font-size:small; white-space: nowrap;text-align:right; ' " ;
+                        break;
+            case "moneda_europeo":
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+//                        $valor = round($valor,2) ;
+//                        $color_numero= ($valor<0) ? "red" : "black" ;
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,",",".") ,10," ", STR_PAD_LEFT)." ".$_SESSION["Moneda_simbolo"]  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+//                        $format_style=" style='white-space: nowrap;text-align:right; ' " ;
+                        break;
+            case "moneda_gris":
+//                        //$valor = ($valor==0) ? "" : number_format($valor,2,".",",") . "€"  ;
+//                        $valor = round($valor,2) ;
+////                        $color_numero= ($valor<0) ? "grey" : "grey" ;
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,".",",") ,10," ", STR_PAD_LEFT)." ".$_SESSION["Moneda_simbolo"]  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+//                        $format_style=" style='white-space: nowrap;text-align:right; color: grey; font-style:italic ' " ;
+                        break;
+            case "moneda_parentesis":
+//                        $valor = ($valor==0) ? "" : "<small>(".trim(cc_format($valor,'moneda')).")</small>"  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".","")   ;
+//                        $format_style=" style='white-space: nowrap;text-align:right;' " ;
+                        break;
+            case "moneda_porcentaje_sobre":
+//                        $valor = round($valor,2) ;
+//                        $valor_numero = $valor ;
+//                        $color_numero= ($valor<0) ? "red" : "black" ;
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,".",",") ,10," ", STR_PAD_LEFT)." ". $_SESSION["Moneda_simbolo"] ;
+//                        // si no hay division por cero, añadimos el porcentaje_sobre...
+////                        $valor .= ($valor_comparado==0) ? "" : " <span style='opacity:0.7;font-size:85%;font-style: italic'>(".(trim(cc_format($valor_numero/$valor_comparado,'porcentaje'))).")</span>"  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);            
+//                        $valor .= ($valor_comparado==0) ? "" : " <span style='opacity:0.7;font-size:85%;font-style: italic'>(".(number_format(100*$valor_numero/$valor_comparado,1))."%)</span>"  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);            
+                        
+//                        $format_style=" style='white-space: nowrap;text-align:right; ' " ;
+                
+//                        $valor = ($valor==0) ? "" : "<small>(".trim(cc_format($valor,'moneda')).")</small>"  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".","")   ;
+//                        $format_style=" style='text-align:right;' " ;
+                        break;
+            case "fijo":
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,".",","),10," ", STR_PAD_LEFT)  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".","")   ;
+                        $format_style=" style='white-space: nowrap;text-align:right;' " ;
+                        break;
+            case "fijo_gris":
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,2,".",","),10," ", STR_PAD_LEFT)  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".","")   ;
+                        $format_style=" style='white-space: nowrap;text-align:right; color: grey' " ;
+                        break;
+            case "fijo0":
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,0,".",","),10," ", STR_PAD_LEFT)  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".","")   ;
+                        $format_style=" style='text-align:right;' " ;
+                        break;
+            case "fijo1":
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,1,".",","),10," ", STR_PAD_LEFT)  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".","")   ;
+                        $format_style=" style='text-align:right;' " ;
+                        break;
+            case "fijo10":
+//                        $valor = ($valor==0) ? "" : str_pad(number_format($valor,10,".",","),10," ", STR_PAD_LEFT)  ;  //str_pad($input, 10, "-=", STR_PAD_LEFT);
+                        //$valor = ($valor==0) ? "" : number_format($valor,2,".","")   ;
+                        $format_style=" style='text-align:right;' " ;
+                        break;
+            case "h1":
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "h2":
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "h3":
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "h4":
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "h5":
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "color":
+//                        $valor = "<h5>$valor</h5>"   ;
+//                        $format_style=" style='color:".str2color($valor).";' " ;
+                        break;
+            case "porcentaje":
+                        $format_style=" style='white-space: nowrap;text-align:right; ' " ;
+                        
+                        break;
+             case "porcentaje0":
+                        $format_style=" style='white-space: nowrap;text-align:right;' " ;
+                        break;        
+             case "progress":
+                      
+                        $format_style=" style='white-space: nowrap;' " ;
+                        break;        
+             case "kb":
+                        $format_style=" style='white-space: nowrap;text-align:right;' " ;
+                        break;        
+             case "mb":
+                        $format_style=" style='white-space: nowrap;text-align:right;' " ;
+                        break;        
+             case "gb":
+                        $format_style=" style='white-space: nowrap;text-align:right;' " ;
+                        break;        
+//    					    case "fecha2":
+//        						if ($valor<>"")  date_format(date_create($valor),"d/m/Y") ;
+//					                $format_style=" style='text-align:center;' " ;
+//        						break;
+            case "dbfecha":                                                     // formato de fecha como base de datos
+                        $format_style=" style='text-align:center;' " ;
+                        break;        
+            case "fecha":                                                     // formato de fecha español
+
+                        $format_style=" style='text-align:center;' " ;
+                        break;        
+             case "fecha_es_semana":                                                     // formato de fecha español
+
+                        $format_style=" style='text-align:center;' " ;
+                        break;        
+             case "fecha_es":                                                     // formato de fecha español
+
+                        $format_style=" style='text-align:center;' " ;
+                        break;        
+            case "fecha_semana":                                                     // formato de fecha como base de datos
+
+                        $format_style=" style='text-align:center;' " ;
+                        break;        
+            case "fecha_friendly":  
+
+                        $format_style=" style='text-align:center;' " ;
+                        break;        
+            case "mes":                                                     // formato de fecha como base de datos
+                       
+                        $format_style=" style='text-align:left;' " ;
+                        break;        
+            case "mes_txt":                                                     // formato de fecha como base de datos
+                       
+                        $format_style=" style='text-align:left;' " ;
+                        break;        
+            case "boolean":
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "icon_usuarios":
+                      
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "icon_fotos":
+                       
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "icon_albaranes":
+                       
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "icon_maquinaria":
+                       
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "icon_produccion":
+                       
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "icon_map":
+                       
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "boolean_txt":
+                       
+                        $format_style=" style='text-align:center;' " ;
+                        break;
+            case "cuadro_mes":               // formato para los cuadros mensuales (cada fila un mes y cada columna un día)
+                       
+                            $format_style=" style='text-align:center; background-color: white;' " ;    
+                       
+                        break;        
+
+            case "textarea_":
+//                   
+                        $format_style=" style='text-align:left;' " ;        
+                        break;
+            case "pdf":
+                // mostramos solo el medium sin link ni aumentar
+                     
+                        $format_style=" style='text-align:center;' " ;        
+                        break;
+            case "pdf_":
+//        		mostramos el MEDIUM que aumenta en onmouseover linkamos al LARGE
+//        										if ($valor) $valor = "<img src='{$valor}_large.jpg' onmouseover='this.width=300;this.height=600;' onmouseout='this.width=100;this.height=200;' width='100' height='200'  >" ;
+                       
+                        $format_style=" style='text-align:center;' " ;        
+                        break;
+            case "pdflink_":
+//        		muestra imagen con un link al correspondiente array $links[]
+                       
+                        $format_style=" style='text-align:center;' " ;        
+                        break;
+            case "pdfDdownload":
+                
+                        $format_style=" style='text-align:center;' " ;    
+                        
+                        break;
+                        
+            case "conciliacion":
+                        $format_style= " style='background-color: green; text-align:center;' "  ;   
+
+                        break;
+            case "semaforo":
+                        $format_style =  " style='background-color: green; text-align:center;' " ;   
+//                        $valor = $valor ? '<i class="fas fa-check"></i>' : '' ;
+
+                        break;
+           case "semaforo_OK":
+                        $format_style = " style='background-color: green; text-align:center;' "  ;
+
+                        break;
+           case "semaforo_not_OK":
+                        $format_style =  " style='background-color: red; text-align:center;' "   ;
+
+                        break;
+            case "semaforo_not":        // semaforo Rojo/verde (invertido)  al poner el color del font igual que el fondo , el texto desaparece
+//                        $format_style = (!$valor) ? " style='background-color: green; text-align:center; color:green;' "  : " style='background-color: red; text-align:center; color:red;' "  ;   
+//                        $valor = (!$valor) ? '<i class="fas fa-check"></i>' : '' ;
+
+                        break;
+            case "semaforo_txt":   // ej:  CARGADA   o   NO CARGADA
+                        $format_style =  " style='color: green; font-weight: bold;' "  ;
+
+                        break;
+            case "semaforo_txt2":        // igual que el anterior pero el negativo es vacío, ej: SUBCONTRATADA
+                        $format_style = " style='color: green; font-weight: bold;' " ;
+
+                        break;
+            case "array_pre":
+//                        $format_style = $valor ? " style='color: green; font-weight: bold;' "  : " style='color: red; font-weight: bold;' "  ;   
+                     
+                        break;
+            case "boton_modal":
+//                        $format_style = $valor ? " style='color: green; font-weight: bold;' "  : " style='color: red; font-weight: bold;' "  ;   
+                      
+
+                        break;
+            case "vacio":
+//        						$format_style=$valor==1 ? " style='background-color: green; text-align:center;' "  : " style='background-color: red; text-align:center;' "  ;   
+
+                        break;
+
+       } 
+
+   return $format_style;                                       
  }
 
 
