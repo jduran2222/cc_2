@@ -36,15 +36,15 @@ $result=$Conn->query($sql2);
 
  if ($result) //compruebo si se ha creado la obra
              { 	
-              $id_produccion2=Dfirst( "MAX(ID_PRODUCCION)", "PRODUCCIONES", "ID_OBRA=$id_obra" ) ; 
+              $id_produccion2=Dfirst( "MAX(ID_PRODUCCION)", "PRODUCCIONES", "ID_OBRA=$id_obra" ) ;  
 	        // TODO OK-> Entramos a pagina_inicio.php
 //	       echo "factura proveedor creada satisfactoriamente." ;
 //		echo  "Ir a factura proveedor <a href=\"../proveedores/factura_proveedor.php?id_fra_prov=$id_fra_prov\" title='ver fra_prov'> $id_fra_prov</a>" ;
 //                echo "<META HTTP-EQUIV='REFRESH' CONTENT='0;URL=../bancos/aval_ficha.php?id_aval=$id_aval'>" ;
 
-            $sql2 = "INSERT INTO PRODUCCIONES_DETALLE ( ID_PRODUCCION, Fecha, ID_UDO, MEDICION, Observaciones ) "
+            $sql2 = "INSERT INTO PRODUCCIONES_DETALLE ( ID_PRODUCCION, Fecha, ID_UDO, MEDICION, Observaciones ) " 
                . "SELECT $id_produccion2 as ID_PRODUCCION,  '$fecha' AS Fecha, ID_UDO, MEDICION,Observaciones  "
-               . " FROM ConsultaProd WHERE $where ; "  ;
+               . " FROM ConsultaProd WHERE $where AND $where_c_coste ; "  ;
       
              if (!$Conn->query($sql2)) { echo "ERROR añadiendo detalles: $sql2" ; }; 
              

@@ -2,6 +2,9 @@
 require_once("../include/session.php"); 
 $where_c_coste=" id_c_coste={$_SESSION['id_c_coste']} " ;
 
+$time0=microtime(true);
+
+
  //echo "El filtro es:{$_GET["filtro"]}";
 
 // require_once("../../conexion.php");
@@ -63,13 +66,15 @@ if (!is_null($var_sql3))
 
  
  //$result = $Conn->query($sql);
+    logs( "DOptions_sql $sql $mgs_logs (Tiempo: ". number_format($tiempo,3) ."s)" );
+
  logs("Ejecutamos: $sql")	;
   
 $error_txt=""; 
-$array_sql=  explode("_CC_NEW_SQL_", $sql);       // cambiamos el caracter ; punto y coma por esta cadena _CC_NEW_SQL_ para separar varias consultas SQL
+$array_sql=  explode("_PUNTO_Y_COMA_", $sql);       // cambiamos el caracter ; punto y coma por esta cadena _PUNTO_Y_COMA_ para separar varias consultas SQL
 foreach ($array_sql as $sql_item) {
   // ejecutamos las sentencias SQL $sql_item
-  if (trim($sql_item)!='') {$error_txt.= !($Conn->query($sql_item)) ? "\n SQL:\n $sql_item \n\n Mysql: \n {$Conn->error} \n" : ""  ;}
+  if (trim($sql_item)!='') {$error_txt.= !($result=$Conn->query($sql_item)) ? "\n SQL:\n $sql_item \n\n Mysql: \n {$Conn->error} \n" : ""  ;}
 }
 
  
@@ -77,9 +82,18 @@ foreach ($array_sql as $sql_item) {
 // if ($Conn->multi_query($sql)) 
  if (!$error_txt) 
   { 
-     // todo OK
-    // echo "OK" ;
- echo "<script languaje='javascript' type='text/javascript'>window.close();</script>";
+     if (isset($_GET["ajax"]) AND $_GET["ajax"])
+     {
+           $rs = $result->fetch_array(MYSQLI_ASSOC); 
+           $clave= is_array($rs)?  array_keys($rs)[0] : 0;
+           $format=isset($_GET["format"]) ? $_GET["format"] : cc_formato_auto($clave) ;
+           
+           $return =  cc_format($rs[$clave], $format)  ;  // devuelvo el resultado de la consulta formateado  array_keys 
+            
+     }else
+     { 
+       $return =  "<script languaje='javascript' type='text/javascript'>window.close();</script>";
+     }
 
   }  
    else
@@ -87,12 +101,17 @@ foreach ($array_sql as $sql_item) {
        //echo "___ERROR___" ;                           // mando mensaje de error
 //       echo "ERROR : $sql" ;
       $id_log_db= logs_db( "ERROR en SQL.PHP: $error_txt" , 'cc_error');
-       echo $_SESSION["admin_debug"] ? "ERROR en SQL.PHP: id_log_db:  $id_log_db \n  $error_txt  "  : "ERROR en SQL.PHP avise administrador. LOG_DB $id_log_db" ;
+       $return = $_SESSION["admin_debug"] ? "ERROR en SQL.PHP: id_log_db:  $id_log_db \n  $error_txt  "  : "ERROR en SQL.PHP avise administrador. LOG_DB $id_log_db" ;
 
 //       echo $error_txt ;
-   }	  
+   }
+   
+   echo $return ;
  $Conn->close();
 
+  $tiempo=microtime(true)-$time0 ;
+  $mgs_logs=  $tiempo>0.5 ? "<span style='color:red'>EXCESO TIEMPO</span>" :"" ;
+  logs( "fin sql.php $sql $return $mgs_logs (Tiempo: ". number_format($tiempo,3) ."s)" );
 
 
 ?>

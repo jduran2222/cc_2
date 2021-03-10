@@ -33,6 +33,8 @@ $id_proveedor=$_GET["id_proveedor"];
 $result=$Conn->query($sql="SELECT * FROM Proveedores_View WHERE id_proveedores=$id_proveedor AND $where_c_coste");
 $rs = $result->fetch_array(MYSQLI_ASSOC) ;
 	
+//echo "LEN IBAN: ".strlen($rs["IBAN"]) ;
+
  $titulo= $rs["ID_PERSONAL"] ? "FICHA PROVEEDOR-NOMINA:<br>{$rs["PROVEEDOR"]}" : "PROVEEDOR: <b>{$rs["PROVEEDOR"]}</b>" ;
   //$updates=['NOMBRE_OBRA','NOMBRE_COMPLETO','GRUPOS','EXPEDIENTE', 'NOMBRE' ,'Nombre Completo', 'LUGAR', 'PROVINCIA', 'Presupuesto Tipo', 'Plazo Proyecto' ,'Observaciones']  ;
   $updates=["*"] ;

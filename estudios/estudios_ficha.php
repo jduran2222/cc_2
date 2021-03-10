@@ -34,7 +34,7 @@ $id_estudio=$_GET["id_estudio"];
  $sql="SELECT ID_ESTUDIO,NUMERO,NOMBRE,`Nombre Completo`,EXPEDIENTE,`NO VAMOS`,Presentada,Estado ,`Presupuesto Tipo`,`PLAZO ENTREGA`, `Plazo Proyecto` "
          . ",hora_entrega,Organismo, URL_licitacion, id_obra_estudio, id_prod_estudio_costes,URL_Google_Maps ,Requisitos, Observaciones"
          . ",`Oferta Tecnica`,`Baja Tecnica`,PLAZO,`Oferta Final`,`Oferta Final` AS Oferta_Final_txt, (1-`Oferta Final`/`Presupuesto Tipo`) as `Baja_final`   ,iva,`Oferta Final`*iva AS importe_del_iva "
-         . ",`Oferta Final`*(1+iva) AS Oferta_Final_IVA,`Oferta Final`*(1+iva) AS Oferta_Final_IVA_txt,user, Fecha_Creacion"
+         . ",`Oferta Final`*(1+iva) AS Oferta_Final_IVA,`Oferta Final`*(1+iva) AS Oferta_Final_IVA_txt,tipo_subcentro,user, Fecha_Creacion"
          . " FROM Estudios_listado WHERE ID_ESTUDIO=$id_estudio AND $where_c_coste";
 
 // echo $sql ;
@@ -72,10 +72,14 @@ else { require_once("../estudios/estudios_menutop_r.php"); }
   $link_anadir_obra_estudio= "../obras/obras_anadir.php?NOMBRE_COMPLETO={$rs['Nombre Completo']}.({$rs['Organismo']})&nombre_obra={$rs['NOMBRE']}&IMPORTE={$importe_iva}&ID_ESTUDIO=$id_estudio&tipo_subcentro=E"                 ;
   
   $selects["id_obra_estudio"]=["ID_OBRA","NOMBRE_OBRA","OBRAS",$link_anadir_obra_estudio,"../obras/obras_ficha.php?id_obra=","id_obra_estudio"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
-  $selects["id_prod_estudio_costes"]=["ID_PRODUCCION","CONCAT(PRODUCCION,' - (Baja est.:', COALESCE(FORMAT(margen_est*100,2),0),'%)'  )","Prod_view",'',"../obras/obras_prod_detalle.php?fmt_costes=checked&id_produccion=",'id_prod_estudio_costes'] ;   // Produccion por defecto de la obra-estudio
+//  $selects["id_prod_estudio_costes"]=["ID_PRODUCCION","CONCAT(PRODUCCION,' - (Baja est.:', COALESCE(FORMAT(margen_est*100,2),0),'%)'  )","Prod_view",'',"../obras/obras_prod_detalle.php?fmt_costes=checked&id_produccion=",'id_prod_estudio_costes'] ;   // Produccion por defecto de la obra-estudio
+  $selects["id_prod_estudio_costes"]=["ID_PRODUCCION","PRODUCCION","PRODUCCIONES",'',"../obras/obras_prod_detalle.php?fmt_costes=checked&id_produccion=",'id_prod_estudio_costes','',true] ;   // Produccion por defecto de la obra-estudio
   $etiquetas["id_prod_estudio_costes"] = 'Estudio de costes de la Licitación' ;
   $tooltips["id_prod_estudio_costes"] = 'Relación Valorada principal de la OBRA-ESTUDIO que permite el Estudio de Costes de la Licitación' ;
   
+  $sql_enc= encrypt2("SELECT margen_est FROM Prod_view WHERE ID_PRODUCCION={$rs["id_prod_estudio_costes"]};")  ;
+  $spans_html["id_prod_estudio_costes"]="<span id='p_est_coste'></span><script>dfirst_ajax('p_est_coste','$sql_enc','progress_success' );</script>  ";
+
 
 //  $selects["id_obra_estudio"]=["ID_ESTUDIO","NOMBRE","Estudios_de_Obra","" ,"../estudios/estudios_ficha.php?id_estudio=","ID_ESTUDIO"] ;   // datos para clave foránea
   $tooltips["id_obra_estudio"]='Puede crear y asociar a la Licitación una Obra vacía para facilitar el estudio de costes, solicitudes de presupuestos, etc... ';
@@ -147,12 +151,15 @@ else { require_once("../estudios/estudios_menutop_r.php"); }
 
 
 // Actualización tipo obra
-$disable_adjudicar= $id_obra ? "": "disabled" ;
+$disable_adjudicar=  $rs["tipo_subcentro"]=="E" ? "": "disabled" ;
+$title_adjudicar=  $rs["tipo_subcentro"]=="E" ? "Adjudica la licitación actual, pasando a subcentro tipo ESTUDIO a tipo OBRA": "Obra ya adjudicada" ;
+$Oferta_Final_IVA= $rs["Oferta_Final_IVA"]  ;
 
-$sql_update= "UPDATE `OBRAS` SET tipo_subcentro='O'  WHERE ID_OBRA=$id_obra AND $where_c_coste ; "  ;
+$sql_update= "UPDATE `OBRAS` SET tipo_subcentro='O' , activa='1',IMPORTE='{$rs["Oferta_Final_IVA"]}' ,BAJA={$rs["Baja_final"]},COEF_BAJA=1-{$rs["Baja_final"]} ,EXPEDIENTE='{$rs["EXPEDIENTE"]}'"
+                . " WHERE ID_OBRA=$id_obra AND $where_c_coste ; "  ;
 $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;    
-echo "<br><a class='btn btn-primary btn-xs noprint' href='#'  "
-     . " onclick=\"js_href('$href' ,'1' )\"   title='Adjudica la licitación actual, pasando a subcentro tipo ESTUDIO a tipo OBRA'>Adjudicar la licitación</a>" ;
+echo "<br><button class='btn btn-primary btn-xs noprint' href='#' $disable_adjudicar "
+     . " onclick=\"js_href('$href' ,'1' )\"   title='$title_adjudicar'>Adjudicar la licitación</button>" ;
       
 
  ?>

@@ -59,7 +59,7 @@ $result=$Conn->query($sql);
 //            $result=$Conn->query($sql2);
 //            $id_produccion=Dfirst( "MAX(ID_PRODUCCION)", "Prod_view", "ID_OBRA=$id_obra AND PRODUCCION='$produccion' AND id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
             
-            $id_prod_estudio_costes=DInsert_into('PRODUCCIONES', '( ID_OBRA, PRODUCCION,`user` ) ', "(  '$id_obra', 'ESTUDIO DE COSTES' , '{$_SESSION["user"]}' )", 'ID_PRODUCCION', "ID_OBRA=$id_obra");
+            $id_prod_estudio_costes=DInsert_into('PRODUCCIONES', '( ID_OBRA, PRODUCCION,`user` ) ', "(  '$id_obra', 'PROYECTO' , '{$_SESSION["user"]}' )", 'ID_PRODUCCION', "ID_OBRA=$id_obra");
             $id_produccion_obra=DInsert_into('PRODUCCIONES', '( ID_OBRA, PRODUCCION,`user` ) ', "(  '$id_obra', 'PRODUCCION OBRA' , '{$_SESSION["user"]}' )", 'ID_PRODUCCION', "ID_OBRA=$id_obra");
             
             logs("añadir OBRA-ESTUDIO id_prod_estudio: $id_prod_estudio_costes ");

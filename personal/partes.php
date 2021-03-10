@@ -234,7 +234,7 @@ for ($x = 1; $x <= 31; $x++) {
     if ($x < 31)  {$select_dias.= " , " ;}
 } 
 
- $sql_T="SELECT '' " ;
+// $sql_T="SELECT '' " ;
  
 $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
  
@@ -244,7 +244,7 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
       $sql="SELECT ID_PARTE, ID_OBRA, ID_PARTE AS nid_Parte  $select_NOMBRE_OBRA,Fecha,NumP, importe_parte,Observaciones FROM Partes_ViewC "
             . " WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre) ORDER BY fecha_creacion  DESC LIMIT 50 " ;
 //        echo $sql;
-     $sql_T="SELECT '' " ;
+//     $sql_T="SELECT '' " ;
      $col_sel="ID_PARTE" ;
     
      
@@ -257,7 +257,7 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
 //     $sql="SELECT * FROM Partes_Personal_View WHERE $where AND $where_nombre  ORDER BY Fecha DESC LIMIT 50 " ;
       $sql="SELECT ID_PARTE, ID_OBRA, ID_PARTE AS nid_Parte  $select_NOMBRE_OBRA,Fecha,NumP, importe_parte,Observaciones FROM Partes_ViewC "
             . " WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre) ORDER BY Fecha " ;
-     $sql_T="SELECT '' " ;
+//     $sql_T="SELECT '' " ;
      $col_sel="ID_PARTE" ;
      
     // AÑADE BOTON DE 'BORRAR' PARTE . SOLO BORRARÁ SI ESTÁ VACÍO DE PERSONAL 
@@ -284,7 +284,7 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
             . " FROM Partes_ViewC WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre) ORDER BY  Fecha,NOMBRE_OBRA   " ;
     }
     
-    $sql_T="SELECT '' " ;
+//    $sql_T="SELECT '' " ;
     
     $link_calendar_dia="../personal/partes.php?agrupar=partes&fechas=" ;
     
@@ -304,20 +304,17 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
     { $sql="SELECT ID_PARTE,ID_PERSONAL ,ID_OBRA,Fecha,NOMBRE as link_calendario ,Observaciones as id_link_calendario_TOOLTIP"
             . ",HO,IF(HX>0,CONCAT('+<b>',HX,'</b>'),'') FROM Partes_Personal_View WHERE $where AND $where_nombre ORDER BY  Fecha,NOMBRE  " ;
     }        
-    $sql_T="SELECT '' " ;
+//    $sql_T="SELECT '' " ;
 //    echo $sql ;
     
     break;
     case "obras":
-     $sql="SELECT  ID_OBRA $select_NOMBRE_OBRA ,COUNT(ID_PARTE) AS Num_Partes,SUM(HO) AS Num_Horas_Ordinarias_HO,SUM(HX) AS Num_Horas_Extras_HX   FROM Partes_Personal_View "
+     $sql="SELECT  ID_OBRA $select_NOMBRE_OBRA ,COUNT(ID_PARTE) AS Num_Partes,SUM(HO) AS HO,SUM(HX) AS HX   FROM Partes_Personal_View "
             . " WHERE $where AND $where_nombre GROUP BY ID_OBRA ORDER BY  NOMBRE_OBRA  " ;
-     $sql_T="SELECT  'Suma' ,COUNT(ID_PARTE) AS Num_Partes,SUM(HO) AS Num_Horas_Ordinarias_HO,SUM(HX) AS Num_Horas_Extras_HX   FROM Partes_Personal_View WHERE $where AND $where_nombre   " ;
-//     $sql="SELECT  ID_OBRA $select_NOMBRE_OBRA ,COUNT(ID_PARTE) AS Num_Partes  FROM Partes_Personal_View WHERE $where GROUP BY ID_OBRA ORDER BY  NOMBRE_OBRA  " ;
-//     $sql_T="SELECT  'Suma'   FROM Partes_Personal_View WHERE $where   " ;
-//     echo $sql;
-//     echo $sql_T;
-     //$sql_T="SELECT '','Suma' , SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where    " ;
-    break;
+//     $sql_T="SELECT  'Suma' ,COUNT(ID_PARTE) AS Num_Partes,SUM(HO) AS Num_Horas_Ordinarias_HO,SUM(HX) AS Num_Horas_Extras_HX   FROM Partes_Personal_View WHERE $where AND $where_nombre   " ;
+
+ 
+     break;
    case "obras_mes":
      $sql="SELECT ID_OBRA,NOMBRE_OBRA,COUNT( ID_OBRA ) AS Dias  ,  $select_dias FROM Partes_Obras_View "
            . "WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre) GROUP BY ID_OBRA  ORDER BY NOMBRE_OBRA " ;
@@ -326,7 +323,7 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
 
    case "nombres":
       $sql="SELECT id,ID_OBRA,ID_PARTE,ID_PERSONAL,Fecha,NOMBRE  $select_NOMBRE_OBRA,HO,HX,Observaciones FROM Partes_Personal_View WHERE $where AND $where_nombre  ORDER BY  Fecha  " ;
-      $sql_T="SELECT '' AS a,'' AS b,'' AS c,SUM(HO),SUM(HX) FROM Partes_Personal_View WHERE $where AND $where_nombre ORDER BY  Fecha  " ;
+//      $sql_T="SELECT '' AS a,'' AS b,'' AS c,SUM(HO) AS HO,SUM(HX) AS HX FROM Partes_Personal_View WHERE $where AND $where_nombre ORDER BY  Fecha  " ;
       
 //      $updates=['Observacione2s','HO','HX']  ;
 //      $tabla_update="PARTES_PERSONAL" ;
@@ -336,7 +333,7 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
      break;
     case "nombres_grupo":
       $sql="SELECT id,ID_PARTE,ID_PERSONAL,NOMBRE,SUM(HO) AS HO,SUM(HX) AS HX FROM Partes_Personal_View WHERE $where AND $where_nombre GROUP BY ID_PERSONAL ORDER BY  NOMBRE  " ;
-      $sql_T="SELECT '' AS c,SUM(HO),SUM(HX) FROM Partes_Personal_View WHERE $where AND $where_nombre   " ;
+//      $sql_T="SELECT '' AS c,SUM(HO),SUM(HX) FROM Partes_Personal_View WHERE $where AND $where_nombre   " ;
      break;
  
     case "nombres_mes":
@@ -348,8 +345,8 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
      case "maquinaria_mes":
      $sql="SELECT id_parte,id_obra_mq,id_concepto_mq,Maquinaria,CONCEPTO,COSTE,SUM(cantidad) AS Cantidad,SUM(cantidad)*COSTE AS Importe ,  $select_dias"
              . "   FROM Partes_Maquinas_View WHERE $where AND $where_maquinaria GROUP BY id_obra_mq  ORDER BY Maquinaria " ;
-     $sql_T="SELECT '' as a,'' as a2, '' as aa,'Suma', SUM(cantidad)*COSTE AS Importe "
-             . "   FROM Partes_Maquinas_View WHERE $where AND $where_maquinaria " ;
+//     $sql_T="SELECT '' as a,'' as a2, '' as aa,'Suma', SUM(cantidad*COSTE) AS Importe "
+//             . "   FROM Partes_Maquinas_View WHERE $where AND $where_maquinaria " ;
 //     echo $sql;    
 //     $sql_T="SELECT '' AS a,'' AS b,'' AS c,'' AS d, SUM(IMPORTE_IVA) AS IMPORTE_IVA,SUM(pdte_conciliar) AS pdte_conciliar  FROM Partes_Personal_View WHERE $where  " ;   
      break;
@@ -369,7 +366,7 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
                 . "  FROM Partes_Maquinas_View WHERE $where AND $where_maquinaria ORDER BY  Fecha,Maquinaria  " ;
         
     }        
-    $sql_T="SELECT '' " ;
+//    $sql_T="SELECT '' " ;
 //    echo $sql ;
     
     break;
@@ -377,8 +374,8 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
     case "meses":
     $sql="SELECT DATE_FORMAT(Fecha, '%Y-%m') as MES, SUM(NumP) AS Num_Partes, SUM(importe_parte) AS importe_parte FROM Partes_ViewC "
             . " WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre) GROUP BY MES ORDER BY MES " ;
-    $sql_T="SELECT 'Total', SUM(NumP) AS Num_Partes, SUM(importe_parte) AS importe_parte FROM Partes_ViewC "
-            . " WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre)  " ;
+//    $sql_T="SELECT 'Total', SUM(NumP) AS Num_Partes, SUM(importe_parte) AS importe_parte FROM Partes_ViewC "
+//            . " WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre)  " ;
 
     
     break;
@@ -388,8 +385,8 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
 // 
     $sql="SELECT DATE_FORMAT(Fecha, '%Y') as ANNO, SUM(NumP) AS Num_Partes, SUM(importe_parte) AS importe_parte FROM Partes_ViewC "
             . " WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre) GROUP BY ANNO ORDER BY ANNO " ;
-    $sql_T="SELECT 'Total', SUM(NumP) AS Num_Partes, SUM(importe_parte) AS importe_parte FROM Partes_ViewC "
-            . " WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre)  " ;
+//    $sql_T="SELECT 'Total', SUM(NumP) AS Num_Partes, SUM(importe_parte) AS importe_parte FROM Partes_ViewC "
+//            . " WHERE ID_PARTE IN (SELECT ID_PARTE FROM Partes_Personal_View WHERE $where AND $where_nombre)  " ;
 
     break;
    
@@ -425,9 +422,26 @@ $select_NOMBRE_OBRA= ($listado_global) ? " , NOMBRE_OBRA " : ""     ;
  
 //echo $sql ;
 $result=$Conn->query($sql) ;
-if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ;} 
+//if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ;} 
 
 echo "<font size=1 color=silver>Agrupar por : $agrupar <br> {$result->num_rows} filas </font> " ;
+
+
+$tabla_sumatorias["importe_parte"]=0;
+$tabla_sumatorias["Importe"]=0;
+$tabla_sumatorias["Num_Partes"]=0;
+$tabla_sumatorias["HO"]=0;
+$tabla_sumatorias["HX"]=0;
+$tabla_sumatorias["Num_Partes"]=0;
+$aligns["HO"]="center";
+$aligns["HX"]="center";
+$aligns["Num_Partes"]="center";
+
+
+
+
+
+
 
   $updates=[ 'Observaciones']  ;
 //  $ocultos=['link_calendario_TOOLTIP' ]  ;

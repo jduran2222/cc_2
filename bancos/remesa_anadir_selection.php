@@ -54,19 +54,27 @@ if ($tipo_remesa=='P')    // remesa de PAGOS
     foreach ($id_fra_prov_array as $id_fra_prov)    
            {
                // definimos las variables para crear el ID_PAGO
-               $pdte_pago=  round(Dfirst( "pdte_pago", "Fras_Prov_View", "ID_FRA_PROV=$id_fra_prov  AND  $where_c_coste" ),2) ; 
+               $rs_fra_prov=Drow(  "Fras_Prov_View", "ID_FRA_PROV=$id_fra_prov  AND  $where_c_coste" );
+               $pdte_pago=  round($rs_fra_prov[ "pdte_pago"],2) ; 
 
 
-               $n_fra=Dfirst( "N_FRA", "Fras_Prov_Listado", "ID_FRA_PROV=$id_fra_prov  AND  id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
-               $proveedor=substr(Dfirst( "PROVEEDOR", "Fras_Prov_Listado", "ID_FRA_PROV=$id_fra_prov  AND  id_c_coste={$_SESSION["id_c_coste"]}" ), 0, 15) ; 
+               $n_fra=$rs_fra_prov[ "N_FRA"] ; 
+               $proveedor=substr($rs_fra_prov[ "PROVEEDOR"], 0, 15) ; 
                $observaciones="$proveedor fra $n_fra" ; 
+//               $f_vto= date("Y-m-d",strtotime($rs_fra_prov["FECHA"]) + $rs_fra_prov["Forma_Pago"]*24*3600) ; // calculamos fecha vencimiento=fecha factura+dias de forma de pago
+               $f_vto= fecha_vto( $rs_fra_prov["FECHA"] , $rs_fra_prov["Forma_Pago"] ) ; // calculamos fecha vencimiento=fecha factura+dias de forma de pago
+               
+               
+               //date("Y-m-d",strtotime("2021-02-28")+3600*24)
 
                // INSERTAMOS EL ID_PAGO 
-               $sql="INSERT INTO `PAGOS` ( id_cta_banco,id_remesa,tipo_pago,tipo_doc,f_vto,importe,observaciones,`user` )    VALUES (  '$id_cta_banco','$id_remesa','P','remesa', '$fecha' ,'$pdte_pago','$observaciones', '{$_SESSION["user"]}' );" ;
+               $sql="INSERT INTO `PAGOS` ( id_cta_banco,id_remesa,tipo_pago,tipo_doc,f_vto,importe,observaciones,`user` )    "
+                       . "VALUES (  '$id_cta_banco','$id_remesa','P','remesa', '$f_vto' ,'$pdte_pago','$observaciones', '{$_SESSION["user"]}' );" ;
     //           echo ("<br>$sql");           
                $result=$Conn->query($sql);
     //           echo ("<br>Resultado insertar ID_PAGO: $result");
-               $id_pago=Dfirst( "MAX(id_pago)", "PAGOS", "id_cta_banco=$id_cta_banco" ) ; 
+//               $id_pago=Dfirst( "MAX(id_pago)", "PAGOS", "id_cta_banco=$id_cta_banco" ) ; 
+               $id_pago=$Conn->insert_id; ; 
 
                // Insertamos la relación FRA_PROV_PAGOS
                $sql="INSERT INTO `FRAS_PROV_PAGOS` (id_fra_prov , id_pago) VALUES ( '$id_fra_prov','$id_pago' );" ;

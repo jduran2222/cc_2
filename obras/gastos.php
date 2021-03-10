@@ -301,7 +301,7 @@ $tabla_group=0 ;
 $select_NOMBRE_OBRA= $gastos_global ? ", NOMBRE_OBRA " : "" ;
 
 
-$select_MENSUAL = $fmt_mensual ? desglose_mensual(", SUM(importe*(MONTH(FECHA)={m} )) AS importe_{mes} ")  :"" ;
+$select_MENSUAL = $fmt_mensual ? desglose_mensual(", SUM(importe*(MONTH(FECHA)={m} )) AS {mes} ")  :"" ;
         
 // IMPUTACION A SUBOBRA
 if (!$gastos_global)
@@ -389,15 +389,18 @@ function imputar_a_subobra(id_obra) {
  switch ($agrupar) {
     case "obra":
      $sql="SELECT ID_OBRA,tipo_subcentro, NOMBRE_OBRA , SUM(IMPORTE) as importe $select_MENSUAL  FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY ID_OBRA ORDER BY NOMBRE_OBRA" ;
-     $sql_T="SELECT '','Suma' , SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//     $sql_T="SELECT '','Suma' , SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+     
+   
+
     break;
     case "tipo_subcentro_gasto":
      $sql="SELECT tipo_subcentro , SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY tipo_subcentro " ;
-     $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//     $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "proveedor":
     $sql="SELECT ID_PROVEEDORES,PROVEEDOR , SUM(IMPORTE) as importe $select_MENSUAL  FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR  " ;
-    $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT 'Suma' , SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
    break;
    case "prov_concepto":
 //    $sql="SELECT NOMBRE_OBRA, PRODUCCION, ID_OBRA,CAPITULO ,ID_UDO,UDO,MED_PROYECTO,SUM(MEDICION) as MEDICION, PRECIO, SUM(IMPORTE) as importe  FROM ConsultaProd WHERE $where  GROUP BY ID_UDO ORDER BY CAPITULO,ID_UDO " ;
@@ -423,11 +426,11 @@ function imputar_a_subobra(id_obra) {
    case "concepto":
     $sql="SELECT ID_CONCEPTO,ID_PROVEEDORES,PROVEEDOR ,CONCEPTO,SUM(CANTIDAD) AS CANTIDAD, COSTE, SUM(IMPORTE) as importe,ID_CUENTA,CUENTA_TEXTO,id_usub as Usub  FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY ID_PROVEEDORES,ID_CONCEPTO  ORDER BY PROVEEDOR,CONCEPTO  " ;
     $select_suma_cantidad= $CONCEPTO? "SUM(CANTIDAD) AS CANTIDAD," : "'' AS C," ;
-    $sql_T="SELECT '' AS A,'' AS B,  $select_suma_cantidad    '' AS D, SUM(IMPORTE) as importe, '' as dd  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS A,'' AS B,  $select_suma_cantidad    '' AS D, SUM(IMPORTE) as importe, '' as dd  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "subobra":
     $sql="SELECT ID_SUBOBRA,SUBOBRA ,  SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY ID_SUBOBRA  ORDER BY SUBOBRA  " ;
-    $sql_T="SELECT 'Suma' AS D, SUM(IMPORTE) as importe $select_MENSUAL  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT 'Suma' AS D, SUM(IMPORTE) as importe $select_MENSUAL  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "albaran":
     $sql="SELECT ID_VALE,ID_PROVEEDORES,ID_FRA_PROV,PROVEEDOR AS ID_SUBTOTAL_PROVEEDOR,FECHA,REF ,ID_PARTE AS NID_PARTE, SUM(IMPORTE) as importe,ID_FRA_PROV,N_FRA, Observaciones,user "
@@ -451,45 +454,48 @@ function imputar_a_subobra(id_obra) {
     break;
    case "detalle":
     $sql="SELECT id,ID_VALE,ID_PROVEEDORES,ID_CONCEPTO,ID_FRA_PROV, FECHA,REF,PROVEEDOR,CONCEPTO, COSTE ,CANTIDAD, IMPORTE,ID_FRA_PROV AS facturado,N_FRA,Fecha_Creacion FROM ConsultaGastos_View WHERE $where AND $where_c_coste   ORDER BY FECHA,PROVEEDOR  " ;
-    $sql_T="SELECT '' AS B,'' AS C,'' AS D, SUM(IMPORTE) as importe, '' as dd, '' as dd2  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS B,'' AS C,'' AS D, SUM(IMPORTE) as importe, '' as dd, '' as dd2  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     
     $col_sel="id" ;
     
     break;
    case "dias":
     $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m-%d') as Dia,SUM(importe) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY Dia  ORDER BY Dia  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "semanas":
     $sql="SELECT  $select_semana as Semana,SUM(importe) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY Semana  ORDER BY Semana  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "meses":
     $sql="SELECT  DATE_FORMAT(FECHA, '%Y-%m') as Mes,SUM(importe) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY Mes  ORDER BY Mes  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
     case "trimestres":  
     $sql="SELECT  $select_trimestre as Trimestre,SUM(importe) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY Trimestre  ORDER BY Trimestre  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "annos":
     $sql="SELECT  DATE_FORMAT(FECHA, '%Y') as Anno,SUM(importe) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY Anno  ORDER BY Anno  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "tipo_gasto":
     $gasto_total=Dfirst("SUM(IMPORTE)","ConsultaGastos_View"," $where AND $where_c_coste"  )   ;  //calculamos gasto_total para ver los porcentajes de tipo_gasto
-    if ($gasto_total==0) {$gasto_total=1 ;}       // evitamos la division por cero
+//    if ($gasto_total==0) {$gasto_total=1 ;}       // evitamos la division por cero
+    if ($gasto_total<>0) { $tabla_sumatorias["P_gasto"]="=@@importe@@/$gasto_total";}       // evitamos la division por cero de la sumatoria
+    
     $sql="SELECT  GASTO AS TIPO_GASTO, SUM(importe) as importe,SUM(importe)/$gasto_total as P_gasto $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY GASTO  ORDER BY GASTO  " ;
-    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe,SUM(IMPORTE)/$gasto_total as P_gasto $select_MENSUAL  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS D, SUM(IMPORTE) as importe,SUM(IMPORTE)/$gasto_total as P_gasto $select_MENSUAL  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+   
     break;
    case "cuentas":
     $sql="SELECT  ID_CUENTA, CUENTA,CUENTA_TEXTO,SUM(importe) as importe $select_MENSUAL FROM ConsultaGastos_View WHERE $where AND $where_c_coste  GROUP BY CUENTA  ORDER BY CUENTA  " ;
-    $sql_T="SELECT '' AS A,'' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS A,'' AS D, SUM(IMPORTE) as importe  FROM ConsultaGastos_View WHERE $where AND $where_c_coste   " ;
     break;
    case "albaranes_pdf":
 //    $sql="SELECT ID_VALE,ID_OBRA,ID_PROVEEDORES,path_archivo,ID_FRA_PROV $select_NOMBRE_OBRA,PROVEEDOR ,FECHA,REF , importe,ID_FRA_PROV AS facturado,Observaciones, user FROM Vales_view WHERE $where_vales AND $where_c_coste  ORDER BY FECHA,PROVEEDOR  " ;
     $sql="SELECT path_archivo,ID_VALE,ID_OBRA,ID_FRA_PROV $select_NOMBRE_OBRA,PROVEEDOR,FECHA,REF,ID_PROVEEDORES,importe,Observaciones,ID_FRA_PROV,N_FRA,user FROM Vales_view WHERE $where_vales AND $where_c_coste  ORDER BY FECHA,PROVEEDOR  " ;
-    $sql_T="SELECT '' AS B,'' AS C,'TOTAL:' AS D, SUM(importe) as importe, '' as dd  FROM Vales_view WHERE $where_vales AND $where_c_coste   " ;
+//    $sql_T="SELECT '' AS B,'' AS C,'TOTAL:' AS D, SUM(importe) as importe, '' as dd  FROM Vales_view WHERE $where_vales AND $where_c_coste   " ;
     break;
 
  }
@@ -498,17 +504,39 @@ function imputar_a_subobra(id_obra) {
 //echo "<br>".$sql_T ;
 //$result=$Conn->query($sql) ;
 //$result_T=$Conn->query($sql_T) ;
-$result=$Conn->query($sql) ;
-if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
-if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
-if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
-if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
+//$result=$Conn->query($sql) ;
+//if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
+//if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
+//if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
+//if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
 
-echo "<small style='color:silver;'>Agrupar por : $agrupar ( {$result->num_rows} filas) </small>";
+//echo "<small style='color:silver;'>Agrupar por : $agrupar ( {$result->num_rows} filas) </small>";
+echo "<small style='color:silver;'>Agrupar por : $agrupar </small>";
 
-$formats["Enero"] = "moneda" ; $formats["Febrero"] = "moneda" ; $formats["Marzo"] = "moneda" ; $formats["Abril"] = "moneda" ; $formats["Mayo"] = "moneda" ; $formats["Junio"] = "moneda" ;
-$formats["Julio"] = "moneda" ; $formats["Agosto"] = "moneda" ; $formats["Septiembre"] = "moneda" ; $formats["Octubre"] = "moneda" ; $formats["Noviembre"] = "moneda" ; $formats["Diciembre"] = "moneda" ;
+
+$tabla_sumatorias["importe"]=0;
+$tabla_sumatorias["HO"]=0;
+$tabla_sumatorias["HX"]=0;
+$tabla_sumatorias["Num_Partes"]=0;
+
+if ($CONCEPTO) { $tabla_sumatorias["CANTIDAD"]=0; } 
+
+
+$array_meses= array_meses();
+foreach ( $array_meses as  $mes) { $tabla_sumatorias[ $mes ]=0 ; }  
+
+
+
+$aligns["HO"]="center";
+$aligns["HX"]="center";
+$aligns["Num_Partes"]="center";
+
+
+
+
+//$formats["Enero"] = "moneda" ; $formats["Febrero"] = "moneda" ; $formats["Marzo"] = "moneda" ; $formats["Abril"] = "moneda" ; $formats["Mayo"] = "moneda" ; $formats["Junio"] = "moneda" ;
+//$formats["Julio"] = "moneda" ; $formats["Agosto"] = "moneda" ; $formats["Septiembre"] = "moneda" ; $formats["Octubre"] = "moneda" ; $formats["Noviembre"] = "moneda" ; $formats["Diciembre"] = "moneda" ;
 
 
 $dblclicks=[];
@@ -564,7 +592,7 @@ $tooltips["conc"] = "Indica si el pago está conciliado" ;
 
 $tabla_expandible=0;
 
-$titulo="";
+$titulo="_NUM_ filas" ;
 $msg_tabla_vacia="No hay.";
 
 if ($tabla_group)

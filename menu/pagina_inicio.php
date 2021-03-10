@@ -458,9 +458,10 @@ if ($_SESSION["is_desarrollo"]) {
                             <i class="fas fa-user-plus"></i> 
                             añadir usuario
                         </a>
-                        <br>
+                        <br>   
                         <!--<a target="_blank" class="btn btn-link text-info text-left" href="../include/tabla_general.php?url_enc=<?php // echo encrypt2("select=id_usuario,usuario,email,online,activo,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion&tabla=Usuarios_View&where=id_c_coste=$id_c_coste&link=../configuracion/usuario_ficha.php?id_usuario=&campo=usuario&campo_id=id_usuario") ; ?>" >-->
-                        <a target="_blank" class="btn btn-link text-info text-left" href="../include/tabla_general.php?url_enc=<?php echo encrypt2("sql=select id_usuario,usuario,email,online,activo,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion FROM Usuarios WHERE id_c_coste=$id_c_coste ORDER BY activo DESC,id_usuario &link=../configuracion/usuario_ficha.php?id_usuario=&campo=usuario&campo_id=id_usuario") ; ?>" >
+                        <?php $sql_select=$_SESSION["admin"]? "id_usuario,usuario,email,online,activo,admin, admin_chat, admin_debug,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion" : "id_usuario,usuario,email,online,activo,autorizado,permiso_licitacion,permiso_obras,permiso_administracion,permiso_bancos,user,fecha_creacion" ; ?>
+                        <a target="_blank" class="btn btn-link text-info text-left" href="../include/tabla_general.php?url_enc=<?php echo encrypt2("sql=select $sql_select FROM Usuarios WHERE id_c_coste=$id_c_coste ORDER BY activo DESC,id_usuario &link=../configuracion/usuario_ficha.php?id_usuario=&campo=usuario&campo_id=id_usuario") ; ?>" >
                             <i class="far fa-user"></i> 
                             Usuarios empresa<?php echo badge_sup($num_usuarios, 'info'); ?><?php // echo "($num_usuarios/{$limites["usuarios"]})"; ?>
                         </a>

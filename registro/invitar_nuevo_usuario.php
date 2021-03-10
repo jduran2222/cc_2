@@ -71,15 +71,16 @@ if( $id_usuario_invitado=Dfirst("id_usuario","Usuarios","id_usuario='$id_usuario
       $mail->ConfirmReadingTo = "soporte@construcloud.es"; 
 
       $mail->Subject = "ConstruCloud.es invitación de usuario a {$_SESSION["empresa"]}";
+      
       $mail->Body = "El usuario {$_SESSION["user"]} con email {$_SESSION["email"]} de la empresa {$_SESSION["empresa"]} le ha enviado una invitación para acceder"
-                                           . " a la ERP <a  href='http://www.construcloud.es/web' >ConstruCloud.es</a>"
+                                           . " a la ERP <a  href='{$_SESSION["dir_raiz"]}' >ConstruCloud.es</a>"
                     . "<br><br><br>Por favor, acceda con su email y su password abajo indicados y proceda a cambiarlo cuando acceda."
                     . "<br>Usuario: <b>$email_invitado</b>"
                     . "<br>Password: <b>$new_password</b>"
-                    . "<br><br><br>Acceder con nuevo password a <a  href='http://www.construcloud.es/web' > login</a> construcloud.es"
+                    . "<br><br><br>Acceder con nuevo password a <a  href='{$_SESSION["dir_raiz"]}' > login</a> construcloud.es"
                     . "<br>Saludos"
                     . "<br><img width='256px' src='https://construcloud.es/web/img/logo_cc.svg' alt='Logo ConstruCloud 2.0'/>"
-                    . "<br><a  href='http://www.construcloud.es'>ConstruCloud.es</a>";
+                    . "<br><a  href='https://www.construcloud.es'>ConstruCloud.es</a>";
 
 //      $mail->AltBody ="Se ha solicitado el restablecimiento del password de acceso. Utilice Empresa: $empresa , Usuario: $usuario, Nuevo password: $new_password" ;
       $mail->AltBody ="El usuario {$_SESSION["user"]} de la empresa {$_SESSION["empresa"]} le ha enviado una invitación para acceder a https://construcloud.es  "

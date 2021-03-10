@@ -1,7 +1,47 @@
 
 
 <script>
+
+// calcula el valor de una expresión SQL formateada
+function dfirst_ajax(id,sql_enc, format)
+    {
+      format = format || '';  
+      
+      var format_txt=format ? "&format="+format : "" ;
+      
+      var href= "../include/sql.php?ajax=1&sql="+sql_enc+format_txt ;
+      
+      cargar_ajax(id,href) ;
+      
     
+//      var xhttp = new XMLHttpRequest();
+//      xhttp.onreadystatechange = function() {
+//      if (this.readyState == 4 && this.status == 200) {
+//        if (this.responseText!="0"){$(id).text(this.responseText);}      // si el resultado es distinto de CERO, rellenamos el badget
+//        }
+//      };
+//      xhttp.open("GET", "../include/dfirst_ajax.php?field="+field+"&tabla="+tabla+"&wherecond="+wherecond+"", true);       //hacemos la consulta ajax
+//      xhttp.send();   
+    }
+ 
+ // carga en el innerHTML del elemento 'id' el resultado de ejecutar href.php  vía AJAX
+function cargar_ajax(id,href)
+{
+document.getElementById(id).innerHTML="<img src='../img/espere.gif' style='display: block; margin-left: auto; margin-right: auto; ' >" ;    
+    
+ var xhttp = new XMLHttpRequest();
+ xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+//        if (this.responseText!="0"){$("#"+id).text(this.responseText);}      // si el resultado es distinto de CERO, rellenamos el badget
+//       $("#"+id).innerHTML=this.responseText ;
+       document.getElementById(id).innerHTML=this.responseText ;
+      }
+  };
+//  xhttp.open("GET", "../include/dfirst_ajax.php?field="+field+"&tabla="+tabla+"&wherecond="+wherecond+"", true);       //hacemos la consulta ajax
+  xhttp.open("GET", href, true);       //hacemos la consulta ajax
+  xhttp.send();   
+ }
+
 
 //
 //// ejecuta un href por ajax con posibilidad de reload, msg y aviso de ERROR
@@ -58,24 +98,6 @@ function copyToClipboard(e) {
     tempItem.parentElement.removeChild(tempItem);
 }
 
-
-// carga en el innerHTML del elemento 'id' el resultado de ejecutar href.php  vía AJAX
-function cargar_ajax(id,href)
-{
-document.getElementById(id).innerHTML="<img src='../img/espere.gif' style='display: block; margin-left: auto; margin-right: auto; ' >" ;    
-    
- var xhttp = new XMLHttpRequest();
- xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-//        if (this.responseText!="0"){$("#"+id).text(this.responseText);}      // si el resultado es distinto de CERO, rellenamos el badget
-//       $("#"+id).innerHTML=this.responseText ;
-       document.getElementById(id).innerHTML=this.responseText ;
-      }
-  };
-//  xhttp.open("GET", "../include/dfirst_ajax.php?field="+field+"&tabla="+tabla+"&wherecond="+wherecond+"", true);       //hacemos la consulta ajax
-  xhttp.open("GET", href, true);       //hacemos la consulta ajax
-  xhttp.send();   
- }
 
 
 

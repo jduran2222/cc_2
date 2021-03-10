@@ -249,68 +249,6 @@ $sql_span=encrypt2("UPDATE `$tabla_update` SET `iva` = 0   WHERE $id_update=$id_
 //$spans_html['iva'] = "<a class='btn-link noprint' target='_blank' title='cambia Iva al 0%' href='../include/sql.php?code=1&sql=$sql_span' >0%</a>" ;
 $spans_html['iva'] = "<a class='btn-link noprint' title='cambia Iva al 0%'  onclick=\"js_href('../include/sql.php?code=1&sql=$sql_span' ) \" >0%</a>" ;
   
-//  BOTON SPAN EN FICHA.PHP  INLINE   ATENCION !!! HAY QUE HACER SEGURO EL SITIO CONSTRUWIN.SW24.ES
-//$sql_span=encrypt2("UPDATE `$tabla_update` SET `iva` = 0   WHERE $id_update=$id_valor ; ") ;
-//$spans_html['IMPORTE_IVA'] = "<a class='btn-link'  title='' href=#  onclick=\"alert(win2dow.clipboardData.getData('Text'));\" >PASTE</a>" ;
-//$spans_html['IMPORTE_IVA'] = "<a class='btn-link'  title='' href=#  onclick=\"$('#editableDiv').trigger('paste');\" >PASTE</a>" ;
-//$spans_html['IMPORTE_IVA'] = "<a class='btn-link'  title='' href=#  onclick=\"document.dispatchEvent('paste');\" >PASTE</a>" ;
-//$spans_html['IMPORTE_IVA'] = "<a class='btn-link'  title='' href=#  onclick=\"paste2();\" >PASTE</a>" ;
-//$spans_html['IMPORTE_IVA'] = "<a class='btn-link'  title='' href=#  onclick=\"alert( navigator.clipboard.readText() ) ;\" >PASTE</a>" ;
-//$spans_html['IMPORTE_IVA'] = "<a class='btn-link'  title='' href=#  onclick=\"alert('editableDiv');\" >PASTE</a>" ;
-
-?>
-<!--<div id='editableDiv' contenteditable='true'>Paste</div>
-<textarea id="textarea" onclick="paste2()"></textarea>-->
-
-<script> 
-      
-//function handlePaste (e) {
-//		var clipboardData, pastedData;
-//
-//		// Stop data actually being pasted into div
-//		e.stopPropagation();
-//    e.preventDefault();
-//
-//		// Get pasted data via clipboard API
-//    clipboardData = e.clipboardData || window.clipboardData;
-//    pastedData = clipboardData.getData('Text');
-//    
-//    // Do whatever with pasteddata
-//    alert(pastedData);
-//}
-//
-//document.getElementById('editableDiv').addEventListener('paste', handlePaste);      
-//document.addEventListener('paste', function (event) {
-//  var clipText = event.clipboardData.getData('Text');alert(clipText);
-//});
-//async function paste() {
-//  const text = await navigator.clipboard.readText();
-////  input.value = text;
-//alert(text) ;
-//}
-//async function paste2() {
-//  const text = await navigator.clipboard.readText();
-////  input.value = text;
-// document.getElementById('textarea').value = text;
-////alert(text) ;
-////return document.getElementById('textarea').value ;
-//return text ;
-//}
-
-//document.querySelector('#paste').addEventListener('click', () => {
-//  navigator.clipboard.readText()
-//    .then(text => {
-//      document.querySelector('#out').value = text;
-//      ChromeSamples.log('Text pasted.');
-//    })
-//    .catch(() => {
-//      ChromeSamples.log('Failed to read from clipboard.');
-//    });
-//});
-  </script>    
-         
- <?php       
-
 
   
 $formats["pdte_conciliar"]= 'moneda' ;

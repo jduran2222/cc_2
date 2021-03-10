@@ -6,44 +6,50 @@
 // echo "<div id='chart_div' ></div>" ;
 // echo "JUAN DURAN" ;
 // 
-
+//
 
 // restituimos variables por si venimos por AJAX  
-$tabla_ajax=false;
- if (isset($_GET["idtabla"]))
- {
-    //logs( "TABLA_AJAX: ENTRAMOS" );
 
-   $tabla_ajax=true;
+ if ($tabla_ajax=isset($_GET["idtabla"]))
+ {
+//    logs( "TABLA_AJAX: ENTRAMOS" );
+
 //   $idtabla=$_GET["idtabla"] ;
    
 //    echo "LONGITUD en ajax: " . strlen( $_GET['json_vars_enc']  );
    
 //   $vars_user= json_decode(decrypt2($_GET['vars_json_enc']) , true ) ;             // desencriptamos y decodificamos el json
    $vars_user= $_SESSION[$_GET['idtabla']]  ;             // cogemos las variables de esta idTabla guardadas en SESSION
-   foreach ( $vars_user as $clave => $valor) { ${$clave} = $valor ; }   // restauramos las variables para continuar la tabla.php como si estuviéramos en el PHP original
+   if (is_array($vars_user) OR $_SESSION["admin_debug"])   // evitamos un error que no localizo, juand, marzo21
+       {  foreach ( $vars_user as $clave => $valor) { ${$clave} = $valor ; } ; }  // restauramos las variables para continuar la tabla.php como si estuviéramos en el PHP original
    
 //   echo pre(($vars_user));
    //logs( "TABLA_AJAX: ".pre($vars_user) );
-   
+//   echo "CHART_ON:". $chart_ON ;
    
    
  } 
  
-logs("TABLA AJAX antes: isset(result): $sql  " . (isset($result))); 
+logs("TABLA AJAX antes:$sql isset(result):   " . (isset($result)          )); 
+
+//unset($result) ;
+//echo (isset($result))? "SI RESULT" : "no hay result";
+//echo "<br>";
+//echo (isset($result->num_rows))? "SI RESULT num_rows" : "no hay result num_rows";
+
 
 //$result=$Conn->query( $sql );
 
 // inicializamos la consulta si no existen los results o venimos por AJAX sin objetos
 //if (!isset($result) OR 1 ) {  $result=$Conn->query( $sql ); }
-if (!isset($result) AND isset($sql)) {  $result=$Conn->query( $sql ); }
+if (!isset($result->num_rows) AND isset($sql)) {  $result=$Conn->query( $sql ); }
 if (!isset($result_T) AND isset($sql_T)) {  $result_T=$Conn->query( $sql_T ); }
 if (!isset($result_T2) AND isset($sql_T2)) {  $result_T2=$Conn->query( $sql_T2 ); }
 if (!isset($result_T3) AND isset($sql_T3)) {  $result_T3=$Conn->query( $sql_T3 ); }
 if (!isset($result_S) AND isset($sql_S)) {  $result_S=$Conn->query( $sql_S ); }
 
  
-logs("TABLA AJAX: despues isset(result):" . (isset($result))  . $result->num_rows); 
+//logs("TABLA AJAX: despues isset(result):" . (isset($result))  . $result->num_rows); 
 
  
  // evitamos el CSS si venimos por ajax
@@ -307,7 +313,10 @@ $debug=$_SESSION["admin"];
 // INICIALIZACION DE VARIABLES 
 $idtabla= isset($idtabla)? $idtabla :  "tabla_".rand() ;           // genero un idtabla aleatorio que usaremos para evitar conflictos con otras tabla.php o ficha.php
 $TABLE=''; 
+//$TABLE="$sql<br>"; 
 
+// variable para el sistema de ETIQUETAS
+$script_name= isset($script_name)? $script_name : $_SERVER["SCRIPT_NAME"] ;   
 
 
 
@@ -486,8 +495,6 @@ echo "</pre>" ;
    $json_rows_chart=" rows : [ " ;
    $comma_rows="";
    
-   // variable para el sistema de ETIQUETAS
-   $script_name=$_SERVER["SCRIPT_NAME"] ;
    
    
 
@@ -1371,7 +1378,7 @@ $json_rows_chart.=" ] " ;         // FIN del JSON_ROWS_CHART
     }
    
   // imprimimos SUMATORIAS si existen
-   if (isset($tabla_sumatorias))
+   if (isset($tabla_sumatorias) AND 1)
     {   
           $TABLE .= "<tr>" ;
           if (isset($col_sel)  ) {$TABLE .=  "<td class='noprint'></td>" ;  }                  //si hay col_sel añadimos su hueco
@@ -1398,28 +1405,30 @@ $json_rows_chart.=" ] " ;         // FIN del JSON_ROWS_CHART
                              
                           $formats[$clave]= isset($formats[$clave])? $formats[$clave] : cc_formato_auto($clave) ;  // ESTO DEBERÍA DE VENIR YA REALIZADO (hay que revisar la asignación de formats automatica
                           $sumatorio_txt= cc_format($tabla_sumatorias[$clave], $formats[$clave], $format_style_sumatorios) ;
+                          //" style='text-align:{$aligns[$clave]}
                           
                       }
                          // sumamos background al estilo
-//                         $format_style_sumatorios= like($format_style_sumatorios, "style=%")? $format_style_sumatorios . ';background-color:#F2F4F4;' : "style='background-color:#F2F4F4;'" ;
-                         $format_style_sumatorios = cc_add_style($format_style_sumatorios , 'background-color:#F2F4F4') ;
-                         $TABLE .= "<td $class_hide_ids[$clave]  $format_style_sumatorios ><b>$sumatorio_txt </b></td>"  ; 
+//                         $format_style_sumatorios = cc_add_style($format_style_sumatorios , 'background-color:#F2F4F4') ;
+                         $format_style_sumatorios =  isset($aligns[$clave])? cc_add_style($format_style_sumatorios , "text-align:{$aligns[$clave]};") : $format_style_sumatorios ;
+                         
+                         $TABLE .= "<th $class_hide_ids[$clave]  $format_style_sumatorios ><b>$sumatorio_txt </b></th>"  ; 
                     }
               }
-          $TABLE .= "</td></tr>";              
+          $TABLE .= "</th></tr>";              
     }
    
   
     //******************************************************** TOTALES **************************
     $TR_totales="<tfoot>" ;
-    logs("TABLA AJAX: antes de TOTALES");  
+//    logs("TABLA AJAX: antes de TOTALES");  
 
     if (isset($result_T)  )   // Hay TOTALES?
       {   
-           logs("TABLA AJAX: pasamos el primer if");
+//           logs("TABLA AJAX: pasamos el primer if");
             if ($result_T->num_rows > 0)
             {	  
-              logs("TABLA AJAX: ENTRO A TOTALES");  
+//              logs("TABLA AJAX: ENTRO A TOTALES");  
 
               $TR_totales .= "<tr>" ;  
               if (isset($col_sel)  ) {$TR_totales .= "<th class='noprint'></th>" ;  }       // Si hay columna de Selección añadimos una columna vacía a los TOTALES
@@ -1568,9 +1577,15 @@ $json_rows_chart.=" ] " ;         // FIN del JSON_ROWS_CHART
  }
 
  
-
+if ($tabla_ajax)
+{   
 $tabla_tiempo= $_SESSION["admin_debug"]? "<span class='transparente small noprint ' > (".number_format(microtime(true)-$time0,3)." s)</span>" :"" ;
 $refresh_ajax= isset($javascript_cargar)?  "$tabla_tiempo <button type='button' class='btn btn-tool btn-sm noprint'  onclick=\" $javascript_cargar \" title='Refrescar tabla'> <i class='fas fa-redo'></i></button>"  : ""  ;
+}
+else
+{
+$refresh_ajax="";    
+}    
 $TABLE = <<<EOT
         
         

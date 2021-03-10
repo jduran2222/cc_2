@@ -66,13 +66,13 @@ $js_href="js_href( '$href', 1, '', '$href_prompt_update_precio', '', 1, '')"
 <a class="btn btn-xs btn-primary" title="añadir Capitulo al proyecto" href=# <?php echo "onclick=\"add_capitulo($id_obra)\" " ;?> ><i class="fas fa-plus-circle"></i> añadir capítulo</a>
 <a class="btn btn-xs btn-primary" title="Importar fichero formato BC3"  href="obras_importar_BC3.php?_m=<?php echo $_m;?>&id_obra=<?php echo $id_obra;?>" >importar .BC3</a>
 <a class="btn btn-xs btn-primary" title="Importar fichero formato XLS"  href="obras_importar_XLS.php?_m=<?php echo $_m;?>&id_obra=<?php echo $id_obra;?>" >importar .XLS</a>
-<a class="btn btn-xs btn-primary" title="Crear capítulo de COSTES INDIRECTOS" target="_blank"
+<a class="btn btn-xs btn-primary" title="Crear capítulo de COSTES INDIRECTOS" 
           href=# onclick='js_href("../obras/obras_proy_add_CI.php?id_obra=<?php echo $id_obra;?>" )'><i class="fas fa-plus-circle"></i> Cap. Costes Indirectos</a>
 
-<a class="btn btn-xs btn-primary" title="Corregir precios con factor multiplicador. Se redondearán a 2 decimales. Se modificarán todos los precios de las Relaciones Valoradas" target="_blank"
+<a class="btn btn-xs btn-primary" title="Corregir precios con factor multiplicador. Se redondearán a 2 decimales. Se modificarán todos los precios de las Relaciones Valoradas" 
           href=# onclick="<?php echo $js_href;?>">Corregir precios con factor</a>
 
-<a class="btn btn-xs btn-primary" title="Copia el Coste Estimado al campo Precio, permite hacer un presupuesto detallado de cada UDO" target="_blank"
+<a class="btn btn-xs btn-primary" title="Copia el Coste Estimado al campo Precio, permite hacer un presupuesto detallado de cada UDO" 
           href=# onclick='corregir_precios_proyecto_desde_coste_est("<?php echo $sql_update_precio_desde_coste_est;?>" )'>Copiar Coste Estimado a Precio</a>
 <a class="btn btn-xs btn-primary" title="Ver listado de Subobras de esta Obra" target="_blank"
           href="../include/tabla_general.php?url_enc=<?php echo encrypt2("titulo=Subobras&sql=select * FROM Subobra_View WHERE id_c_coste=$id_c_coste AND ID_OBRA=$id_obra ORDER BY SUBOBRA,ID_SUBOBRA DESC &link=../obras/subobra_ficha.php?id_subobra=&campo=SUBOBRA&campo_id=ID_SUBOBRA") ; ?>" > 
@@ -89,7 +89,7 @@ $js_href="js_href( '$href', 1, '', '$href_prompt_update_precio', '', 1, '')"
 <br><br>
 
    
-<script>
+<script> 
 
 function corregir_precios_proyecto_desde_coste_est(sql)
  { 
@@ -108,7 +108,8 @@ function corregir_precios_proyecto_desde_coste_est(sql)
         else
         { 
 //           alert(this.responseText) ;     //debug      
-           location.reload(true); }  // refresco la pantalla tras edición
+           location.reload(true);
+       }  // refresco la pantalla tras edición
         }
      };  // fin de la función
   

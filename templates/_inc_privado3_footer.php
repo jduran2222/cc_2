@@ -67,21 +67,6 @@ if(!$modal_ajax)
   </div>
 
 
-<!--  FUNCION DEJADA DE UTILIZAR PROVISIONALMENTE, FALL EN SEGURIDAD, HAY QUE CODIFICARLA juand, feb2021
-function dfirst_ajax(id,field,tabla,wherecond)
-    {
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        if (this.responseText!="0"){$(id).text(this.responseText);}      // si el resultado es distinto de CERO, rellenamos el badget
-        }
-      };
-      xhttp.open("GET", "../include/dfirst_ajax.php?field="+field+"&tabla="+tabla+"&wherecond="+wherecond+"", true);       //hacemos la consulta ajax
-      xhttp.send();   
-    }-->
-
-
-
 
   
   <!-- Script activo para las funcionalidades básicas de la web: debería ir en un main.js -->

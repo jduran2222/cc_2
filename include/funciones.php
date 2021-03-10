@@ -14,6 +14,12 @@ function cc_add_style($style_actual, $style_add)
     return ( preg_match ("/^style='/" ,$style_actual ) )? str_replace("style='","style='$style_add;", $style_actual ) : "style='$style_add;'" ;
 } 
 
+function fecha_vto($fecha, $forma_pago)
+{     
+    return  date("Y-m-d",strtotime($fecha) + $forma_pago*24*3600) ; // calculamos fecha vencimiento=fecha factura+dias de forma de pago
+
+} 
+
 function is_FLAG($clave)
 {      // descartamos los encabezados de campos FORMATO CONDICIONAL _FORMAT
     return (preg_match('/_FLAG|_TOOLTIP|_MODAL|_FORMAT|_COLOR|TH_COLOR/i', $clave)) ;
@@ -25,9 +31,14 @@ function is_FLAG($clave)
 
 
 // funcion para generar SELECTS de desglodse mensual
+function array_meses()
+{
+      return [ "Ene","Feb", "Mar" , "Abr", "May", "Jun", "Jul", "Ago", "Sep","Oct","Nov","Dic"];  
+}
+// funcion para generar SELECTS de desglodse mensual
 function desglose_mensual( $patron )
 {
-    $a_meses=[ "Ene","Feb", "Mar" , "Abr", "May", "Jun", "Jul", "Ago", "Sep","Oct","Nov","Dic"];  
+    $a_meses=array_meses();  
 
     $return='';
     foreach ($a_meses as $n => $mes)
@@ -605,11 +616,11 @@ function is_multiempresa()
             
 //logs_system_error
 //  ANULADO PROVISIONALMENTE PARA PODER VER ERRORES EN CW_PROD   (juand, marzo, 2020)
-//function logs_system_error($errno, $errstr, $errfile, $errline)                  // funcion que se usa cuando hay un ERROR en ejecución y no somos ADMIN
-//{   
-////    if($_SESSION["admin"]){echo "$errno  $errstr $errfile $errline" ; }
+function logs_system_error($errno, $errstr, $errfile, $errline)                  // funcion que se usa cuando hay un ERROR en ejecución y no somos ADMIN
+{   
+    if($_SESSION["admin"]){logs( " ERROR SYSTEM: $errno  $errstr $errfile $errline") ; }
 //    return logs_db( $errstr , 'system_error',$errno,$errfile,$errline ) ;        
-//}
+}
 
 function logs_reset($msg='')
 {
@@ -795,6 +806,7 @@ $concepto=Dfirst( "CONCAT(PROVEEDOR,' ', N_FRA)","Fras_Prov_View", "ID_FRA_PROV=
 // creamos el MOV.BANCARIO en la cta_banco de CTA_XXX
 if (!($modo=='SOLO_PAGO'))
  {
+    
     $sql="INSERT INTO `MOV_BANCOS` ( id_cta_banco,fecha_banco,cargo,Concepto,user )  "
         . "  VALUES ( '$id_cta_banco' ,'$fecha_banco' ,'$importe' ,'$concepto' , '{$_SESSION['user']}' );" ;
     // echo ($sql);
@@ -808,8 +820,14 @@ elseif ($modo=='SOLO_PAGO')  // modo SOLO PAGO pero sin definir CTA_xxx
 
 $id_cta_banco= getVar('id_cta_banco_auto') ;	                    // CUENTA POR DEFECTO previamente habría que consultar si existe la variable y en caso negativo, crearla cta_banco_auto y la variable
 //$importe=Round(Dfirst("pdte_pago","Fras_prov_importes", "ID_FRA_PROV=$id_fra_prov"), 2) ;	
-$fecha_banco=Dfirst("FECHA","FACTURAS_PROV", "ID_FRA_PROV=$id_fra_prov") ;	
-$concepto=Dfirst( "CONCAT(PROVEEDOR,' ', N_FRA)","Fras_Prov_View", "ID_FRA_PROV=$id_fra_prov") ;	
+$rs_fra_prov=Drow("Fras_Prov_Listado", "ID_FRA_PROV=$id_fra_prov  AND id_c_coste={$_SESSION['id_c_coste']} ") ;	
+
+//$fecha_banco= date("Y-m-d",strtotime($rs_fra_prov["FECHA"]) + $rs_fra_prov["Forma_Pago"]*24*3600) ; // calculamos fecha vencimiento=fecha factura+dias de forma de pago
+$fecha_banco = fecha_vto( $rs_fra_prov["FECHA"] , $rs_fra_prov["Forma_Pago"] ) ; // calculamos fecha vencimiento=fecha factura+dias de forma de pago
+
+
+//$concepto=Dfirst( "CONCAT(PROVEEDOR,' ', N_FRA)","Fras_Prov_View", "ID_FRA_PROV=$id_fra_prov") ;	
+$concepto=$rs_fra_prov["PROVEEDOR"] .' '. $rs_fra_prov["N_FRA"];	
     
 }   
 else
@@ -1079,7 +1097,7 @@ function cc_formato_auto($clave)
 //    elseif (strtoupper(substr($clave,0,6))=="MARGEN" OR strtoupper(substr($clave,0,10))=="PORCENTAJE" OR strtoupper(substr($clave,0,2))=="P_" OR strtoupper(substr($clave,0,5))=="PORC_")
     elseif (preg_match("/^MARGEN|^OFERTA|^PORCENTAJE|^P_|^PORC_/i", $clave))
     { $format='porcentaje' ; }       ///, &$valor , &$format_style)
-    elseif (preg_match("/^permiso_|^activ[a-o]/i", $clave))
+    elseif (preg_match("/^permiso_|^admin|^activ[a-o]/i", $clave))
     { $format='boolean' ; }       ///, &$valor , &$format_style)
     elseif (strtoupper(substr($clave,0,8))=="CANTIDAD" OR strtoupper(substr($clave,0,8))=="MEDICION")
     { $format='fijo1' ; }         ///, &$valor , &$format_style)
@@ -1420,6 +1438,32 @@ switch ($format) {
                         $valor_txt = ($valor==0)? "" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT) . "%"   ;
                         $valor = ($valor==0)? "0" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT)   ;
                         $color= $valor >=100 ? 'success' : 'info' ;
+                 
+                        $valor="<div class='progress'>"
+                                   . "<div class='progress-bar progress-bar-$color' role='progressbar' aria-valuenow='$valor' "
+                                   ."     aria-valuemin='0' aria-valuemax='100' style='width:$valor%'> "
+                                   ."     $valor_txt"
+                                   ." </div>"
+                                ."</div>" ;
+                        $format_style=" style='white-space: nowrap;' " ;
+                        break;        
+             case "progress_danger":
+                        $valor_txt = ($valor==0)? "" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT) . "%"   ;
+                        $valor = ($valor==0)? "0" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT)   ;
+                        $color= 'danger' ;
+                 
+                        $valor="<div class='progress'>"
+                                   . "<div class='progress-bar progress-bar-$color' role='progressbar' aria-valuenow='$valor' "
+                                   ."     aria-valuemin='0' aria-valuemax='100' style='width:$valor%'> "
+                                   ."     $valor_txt"
+                                   ." </div>"
+                                ."</div>" ;
+                        $format_style=" style='white-space: nowrap;' " ;
+                        break;        
+             case "progress_success":
+                        $valor_txt = ($valor==0)? "" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT) . "%"   ;
+                        $valor = ($valor==0)? "0" :  str_pad(number_format($valor*100,0,".",","),10," ", STR_PAD_LEFT)   ;
+                        $color= 'success' ;
                  
                         $valor="<div class='progress'>"
                                    . "<div class='progress-bar progress-bar-$color' role='progressbar' aria-valuenow='$valor' "
@@ -2450,6 +2494,8 @@ function DOptions($fields, $table, $where = 1, $order_by = 0)
 // Devuelve una consulta como array multidimensional utilizo fetch_array_all
 function DOptions_sql($sql,$msg_selecciona='Seleccionar...' , $msg_vacio='sin resultados', $defecto='')
 {
+     $time0=microtime(true);
+
     if (!isset($GLOBALS["Conn"]))
     {                          // si no hay conexion abierta la abro yo
         require_once("../../conexion.php");
@@ -2481,10 +2527,10 @@ function DOptions_sql($sql,$msg_selecciona='Seleccionar...' , $msg_vacio='sin re
         $return = "<option value='0'>$msg_vacio</option>" ;       
     }
 
-    if ($nueva_conn)
-    {
-      //  $Conn->close();     // cierro Conn si lo he abierto aquí
-    }
+    
+    $tiempo=microtime(true)-$time0 ;
+    $mgs_logs=  $tiempo>0.5 ? "<span style='color:red'>EXCESO TIEMPO</span>" :"" ;
+    logs( "DOptions_sql $sql $mgs_logs (Tiempo: ". number_format($tiempo,3) ."s)" );
     return $return;
 }
 
@@ -2563,6 +2609,8 @@ function DArray($fields, $table, $where = 1, $order_by = 0)
 
 function Dfirst($field, $select, $where = 1, $order_by = 0)
 {        // devuelvo valor o 0 si no encuentro nada
+    $time0=microtime(true);
+    
     if (!isset($GLOBALS["Conn"]))
     {                          // si no hay conexion abierta la abro yo
         require_once("../../conexion.php");
@@ -2592,29 +2640,34 @@ function Dfirst($field, $select, $where = 1, $order_by = 0)
         {
             $rs2 = $result2->fetch_array();   // cogemos el primer valor
             $return = $rs2[0];                 // devolvemos el primer campo
-            logs( " Resultado Dfirst: correcto, esultado:  $return") ;
+            $mgs_logs=( " Resultado Dfirst: correcto, resultado:  $return") ;
 
         } else
         {
             $return = 0;           // devuelvo 0 si no encuentro nada
-            logs( " Resultado Dfirst: sin resultados (return=0)") ; 
+            $mgs_logs=( " Resultado Dfirst: sin resultados (return=0)") ; 
 
         }
     }else 
     {
         
-            logs( " Resultado Dfirst: ERROR EN CONSULTA: $sql2") ;
+            $mgs_logs=( " Resultado Dfirst: ERROR EN CONSULTA: $sql2") ;
             $return=0;
         
     }   
 
-
+    $tiempo=microtime(true)-$time0 ;
+    $mgs_logs.=  $tiempo>0.5 ? "<span style='color:red'>EXCESO TIEMPO</span>" :"" ;
+    logs( "$mgs_logs (Tiempo: ". number_format($tiempo,3) ."s)" );
 
     return $return;
 }
 
 function DRow( $table, $where = 1, $order_by = '')
 {        // devuelvo valor o 0 si no encuentro nada
+    
+    $time0=microtime(true);
+
     if (!isset($GLOBALS["Conn"]))
     {                          // si no hay conexion abierta la abro yo
         require_once("../../conexion.php");
@@ -2624,8 +2677,6 @@ function DRow( $table, $where = 1, $order_by = '')
         $Conn = $GLOBALS["Conn"];
         $nueva_conn = false;
     }
-
-    
     
     $order_by = $order_by ? "ORDER BY $order_by" : "";  //  configuro $order_by
     $sql2 = "SELECT * FROM $table WHERE $where  $order_by  LIMIT 1 ;";
@@ -2636,21 +2687,19 @@ function DRow( $table, $where = 1, $order_by = '')
     if ($result2->num_rows > 0)
     {
         $return = $result2->fetch_array();   // cogemos el primer valor   // devolvemos todo el ROW
-            logs( " Resultado DRow: CORRECTO") ;
+            $mgs_logs=( " Resultado DRow: CORRECTO") ;
 
     } else
     {
 //        echo "<br>VALOR NO ENCONTRADO" ;                            //debug    
         $return = 0;           // devuelvo 0 si no encuentro nada
-            logs( " Resultado DRow: VALOR NO ENCONTRADO") ;
+            $mgs_logs=( " Resultado DRow: VALOR NO ENCONTRADO") ;
 
     }
 
-//    if ($nueva_conn)
-//    {
-//      //  $Conn->close();     // cierro Conn si lo he abierto aquí
-//    }
-
+    $tiempo=microtime(true)-$time0 ;
+    $mgs_logs.=  $tiempo>0.5 ? "<span style='color:red'>EXCESO TIEMPO</span>" :"" ;
+    logs( "$mgs_logs (Tiempo: ". number_format($tiempo,3) ."s)" );
     return $return;
 }
 

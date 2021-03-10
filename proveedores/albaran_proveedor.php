@@ -79,9 +79,9 @@ $importe_iva = $rs["importe"] * 1.21  ; // estimamos un IVA del 21% en 2019
 //        . "     VALUES ( '{$rs["ID_PROVEEDORES"]}' ,'{$rs["REF"]}' ,'{$rs["FECHA"]}' ,'$importe_iva' ,'$guid' ,'{$_SESSION["user"]}'  );"
 $sql_facturar= "INSERT INTO FACTURAS_PROV ( ID_PROVEEDORES,N_FRA,FECHA,IMPORTE_IVA,guid, user ) "
         . "     VALUES ( '{$rs["ID_PROVEEDORES"]}' ,'factura de albaran' ,'{$rs["FECHA"]}' ,'$importe_iva' ,'$guid' ,'{$_SESSION["user"]}'  );"
-        . " _CC_NEW_SQL_ "
+        . " _PUNTO_Y_COMA_ "
          . "UPDATE `VALES` SET `ID_FRA_PROV` = (select ID_FRA_PROV from FACTURAS_PROV where guid='$guid' )  WHERE ID_VALE={$rs["ID_VALE"]}; "
-        . "  _CC_NEW_SQL_  "
+        . "  _PUNTO_Y_COMA_  "
         . "$sql_insert_documento "  ;
         
 $href='../include/sql.php?sql=' . encrypt2($sql_facturar)  ;    

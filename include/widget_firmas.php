@@ -44,14 +44,12 @@ $add_link_html.= "<br></div>" ;
 $tabla_expandida= 0;
 
 
-
-
-
-$result=$Conn->query($sql="SELECT id_firma, id_usuario, usuario, pdte, conforme, no_conforme, observaciones,user FROM Firmas_View WHERE tipo_entidad='$tipo_entidad' AND id_entidad=$id_entidad AND $where_c_coste ");
+$result=$Conn->query($sql="SELECT id_firma, id_usuario, usuario, pdte, conforme, no_conforme, observaciones,user FROM Firmas_View "
+                          . "WHERE tipo_entidad='$tipo_entidad' AND id_entidad=$id_entidad AND $where_c_coste ");
 
 if ($firmas=$result->num_rows)
 {
-  $result_T=$Conn->query($sql="SELECT '' as a, SUM(pdte) as pdtes, SUM(conforme) as conformes, SUM(no_conforme) as no_conformes "
+  $result_T=$Conn->query($sql_T="SELECT '' as a, SUM(pdte) as pdtes, SUM(conforme) as conformes, SUM(no_conforme) as no_conformes "
             . " FROM Firmas_View WHERE tipo_entidad='$tipo_entidad' AND id_entidad=$id_entidad AND $where_c_coste ");
   $rs_T = $result_T->fetch_array(MYSQLI_ASSOC) ;
   
@@ -84,7 +82,8 @@ $msg_tabla_vacia="No hay firmas";
 $tabla_style=" style='font-size:xx-small;' " ;
 
 require("../include/tabla.php"); echo $TABLE ;  // firmas
- 
+
+unset($result);
 
 //
 //

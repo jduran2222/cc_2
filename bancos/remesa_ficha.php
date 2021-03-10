@@ -4,49 +4,24 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo_pagina="Remesa " . Dfirst("remesa","Remesas_View", "id_remesa={$_GET["id_remesa"]} AND $where_c_coste"  ) ;
+
+
+
+ $result=$Conn->query($sql="SELECT id_remesa,id_mov_banco_remesa,remesa, tipo_remesa,f_vto,Actualizar_f_vto,remesa_nominas,IF(id_mov_banco_remesa>0,'MOV.BANCO','') AS mov_banco "
+         . ",doc_logo,id_cta_banco,firmada, activa,Observaciones,importe,num_pagos, importe_cobros"
+         . ", num_cobros, cobrada, fecha_creacion FROM Remesas_View WHERE id_remesa={$_GET["id_remesa"]} AND $where_c_coste");
+ $rs = $result->fetch_array(MYSQLI_ASSOC) ;
+ 
+$id_remesa=$rs["id_remesa"];
+ 
+$titulo_pagina="Remesa " . $rs["remesa"];
 $titulo = $titulo_pagina;
 
 //INICIO
 include_once('../templates/_inc_privado1_header.php');
 include_once('../templates/_inc_privado2_navbar.php');
 
-?>
 
-        <!-- Contenido principal 
-        <div class="container-fluid bg-light">
-            <div class="row">
-                <!--****************** ESPACIO LATERAL  *****************
-                <div class="col-12 col-md-4 col-lg-3"></div>
-                <!--****************** ESPACIO LATERAL  *****************
-
-                <!--****************** BUSQUEDA GLOBAL  *****************
-                <!--<div class="col-12 col-md-4 col-lg-9">-->
-
-
-<?php 
-
-
-$id_remesa=$_GET["id_remesa"];
-
-// require("../bancos/bancos_menutop_r.php");
-
- //require("../proveedores/proveedores_menutop_r.php");
-
-?>
-	
-
-  <?php              // DATOS   FICHA . PHP
- //echo "<pre>";
- $result=$Conn->query($sql="SELECT id_remesa,id_mov_banco_remesa,remesa, tipo_remesa,f_vto,Actualizar_f_vto,remesa_nominas,IF(id_mov_banco_remesa>0,'MOV.BANCO','') AS mov_banco "
-         . ",doc_logo,id_cta_banco,firmada, activa,Observaciones,importe,num_pagos, importe_cobros"
-         . ", num_cobros, cobrada, fecha_creacion FROM Remesas_View WHERE id_remesa=$id_remesa AND $where_c_coste");
- $rs = $result->fetch_array(MYSQLI_ASSOC) ;
-//while ($a = $result->fetch_field()) {
-
-//print_r ($rs);
-//}
-//echo "</pre>";
 $formats["firmada"]="semaforo" ;
 $formats["activa"]="boolean" ;
 $formats["remesa_nominas"]="boolean" ;
@@ -65,9 +40,12 @@ $links["mov_banco"]=["../bancos/pago_ficha.php?id_mov_banco=", "id_mov_banco_rem
 $id_cta_banco=$rs["id_cta_banco"] ;
 $id_remesa=$rs["id_remesa"] ;
 $tipo_remesa=$rs["tipo_remesa"] ;
+$remesa_activa=$rs["activa"];
+$remesa_firmada=$rs["firmada"];
+$remesa_firmada=$rs["firmada"];
 
  
-$titulo="REMESA DE ".cc_format($rs["tipo_remesa"],"tipo_pago" ) ;
+$titulo="REMESA DE ".cc_format($tipo_remesa,"tipo_pago" ) ;
 $updates=[ 'firmada', 'remesa','f_vto','Actualizar_f_vto', 'Observaciones', 'activa', 'id_cta_banco','remesa_nominas']  ;
 $tabla_update="Remesas" ;
 $id_update="id_remesa" ;
@@ -128,7 +106,7 @@ echo "<br><br><br><br><br><a class='btn btn-link btn-xs noprint ' href='#' "
       
 
 
-// ----- div Pagos_View   tabla.php   -----
+// ----- #PAGOS div Pagos_View   tabla.php   -----
 
 $sql="SELECT id_pago,id_remesa,id_mov_banco,id_cta_banco,id_proveedor,ID_CLIENTE,ID_FRA_PROV,ID_FRA_CLI,tipo_pago,Banco,observaciones "
         . ",PROVEEDOR,N_FRA_PROV,FECHA AS FECHA_FRA_PROV, firmado_TOOLTIP, firmado, CLIENTE,N_FRA_CLI,f_vto as f_vto_pago,importe,ingreso,"
@@ -156,7 +134,9 @@ if ($tipo_remesa=="P")
 //echo $sql;
 //$result_T=$Conn->query($sql_T );
 
-
+$selects["id_remesa"]=["id_remesa","remesa","Remesas_listado","../bancos/remesa_anadir.php","../bancos/remesa_ficha.php?id_remesa=","id_remesa"," AND activa=1 AND firmada=0 "] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+$selects["id_remesa"]["valor_null"]=0;
+$selects["id_remesa"]["valor_null_texto"]='sin remesa';
 
 $formats["f_vto"]='fecha';
 $formats["importe"]='moneda';
@@ -185,10 +165,10 @@ $links["Banco"] = ["../bancos/bancos_mov_bancarios.php?id_cta_banco=", "id_cta_b
 
 
 
-if ($rs["activa"])          // si la remesa sigue activa permitimos eliminar Pagos y modificar importes
+if ($remesa_activa)          // si la remesa sigue activa permitimos eliminar Pagos y modificar importes
 {   
 //  $id_pago=$rs["id_pago"] ;
-  $updates=["importe"];  
+  $updates=["importe", "id_remesa"];  
   $tabla_update="PAGOS" ;
   $id_update="id_pago" ;
 //  $id_valor=$id_pago ;
@@ -196,7 +176,8 @@ if ($rs["activa"])          // si la remesa sigue activa permitimos eliminar Pag
   $actions_row["delete_link"]="1";
 }  
   
-$firmada_disabled= ($rs["firmada"]? "disabled" : "") ;
+$firmada_disabled= ($remesa_firmada? "disabled" : "") ;
+//$tile_generar_xml= ($remesa_firmada? "La remesa está 'firmada', no es posible generar el XML. Desactive la casilla de 'firmada' " : "Permite generar una remesa en formato XML para enviar a la entidad bancaria") ;
 
 //$aligns["Importe_ejecutado"] = "right" ;
 
@@ -210,8 +191,8 @@ $msg_tabla_vacia="No hay pagos asociados a esta Remesa";
 
 <div class="right2 noprint">
 	
-<a class="btn btn-primary noprint" <?php echo $firmada_disabled ;?> title="Generar Remesa XML si la remesa no está firmada aún"  href=# 
-   onclick="window.open('../bancos/remesa_generar_XML.php?id_remesa=<?php echo $id_remesa;?>','_blank');location.reload();" >Generar remesa XML</a>
+<button class="btn btn-primary noprint" <?php echo $firmada_disabled ;?> title="Generar Remesa XML si la remesa no está firmada aún" 
+   onclick="window.open('../bancos/remesa_generar_XML.php?id_remesa=<?php echo $id_remesa;?>','_blank');location.reload();" >Generar remesa XML</button>
 <!--<a class="btn btn-primary noprint" title="Generar Remesa XML" target="_blank" href=# 
    onclick="js_href('../bancos/remesa_generar_XML.php?id_remesa=<?php echo $id_remesa;?>',0,'','PROMPT_Actualizamos a fecha de hoy?','','<?php echo date("Y-m-d");?>')" >Generar remesa XML</a>-->
 <a class="btn btn-primary noprint" title="remesa_enviar_emails" target="_blank" href="../bancos/remesa_enviar_emails.php?id_remesa=<?php echo $id_remesa;?>">Notificar por email</a>
@@ -240,7 +221,13 @@ else
  <!--<div id="main" class="mainc" style="background-color:orange">-->
  <div  style="background-color:#ffffcc;float:left;width:100%;padding:0 20px;" >
 	
-<?php require("../include/tabla.php"); echo $TABLE ; ?>
+<?php 
+
+//unset($result) ;
+require("../include/tabla_ajax.php"); 
+//require("../include/tabla.php"); echo $TABLE ; 
+
+?>
 	 
 </div>
 	

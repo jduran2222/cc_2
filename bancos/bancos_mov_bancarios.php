@@ -293,70 +293,12 @@ $where_conc.=$fecha2==""? '' :  " AND FECHA <= '$fecha2' " ;
 
 
 
-
-?>
-<!--EXPAND SELECCION -->    
-  
-<br><button type='button' class='btn btn-link noprint' id='exp_seleccion' data-toggle='collapse' 
-            data-target='#div_seleccion'>Operar con movimientos seleccionados <i class="fa fa-angle-down" aria-hidden="true"></i></button>
-<div id='div_seleccion' class='collapse'>
-  
-<div class="noprint" style="border-width:1px; border-style:solid;">
-  <b>Acciones a realizar con Mov. bancarios seleccionados:</b>
-    <div style="margin:10px">
-          
- <?php
-
-// eliminacion en grupo de seleccionados
-  echo "<div style='border: 1px solid silver;'>";
-
-$where_id_cta_banco= $listado_global ? "1=1" : "id_cta_banco=$id_cta_banco" ;      // permitimos borrar en listado global
-$sql_delete= "DELETE FROM `MOV_BANCOS` WHERE  $where_id_cta_banco AND id_mov_banco IN _VAR_SQL1_ ; "  ;
-$href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
-echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint ' href='#' "
-     . " onclick=\"js_href('$href' ,'1','¿Borrar Movs. Bancos seleccionados?' ,'table_selection_IN()' )\"   "
-     . "title='Borra los movimientos bancarios seleccionados' ><i class='far fa-trash-alt'></i> Borrar movs. bancos seleccionadas</a>" ;
-      
-  echo "</div>";
-      
-      
-// conciliar a factura proveedor 
-  echo "<div style='border: 1px solid silver;'>";
-
-      $url_sugerir= encrypt2( "javascript_code=js_href2('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
-              . "id_fra_prov_unica=_ID_VALOR__JS_AND_array_str=_VAR_HREF1_',1,'','table_selection_IN()')"
-              . "&sql_sugerir=SELECT ID_FRA_PROV,CONCAT('Proveedor: ',PROVEEDOR,'<br>N.Factura: ',N_FRA) FROM Fras_Prov_Listado WHERE  $where_c_coste AND "
-              . " filtro LIKE '%_FILTRO_%' LIMIT 10" );
-      
-      echo "Buscar factura donde conciliar: <INPUT  style='font-size: 70% ;font-style: italic ;' id='input_fra_prov' size='13'  "
-              . "  onkeyup=\"sugerir('$url_sugerir',this.value,'sugerir_fra_prov')\" placeholder='buscar Prov-factura...' value=''  >"
-              . "<div class='sugerir' id='sugerir_fra_prov'></div>" ;
-  echo "</div>";
-
-  echo "<div style='border: 1px solid silver;'>"; 
-
-      echo "<button class='btn btn-xs btn-link' onclick=\"js_href2('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
-              . "id_fra_prov_unica=FACTURA_NUEVA_JS_AND_array_str=_VAR_HREF1_',1,'','table_selection_IN()' ) \"  >"
-              . "Conciliar en una factura nueva</button> " ;
-       
-  echo "</div>";
-      
- ?>     
-    </div>
-
-</div>
-</div>
-<!--FIN SELECCION DE REMESA -->     
-
-<?php
-
 //$where=$cobrada==""? $where : $where . " AND  Cobrada" ;
 
 //$where=$FECHA2==""? $where : $where . " AND FECHA <= STR_TO_DATE('$FECHA2','%Y-%m-%d') " ;
 
  $select= ($listado_global)? "id_cta_banco, tipo,path_logo, Banco," : "" ;
  $select_global_totales= ($listado_global)? "'' as a34,'' as a23,'' as a29," : "" ;
- $col_sel="id_mov_banco" ;
 
  
  switch ($agrupar) {
@@ -365,9 +307,12 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
      $sql="SELECT $select numero,id_mov_banco ,id_remesa,id_nota_gastos, fecha_banco,Concepto,Concepto2,cargo,ingreso,conc,observaciones, "
             . "id_proveedor,ID_CLIENTE, PROVEEDOR,ID_FRA_PROV,N_FRA_PROV,CLIENTE,ID_FRA_CLI,N_FRA_CLI,remesa, cuenta  "
             . " FROM MOV_BANCOS_View WHERE $where  ORDER BY fecha_creacion DESC LIMIT 50 " ;
-     $sql_T="SELECT $select_global_totales   '' as a,'' as a2,'' as a33,'SUMA:' as a3, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso FROM MOV_BANCOS_View WHERE $where LIMIT 50  " ;
+//     $sql_T="SELECT $select_global_totales   '' as a,'' as a2,'' as a33,'SUMA:' as a3, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso FROM MOV_BANCOS_View WHERE $where LIMIT 50  " ;
      $actions_row["delete_link"]="1";
 
+      $col_sel="id_mov_banco" ;
+
+     
         //$sql_T="SELECT '' " ;
     break;
     case "movimientos":
@@ -380,8 +325,9 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
               . "id_proveedor,ID_CLIENTE, PROVEEDOR,ID_FRA_PROV,N_FRA_PROV,CLIENTE,ID_FRA_CLI,N_FRA_CLI,remesa, cuenta "
               . " FROM MOV_BANCOS_View WHERE $where  ORDER BY fecha_banco ,numero  " ;}    
       
-      $sql_T="SELECT '' as a,'' as a2,'SUMA:' as a3, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso ,'Saldo en periodo:' , SUM(ingreso) - SUM(cargo) AS saldo FROM MOV_BANCOS_View WHERE $where   " ;
+//      $sql_T="SELECT '' as a,'' as a2,'SUMA:' as a3, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso ,'Saldo en periodo:' , SUM(ingreso) - SUM(cargo) AS saldo FROM MOV_BANCOS_View WHERE $where   " ;
       $actions_row["delete_link"]="1";
+     $col_sel="id_mov_banco" ;
 
     break;
     case "bancos": 
@@ -395,24 +341,22 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
 //     $sql="SELECT  tipo,id_cta_banco,banco,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where GROUP BY id_cta_banco  ORDER BY  tipo,banco  " ;      
      $sql="SELECT  tipo,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where GROUP BY tipo  ORDER BY  tipo  " ;      
      //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
-     $sql_T="SELECT '' as a,'' as b, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
+//     $sql_T="SELECT '' as a,'' as b, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
 //     $sql_S="SELECT tipo, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where  GROUP BY tipo ORDER BY tipo  " ;      
 //     $id_agrupamiento="tipo" ;
-      $col_sel="" ;
-      unset($col_sel) ;
 
      break;
     case "conceptos":
      $sql="SELECT  id_mov_banco, Concepto,count(id_mov_banco) as movs, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso FROM MOV_BANCOS_View WHERE $where  GROUP BY Concepto ORDER BY Concepto  " ;      
      //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
-     $sql_T="SELECT '' as b, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
+//     $sql_T="SELECT '' as b, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
 //     $sql_S="SELECT id_cta_banco,banco, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where  GROUP BY Concepto ORDER BY Concepto  " ;      
 //     $id_agrupamiento="Concepto" ; 
      break;
     case "conceptos2":
      $sql="SELECT  id_mov_banco, Concepto2,count(id_mov_banco) as movs, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso FROM MOV_BANCOS_View WHERE $where  GROUP BY Concepto2 ORDER BY Concepto2  " ;      
      //$sql="SELECT ID_PROVEEDORES,PROVEEDOR,CIF,SUM(Base_Imponible) AS Base_Imponible,SUM(IMPORTE_IVA) AS IMPORTE_IVA, SUM(pdte_conciliar) AS pdte_conciliar  FROM Fras_Prov_View WHERE $where GROUP BY ID_PROVEEDORES  ORDER BY PROVEEDOR " ;
-     $sql_T="SELECT '' as b, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
+//     $sql_T="SELECT '' as b, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where   " ;     
 //     $sql_S="SELECT id_cta_banco,banco, SUM(cargo) AS cargo, SUM(ingreso) AS ingreso  FROM MOV_BANCOS_View WHERE $where  GROUP BY Concepto ORDER BY Concepto  " ;      
 //     $id_agrupamiento="Concepto" ; 
      break;
@@ -438,6 +382,9 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
         
         
     $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo ,COUNT(id_mov_banco) as Num_movs,'' as aa  FROM MOV_BANCOS_View WHERE $where   " ;
+
+
+
     break;
     case "trimestres":
 //    $sql="SELECT  CONCAT('<small>(',DATE_FORMAT(fecha_banco, '%Y-%m'),')</small> ',DATE_FORMAT(fecha_banco, '%M-%Y')  ) as MES,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso ,COUNT(id_mov_banco) as Num_movs FROM MOV_BANCOS_View WHERE $where  GROUP BY MES  ORDER BY MES  " ;
@@ -454,7 +401,7 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
     
         
         
-    $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo ,COUNT(id_mov_banco) as Num_movs,'' as aa  FROM MOV_BANCOS_View WHERE $where   " ;
+//    $sql_T="SELECT 'SUMA:' AS D,SUM(cargo) AS cargo, SUM(ingreso) AS ingreso , SUM(ingreso) - SUM(cargo) AS saldo ,COUNT(id_mov_banco) as Num_movs,'' as aa  FROM MOV_BANCOS_View WHERE $where   " ;
     break;
    case "annos":
 //    $Conn->query("SET @saldo_acum = 0;") ;   // otra forma de inicializar variable en Mysql
@@ -527,13 +474,101 @@ echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint 
    
  }
 
+ 
+// si la agrupación permite selección pintamos las acciones a realizar con lo seleccionado 
+if (isset($col_sel)) 
+{
+   
+
+            ?>
+            <!--EXPAND SELECCION -->    
+
+            <br><button type='button' class='btn btn-link noprint' id='exp_seleccion' data-toggle='collapse' 
+                        data-target='#div_seleccion'>Operar con movimientos seleccionados <i class="fa fa-angle-down" aria-hidden="true"></i></button>
+            <div id='div_seleccion' class='collapse'>
+
+            <div class="noprint" style="border-width:1px; border-style:solid;">
+              <b>Acciones a realizar con Mov. bancarios seleccionados:</b>
+                <div style="margin:10px">
+
+             <?php
+
+            // eliminacion en grupo de seleccionados
+              echo "<div style='border: 1px solid silver;'>";
+
+            $where_id_cta_banco= $listado_global ? "1=1" : "id_cta_banco=$id_cta_banco" ;      // permitimos borrar en listado global
+            $sql_delete= "DELETE FROM `MOV_BANCOS` WHERE  $where_id_cta_banco AND id_mov_banco IN _VAR_SQL1_ ; "  ;
+            $href='../include/sql.php?sql=' . encrypt2($sql_delete)  ;    
+            echo "Borrar movimientos seleccionados: <a class='btn btn-danger btn-xs noprint ' href='#' "
+                 . " onclick=\"js_href('$href' ,'1','¿Borrar Movs. Bancos seleccionados?' ,'table_selection_IN()' )\"   "
+                 . "title='Borra los movimientos bancarios seleccionados' ><i class='far fa-trash-alt'></i> Borrar movs. bancos seleccionadas</a>" ;
+
+              echo "</div>";
+
+
+            // conciliar a factura proveedor 
+              echo "<div style='border: 1px solid silver;'>";
+
+                  $url_sugerir= encrypt2( "javascript_code=js_href2('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
+                          . "id_fra_prov_unica=_ID_VALOR__JS_AND_array_str=_VAR_HREF1_',1,'','table_selection_IN()')"
+                          . "&sql_sugerir=SELECT ID_FRA_PROV,CONCAT('Proveedor: ',PROVEEDOR,'<br>N.Factura: ',N_FRA) FROM Fras_Prov_Listado WHERE  $where_c_coste AND "
+                          . " filtro LIKE '%_FILTRO_%' LIMIT 10" );
+
+                  echo "Buscar factura donde conciliar: <INPUT  style='font-size: 70% ;font-style: italic ;' id='input_fra_prov' size='13'  "
+                          . "  onkeyup=\"sugerir('$url_sugerir',this.value,'sugerir_fra_prov')\" placeholder='buscar Prov-factura...' value=''  >"
+                          . "<div class='sugerir' id='sugerir_fra_prov'></div>" ;
+              echo "</div>";
+
+              echo "<div style='border: 1px solid silver;'>"; 
+
+                  echo "<button class='btn btn-xs btn-link' onclick=\"js_href2('../bancos/mov_bancos_conciliar_selection_fras.php?modo=MOVS_A_FRA_JS_AND_"
+                          . "id_fra_prov_unica=FACTURA_NUEVA_JS_AND_array_str=_VAR_HREF1_',1,'','table_selection_IN()' ) \"  >"
+                          . "Conciliar en una factura nueva</button> " ;
+
+                      echo "</div>";
+
+                  
+                  echo "</div>";
+
+              echo "</div>";
+              echo "</div>";
+           
+
+           
+
+} 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+$tabla_sumatorias["Num_movs"]=0;
+$tabla_sumatorias["cargo"]=0;
+$tabla_sumatorias["ingreso"]=0;
+$tabla_sumatorias["saldo"]="=@@ingreso@@-@@cargo@@";   // saldo en el periodo
+$tabla_sumatorias["Concepto"]="=@@ingreso@@-@@cargo@@";   // saldo en el periodo
+$tabla_sumatorias["Concepto2"]="=@@ingreso@@-@@cargo@@";   // saldo en el periodo
+$tabla_sumatorias["diferencia"]="=@@ingreso@@-@@cargo@@";   // saldo en el periodo
+
 
  
 //echo $sql ;    // DEBUG
-$result=$Conn->query($sql) ;
+//$result=$Conn->query($sql) ;
 
-if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
-if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
+//if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
+//if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 //if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los SALDOS
 
 $is_conciliando= ( substr($agrupar,0,5)=='conc_')  ;       // indica que estamos en aprupacion de CONCILIACION
@@ -555,7 +590,8 @@ if ( $agrupar=='edicion')
 
     
     
-echo "<br><font size=2 color=grey>Agrupar por : $agrupar <br> {$result->num_rows} filas </font> " ;
+//echo "<br><font size=2 color=grey>Agrupar por : $agrupar <br> {$result->num_rows} filas </font> " ;
+echo "<br><font size=2 color=grey>Agrupar por : $agrupar <br>  </font> " ;
 
 
 $updates=['observaciones']  ;
@@ -619,7 +655,7 @@ $tooltips["conc"] = "El movimiento bancario está conciliado con un pago, cobro 
 //$tooltips["Cobrada"] = "factura cliente cobrada completamente" ;
 
 
-$titulo="";
+$titulo="_NUM_ filas" ;
 $msg_tabla_vacia="No hay.";
 
 if (isset($id_agrupamiento))

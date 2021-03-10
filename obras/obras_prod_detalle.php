@@ -1671,7 +1671,7 @@ function add_detalle( id_produccion, id_udo, med_proyecto ) {
      var produccion=window.prompt("Nombre de la nueva producción: ", produccion0  );
 
 //    where=encodeURI(where) ;
-    alert(where) ;
+//    alert(where) ;
 
     
    if (produccion)
@@ -1680,7 +1680,9 @@ function add_detalle( id_produccion, id_udo, med_proyecto ) {
      xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}
+        { 
+            alert(this.responseText) ;
+        }
         else
         {  //alert(this.responseText) ;     //debug
             location.reload(true); }  // refresco la pantalla tras editar Producción

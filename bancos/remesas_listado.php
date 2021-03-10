@@ -139,7 +139,7 @@ $tooltips["activa"] = "Indica si la Remesa está activa y pueden añadirse pagos
 $titulo="REMESAS";
 $msg_tabla_vacia="No hay.";
 ?>
-<?php require("../include/tabla.php"); echo $TABLE ;?>
+<?php require("../include/tabla_ajax.php"); echo $TABLE ;?>
 
 </div>
 

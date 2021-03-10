@@ -39,9 +39,13 @@ $id_parte=$_GET["id_parte"];
  $result=$Conn->query($sql="SELECT ID_PARTE,ID_OBRA,ID_VALE,Fecha,Observaciones,Cargado,NOMBRE_OBRA,user,fecha_creacion FROM Partes_View WHERE ID_PARTE=$id_parte AND $where_c_coste");
  $rs = $result->fetch_array(MYSQLI_ASSOC) ;
  
+ $id_parte=$rs["ID_PARTE"] ;  // SEGURIDAD
 
- $id_parte_anterior=Dfirst("ID_PARTE",'Partes_View',"ID_OBRA={$rs["ID_OBRA"]} AND Fecha<='{$rs["Fecha"]}' AND   ID_PARTE<>$id_parte AND $where_c_coste  ORDER BY Fecha DESC")  ;
- $id_parte_siguiente=Dfirst("ID_PARTE",'Partes_View',"ID_OBRA={$rs["ID_OBRA"]} AND Fecha>='{$rs["Fecha"]}' AND   ID_PARTE<>$id_parte AND $where_c_coste  ORDER BY Fecha")  ;
+// $id_parte_anterior=Dfirst("ID_PARTE",'Partes_View',"ID_OBRA={$rs["ID_OBRA"]} AND Fecha<='{$rs["Fecha"]}' AND   ID_PARTE<>$id_parte AND $where_c_coste  ORDER BY Fecha DESC")  ;
+// $id_parte_siguiente=Dfirst("ID_PARTE",'Partes_View',"ID_OBRA={$rs["ID_OBRA"]} AND Fecha>='{$rs["Fecha"]}' AND   ID_PARTE<>$id_parte AND $where_c_coste  ORDER BY Fecha")  ;
+// 
+ $id_parte_anterior=Dfirst("ID_PARTE",'PARTES',"ID_OBRA={$rs["ID_OBRA"]} AND Fecha<='{$rs["Fecha"]}' AND   ID_PARTE<>$id_parte   ORDER BY Fecha DESC")  ;
+ $id_parte_siguiente=Dfirst("ID_PARTE",'PARTES',"ID_OBRA={$rs["ID_OBRA"]} AND Fecha>='{$rs["Fecha"]}' AND   ID_PARTE<>$id_parte   ORDER BY Fecha")  ;
  
  
  
@@ -88,7 +92,7 @@ if ($id_parte_anterior)
 {
     $sql_insert="INSERT INTO PARTES_PERSONAL (ID_PARTE,ID_PERSONAL,HO,HX,MD,DC,Plus,PC,id_por_cuenta,ejecutado_pc,id_subobra,Observaciones)"
             . " SELECT '$id_parte',ID_PERSONAL,HO,HX,MD,DC,Plus,PC,id_por_cuenta,ejecutado_pc,id_subobra,Observaciones FROM  PARTES_PERSONAL WHERE ID_PARTE=$id_parte_anterior ;" ;
-    $sql_insert.=" _CC_NEW_SQL_ INSERT INTO Partes_Maquinas (ID_PARTE,id_obra,cantidad,id_subobra,Observaciones)"
+    $sql_insert.=" _PUNTO_Y_COMA_ INSERT INTO Partes_Maquinas (ID_PARTE,id_obra,cantidad,id_subobra,Observaciones)"
             . " SELECT '$id_parte',id_obra,cantidad,id_subobra,Observaciones FROM  Partes_Maquinas WHERE ID_PARTE=$id_parte_anterior ;" ;
 
     $href='../include/sql.php?sql=' . encrypt2($sql_insert)     ;
@@ -139,7 +143,12 @@ if ($id_parte_anterior)
   //COMPROBAMOS SI EXISTE VALE
   if ($id_vale=$rs["ID_VALE"])
   {
-   $importe = Dfirst("importe","Vales_view","ID_VALE=$id_vale AND $where_c_coste" ) ;   
+//   $importe = Dfirst("importe","Vales_importes","ID_VALE=$id_vale " ) ;   
+//   $importe = Dfirst("SUM(GASTOS_T.CANTIDAD * CONCEPTOS.COSTE)","GASTOS_T   INNER JOIN CONCEPTOS  ON GASTOS_T.ID_CONCEPTO = CONCEPTOS.ID_CONCEPTO","GASTOS_T.ID_VALE=$id_vale " ) ;   
+   $importe = Dfirst("SUM(CANTIDAD * COSTE)","GASTOS_T INNER JOIN CONCEPTOS ON GASTOS_T.ID_CONCEPTO = CONCEPTOS.ID_CONCEPTO","ID_VALE=$id_vale " ) ;   
+   
+//   "SELECT   SUM(GASTOS_T.CANTIDAD * CONCEPTOS.COSTE) AS importe FROM GASTOS_T   INNER JOIN CONCEPTOS  ON GASTOS_T.ID_CONCEPTO = CONCEPTOS.ID_CONCEPTO "
+   
    $titulo = "<h2 style='font-weight: bold; color:green;'>CARGO M.O. y Maq. A OBRA: $importe €</h2>" ;
    $titulo .= "<a class='btn btn-link btn-xs noprint' href='../proveedores/albaran_proveedor.php?_m=$_m&id_vale=$id_vale' target='_blank' "
            . "title='ver el Albarán donde se ha cargado el coste del Personal propio y la Maquinaria Propia de este Parte'>ver Albarán de cargo...</a>" ;
@@ -189,11 +198,16 @@ if ($id_parte_anterior)
 //$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX,MD,DC,Observaciones FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 $sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX, ID_SUBOBRA , observaciones  FROM Partes_Personal_View  WHERE ID_PERSONAL<>0 AND ID_PARTE=$id_parte  AND $where_c_coste    ";
 //echo $sql;
-$result=$Conn->query($sql );
+//$result=$Conn->query($sql );
 
-$sql_T="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO, '' FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
+//$sql_T="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO, '' FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
+
+$tabla_sumatorias["HO"]=0 ;
+$tabla_sumatorias["HX"]=0 ;
+
+
 //echo $sql;
-$result_T=$Conn->query($sql_T );
+//$result_T=$Conn->query($sql_T );
 
 $updates=['HO','HX','MD','DC','ID_SUBOBRA','Observaciones']  ;
 $visibles=['ID_SUBOBRA'] ;
@@ -212,7 +226,7 @@ $links["NOMBRE"] = ["../personal/personal_ficha.php?id_personal=", "ID_PERSONAL"
 $formats["observaciones"] = "text_edit";
 
 
-$titulo="Personal de Obra ($result->num_rows". cc_format( "solo_icon", "icon_usuarios") ." )" ;
+$titulo="Personal de Obra (_NUM_". cc_format( "solo_icon", "icon_usuarios") ." )" ;
 $msg_tabla_vacia="No hay personal";
 
 
@@ -237,7 +251,8 @@ $tabla_expandida=0;$tabla_footer='<br>' ;
      
 <?php 
 
-require("../include/tabla.php"); echo $TABLE ; ?>
+require("../include/tabla_ajax.php");
+//require("../include/tabla.php"); echo $TABLE ; ?>
  
     
 </div>    
@@ -249,7 +264,7 @@ require("../include/tabla.php"); echo $TABLE ; ?>
 //$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX,MD,DC,Observaciones FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 $sql="SELECT id,id_obra_mq,Maquinaria,id_concepto_mq,CONCEPTO AS Concepto, cantidad as Cantidad,ID_SUBOBRA , Observaciones FROM Partes_Maquinas_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 //echo $sql;
-$result=$Conn->query($sql );
+//$result=$Conn->query($sql );
 
 //$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO,SUM(HX) as HX,SUM(MD) as MD,SUM(DC) as DC FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 //$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
@@ -288,7 +303,7 @@ $formats["path_archivo"]='pdf_100_500' ;
 //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Maquinaria Propia ($result->num_rows". cc_format( "solo_icon", "icon_maquinaria") ." )" ;
+$titulo="Maquinaria Propia (_NUM_". cc_format( "solo_icon", "icon_maquinaria") ." )" ;
 $msg_tabla_vacia="No hay maquinaria";
 
 $add_link_html= "<div >Añadir Maquinaria:<select id='id_obra_maq' style='width: 50%;' > "
@@ -311,7 +326,8 @@ $tabla_expandida=0;$tabla_footer='<br>' ;
 <div  style="background-color: pink;float:left;width:100%;padding:0 20px;" >
 
      
-<?php  require("../include/tabla.php"); echo $TABLE ; ?>  
+<?php  require("../include/tabla_ajax.php");
+//require("../include/tabla.php"); echo $TABLE ; ?>  
     
     
 	 
@@ -326,10 +342,14 @@ $tabla_expandida=0;$tabla_footer='<br>' ;
 
 //$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX,MD,DC,Observaciones FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 $sql="SELECT ID_VALE,ID_PROVEEDORES,ID_FRA_PROV,path_archivo, PROVEEDOR, REF, importe, Observaciones,user FROM Vales_view  WHERE ID_OBRA=$id_obra AND FECHA='$fecha' AND $where_c_coste    ";
-$sql_T="SELECT '' AS A, '' AS B, 'Suma', SUM(importe) as importe, '' AS A1, '' AS B1 FROM Vales_view  WHERE ID_OBRA=$id_obra AND FECHA='$fecha' AND $where_c_coste    ";
+//$sql_T="SELECT '' AS A, '' AS B, 'Suma', SUM(importe) as importe, '' AS A1, '' AS B1 FROM Vales_view  WHERE ID_OBRA=$id_obra AND FECHA='$fecha' AND $where_c_coste    ";
 //echo $sql;
-$result=$Conn->query($sql );
-$result_T=$Conn->query($sql_T ); 
+//$result=$Conn->query($sql );
+//$result_T=$Conn->query($sql_T ); 
+$tabla_sumatorias["importe"]=0 ;
+//$tabla_sumatorias["HX"]=0 ;
+
+
 
 $updates=['cantidad', 'Observaciones']  ;
 
@@ -364,7 +384,7 @@ $links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_P
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
 //$titulo="Albaranes de proveedor ($result->num_rows <span class='glyphicon glyphicon-tags'></span>)" ;
-$titulo="Albaranes de proveedor ($result->num_rows". cc_format( "solo_icon", "icon_albaranes") ." )" ;
+$titulo="Albaranes de proveedor (_NUM_ ". cc_format( "solo_icon", "icon_albaranes") ." )" ;
 $msg_tabla_vacia="No hay Albaranes";
 
 $primera_option=" <option value='".getVar("id_proveedor_auto")."'>-proveedor pdte registrar-</option>   ";
@@ -388,7 +408,7 @@ $tabla_expandida=0;$tabla_footer='<br>' ;
  <div  style="background-color:beige;float:left;width:100%;padding:0 20px;" >
    
      
-<?php  require("../include/tabla.php"); echo $TABLE ; ?>  
+<?php  require("../include/tabla_ajax.php"); echo $TABLE ; ?>  
     
     
 	 
@@ -407,7 +427,7 @@ $tabla_expandida=0;$tabla_footer='<br>' ;
 
   $sql="SELECT id_documento,path_archivo,id_entidad,id_documento as nid_documento,tamano,nombre_archivo,documento,user,fecha_creacion FROM Documentos WHERE tipo_entidad='obra_foto' AND id_entidad=$id_obra AND fecha_doc='$fecha' AND $where_c_coste ORDER BY id_documento " ;
 //echo $sql;
-$result=$Conn->query($sql );
+//$result=$Conn->query($sql );
 
 //$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO,SUM(HX) as HX,SUM(MD) as MD,SUM(DC) as DC FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 //$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
@@ -434,7 +454,7 @@ $formats["documento"] = "text_edit" ;
 //$tooltips["conc"] = "Factura conciliada. Los Vales (albaranes de proveedor) suman el importe de la factura" ;
 
 //$titulo="<a href=\"proveedores_documentos.php?id_proveedor=$id_proveedor\">Documentos (ver todos...)</a> " ;
-$titulo="Fotos ($result->num_rows". cc_format( "solo_icon", "icon_fotos") ." )" ;
+$titulo="Fotos (_NUM_". cc_format( "solo_icon", "icon_fotos") ." )" ;
 $msg_tabla_vacia="No hay fotos";
 
 $add_link_html= "<div >"
@@ -457,7 +477,9 @@ $onclick_VAR_TABLA1_="id_documento" ;  // variable a pasar
  <div  style="background-color: #ffcc99 ;float:left;width:100%;padding:0 20px;" >
  
      
-<?php  require("../include/tabla.php"); echo $TABLE ; ?>  
+<?php  require("../include/tabla_ajax.php");
+//require("../include/tabla.php"); echo $TABLE ; 
+?>  
     
     
 	 
@@ -472,10 +494,14 @@ $onclick_VAR_TABLA1_="id_documento" ;  // variable a pasar
 //$sql="SELECT id,ID_PERSONAL,NOMBRE,DNI,HO,HX,MD,DC,Observaciones FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 $id_produccion_obra=Dfirst("id_produccion_obra","OBRAS","ID_OBRA=$id_obra")  ;
 $sql="SELECT id,ID_UDO,CAPITULO,UDO,Observaciones,MED_PROYECTO,MEDICION,PRECIO,importe FROM ConsultaProd  WHERE ID_OBRA=$id_obra AND FECHA='$fecha' AND ID_PRODUCCION= $id_produccion_obra  ORDER BY CAPITULO, ID_UDO  ";
-$sql_T="SELECT '' as a1,'' as a2,'' as a3,'' as a4,'' as a5,'' as a6,SUM(importe) as importe FROM ConsultaProd  WHERE ID_OBRA=$id_obra AND FECHA='$fecha' AND ID_PRODUCCION= $id_produccion_obra    ";
+//$sql_T="SELECT '' as a1,'' as a2,'' as a3,'' as a4,'' as a5,'' as a6,SUM(importe) as importe FROM ConsultaProd  WHERE ID_OBRA=$id_obra AND FECHA='$fecha' AND ID_PRODUCCION= $id_produccion_obra    ";
 //echo $sql;
-$result=$Conn->query($sql );
-$result_T=$Conn->query($sql_T );
+//$result=$Conn->query($sql );
+//$result_T=$Conn->query($sql_T );
+$tabla_sumatorias["importe"]=0 ;
+//$tabla_sumatorias["HX"]=0 ;
+
+
 
 //$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO,SUM(HX) as HX,SUM(MD) as MD,SUM(DC) as DC FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
 //$sql="SELECT 'Suma' ,COUNT(ID_PERSONAL) as B,SUM(HO) as HO FROM Partes_Personal_View  WHERE ID_PARTE=$id_parte  AND $where_c_coste    ";
@@ -494,7 +520,7 @@ $actions_row["delete_link"]="1";
 $links["UDO"] = ["../obras/udo_prod.php?id_produccion=$id_produccion_obra&id_udo=", "ID_UDO" ,"ver detalles de medición de la Unidad de Obra", 'ppal'] ;    
 
 
-$titulo="Producción de Obra ($result->num_rows". cc_format( "solo_icon", "icon_produccion") ." )" ;
+$titulo="Producción de Obra (_NUM_". cc_format( "solo_icon", "icon_produccion") ." )" ;
 $msg_tabla_vacia="No hay produccion de obra";
 
 $add_link_html= "<div >"
@@ -521,7 +547,7 @@ $tabla_expandida=0;$tabla_footer='<br>' ;
      
  <div  style="background-color:beige;float:left;width:100%;padding:0 20px;" >
      
-<?php  require("../include/tabla.php"); echo $TABLE ; ?>  
+<?php  require("../include/tabla_ajax.php"); echo $TABLE ; ?>  
     
     
 	 

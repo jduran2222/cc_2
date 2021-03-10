@@ -167,7 +167,7 @@ $admin= isset($_SESSION['admin']) ?  $_SESSION['admin'] : 0 ;
 
 
 // ANULAMOS PROVISIONALMENTE NO MOSTRAR LOS ERRORES
-//if(!$admin){set_error_handler('logs_system_error') ;}          // si no somos ADMIN mandamos los errores a logs_db() y que no aparezcan en pantalla
+if(!$_SESSION["admin"]){set_error_handler('logs_system_error') ;}          // si no somos ADMIN mandamos los errores a logs_db() y que no aparezcan en pantalla
 
 
 ?>

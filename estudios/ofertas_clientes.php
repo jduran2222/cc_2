@@ -103,8 +103,8 @@ $guid =  guid();
 //$select_nuevo_numero="SELECT MAX(NUMERO) FROM Ofertas_View WHERE $where_c_coste ; " ;
 
 $sql_insert_mov_banco= "SELECT @numero:=(MAX(NUMERO)+1) FROM Ofertas_View WHERE $where_c_coste ;" ;
-$sql_insert_mov_banco.= " _CC_NEW_SQL_  SELECT @id_cliente:=valor FROM c_coste_vars_View WHERE $where_c_coste AND variable='id_cliente_auto'  ;" ;
-$sql_insert_mov_banco.= "_CC_NEW_SQL_  INSERT INTO `OFERTAS` (`ID_CLIENTE`, `NUMERO`, `FECHA`, `NOMBRE_OFERTA` , `guid` ,user)" 
+$sql_insert_mov_banco.= " _PUNTO_Y_COMA_  SELECT @id_cliente:=valor FROM c_coste_vars_View WHERE $where_c_coste AND variable='id_cliente_auto'  ;" ;
+$sql_insert_mov_banco.= "_PUNTO_Y_COMA_  INSERT INTO `OFERTAS` (`ID_CLIENTE`, `NUMERO`, `FECHA`, `NOMBRE_OFERTA` , `guid` ,user)" 
          ." VALUES ( @id_cliente,@numero, '$fecha', 'presupuesto_nuevo' ,'$guid' , '{$_SESSION['user']}');" ;    
 $sql_insert_mov_banco= encrypt2($sql_insert_mov_banco) ;
 

@@ -86,11 +86,11 @@ echo "<a target='_blank' class='btn btn-link btn-xs noprint' href='../pof/pof_PD
 $guid =  guid(); 
 
 $sql_insert= "SELECT @numero:=(MAX(NUMERO)+1) FROM PETICION_DE_OFERTAS WHERE ID_OBRA=$id_obra ;" ;
-$sql_insert.= " _CC_NEW_SQL_ INSERT INTO `PETICION_DE_OFERTAS` (`ID_OBRA`, `NUMERO`, `NOMBRE_POF`,  `guid` ,user)" 
+$sql_insert.= " _PUNTO_Y_COMA_ INSERT INTO `PETICION_DE_OFERTAS` (`ID_OBRA`, `NUMERO`, `NOMBRE_POF`,  `guid` ,user)" 
              ." VALUES (  '$id_obra',@numero, '{$rs["NOMBRE_POF"]} - (Copia)' ,'$guid' , '{$_SESSION['user']}');" ;    
              
-$sql_insert.= " _CC_NEW_SQL_ SELECT @id_pof:=ID_POF FROM PETICION_DE_OFERTAS WHERE guid='$guid'  ;" ;
-$sql_insert.= " _CC_NEW_SQL_ INSERT INTO `POF_CONCEPTOS` (`ID_POF`, `id_udo`,  `Ocultar` ,  `CANTIDAD` , `CONCEPTO` , `DESCRIPCION` ,`Precio_Cobro` ,user)" 
+$sql_insert.= " _PUNTO_Y_COMA_ SELECT @id_pof:=ID_POF FROM PETICION_DE_OFERTAS WHERE guid='$guid'  ;" ;
+$sql_insert.= " _PUNTO_Y_COMA_ INSERT INTO `POF_CONCEPTOS` (`ID_POF`, `id_udo`,  `Ocultar` ,  `CANTIDAD` , `CONCEPTO` , `DESCRIPCION` ,`Precio_Cobro` ,user)" 
          ."                       SELECT @id_pof, id_udo, Ocultar, CANTIDAD, CONCEPTO, DESCRIPCION, Precio_Cobro, '{$_SESSION['user']}' "
          . " FROM POF_CONCEPTOS WHERE ID_POF=$id_pof ;" ;    
 $sql_insert= encrypt2($sql_insert) ;
@@ -237,7 +237,7 @@ require("../include/tabla_ajax.php"); echo $TABLE ;
 
 
 
-/// consulta para el listado de OFERTAS ordenadas de menor a mayor y las no respondidas al final
+/// consulta para el listado de #OFERTAS ordenadas de menor a mayor y las no respondidas al final
 $sql=("SELECT id,ID_POF, NUM, PROVEEDOR,id_proveedor, path_archivo,Enviado, Respondido,Adjudicada,Importe_Prov,Importe_Cobro, Observaciones "
         . " FROM POF_prov_View WHERE ID_POF=$id_pof ORDER BY ((Importe_Prov<>0) AND NUM<=9) desc, Importe_prov, NUM" );
 
@@ -309,8 +309,8 @@ $cols_line=["Importe_Cobro"] ;
 //$chart_ON=1;
 
 
-require("../include/tabla_ajax.php"); echo $TABLE ;
-//require("../include/tabla.php"); echo $TABLE ;
+//require("../include/tabla_ajax.php"); 
+require("../include/tabla.php"); echo $TABLE ;
 
 
 ?>

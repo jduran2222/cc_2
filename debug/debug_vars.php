@@ -66,6 +66,8 @@ if($_SESSION['admin'])
             echo "</pre>";
             echo "<br><br><br><br><br><br>INICIO \$_SESSION[]";
 
+            echo "<br>Tamaño JSON _SESSION[]: ".strlen(json_encode($_SESSION))/1024 ."kb" ;
+            
             echo "<pre>";
             //$a = array ('a' => 'manzana', 'b' => 'banana', 'c' => array ('x', 'y', 'z'));
             print_r ($_SESSION);

@@ -74,12 +74,19 @@ $activa  = isset($_GET["activa"]) ?  $_GET["activa"]   :    (isset($_POST["activ
 //  $proveedor= isset($_GET["proveedor"]) ?  $_GET["proveedor"] :  (isset($_POST["proveedor"]) ?  $_POST["proveedor"] :  "") ;
 //  $cliente  = isset($_GET["cliente"]) ?  $_GET["cliente"]   :    (isset($_POST["cliente"]) ?  $_POST["cliente"] :  "") ;
 //  $NG       = isset($_GET["NG"]) ?  $_GET["NG"]             :    (isset($_POST["NG"]) ?  $_POST["NG"] :  "") ;
-$agrupar  = isset($_GET["agrupar"]) ?  $_GET["agrupar"]   :    (isset($_POST["agrupar"]) ?  $_POST["agrupar"] :  "obras");  
+$chart_ON  = isset($_GET["chart_ON"]) ?  $_GET["chart_ON"]   :    (isset($_POST["chart_ON"]) ?  $_POST["chart_ON"] :  "");  
+$agrupar  = isset($_GET["agrupar"]) ?  $_GET["agrupar"]   :    (isset($_POST["agrupar"]) ?  $_POST["agrupar"] :  "datos");  
 
 
 //debug
 //echo "ACTIVA: ".$activa ;
 
+// formato configurados
+?>
+    
+
+
+<?php
 // FORMATOS checkboxs
 $inicio_form = !isset($_POST["tipo_subcentro"]) ;       // variables que indica que hay que inicializar el form y los check boxs
 $fmt_cartera = isset($_GET["fmt_cartera"]) ? 
@@ -121,48 +128,14 @@ $fmt_desglose_mensual = isset($_GET["fmt_desglose_mensual"]) ?
 
     ?>    
  
- <!--<a class="btn btn-link noprint" title="va al listado de relaciones valoradas de la Obra" href="../obras/obras_prod.php?id_obra=<?php echo $id_obra;?>" ><span class="glyphicon glyphicon-arrow-left"></span> Volver a Producciones</a>-->    
- <!--<a class="btn btn-link noprint" title="imprimir" href=#  onclick="window.print();"><i class="fas fa-print"></i> Imprimir pantalla</a>-->
- <!--<a class="btn btn-link noprint" title="ver datos generales de la Produccion actual" target='_blank' href="../obras/prod_ficha.php?id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><span class="glyphicon glyphicon-th-list"></span> ficha Produccion</a>-->    
+<!-- <a class="btn btn-link noprint" title="va al listado de relaciones valoradas de la Obra" href="../obras/obras_prod.php?id_obra=<?php echo $id_obra;?>" ><span class="glyphicon glyphicon-arrow-left"></span> Volver a Producciones</a>    
+ <a class="btn btn-link noprint" title="imprimir" href=#  onclick="window.print();"><i class="fas fa-print"></i> Imprimir pantalla</a>
+ <a class="btn btn-link noprint" title="ver datos generales de la Produccion actual" target='_blank' href="../obras/prod_ficha.php?id_obra=<?php echo $id_obra;?>&id_produccion=<?php echo $id_produccion;?>" ><span class="glyphicon glyphicon-th-list"></span> ficha Produccion</a>    -->
  
-<script>
-
-//function formato_prod_obra()
-//{ //    $('#fmt_costes').prop('checked',!($('#fmt_costes').prop('checked'))) ;
-//    $('#fmt_costes').prop('checked',false) ;
-//    $('#fmt_texto_udo').prop('checked',true) ;
-//    $('#fmt_med_proyecto').prop('checked',true) ;  
-//    $('#fmt_resumen_cap').prop('checked',false) ;  
-//    $('#fmt_anadir_med').prop('checked',true) ;  
-//    $('#fmt_seleccion').prop('checked',false) ;  
-////    $('#btn_agrupar_udos').click() ;  
-////   document.getElementbyID("btn_agrupar_udos").click();
-////   document.getElementById('agrupar').value = 'udos'; document.getElementById('form1').submit();
-//
-////    window.print();
-//}
-//function formato_certif()
-//{ //    $('#fmt_costes').prop('checked',!($('#fmt_costes').prop('checked'))) ;
-//    $('#fmt_costes').prop('checked',false) ;
-//    $('#fmt_texto_udo').prop('checked',true) ;
-//    $('#fmt_med_proyecto').prop('checked',false) ;  
-//    $('#fmt_resumen_cap').prop('checked',true) ;  
-//    $('#fmt_anadir_med').prop('checked',false) ;  
-//    $('#fmt_seleccion').prop('checked',false) ;  
-//}
-//
-//function formato_estudio_costes()
-//{ //    $('#fmt_costes').prop('checked',!($('#fmt_costes').prop('checked'))) ;
-//    $('#fmt_costes').prop('checked',true) ;
-//    $('#fmt_texto_udo').prop('checked',true) ;
-//    $('#fmt_med_proyecto').prop('checked',true) ;  
-//    $('#fmt_resumen_cap').prop('checked',true) ;  
-//    $('#fmt_anadir_med').prop('checked',false) ;  
-//    $('#fmt_seleccion').prop('checked',false) ;  
-//}
-
-</script>    
-
+ 
+ 
+ 
+	 
     <!--<div id="chart_div" style="display:none"></div>-->
 <!--    <div id="chart_div" ></div>-->
 
@@ -213,40 +186,157 @@ echo "<TR><TD>Activas</td><td>"
      . "<label class='btn btn-default {$chk_off[0]}'><input type='radio' id='activa0' name='activa' value='0' {$chk_off[1]}  />No Activas</label>"
      . "</div>"
      . "</TD></TR>" ;
-?>              
+
+$fecha_hoy=date('Y-m-d');
+//$semana_hoy=date('Y-m');
+$mes_hoy=date('Y-m');
+$anno_hoy=date('Y');
+//$trimestre_hoy=date('Y-m-d');
+     
+     ?>              
 
 </TABLE></div><div class='col-lg-4'><TABLE> 
 
 <TR><TD colspan="2" align="center"><b>PERIODO</b></TD></TR>
-<TR><TD>Fecha desde </TD><TD><INPUT   type="date" id="fecha1" name="fecha1" value="<?php echo $fecha1;?>"><button type="button" onclick="document.getElementById('fecha1').value='' ; ">*</button></TD></TR>
-<TR><TD>Fecha hasta</TD><TD><INPUT   type="date" id="fecha2" name="fecha2" value="<?php echo $fecha2;?>"><button type="button" onclick="document.getElementById('fecha2').value='' ; ">*</button></TD></TR>
-<TR><TD>Dia</TD><TD><INPUT   type="text" id="Dia" name="Dia" value="<?php echo $Dia;?>"><button type="button" onclick="document.getElementById('Dia').value='' ; ">*</button></TD></TR>
+<TR><TD>Fecha desde </TD><TD><INPUT   type="date" id="fecha1" name="fecha1" value="<?php echo $fecha1;?>"><button type="button" onclick="document.getElementById('fecha1').value='' ; ">*</button><button type='button' onclick="document.getElementById('fecha1').value='<?php echo $fecha_hoy?>' " >hoy</button></TD></TR>
+<TR><TD>Fecha hasta</TD><TD><INPUT   type="date" id="fecha2" name="fecha2" value="<?php echo $fecha2;?>"><button type="button" onclick="document.getElementById('fecha2').value='' ; ">*</button><button type='button' onclick="document.getElementById('fecha2').value='<?php echo $fecha_hoy?>' " >hoy</button></TD></TR>
+<TR><TD>Dia</TD><TD><INPUT   type="text" id="Dia" name="Dia" value="<?php echo $Dia;?>"><button type="button" onclick="document.getElementById('Dia').value='' ; ">*</button><button type='button' onclick="document.getElementById('Dia').value='<?php echo $fecha_hoy?>' " >hoy</button></TD></TR>
 <TR><TD>Semana</TD><TD><INPUT   type="text" id="Semana" name="Semana" value="<?php echo $Semana;?>"><button type="button" onclick="document.getElementById('Semana').value='' ; ">*</button></TD></TR>
-<TR><TD>Mes</TD><TD><INPUT   type="text" id="Mes" name="Mes" value="<?php echo $Mes;?>"><button type="button" onclick="document.getElementById('Mes').value='' ; ">*</button></TD></TR>
+<TR><TD>Mes</TD><TD><INPUT   type="text" id="Mes" name="Mes" value="<?php echo $Mes;?>"><button type="button" onclick="document.getElementById('Mes').value='' ; ">*</button><button type='button' onclick="document.getElementById('Mes').value='<?php echo $mes_hoy?>' " >hoy</button></TD></TR>
 <TR><TD>Trimestre</TD><TD><INPUT   type="text" id="Trimestre" name="Trimestre" value="<?php echo $Trimestre;?>"><button type="button" onclick="document.getElementById('Trimestre').value='' ; ">*</button></TD></TR>
-<TR><TD>Año</TD><TD><INPUT   type="text" id="Anno" name="Anno" value="<?php echo $Anno;?>"><button type="button" onclick="document.getElementById('Anno').value='' ; ">*</button></TD></TR>
+<TR><TD>Año</TD><TD><INPUT   type="text" id="Anno" name="Anno" value="<?php echo $Anno;?>"><button type="button" onclick="document.getElementById('Anno').value='' ; ">*</button><button type='button' onclick="document.getElementById('Anno').value='<?php echo $anno_hoy?>' " >hoy</button></TD></TR>
 
 
 
 
 
-<TR><TD></TD><TD><INPUT type="submit" class='btn btn-success btn-xl' style='width: 15vw;'  value="actualizar consulta" id="submit" name="submit"></TD></TR>
+<TR><TD></TD><TD><INPUT type="submit" class='btn btn-success btn-xl' style='width: 15vw;'  value="actualizar consulta" id="form1_submit" name="form1_submit"></TD></TR>
 
+<input type="hidden"  id="chart_ON"  name="chart_ON" value="<?php echo $chart_ON;?>"> 
 <input type="hidden"  id="agrupar"  name="agrupar" value="<?php echo $agrupar;?>"> 
 
     </TABLE></div><div class='col-lg-4' ></div></div>
 
+<br><a class="btn btn-link btn-xs noprint" title="ver la Producción en un periodo y a Origen de cada obra y hacer el Cierre Mensual copiando Producción y Gastos a Ventas Of. y Gastos Of. " href=#  onclick="formato_cierre_mensual();"><i class="fas fa-hard-hat"></i> modo Producción Obra</a>
+<br><a class="btn btn-link btn-xs noprint" title="ver la Cartera de Obra actual (obra pdte de ejecutar) \n y hacer planificación de cada obra para los próximos meses" href=#  onclick="formato_cartera();"><i class="fas fa-suitcase"></i> modo Cartera de Obra</a>
+<br><a class="btn btn-link btn-xs noprint" title="ver la Planificación mensual prevista de cada obra" href=#  onclick="formato_planning();"><i class="fas fa-list nav-icon"></i> modo Planning</a>
+<br><a class="btn btn-link btn-xs noprint" title="ver la Planificación mensual vista en gráfico" href=#  onclick="formato_planning_grafico();"><i class="fas fa-chart-bar"></i> modo Planning gráfico</a>
+
+<script>
+
+function formato_cartera()
+{ //    $('#fmt_costes').prop('checked',!($('#fmt_costes').prop('checked'))) ;
+    $('#fmt_cartera').prop('checked',true) ;
+    $('#fmt_prod_obra').prop('checked',false) ;
+    $('#fmt_prod_origen').prop('checked',false) ;
+    $('#fmt_gastos_estimados').prop('checked',false) ;  
+    $('#fmt_plan').prop('checked',false) ;  
+    $('#fmt_facturacion').prop('checked',false) ;  
+    $('#fmt_ventas').prop('checked',false) ;  
+    $('#fmt_desglose_mensual').prop('checked',false) ;  
+//    $('#fmt_subobras').prop('checked',false) ;  
+//    $('#fmt_mensual').prop('checked',false) ;  
+//    $('#fmt_no_print').prop('checked',false) ;  
+//    $('#fmt_pre_med').prop('checked',false) ;  
+
+    $('#agrupar').val("cartera") ;  //agrupar  document.getElementById("number").value
+    
+    document.getElementById('form1').submit(); 
+
+//    $('#btn_agrupar_udos').click() ;  
+//   document.getElementbyID("btn_agrupar_udos").click();
+//   document.getElementById('agrupar').value = 'udos'; document.getElementById('form1').submit(); 
+
+}
+function formato_planning()
+{ //    $('#fmt_costes').prop('checked',!($('#fmt_costes').prop('checked'))) ;
+    $('#fmt_cartera').prop('checked',true) ;
+    $('#fmt_prod_obra').prop('checked',false) ;
+    $('#fmt_prod_origen').prop('checked',false) ;
+    $('#fmt_gastos_estimados').prop('checked',false) ;  
+    $('#fmt_plan').prop('checked',true) ;  
+    $('#fmt_facturacion').prop('checked',false) ;  
+    $('#fmt_ventas').prop('checked',false) ;  
+    $('#fmt_desglose_mensual').prop('checked',true) ;  
+//    $('#fmt_subobras').prop('checked',false) ;  
+//    $('#fmt_mensual').prop('checked',false) ;  
+//    $('#fmt_no_print').prop('checked',false) ;  
+//    $('#fmt_pre_med').prop('checked',false) ;  
+
+    $('#agrupar').val("prod_gasto_obras") ;  //agrupar  document.getElementById("number").value
+    
+    document.getElementById('form1').submit(); 
+
+//    $('#btn_agrupar_udos').click() ;  
+//   document.getElementbyID("btn_agrupar_udos").click();
+//   document.getElementById('agrupar').value = 'udos'; document.getElementById('form1').submit(); 
+
+}
+function formato_planning_grafico()
+{ //    $('#fmt_costes').prop('checked',!($('#fmt_costes').prop('checked'))) ;
+    $('#fmt_cartera').prop('checked',false) ;
+    $('#fmt_prod_obra').prop('checked',false) ;
+    $('#fmt_prod_origen').prop('checked',false) ;
+    $('#fmt_gastos_estimados').prop('checked',false) ;  
+    $('#fmt_plan').prop('checked',true) ;  
+    $('#fmt_facturacion').prop('checked',false) ;  
+    $('#fmt_ventas').prop('checked',false) ;  
+    $('#fmt_desglose_mensual').prop('checked',false) ;  
+//    $('#fmt_subobras').prop('checked',false) ;  
+//    $('#fmt_mensual').prop('checked',false) ;  
+//    $('#fmt_no_print').prop('checked',false) ;  
+//    $('#fmt_pre_med').prop('checked',false) ;  
+
+    // PDTE DE ABRIR GRÁFICO
+    $('#agrupar').val("prod_gasto_meses") ;  //agrupar  document.getElementById("number").value
+    $('#chart_ON').val("1") ;  //activa el gráfico para despues del refresh
+    
+    document.getElementById('form1').submit(); 
+    
+
+//    $('#btn_agrupar_udos').click() ;  
+//   document.getElementbyID("btn_agrupar_udos").click();
+//   document.getElementById('agrupar').value = 'udos'; document.getElementById('form1').submit(); 
+
+}
+function formato_cierre_mensual()
+{ //    $('#fmt_costes').prop('checked',!($('#fmt_costes').prop('checked'))) ;
+    $('#fmt_cartera').prop('checked',false) ;
+    $('#fmt_prod_obra').prop('checked',true) ;
+    $('#fmt_prod_origen').prop('checked',true) ;
+    $('#fmt_gastos_estimados').prop('checked',false) ;  
+    $('#fmt_plan').prop('checked',true) ;  
+    $('#fmt_facturacion').prop('checked',false) ;  
+    $('#fmt_ventas').prop('checked',true) ;  
+    $('#fmt_desglose_mensual').prop('checked',false) ;  
+//    $('#fmt_subobras').prop('checked',false) ;  
+//    $('#fmt_mensual').prop('checked',false) ;  
+//    $('#fmt_no_print').prop('checked',false) ;  
+//    $('#fmt_pre_med').prop('checked',false) ;  
+
+    $('#agrupar').val("prod_gasto_obras") ;  //agrupar  document.getElementById("number").value
+    
+    document.getElementById('form1').submit(); 
+
+//    $('#btn_agrupar_udos').click() ;  
+//   document.getElementbyID("btn_agrupar_udos").click();
+//   document.getElementById('agrupar').value = 'udos'; document.getElementById('form1').submit(); 
+
+}
+
+</script>   
+
 
 <div class='noprint'>
-Formato:&nbsp; 
-        <label><INPUT type="checkbox" title="muestra solo las obras conCartera de Obra " id="fmt_cartera" name="fmt_cartera" <?php echo $fmt_cartera;?>  >&nbsp;solo Cartera&nbsp;&nbsp;</label>
-        <label><INPUT type="checkbox" id="fmt_prod_obra" name="fmt_prod_obra" <?php echo $fmt_prod_obra;?>  >&nbsp;Producción periodo&nbsp;&nbsp;</label>
-        <label><INPUT type="checkbox" id="fmt_gastos_estimados" name="fmt_gastos_estimados" <?php echo $fmt_gastos_estimados;?>  >&nbsp;Gastos Estimados&nbsp;&nbsp;</label>
-        <label><INPUT type="checkbox" id="fmt_prod_origen" name="fmt_prod_origen" <?php echo $fmt_prod_origen;?>  >&nbsp;Producción a origen&nbsp;&nbsp;</label>
-        <label><INPUT type="checkbox" id="fmt_plan" name="fmt_plan" <?php echo $fmt_plan;?>  >&nbsp;Plan mes&nbsp;&nbsp;</label>
-        <label><INPUT type="checkbox" id="fmt_ventas" name="fmt_ventas" <?php echo $fmt_ventas;?>  >&nbsp;Ventas&nbsp;&nbsp;</label>
-        <label><INPUT type="checkbox" id="fmt_facturacion" name="fmt_facturacion" <?php echo $fmt_facturacion;?>  >&nbsp;Facturacion a origen&nbsp;&nbsp;</label>
-        <label><INPUT type="checkbox" id="fmt_desglose_mensual" name="fmt_desglose_mensual" <?php echo $fmt_desglose_mensual;?>  >&nbsp;Desglose mensual&nbsp;&nbsp;</label>
+    <span class='small'>Modo personalizado:  </span><br>
+        <label style="font-size: small;color:grey;"><INPUT type="checkbox" title="muestra solo las obras conCartera de Obra " id="fmt_cartera" name="fmt_cartera" <?php echo $fmt_cartera;?>  >&nbsp;solo Cartera&nbsp;&nbsp;</label>
+        <label style="font-size: small;color:grey;"><INPUT type="checkbox" id="fmt_prod_obra" name="fmt_prod_obra" <?php echo $fmt_prod_obra;?>  >&nbsp;Producción periodo&nbsp;&nbsp;</label>
+        <label style="font-size: small;color:grey;"><INPUT type="checkbox" id="fmt_gastos_estimados" name="fmt_gastos_estimados" <?php echo $fmt_gastos_estimados;?>  >&nbsp;Gastos Estimados&nbsp;&nbsp;</label>
+        <label style="font-size: small;color:grey;"><INPUT type="checkbox" id="fmt_prod_origen" name="fmt_prod_origen" <?php echo $fmt_prod_origen;?>  >&nbsp;Producción a origen&nbsp;&nbsp;</label>
+        <label style="font-size: small;color:grey;"><INPUT type="checkbox" id="fmt_plan" name="fmt_plan" <?php echo $fmt_plan;?>  >&nbsp;Plan mes&nbsp;&nbsp;</label>
+        <label style="font-size: small;color:grey;"><INPUT type="checkbox" id="fmt_ventas" name="fmt_ventas" <?php echo $fmt_ventas;?>  >&nbsp;Ventas&nbsp;&nbsp;</label>
+        <label style="font-size: small;color:grey;"><INPUT type="checkbox" id="fmt_facturacion" name="fmt_facturacion" <?php echo $fmt_facturacion;?>  >&nbsp;Facturacion a origen&nbsp;&nbsp;</label>
+        <label style="font-size: small;color:grey;"><INPUT type="checkbox" id="fmt_desglose_mensual" name="fmt_desglose_mensual" <?php echo $fmt_desglose_mensual;?>  >&nbsp;Desglose mensual&nbsp;&nbsp;</label>
 <!--         <a class="btn btn-link btn-xs noprint" title="formato para realizar un Estudio de costes de un Proyecto o Liciación" href=#  onclick="formato_estudio_costes();"><i class="fas fa-euro-sign"></i> modo Estudio de Costes</a>
          <a class="btn btn-link btn-xs noprint" title="formato de formulario para registrar Producciones de Obra" href=#  onclick="formato_prod_obra();"><i class="fas fa-hard-hat"></i> modo Producción Obra</a>
          <a class="btn btn-link btn-xs noprint" title="imprimir la producción con formato de Certificación sin costes, con texto_udo y con resumen" href=#  onclick="formato_certif();"><i class="fas fa-print"></i> modo Certificacion</a>-->
@@ -261,7 +351,7 @@ Formato:&nbsp;
 echo "<div id='myDIV' class='noprint' style='margin-top: 25px; padding:10px'>" ; 
 
 
-$btnt['obras']=['Datos generales','', ''] ;
+$btnt['datos']=['Datos generales','', ''] ;
 $btnt['vacio']=['','',''] ;
 $btnt['cartera']=['Cartera','Cartera de Obra pendiente de ejecutar', ''] ;
 $btnt['vacio3']=['','',''] ;
@@ -390,27 +480,31 @@ $select_prod_origen_Union="" ;
 $select_prod_origen_Union_T="" ; 
 $col_vacia="";
 
+$select_solo_cartera= "";
+$select_solo_cartera_vacio= "" ;
+
+
 $is_obra_unica=(Dfirst("COUNT(ID_OBRA)","OBRAS", $where )==1)  ; // miramos si es una única obra la seleccionada para añadir opciones de link y Cerrar Mes
 $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // cogemos el ID_OBRA de esa obra única
 
 
  switch ($agrupar) { 
-   case "obras":
+   case "datos":
 //     $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA,importe_sin_iva,Cartera_pdte "
 //         . "Cartera_pdte,Porcentaje_Plazo , Valoracion/importe_sin_iva as Porcentaje_ejecutado, Valoracion/importe_sin_iva-Porcentaje_Plazo as Porcentaje_DESFASE"
 //           . ",' ' as ID_TH_COLOR, Valoracion as Importe_Ejecutado ,Gastos as Gasto_real, "
 //           . "Valoracion-Gastos as Beneficio_real,(Valoracion-Gastos)/Valoracion as Margen_real,(Valoracion-Gasto_est)/Valoracion as Margen_estimado "
 //         . ",' ' as ID_TH_COLOR2, VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
-//            . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
+//            . " FROM Obras_ext WHERE $where  ORDER BY NOMBRE_OBRA " ;
 
       $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,IMPORTE AS importe_iva_inc  "
          . ",Plazo,F_Fin_Plazo "
             . " FROM OBRAS WHERE $where  ORDER BY NOMBRE_OBRA " ;
-      $sql_T="SELECT '' AS A,'' AS A1, 'SUMA:', SUM(IMPORTE) AS importe_iva_inc, '' AS A2, '' AS A21, '' AS A22 FROM Obras_View WHERE $where   " ;
+//      $sql_T="SELECT '' AS A,'' AS A1, 'SUMA:', SUM(IMPORTE) AS importe_iva_inc, '' AS A2, '' AS A21, '' AS A22 FROM OBRAS WHERE $where   " ;
 
 
 //     $sql_T="SELECT  '' as ID_OBRA,'' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma2' ,   SUM(IMPORTE) as IMPORTE , SUM(importe_sin_iva) as importe_sin_iva , "
-//             . " SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_View WHERE $where    " ;
+//             . " SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_ext WHERE $where    " ;
    break;
    case "cartera":
 
@@ -418,51 +512,39 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
          . ", VENTAS , Cartera_pdte, VENTAS/importe_sin_iva as Porcentaje_ejecutado,Porcentaje_Plazo ,  VENTAS/importe_sin_iva-Porcentaje_Plazo as Porcentaje_DESFASE"
            . ",' ' as ID_TH_COLOR,  "
            . "Facturado_iva , Facturado_iva/IMPORTE AS Porcentaje_Facturado , Pdte_Cobro , ' ' as ID_TH_COLOR2  "
-            . " FROM Obras_View WHERE $where AND $where_cartera  ORDER BY NOMBRE_OBRA " ;
+            . " FROM Obras_ext WHERE $where AND $where_cartera  ORDER BY NOMBRE_OBRA " ;
 
-     $sql_T="SELECT  '' as ID_OBRA,'' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma:' ,   SUM(importe_sin_iva) as importe_sin_iva ,'' as F_Fin_Plazo "
-             . ", SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_View WHERE $where AND $where_cartera   " ;
-     
-       if (1) // si estamos viendo la cartera de obra
-       {
-//            $fecha_ventas=$Mes."-01" ;   // fecha del mes a cerrar
-//            $onclick_VAR_TABLA1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
-            $onclick_VAR_TABLA1_="Cartera_pdte" ;     // idem
-            $onclick_VAR_TABLA2_="F_Fin_Plazo" ;     // idem
-
-            // anulado antiguo sistema que borraba la VENTA y creaba una nueva sin respetar posible PLAN mensual, juand, ene21
-//            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VAR_SQL1_' AND FECHA='$fecha_ventas' ;"  ;
-//            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
-//                         " VALUES ( '_VAR_SQL1_', '$fecha_ventas','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
-//
-//            $sql_insert=encrypt2($sql_insert) ;
-
-//            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
-//                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_ID_&var_sql2=_VAR_TABLA2_&var_sql3=_VAR_TABLA3_ \")'  "
-//                    . " >cerrar mes</a> ";
-            
-            $fecha_pMes = date('Y-m')."-01";
-            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Planifica la obra pendiente, es decir, reparte la Cartera de Obra pendiente en los meses sucesivos' "
-                    . " href=# onclick=\"js_href('../obras/plan_obra_ajax.php?ID_OBRA=_VAR_ID_&Cartera_pdte=_VAR_HREF1_&F_Inicio_Plazo=_VAR_HREF2_&F_Fin_Plazo=_VAR_HREF3_', 0,'', 'PROMPT_Cartera?',  'PROMPT_Fecha Inicio planificación?','_VAR_TABLA1_','$fecha_pMes' ,  'PROMPT_Fecha fin obra?', '_VAR_TABLA2_' );\"    "
-                    . " >Planificar</a> ";
-            $actions_row["id"]="ID_OBRA";
-       }   
+  
+//     $sql_T="SELECT  '' as ID_OBRA,'' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma:' ,   SUM(importe_sin_iva) as importe_sin_iva ,'' as F_Fin_Plazo "
+//             . ", SUM(VENTAS) as VENTAS , SUM(Cartera_pdte) as Cartera_pdte   FROM Obras_ext WHERE $where AND $where_cartera   " ;
    
      
+       
+//            $fecha_ventas=$Mes."-01" ;   // fecha del mes a cerrar
+//            $onclick_VAR_TABLA1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
+     
      
    break;
-   case "obras2":
-     $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,importe_sin_iva,Cartera_pdte,  Beneficio_pdte,Margen_estimado  "
-           . "  , Plazo,F_Acta_Rep,Porcentaje_Plazo,F_Fin_Plazo,importe_POF, VENTAS,Facturado_iva,Pdte_Cobro "
-            . " FROM Obras_View WHERE $where  ORDER BY NOMBRE_OBRA " ;
-
-     $sql_T="SELECT '' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma' ,  SUM(IMPORTE) as Importe_contrato_iva ,  SUM(importe_sin_iva) as importe_sin_iva , "
-             . " SUM(Cartera_pdte) as Cartera_pdte , SUM(Beneficio_pdte) as Beneficio_pdte  FROM Obras_View WHERE $where    " ;
-   break;
+//   case "obras2":
+//     
+// 
+//       
+//     $sql="SELECT ID_OBRA,activa,tipo_subcentro AS T,NOMBRE_OBRA, GRUPOS,importe_sin_iva,Cartera_pdte,  Beneficio_pdte,Margen_estimado  "
+//           . "  , Plazo,F_Acta_Rep,Porcentaje_Plazo,F_Fin_Plazo,importe_POF, VENTAS,Facturado_iva,Pdte_Cobro "
+//            . " FROM Obras_ext WHERE $where  ORDER BY NOMBRE_OBRA " ;
+//
+//       
+//       
+//       
+////     $sql_T="SELECT '' as aa,COUNT(ID_OBRA) as num_pagos, 'Suma' ,  SUM(IMPORTE) as Importe_contrato_iva ,  SUM(importe_sin_iva) as importe_sin_iva , "
+////             . " SUM(Cartera_pdte) as Cartera_pdte , SUM(Beneficio_pdte) as Beneficio_pdte  FROM Obras_ext WHERE $where    " ;
+//   break;
    case "prod_gasto_obras":
        
+       $select_solo_cartera= $fmt_cartera?  "Cartera_pdte," : "" ;
+       $select_solo_cartera_vacio= $fmt_cartera?  "0 AS Cartera_pdte," : "" ;
        $select_PPAL=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA, GRUPOS , " ;
-       $select_PPAL_Union=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA, GRUPOS , " ;
+       $select_PPAL_Union=" ID_OBRA ,id_produccion_obra,activa, NOMBRE_OBRA, GRUPOS ,  " . ($fmt_cartera? "SUM(Cartera_pdte) AS Cartera_pdte, " : "")  ;
        
        
        // produccion a origen
@@ -471,11 +553,12 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
        $select_prod_origen_Union = $fmt_prod_origen ?  " SUM(prod_origen) as prod_origen ,SUM(porc_origen) as porc_origen , SUM(gastos_origen) as gastos_origen "
                               . " , SUM(prod_origen) - SUM(gastos_origen) as benef_origen , (SUM(prod_origen) - SUM(gastos_origen))/SUM(prod_origen) as margen_origen ," : "" ;
        $select_prod_origen_Union_T = $fmt_prod_origen ? " '' as prod_origen , '' as porc_origen , '' as gastos_origen ,'' as benef_origen , '' as margen_origen , " : "" ;
-       $union_sql4 = ($fmt_prod_origen OR $fmt_facturacion) ;
+       $union_sql4 = ($fmt_prod_origen OR $fmt_facturacion) OR $fmt_cartera ;
+       $union_sql4 = 1;
        
        $col_vacia=" '' as activa2, " ;
 
-       
+     
        
        $group_order="GROUP BY ID_OBRA ORDER BY NOMBRE_OBRA";
        
@@ -492,7 +575,7 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 //        echo $sql ;
 
         // CIERRE MES: si filtramos por Mes mostramos el boton de CERRAR Mes
-       if ($Mes AND $fmt_prod_obra) // PROVISIONAL
+       if ($fmt_prod_obra) // PROVISIONAL
        {
             $fecha_ventas=$Mes."-01" ;   // fecha del mes a cerrar
 //            $onclick_VAR_TABLA1_="ID_OBRA" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
@@ -501,7 +584,7 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 
             // anulado antiguo sistema que borraba la VENTA y creaba una nueva sin respetar posible PLAN mensual, juand, enero21
 //            $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA='_VAR_SQL1_' AND FECHA='$fecha_ventas' ;"  ;
-//            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
+//            $sql_insert.=" _PUNTO_Y_COMA_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
 //                         " VALUES ( '_VAR_SQL1_', '$fecha_ventas','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
 //
 //            $sql_insert=encrypt2($sql_insert) ;
@@ -509,10 +592,26 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 //            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
 //                    . " href=# onclick='js_href(\"../include/sql.php?code=1&sql=$sql_insert&var_sql1=_VAR_ID_&var_sql2=_VAR_TABLA2_&var_sql3=_VAR_TABLA3_ \")'  "
 //                    . " >cerrar mes</a> ";
-            $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación' "
-                    . " href=# onclick='js_href(\"../obras/cerrar_mes_ajax.php?Mes=$Mes&ID_OBRA=_VAR_ID_&IMPORTE=_VAR_TABLA2_&GASTOS_EX=_VAR_TABLA3_ \")'  "
-                    . " >cerrar mes</a> ";
+            $cerrar_mes_disabled = $Mes ? "" :"disabled";
+            $cerrar_mes_title = $Mes ? "Cierra el Mes y registra el Importe producido como Venta y los gastos reales como Gastos de Explotación" 
+                                        :"Debes seleccionar un Mes para poder activar el botón cerrar mes";
+            $actions_row["onclick1_link"]="<button class='btn btn-warning btn-xs' $cerrar_mes_disabled  title='$cerrar_mes_title' "
+                    . " onclick='js_href(\"../obras/cerrar_mes_ajax.php?Mes=$Mes&ID_OBRA=_VAR_ID_&IMPORTE=_VAR_TABLA2_&GASTOS_EX=_VAR_TABLA3_ \")'  "
+                    . " >cerrar mes</button> ";
             $actions_row["id"]="ID_OBRA";
+       }
+       
+       
+      if ($fmt_cartera) // BOTONES DE PLANIFICAR
+       {
+        $onclick_VAR_TABLA1_="Cartera_pdte" ;     // idem
+        $onclick_VAR_TABLA2_="F_Fin_Plazo" ;     // idem
+
+        $fecha_pMes = date('Y-m')."-01";
+        $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs'  title='Planifica la obra pendiente, es decir, reparte la Cartera de Obra pendiente en los meses sucesivos' "
+                . " href=# onclick=\"js_href('../obras/plan_obra_ajax.php?ID_OBRA=_VAR_ID_&Cartera_pdte=_VAR_HREF1_&F_Inicio_Plazo=_VAR_HREF2_&F_Fin_Plazo=_VAR_HREF3_', 0,'', 'PROMPT_Cartera?',  'PROMPT_Fecha Inicio planificación?','_VAR_TABLA1_','$fecha_pMes' ,  'PROMPT_Fecha fin obra?', '_VAR_TABLA2_' );\"    "
+                . " >Planificar</a> ";
+        $actions_row["id"]="ID_OBRA";
        }   
      
      
@@ -567,7 +666,7 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
             $onclick_VAR_TABLA3_="gasto_real" ;     // idem
 
             $sql_insert="DELETE FROM VENTAS WHERE ID_OBRA=$id_obra_unica AND FECHA='_VAR_SQL1_-01' ;"  ;
-            $sql_insert.=" _CC_NEW_SQL_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
+            $sql_insert.=" _PUNTO_Y_COMA_ INSERT INTO VENTAS ( ID_OBRA,FECHA,IMPORTE,GASTOS_EX ) " . 
                       " VALUES ( '$id_obra_unica', '_VAR_SQL1_-01','_VAR_SQL2_','_VAR_SQL3_'  );"  ;
 
             $sql_insert=encrypt2($sql_insert) ;
@@ -626,6 +725,8 @@ $id_obra_unica = $is_obra_unica ? Dfirst("ID_OBRA","OBRAS", $where ) : 0 ;  // c
 
    }
    
+ 
+   
    
  // sistema de desglose mensual
 
@@ -654,28 +755,28 @@ $select_VENTAS_MENSUAL_union = ($fmt_desglose_mensual AND $fmt_ventas) ? ",'' as
 if (like($agrupar,'prod_gasto%'))
 {
      // sql produccion
-     $sql1=" (SELECT $select_PPAL SUM(importe*COEF_BAJA*(1+GG_BI)) as importe_prod,SUM(gasto_est) as gasto_est, $select_prod_origen "
+     $sql1=" (SELECT $select_PPAL $select_solo_cartera_vacio SUM(importe*COEF_BAJA*(1+GG_BI)) as importe_prod,SUM(gasto_est) as gasto_est, $select_prod_origen "
            . " SUM(importe*COEF_BAJA*(1+GG_BI))-SUM(gasto_est) as benef_est , 1-SUM(gasto_est)/(SUM(importe*COEF_BAJA*(1+GG_BI))) as margen_est, 0 AS gasto_real,"
            . " 0 AS PLAN $select_PLAN_0, 0 AS VENTAS $select_VENTAS_0, 0 AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro "
             . " FROM ConsultaProd WHERE $where AND $where_fecha AND ID_PRODUCCION=id_produccion_obra $group_order ) " ;
 
        //sql gasto
-     $sql2=" (SELECT $select_PPAL  0 as importe_prod,0 as gasto_est, $select_prod_origen "
+     $sql2=" (SELECT $select_PPAL $select_solo_cartera_vacio 0 as importe_prod,0 as gasto_est, $select_prod_origen "
            . " 0 as benef_est , 0 as margen_est, SUM(IMPORTE) AS gasto_real, "
              . " 0 AS PLAN $select_PLAN_0, 0 AS VENTAS $select_VENTAS_0, 0 AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro   "
             . " FROM ConsultaGastos_View WHERE $where AND $where_fecha $group_order ) " ;
        
        //sql VENTAS
-     $sql3=" (SELECT $select_PPAL  0 as importe_prod,0 as gasto_est, $select_prod_origen "
+     $sql3=" (SELECT $select_PPAL $select_solo_cartera_vacio 0 as importe_prod,0 as gasto_est, $select_prod_origen "
            . " 0 as benef_est , 0 as margen_est, 0 AS gasto_real, "
              . " SUM(PLAN) AS PLAN  $select_PLAN_MENSUAL, SUM(IMPORTE) AS VENTAS $select_VENTAS_MENSUAL, SUM(GASTOS_EX) AS GASTOS_EX ,0 as Facturado, 0 as Facturado_iva, 0 as Pdte_Cobro " 
             . " FROM Ventas_View WHERE $where AND $where_fecha $group_order ) " ;
        
        //sql PROD-GASTO ORIGEN
-     $sql4=" (SELECT $select_PPAL  0 as importe_prod,0 as gasto_est, $select_prod_origen_sql4   "
+     $sql4=" (SELECT $select_PPAL $select_solo_cartera  0 as importe_prod,0 as gasto_est, $select_prod_origen_sql4   "
            . " 0 as benef_est , 0 as margen_est, 0 AS gasto_real, "
              . " 0 AS PLAN $select_PLAN_0 ,0 AS VENTAS $select_VENTAS_0, 0 AS GASTOS_EX ,Facturado,Facturado_iva,Pdte_Cobro " 
-            . " FROM Obras_View WHERE $where $group_order ) " ;
+            . " FROM Obras_ext WHERE $where $group_order ) " ;
      
      $union_all_sql4 =  $union_sql4 ?  " UNION ALL ". $sql4 : "" ;
     
@@ -689,16 +790,54 @@ if (like($agrupar,'prod_gasto%'))
              . " FROM (" . $sql1 ." UNION ALL ". $sql2 ." UNION ALL ". $sql3 . $union_all_sql4 ."  ) X $group_order" ; 
      
 //        echo $sql ;
-     $sql_T= "SELECT $col_vacia '' as ID_OBRA, 'Suma...' , SUM(importe_prod) as importe_prod "
-             . ", SUM(gasto_real) AS gasto_real,SUM(importe_prod)- SUM(gasto_real) AS benef_real , 1-SUM(gasto_real)/SUM(importe_prod) as margen_real "
-             . ",$select_prod_origen_Union_T SUM( gasto_est) AS gasto_est ,SUM(benef_est) AS benef_est ,  1- SUM(gasto_est)/SUM(importe_prod) as margen_est ,"
-             . "  SUM(PLAN) AS PLAN $select_PLAN_MENSUAL_union, SUM(VENTAS) AS VENTAS $select_VENTAS_MENSUAL_union, SUM(GASTOS_EX) AS GASTOS_EX,  SUM(VENTAS)-SUM(GASTOS_EX) AS Beneficio, (SUM(VENTAS)-SUM(GASTOS_EX))/SUM(VENTAS) as Margen   "
-             . " FROM (" . $sql1 ." UNION ALL ". $sql2 ." UNION ALL ". $sql3 . $union_all_sql4 .") X " ; 
+//     $sql_T= "SELECT $col_vacia '' as ID_OBRA, 'Suma...' , SUM(importe_prod) as importe_prod "
+//             . ", SUM(gasto_real) AS gasto_real,SUM(importe_prod)- SUM(gasto_real) AS benef_real , 1-SUM(gasto_real)/SUM(importe_prod) as margen_real "
+//             . ",$select_prod_origen_Union_T SUM( gasto_est) AS gasto_est ,SUM(benef_est) AS benef_est ,  1- SUM(gasto_est)/SUM(importe_prod) as margen_est ,"
+//             . "  SUM(PLAN) AS PLAN $select_PLAN_MENSUAL_union, SUM(VENTAS) AS VENTAS $select_VENTAS_MENSUAL_union, SUM(GASTOS_EX) AS GASTOS_EX,  SUM(VENTAS)-SUM(GASTOS_EX) AS Beneficio, (SUM(VENTAS)-SUM(GASTOS_EX))/SUM(VENTAS) as Margen   "
+//             . " FROM (" . $sql1 ." UNION ALL ". $sql2 ." UNION ALL ". $sql3 . $union_all_sql4 .") X " ; 
 
    
 }       
-   
- 
+
+$tabla_sumatorias["importe_iva_inc"]=0 ;
+$tabla_sumatorias["Cartera_pdte"]=0 ;
+$tabla_sumatorias["Importe_contrato_iva"]=0 ;
+$tabla_sumatorias["importe_sin_iva"]=0 ;
+
+$tabla_sumatorias["importe_prod"]=0 ;
+$tabla_sumatorias["gasto_real"]=0 ;
+$tabla_sumatorias["benef_real"]=0 ;
+$tabla_sumatorias["margen_real"]="=@@benef_real@@/@@importe_prod@@" ;
+
+$tabla_sumatorias["gasto_est"]=0 ;
+$tabla_sumatorias["benef_est"]=0 ;
+$tabla_sumatorias["margen_est"]="=@@benef_est@@/@@importe_prod@@" ;
+
+$tabla_sumatorias["prod_origen"]=0 ;
+$tabla_sumatorias["gastos_origen"]=0 ;
+$tabla_sumatorias["porc_origen"]="=@@prod_origen@@/@@importe_sin_iva@@" ;
+$tabla_sumatorias["benef_origen"]=0 ;
+$tabla_sumatorias["margen_origen"]="=1-@@gastos_origen@@/@@prod_origen@@" ;
+
+$tabla_sumatorias["PLAN"]=0 ;
+$tabla_sumatorias["VENTAS"]=0 ;
+$tabla_sumatorias["GASTOS_EX"]=0 ;
+$tabla_sumatorias["Beneficio"]=0 ;
+$tabla_sumatorias["Margen"]="=@@Beneficio@@/@@VENTAS@@" ;
+
+$tabla_sumatorias["Facturado"]=0 ;
+$tabla_sumatorias["Facturado_iva"]=0 ;
+$tabla_sumatorias["Pdte_Cobro"]=0 ;
+//$tabla_sumatorias["Beneficio"]=0 ;
+//$tabla_sumatorias["Margen"]="=@@Beneficio@@/@@VENTAS@@" ;
+//$tabla_sumatorias["PLAN"]=0 ;
+//$tabla_sumatorias["PLAN"]=0 ;
+
+$array_meses= array_meses();
+foreach ( $array_meses as  $mes) { $tabla_sumatorias[ $mes ]=0 ; }  
+
+
+
 /// pruebas
 //$links["importe_prod"] = ["../obras/obras_prod_detalle.php?$cadena_link_periodo&agrupar=udos&id_produccion=", "id_produccion_obra", "Abrir la PRODUCCION OBRA "] ;
 //$links["gasto_real"] = ["../obras/gastos.php?$cadena_link_periodo", "", "Abrir los Gastos "] ;
@@ -707,7 +846,7 @@ if (like($agrupar,'prod_gasto%'))
 
    
 $updates=['activa']  ;
-$tabla_update="Obras_View" ;
+$tabla_update="Obras_ext" ;
 $id_update="ID_OBRA" ;
 $id_clave="ID_OBRA" ;
 
@@ -770,25 +909,27 @@ $chart_ocultos=["T"] ;
 
 
 
-$result=$Conn->query($sql) ;
+//$result=$Conn->query($sql) ;
 
-echo "<div class='noprint'>Filas: {$result->num_rows} <br></div>" ;
+//echo "<div class='noprint'>Filas: {$result->num_rows} <br></div>" ;
 //echo $sql ;
 
-if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
-if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
-if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
-if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
+//if (isset($sql_T)) {$result_T=$Conn->query($sql_T) ; }    // consulta para los TOTALES
+//if (isset($sql_T2)) {$result_T2=$Conn->query($sql_T2) ; }    // consulta para los TOTALES
+//if (isset($sql_T3)) {$result_T3=$Conn->query($sql_T3) ; }    // consulta para los TOTALES
+//if (isset($sql_S)) {$result_S=$Conn->query($sql_S) ; }     // consulta para los SUBGRUPOS , agrupación de filas (Ej. CLIENTES o CAPITULOS en listado de udos)
 
 
 $tabla_expandible=0;
 $msg_tabla_vacia="No hay.";
-$titulo="";
+$titulo="_NUM_ filas ";
 
 if (isset($col_sel))  echo $content_sel ;           // si hay columna de SELECTION pinto el div con los botones acciones de selection
 if (isset($fmt_anadir_med))  echo $content_anadir_med ;           // si hay columna de SELECTION pinto el div con los botones acciones de selection
 
 echo '</form>' ;
+
+$chart_ON2 = ( $chart_ON ) ;// guardo el valor antes que tabla.php o tabla_ajax.php lo elimine
 
 if ($tipo_tabla=='group')
 { require("../include/tabla_group.php"); }
@@ -797,7 +938,22 @@ else if ($tipo_tabla=='pdf')
 else if ($tipo_tabla=='calendar')
 { require("../include/tabla_calendar.php"); }
 else 
-{ require("../include/tabla.php"); echo $TABLE ; }
+{
+//    $chart_ON=1;
+require("../include/tabla_ajax.php");
+//require("../include/tabla.php"); echo $TABLE ; 
+
+//  INTENTO FALLIDO activo manualmente el gráfico
+//if ($chart_ON2 )
+//   {
+//    echo "GRAFICOS ON";
+////    echo "<script> $(document).ready(function(){ alert('juan');$('#chart_button$idtabla').click();})</script>" ; 
+//    echo "<script> $(document).ready(function(){ alert('juan');$('#chart_div$idtabla').toggle('fast');"
+//                                                           . "$('#chart_HIDE$idtabla').toggle('fast');"
+//                                             .            " google.charts.setOnLoadCallback(drawChart$idtabla);;})</script>" ; 
+//   
+//   }
+}
     
 
 
@@ -815,7 +971,7 @@ else
 $Conn->close();
 
 ?>
-	 
+
 
 </div>
   

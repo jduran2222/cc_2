@@ -314,8 +314,9 @@ $titulo_sin_html= strip_tags($titulo)   ;
       
        
        
-       // INICIAMOS LA CADENA SPANS_HTML_TXT
-       $spans_html_txt=isset($spans_html[$clave])? "<span class='btn btn-xs btn-link noprint transparente' >".$spans_html[$clave]."</span>" : "" ;        // extraemos su divs si es que hay
+       // INICIAMOS LA CADENA SPANS_HTML_TXT        (ANULAMOS LAS CLASES POR DEFECTO, juand mar21)
+//       $spans_html_txt=isset($spans_html[$clave])? "<span class='btn btn-xs btn-link noprint transparente' >".$spans_html[$clave]."</span>" : "" ;        // extraemos su divs si es que hay
+       $spans_html_txt=isset($spans_html[$clave])? $spans_html[$clave] : "" ;        // extraemos su divs si es que hay
        
        // span de envío de email
        $spans_html_txt .= $is_EMAIL ? "<span class='btn btn-xs btn-link noprint transparente'  ><a  href='mailto:$valor'  title='enviar email a $valor' >"
@@ -417,8 +418,8 @@ $titulo_sin_html= strip_tags($titulo)   ;
         // el campo IS_SELECT , campo SELECIONABLE deentre valores a calcular
         if ($is_select)
         {
-              $campo_ID=$selects[$clave][0] ;      // ["campo_ID", "campo_texto", "tabla_select",Opcional "link a nuevo",   link a VER ,   campo al link anterior,   otro_WHERE]
-              $campo_texto=$selects[$clave][1] ;
+              $campo_ID=$selects[$clave][0] ;      // [0:"campo_ID",1: "campo_texto", 2:"tabla_select", 3: Opcional "link a nuevo", 4:  link a VER , 5: campo al link anterior, 6:  otro_WHERE] 
+              $campo_texto=$selects[$clave][1] ;   //  7: true evita el where_c_coste
               $tabla_select=$selects[$clave][2] ;
               $link_nuevo=isset($selects[$clave][3]) ? $selects[$clave][3] : "" ;
               $link_ver = isset($selects[$clave][4]) ? $selects[$clave][4] : "" ;

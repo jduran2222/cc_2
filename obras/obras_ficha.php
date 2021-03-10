@@ -4,7 +4,8 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo_pagina="Obra " . Dfirst("NOMBRE_OBRA","OBRAS", "ID_OBRA={$_GET["id_obra"]} AND $where_c_coste"  ) ;
+$rs_obra= DRow("NOMBRE_OBRA","OBRAS", "ID_OBRA={$_GET["id_obra"]} AND $where_c_coste"  ) ;
+$titulo_pagina="Obra " . $rs_obra["NOMBRE_OBRA"];
 $titulo = $titulo_pagina; 
 
 //INICIO
@@ -27,13 +28,13 @@ include_once('../templates/_inc_privado2_navbar.php');
 <?php 
 
 
-$id_obra=$_GET["id_obra"];
+$id_obra=$rs_obra["ID_OBRA"];   // INTEGRIDAD DATOS. SEGURIDAD
 //if (!isset($_SESSION['nombre_obra']))
 //{
 //   $_SESSION['nombre_obra']=Dfirst("NOMBRE_OBRA","OBRAS","id_obra=$id_obra AND $where_c_coste ") ;
 //}
 
-$tipo_subcentro=Dfirst("tipo_subcentro","OBRAS","id_obra=$id_obra AND $where_c_coste ") ;
+$tipo_subcentro=$rs_obra["tipo_subcentro"] ;
 
 if ($tipo_subcentro=='M')
 {
@@ -41,6 +42,7 @@ echo "<script language='javascript'>window.location='../maquinaria/maquinaria_fi
 }
 
 require_once("../obras/obras_menutop_r.php");
+require_once("../include/funciones_js.php");
 ?>
 
 
@@ -79,15 +81,15 @@ if ($tipo_subcentro=='O')     // consulta para las OBRAS
  
 }elseif($tipo_subcentro=='E')  // consulta para las OBRA-ESTUDIO
 {
- $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,NOMBRE_COMPLETO,IMPORTE/(1+iva_obra) AS IMPORTE_SIN_IVA,TIPO_LICITACION, IMPORTE,ID_ESTUDIO,id_prod_estudio_costes"
+ $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,NOMBRE_COMPLETO,IMPORTE/(1+iva_obra) AS IMPORTE_SIN_IVA,TIPO_LICITACION, IMPORTE,ID_ESTUDIO,id_prod_estudio_costes,id_produccion_obra"
          . ",iva_obra,GG_BI,Situacion,URL_Google_Maps "
-         . ", user,fecha_creacion FROM Obras_View WHERE ID_OBRA=$id_obra AND $where_c_coste";
+         . ", user,fecha_creacion FROM OBRAS WHERE ID_OBRA=$id_obra AND $where_c_coste";
     
 }elseif($tipo_subcentro=='G' OR $tipo_subcentro=='A')
 {
  $sql="SELECT ID_OBRA,activa,tipo_subcentro,NOMBRE_OBRA,importe_sin_iva,IMPORTE,id_prod_estudio_costes,id_produccion_obra,GRUPOS, Valoracion  ,Gastos as Gasto_real,Valoracion-Gastos as Beneficio_real,VENTAS,GASTOS_EX, VENTAS-GASTOS_EX AS Beneficios"
          . ",Situacion,URL_Google_Maps, TIPO_LICITACION "
-         . ", user,fecha_creacion FROM Obras_View WHERE ID_OBRA=$id_obra AND $where_c_coste";
+         . ", user,fecha_creacion FROM OBRAS WHERE ID_OBRA=$id_obra AND $where_c_coste";
     
 }elseif($tipo_subcentro=='M')
 {
@@ -96,7 +98,7 @@ if ($tipo_subcentro=='O')     // consulta para las OBRAS
          . ", F_Contrato "
               . " ,'----------RESUMEN ECONOMICO----------' as a ,"
          . " ,Gastos,VENTAS,GASTOS_EX"
-         . ", user,fecha_creacion FROM Obras_View WHERE ID_OBRA=$id_obra AND $where_c_coste";
+         . ", user,fecha_creacion FROM OBRAS WHERE ID_OBRA=$id_obra AND $where_c_coste";
     
 }else
 {
@@ -116,21 +118,38 @@ echo "<br><br><br><br>" ;
 //echo "</pre>";
   $titulo="OBRA: <b>{$rs["NOMBRE_OBRA"]}</b>" ; 
   //$updates=['NOMBRE_OBRA','NOMBRE_COMPLETO','GRUPOS','EXPEDIENTE', 'NOMBRE' ,'Nombre Completo', 'LUGAR', 'PROVINCIA', 'Presupuesto Tipo', 'Plazo Proyecto' ,'Observaciones']  ;
-  $updates=[ 'id_subobra_auto', "ID_ESTUDIO","ID_CLIENTE","id_produccion_obra",'id_prod_estudio_costes', "NOMBRE_OBRA","NOMBRE_COMPLETO","GRUPOS","EXPEDIENTE","FECHA_INICIO","TIPO_LICITACION","IMPORTE","BAJA","COEF_BAJA","iva_obra","UTE" 
+  $updates=[ 'id_subobra_auto', "ID_ESTUDIO","ID_CLIENTE","id_produccion_obra2222",'id_prod_estudio_costes2222', "NOMBRE_OBRA","NOMBRE_COMPLETO","GRUPOS","EXPEDIENTE","FECHA_INICIO","TIPO_LICITACION","IMPORTE","BAJA","COEF_BAJA","iva_obra","UTE" 
       ,'Plazo','F_Contrato','Fecha_Plan_SS','F_Aper_C_Trabajo','F_Acta_Rep','F_Fin_Plazo','F_A_Recepcion','Situacion','activa'  
       ,'tipo_subcentro','D_OBRA','Pie_CERTIFCACION','','','','','','','','',"LUGAR","Agenda_Obra","Observaciones","GG_BI", 'URL_Google_Maps'] ;
 //  $updates=["*"] ;
 //  $selects["tipo_subcentro"]=["tipo_subcentro","subcentro","tipos_subcentro","","","tipo_subcentro","","NO_WHERE_C_COSTE"] ;   // datos para clave foránea  
   $selects["ID_CLIENTE"]=["ID_CLIENTE","CLIENTE","Clientes","../clientes/clientes_anadir_form.php","../clientes/clientes_ficha.php?id_cliente=","ID_CLIENTE"] ;   // datos para clave foránea
-  $selects["id_prod_estudio_costes"]=["ID_PRODUCCION","PRODUCCION","Prod_view" 
+//  $selects["id_prod_estudio_costes"]=["ID_PRODUCCION","PRODUCCION","Prod_view" 
+//      ,"../obras/add_produccion_ajax.php?id_obra=$id_obra&produccion=ESTUDIO COSTES&id_actualizar=id_prod_estudio_costes"  
+//          ,"../obras/obras_prod_detalle.php?fmt_costes=checked&id_obra=$id_obra&id_produccion=","id_prod_estudio_costes"  
+//      ,"AND ID_OBRA=$id_obra","", "CONCAT(PRODUCCION,' - (Baja est. ', COALESCE(FORMAT(margen_est*100,2),0),'%)'  )"] ;   // datos para clave foránea
+//  $selects["id_produccion_obra"]=["ID_PRODUCCION","PRODUCCION","Prod_view" 
+//      ,"../obras/add_produccion_ajax.php?id_obra=$id_obra&produccion=PRODUCCION OBRA&id_actualizar=id_produccion_obra" 
+//          ,"../obras/obras_prod_detalle.php?id_obra=$id_obra&id_produccion=","id_produccion_obra" 
+//      ,"AND ID_OBRA=$id_obra", ""  ,"CONCAT(PRODUCCION,' - ( Ej.', COALESCE(FORMAT(p_ejecucion*100,2),0),'%)'  )"] ;   // datos para clave foránea
+
+  // anulamos los porcentajes de Estud_coste y Prod_Obra
+  $selects["id_prod_estudio_costes"]=["ID_PRODUCCION","PRODUCCION","PRODUCCIONES" 
       ,"../obras/add_produccion_ajax.php?id_obra=$id_obra&produccion=ESTUDIO COSTES&id_actualizar=id_prod_estudio_costes"  
           ,"../obras/obras_prod_detalle.php?fmt_costes=checked&id_obra=$id_obra&id_produccion=","id_prod_estudio_costes"  
-      ,"AND ID_OBRA=$id_obra","", "CONCAT(PRODUCCION,' - (Baja est. ', COALESCE(FORMAT(margen_est*100,2),0),'%)'  )"] ;   // datos para clave foránea
-  $selects["id_produccion_obra"]=["ID_PRODUCCION","PRODUCCION","Prod_view" 
+      ,"AND ID_OBRA=$id_obra","1"] ;   // datos para clave foránea
+  
+  $sql_enc= encrypt2("SELECT margen_est FROM Prod_view WHERE ID_PRODUCCION='{$rs["id_prod_estudio_costes"]}';")  ;
+  $spans_html["id_prod_estudio_costes"]="<span id='p_est_coste'></span><script>dfirst_ajax('p_est_coste','$sql_enc','progress_success' );</script>  ";
+
+  $selects["id_produccion_obra"]=["ID_PRODUCCION","PRODUCCION","PRODUCCIONES" 
       ,"../obras/add_produccion_ajax.php?id_obra=$id_obra&produccion=PRODUCCION OBRA&id_actualizar=id_produccion_obra" 
           ,"../obras/obras_prod_detalle.php?id_obra=$id_obra&id_produccion=","id_produccion_obra" 
-      ,"AND ID_OBRA=$id_obra", ""  ,"CONCAT(PRODUCCION,' - ( Ej.', COALESCE(FORMAT(p_ejecucion*100,2),0),'%)'  )"] ;   // datos para clave foránea
+      ,"AND ID_OBRA=$id_obra", "1"  ] ;   // datos para clave foránea
 
+  $sql_enc= encrypt2("SELECT p_ejecucion FROM Prod_view WHERE ID_PRODUCCION={$rs["id_produccion_obra"]};")  ;
+  $spans_html["id_produccion_obra"]="<div id='p_prod'></div><script>dfirst_ajax('p_prod','$sql_enc','progress_danger' );</script>  ";
+  
   $selects["ID_ESTUDIO"]=["ID_ESTUDIO","NOMBRE","Estudios_de_Obra","" ,"../estudios/estudios_ficha.php?id_estudio=","ID_ESTUDIO"] ;   // datos para clave foránea
   $selects["ID_ESTUDIO"]["valor_null"]=0;
   $selects["ID_ESTUDIO"]["valor_null_texto"]='sin Estudio';

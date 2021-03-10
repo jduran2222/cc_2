@@ -90,15 +90,20 @@ $sql="SELECT id_cta_banco,Activo,path_archivo, Banco,Saldo,fecha_ult_mov,DATEDIF
         . " N_Cta, if(Linea_Dto,'X','') as Linea_Dto , Limite_Dto,Credito_disponible,	Condiciones "
         . "	FROM bancos_saldos WHERE (filtro LIKE '%$filtro%') AND $where_c_coste AND $where  ORDER BY banco LIMIT $limite" ;
 
-$sql_T="SELECT  '' as aaa1,'' as aaa2, 'Suma' as a121,sum(Saldo) as Saldo,'' as a122,'' as a133,SUM(num_movs) as num_movs, '' as a14, '' as a155 , sum( Limite_Dto) as Limite_Dto  "
-        . ", sum(Credito_disponible) as Credito_disponible, '' as a13, '' as a15 "
-        . "FROM bancos_saldos WHERE (filtro LIKE '%$filtro%') AND $where  AND $where_c_coste  " ;
+//$sql_T="SELECT  '' as aaa1,'' as aaa2, 'Suma' as a121,sum(Saldo) as Saldo,'' as a122,'' as a133,SUM(num_movs) as num_movs, '' as a14, '' as a155 , sum( Limite_Dto) as Limite_Dto  "
+//        . ", sum(Credito_disponible) as Credito_disponible, '' as a13, '' as a15 "
+//        . "FROM bancos_saldos WHERE (filtro LIKE '%$filtro%') AND $where  AND $where_c_coste  " ;
 
 //$sql="SELECT * FROM bancos_saldos WHERE (filtro LIKE '%$filtro%') AND $where_c_coste  ORDER BY banco LIMIT $limite" ;
 
 //echo $sql ;
-$result=$Conn->query($sql) ;
-$result_T=$Conn->query($sql_T) ;
+//$result=$Conn->query($sql) ;
+//$result_T=$Conn->query($sql_T) ;
+
+$tabla_sumatorias["Saldo"]=0;
+$tabla_sumatorias["Limite_Dto"]=0;
+$tabla_sumatorias["Credito_disponible"]=0;
+
 
 $updates=['Activo'] ;
 $formats["Limite_Dto"]='moneda' ;
@@ -126,13 +131,13 @@ $tooltips["Linea_Dto"] = "Las líneas de descuento necesitan certificaciones pú
 
 
 //  $id_fra=$rs["ID_FRA"] ;
-  $tabla_update="ctas_bancos" ;
-  $id_update="id_cta_banco" ;
+$tabla_update="ctas_bancos" ;
+$id_update="id_cta_banco" ;
 //  $id_valor=$id_cta_banco ;
 
-  $actions_row["delete_link"]="1" ;
-  
-$titulo="";
+$actions_row["delete_link"]="1" ;
+
+$titulo="_NUM_ filas" ;
 $msg_tabla_vacia="No hay.";
 ?>
 <?php require("../include/tabla.php"); echo $TABLE ;?>
