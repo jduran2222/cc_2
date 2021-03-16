@@ -7,6 +7,11 @@ define ("ICON_NUEVO", "<i class='fas fa-plus-circle'></i>");
 $ICON = "<span class='glyphicon glyphicon" ;
 $SPAN = "'></span>"; 
 
+function console_log( $data ){
+  echo '<script>';
+  echo 'console.log('. json_encode( $data ) .')';
+  echo '</script>';
+}
 
 function cc_add_style($style_actual, $style_add)
 {      // añadimos un style al style actual

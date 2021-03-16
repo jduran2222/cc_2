@@ -177,10 +177,17 @@ include_once('../templates/_inc_privado2_navbar.php');
   </div>
 	
 	
-<?php            // ----- div PARTES PERSONAL  tabla.php   -----<!--  DETALLE DEL PARTE -->
+<?php            // ----- #LRU  -----<!--  DETALLE DEL PARTE -->
 
-
+$id_usuario_LRU=$id_usuario ;
+$limite_LRU=150 ;
 ?>
+
+       <div class="mainc"> 
+           <?php require("../menu/widget_LRU.php");?>
+  
+        </div>    
+
 
         <!--<div id="main" class="mainc">-->
 <!--<div  style="background-color:Khaki;float:left;width:60%;padding:0 20px;" >
@@ -213,6 +220,8 @@ $Conn->close();
                 </div>
                 <!--****************** BUSQUEDA GLOBAL  *****************-->
             </div>
+              <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+              <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
               <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
           
         <!--</div>-->

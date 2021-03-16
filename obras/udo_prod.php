@@ -58,7 +58,6 @@ $id_obra=$rs["ID_OBRA"];
 
 
 $href_anadir_capitulo="javascript:js_href( '../obras/add_capitulo_ajax.php?id_obra=$id_obra&id_udo=$id_udo&capitulo=_VAR_HREF1_',1, '', 'PROMPT_Nombre de Capítulo nuevo?', '' , 'capitulo nuevo', ''  ) ;" ;
-//$href_anadir_capitulo="javascript:alert('hola') ;" ;
 
 $selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 //$selects["ID_CAPITULO"]=["ID_CAPITULO","CAPITULO","Capitulos_View","../obras/add_capitulo_ajax.php?no_ajax=1&id_obra=$id_obra&id_udo=$id_udo" 

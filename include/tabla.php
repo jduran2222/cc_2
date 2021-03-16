@@ -1147,7 +1147,7 @@ echo "</pre>" ;
                         //              $TABLE .=  $TD_etiqueta ;
                                        $TD_html = "$span_sort"
                                            . "<input type='date' id='datepicker2' value='$fecha0' "
-                                           . " onchange=\"tabla_update_onchange('$cadena_link',this.value,'fecha' )\" > " ;                                                                    // hacemos el JAVASCRIPT para actualizar la FECHA
+                                           . " onchange=\"tabla_update_onchange('$cadena_link',this.value,'fecha' )\" > " ;           // hacemos el JAVASCRIPT para actualizar la FECHA
 
                                    }elseif ( $is_selects[$clave]) // es SELECT, es decir, podemos seleccionarlo de una lista a buscar
                                    {
@@ -1160,6 +1160,7 @@ echo "</pre>" ;
                                       $id_campo = isset($selects[$clave][5]) ? $selects[$clave][5] : "" ;
                                       $otro_where=isset($selects[$clave][6]) ? $selects[$clave][6] : "" ;   // solo sirve para el UPDATE y la nueva búsqueda
                                       $no_where_c_coste = isset($selects[$clave][7]) ? $selects[$clave][7] : "" ;
+                                      
                                       $where_c_coste_txt = $no_where_c_coste ? "" : " AND $where_c_coste " ;
                                       $otro_where .= $where_c_coste_txt ;  
                                       $campo_mostrado=isset($selects[$clave][8]) ? $selects[$clave][8] : $campo_texto ;   // solo sirve pintar un valor diferente al de búsqueda

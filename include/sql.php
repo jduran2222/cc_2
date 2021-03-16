@@ -66,9 +66,10 @@ if (!is_null($var_sql3))
 
  
  //$result = $Conn->query($sql);
-    logs( "DOptions_sql $sql $mgs_logs (Tiempo: ". number_format($tiempo,3) ."s)" );
+//    logs( "DOptions_sql $sql $mgs_logs (Tiempo: ". number_format($tiempo,3) ."s)" );
 
  logs("Ejecutamos: $sql")	;
+ console_log("Ejecutamos: $sql")	;
   
 $error_txt=""; 
 $array_sql=  explode("_PUNTO_Y_COMA_", $sql);       // cambiamos el caracter ; punto y coma por esta cadena _PUNTO_Y_COMA_ para separar varias consultas SQL

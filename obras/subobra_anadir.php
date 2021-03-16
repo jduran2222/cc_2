@@ -9,10 +9,11 @@ require_once("../include/funciones.php");
 
 		
 $id_obra=$_GET["id_obra"];
+$subobra =   isset($_GET["subobra"]) ? $_GET["subobra"]  : "subobra nueva" ;
 //$fecha=date('Y-m-d');
 
          
- if ($id_subobra=  DInsert_into('SubObras', '( ID_OBRA,SUBOBRA ,`user` ) ', "(  '$id_obra', 'subobra nueva' , '{$_SESSION["user"]}' )", 'ID_SUBOBRA', "ID_OBRA=$id_obra")) //compruebo si se ha creado la obra
+ if ($id_subobra=  DInsert_into('SubObras', '( ID_OBRA,SUBOBRA ,`user` ) ', "(  '$id_obra', '$subobra' , '{$_SESSION["user"]}' )", 'ID_SUBOBRA', "ID_OBRA=$id_obra")) //compruebo si se ha creado la obra
              {  // 	$id_pof=Dfirst( "MAX(ID_POF)", "POF_lista", "id_c_coste={$_SESSION["id_c_coste"]}" ) ; 
 	        // TODO OK-> Entramos a pagina_inicio.php
 //	       echo "POF creada satisfactoriamente." ;
