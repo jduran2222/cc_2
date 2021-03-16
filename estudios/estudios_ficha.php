@@ -147,7 +147,7 @@ else { require_once("../estudios/estudios_menutop_r.php"); }
 <div class="right2">
 	
 
-<?php 
+<?php   
 
 
 // Actualización tipo obra
@@ -155,7 +155,7 @@ $disable_adjudicar=  $rs["tipo_subcentro"]=="E" ? "": "disabled" ;
 $title_adjudicar=  $rs["tipo_subcentro"]=="E" ? "Adjudica la licitación actual, pasando a subcentro tipo ESTUDIO a tipo OBRA": "Obra ya adjudicada" ;
 $Oferta_Final_IVA= $rs["Oferta_Final_IVA"]  ;
 
-$sql_update= "UPDATE `OBRAS` SET tipo_subcentro='O' , activa='1',IMPORTE='{$rs["Oferta_Final_IVA"]}' ,BAJA={$rs["Baja_final"]},COEF_BAJA=1-{$rs["Baja_final"]} ,EXPEDIENTE='{$rs["EXPEDIENTE"]}'"
+$sql_update= "UPDATE `OBRAS` SET tipo_subcentro='O' , activa='1',IMPORTE='{$rs["Oferta_Final_IVA"]}' ,BAJA='{$rs["Baja_final"]}',COEF_BAJA=1-'{$rs["Baja_final"]}' ,EXPEDIENTE='{$rs["EXPEDIENTE"]}'"
                 . " WHERE ID_OBRA=$id_obra AND $where_c_coste ; "  ;
 $href='../include/sql.php?sql=' . encrypt2($sql_update)  ;    
 echo "<br><button class='btn btn-primary btn-xs noprint' href='#' $disable_adjudicar "

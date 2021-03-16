@@ -205,7 +205,7 @@ if ($_SESSION["permiso_obras"])
     
  }
  // buscamos OBRAS -> POF 
- $result=$Conn->query("SELECT *  FROM POF_lista WHERE CONCAT('@pof',NOMBRE_OBRA,'-',NUMERO,'-',NOMBRE_POF) LIKE '%$filtro%' AND $where_c_coste ORDER BY NOMBRE_OBRA DESC, fecha_creacion DESC LIMIT $limite");
+ $result=$Conn->query("SELECT *  FROM POF_lista WHERE CONCAT('@pof',NOMBRE_OBRA,'-',NUMERO,'-',NOMBRE_POF) LIKE '%$filtro%' AND $where_c_coste ORDER BY  fecha_creacion DESC LIMIT $limite");
  
  if ($result->num_rows > 0)
  {  

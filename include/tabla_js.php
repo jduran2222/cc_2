@@ -265,12 +265,14 @@ document.getElementById(pcont).getElementsByTagName("ul")[0].getElementsByTagNam
 }   
 
 
-function tabla_update_select_showHint(cadena_select_enc, prompt, valor0, pcont, otro_where, str) {
+function tabla_update_select_showHint(cadena_select_enc, prompt, valor0, cont, otro_where, str) {
 //    var nuevo_valor=window.prompt("Filtre la búsqueda y seleccione en la lista el nuevo "+prompt , valor0);
     var nuevo_valor=str;
     
+    var pcont='p'+cont   ; // ID del <p> con las opciones
+//    var a_select_cont='a_select_'+cont   ; // ID del <a_select_> con titulo de entidad, ej. NOMBRE_OBRA
     if (str.length < 3) { 
-      document.getElementById(pcont).innerHTML = "";
+      document.getElementById('p'+cont).innerHTML = "";
     return;
     }
 
@@ -291,7 +293,7 @@ function tabla_update_select_showHint(cadena_select_enc, prompt, valor0, pcont, 
       }
   };
   
-  xhttp.open("GET", "../include/select_ajax_showhint.php?tipo_pagina=tabla&url_enc="+cadena_select_enc+"&url_raw="+encodeURIComponent( nuevo_valor+"&otro_where="+otro_where) , true);
+  xhttp.open("GET", "../include/select_ajax_showhint.php?tipo_pagina=tabla&url_enc="+cadena_select_enc+"&url_raw="+encodeURIComponent( nuevo_valor+"&otro_where="+otro_where+"&cont="+cont) , true);
   xhttp.send();   
  
 }   
@@ -303,11 +305,17 @@ function tabla_update_select_showHint(cadena_select_enc, prompt, valor0, pcont, 
 //
 ////$("#txtHint").hide();
 //}
-function tabla_select_onchange_showHint(id,cadena_link,href) {
+function tabla_select_onchange_showHint(id,cadena_link,href, idtabla, cont, valor_texto) {
  
     
     // valores por defecto    
  href = href || ""     ;        // por defecto no hay msg
+ idtabla = idtabla || ""     ;        // por defecto no hay msg
+ cont = cont || ""     ;        // por defecto no hay msg
+ valor_texto = valor_texto || ""     ;        // por defecto no hay msg
+ 
+ 
+// var a_select_cont = cont? a_select_+cont : ""     ;        // construyo a_select_cont
 
        nuevo_valor=id ;      // es el id_valor seleccionado
        //       
@@ -315,16 +323,30 @@ function tabla_select_onchange_showHint(id,cadena_link,href) {
      xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
         
-        if (this.responseText.substr(0,5)=="ERROR")
-        { alert(this.responseText) ;}                   // mostramos el ERROR
-        else
-        {  
-            
-            if (href)  {js_href(href,1) ; }   // si hay algún href lo ejecutamos al terminar el UPDATE y refrescamos
-            location.reload(true); }  // refresco la pantalla tras edición
-       
+            if (this.responseText.substr(0,5)=="ERROR")
+            { alert(this.responseText) ;}                   // mostramos el ERROR
+            else
+            {  
+
+                 if (href)  {js_href(href,1) ; }   // si hay algún href lo ejecutamos al terminar el UPDATE y refrescamos
+                 if (idtabla)
+                 {
+//                     document.getElementById(a_select_cont).click();  // refresco la pantalla tras edición
+                    if (cont) { 
+//                        alert(cont);
+                        document.getElementById('a_select_'+cont).innerHTML = valor_texto ; 
+                        document.getElementById('p'+cont).innerHTML = "" ; 
+                        $('#menu_span_'+cont).toggle('fast') ;                    }
+//                     document.getElementById("refresh_"+idtabla).click();  // refresco la pantalla tras edición
+                 }
+                 else{
+                 
+                     location.reload(true);   // refresco la pantalla tras edición
+                 }    
+            }
       }
    };
+//   var url_campo_texto= campo_texto ? "&campo_texto="+campo_texto : "" ;
    xhttp.open("GET", "../include/update_ajax.php?"+cadena_link+nuevo_valor, true);
    xhttp.send();   
    

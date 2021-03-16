@@ -37,7 +37,7 @@ echo "<div id='div_$idtabla'></div>"  ;  // <div> donde meteremos por javascript
 
 
 echo "<script>$javascript_cargar</script>"  ;      // cargamos por javascript y ajax la TABLE por primera vez
-require_once("../include/tabla_js.php");           //incluimos el código javascript que maneja la tabla (PDTE de dividirlo en js general para require_once y js_chart_idtabla con reguire para cada tabla
+require_once("../include/tabla_js.php");           //incluimos solo una vez el código javascript que maneja la tabla (PDTE de dividirlo en js general para require_once y js_chart_idtabla con reguire para cada tabla
 require("../include/tabla_js_chart_ID.php");       //incluimos el código javascript que maneja la tabla (PDTE de dividirlo en js general para require_once y js_chart_idtabla con reguire para cada tabla
 
 $TABLE='' ; // inicializamos $TABLE y lo ponemos vacia para hacerlo compatible con la versión PHP

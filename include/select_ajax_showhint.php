@@ -42,7 +42,10 @@ $campo_texto= isset($_GET["campo_texto"]) ? $_GET["campo_texto"] : 1 ;
 $otro_where= isset($_GET["otro_where"]) ? $_GET["otro_where"] : "" ;
 $cadena_link_encode= isset($_GET["cadena_link_encode"]) ? $_GET["cadena_link_encode"] : "" ;// cadena codificada con urlencode() a ser usada por el update_ajax.php para cambiar el ID_CLIENTE en la Tabla OBRAS 
 $href= isset($_GET["href"]) ? trim($_GET["href"]) : "" ;// cadena codificada con urlencode() a ser usada por el update_ajax.php para cambiar el ID_CLIENTE en la Tabla OBRAS 
+$idtabla= isset($_GET["idtabla"]) ? trim($_GET["idtabla"]) : "" ;// cadena codificada con urlencode() a ser usada por el update_ajax.php para cambiar el ID_CLIENTE en la Tabla OBRAS 
+$cont= isset($_GET["cont"]) ? trim($_GET["cont"]) : "" ;// contador de ID para identificar los elementos HTML en javascript
 
+//$a_select_cont = $cont ? "a_select_$cont" : "" ;
 
 $sql_sugerir= isset($_GET["sql_sugerir"]) ? $_GET["sql_sugerir"] : "" ;
 $javascript_code = isset($_GET["javascript_code"]) ? $_GET["javascript_code"] : "" ;
@@ -80,8 +83,9 @@ $result = $Conn->query($sql);
 	 $filtro=strtolower($filtro ) ;
 	 $valor_texto=str_replace($filtro ,"<b>$filtro</b>", $valor_texto);	     // idem minuscula
          
+         // formamos los <LI> con los link para update el valor elegido
          if ($cadena_link) 
-         { echo  "<li><a href=# onclick=\"{$tipo_pagina}_select_onchange_showHint($id_valor,'$cadena_link','$href')\">$valor_texto</a></li>"  ; 
+         { echo  "<li><button class='btn btn-xs btn-link' onclick=\"{$tipo_pagina}_select_onchange_showHint($id_valor,'$cadena_link','$href','$idtabla','$cont','$valor_texto')\">$valor_texto</button></li>"  ; 
          }else
          {    
              $javascript_code_valor = str_replace("_ID_VALOR_", $id_valor, $javascript_code) ;

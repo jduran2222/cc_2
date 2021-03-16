@@ -510,8 +510,8 @@ $titulo_sin_html= strip_tags($titulo)   ;
                       $add_link_select_cambiar_div_sugerir='';
               }
               //  IMPRESION DE CAMPO $SELECT[]
-             
-              $TD_valor =  "<span id='pcont999'>$add_link_select_ver $add_link_select_cambiar $add_link_select $add_link_select_valor_null $spans_html_txt $add_link_select_cambiar_div_sugerir</span>"
+              $button_toggle="<button class='btn btn-xs btn-link noprint transparente' onclick=\" $('#p_span_$cont_TD').toggle('fast') ; \"><i class='fas fa-ellipsis-h'></i></button> " ;
+              $TD_valor =  "$add_link_select_ver $button_toggle <span id='p_span_$cont_TD' style='display:none;'> $add_link_select_cambiar $add_link_select $add_link_select_valor_null $spans_html_txt $add_link_select_cambiar_div_sugerir</span>"
                            . "<div id='p$cont_TD'></div>" ;
               
               

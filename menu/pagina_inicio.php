@@ -25,7 +25,7 @@ echo '<noscript>
 </noscript>';
 
 $dir_raiz = "../";   
-$id_cta_banco_LRU = Dfirst("id_cta_banco", "MOV_BANCOS_View", $where_c_coste, "id_mov_banco DESC");      
+//$id_cta_banco_LRU = Dfirst("id_cta_banco", "MOV_BANCOS_View", $where_c_coste, "id_mov_banco DESC");      
 
 $link_comprar_licencia = "<br><a class=\"btn btn-info btn-xs text-uppercase\" href='../configuracion/comprar_licencia.php'>Comprar aquí</a>";
 

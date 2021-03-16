@@ -226,8 +226,8 @@ $formats["pagada"]= 'semaforo_txt_PAGADA' ;
 $formats["cobrada"]= 'semaforo_txt_COBRADA POR PROVEEDOR' ;
 //  $formats["FECHA"]= '' ;
 
-$selects["id_fra_prov_abono"]=["ID_FRA_PROV","N_FRA","Fras_Prov_Listado","../proveedores/factura_proveedor_anadir.php?id_proveedor=$id_proveedor" 
-  ,"../proveedores/factura_proveedor.php?id_fra_prov=","id_fra_prov_abono","AND ID_PROVEEDORES=$id_proveedor AND IMPORTE_IVA<0"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+$selects["id_fra_prov_abono"]=["ID_FRA_PROV","N_FRA","Fras_Prov_View","../proveedores/factura_proveedor_anadir.php?id_proveedor=$id_proveedor" 
+  ,"../proveedores/factura_proveedor.php?id_fra_prov=","id_fra_prov_abono","AND ID_PROVEEDORES=$id_proveedor AND IMPORTE_IVA<0 AND ISNULL(id_fra_prov_abono_ppal) "] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
  $selects[ "id_fra_prov_abono" ]["valor_null"] =  0;
  $selects[ "id_fra_prov_abono" ]["valor_null_title"] =  'desvincular abono'; 
  $selects[ "id_fra_prov_abono" ]["href"] =  "../proveedores/fra_prov_abono.php?id_fra_prov=$id_fra_prov"; 
@@ -247,7 +247,7 @@ if ($rs["id_fra_prov_abono_ppal"]) {
 //  BOTON SPAN EN FICHA.PHP  INLINE   ULTIMA_VERSION
 $sql_span=encrypt2("UPDATE `$tabla_update` SET `iva` = 0   WHERE $id_update=$id_valor ; ") ;
 //$spans_html['iva'] = "<a class='btn-link noprint' target='_blank' title='cambia Iva al 0%' href='../include/sql.php?code=1&sql=$sql_span' >0%</a>" ;
-$spans_html['iva'] = "<a class='btn-link noprint' title='cambia Iva al 0%'  onclick=\"js_href('../include/sql.php?code=1&sql=$sql_span' ) \" >0%</a>" ;
+$spans_html['iva'] = "<a class='btn-link transparente noprint' title='cambia Iva al 0%' href=#  onclick=\"js_href('../include/sql.php?code=1&sql=$sql_span' ) \" >0%</a>" ;
   
 
   
@@ -304,7 +304,7 @@ if ($id_fra_prov_duplicada)
  <div class="right2_50"  >      
 
 	
-<?php            // ----- div VALES CONCILIADOS Y CARGOS A OBRA tabla.php   -----
+<?php            // ----- div #VALES CONCILIADOS Y CARGOS A OBRA tabla.php   -----
 
 // <div de CARGAR A OBRA y otros DIV una vez rellena la factura_prov
 if (!$factura_registrada )     // si ID_PROVEEDOR es diferente a <proveedor pted definir> pintamos el DIV CARGAR A OBRA
@@ -313,13 +313,19 @@ if (!$factura_registrada )     // si ID_PROVEEDOR es diferente a <proveedor pted
 }    
 
 
-$sql="SELECT ID_VALE,FECHA, ID_OBRA, NOMBRE_OBRA, REF,importe,path_archivo as pdf , Observaciones FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ORDER BY FECHA ";
+$sql="SELECT ID_VALE,FECHA, ID_OBRA,  REF,importe,path_archivo as pdf , Observaciones FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ORDER BY FECHA ";
 //echo $sql;
 //$result=$Conn->query($sql );
 
 //$sql_T="SELECT '' as a,'' as b,'Suma' as c, SUM(importe) as importe, '' as c1 FROM Vales_view  WHERE ID_FRA_PROV=$id_fra_prov  AND $where_c_coste ";
 //echo $sql;
 //$result_T=$Conn->query($sql_T );
+
+$selects["ID_OBRA"]=["ID_OBRA","NOMBRE_OBRA","OBRAS","","../obras/obras_ficha.php?id_obra={ID_OBRA}",""," AND $where_c_coste "] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+//$selects["ID_OBRA"]["valor_null"]=0;
+//$selects["ID_OBRA"]["valor_null_texto"]='sin remesa';
+
+
 
 $formats["FECHA"]='fecha';
 $formats["importe"]='moneda';
@@ -370,25 +376,24 @@ else
 }
 
 
-$updates=['REF', 'Observaciones']  ;
+$updates=['REF', 'Observaciones', 'FECHA', 'ID_OBRA']  ;
 $tabla_update="VALES" ;
 $id_update="ID_VALE" ;
 $actions_row=[];
 $actions_row["id"]="ID_VALE";
 $actions_row["delete_link"]="1";
 
-
 $tabla_sumatorias["importe"]=0 ;
+
 
 
 // accion de DESCONCILIAR el ALBARAN (vale) de la FRA_PROV
 $onclick_VAR_TABLA1_="ID_VALE" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
 //$onclick_VAR_TABLA2_="" ;     // idem
 
- $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = NULL  WHERE  ID_VALE=_VAR_SQL1_ ; " ;
- 
- $sql_update=encrypt2($sql_update) ;
- 
+
+$sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = NULL  WHERE  ID_VALE=_VAR_SQL1_ ; " ;
+$sql_update=encrypt2($sql_update) ;
 $actions_row["onclick1_link"]="<a class='btn btn-warning btn-xs noprint' target='_blank' title='Desconcilia el ALBARAN  a la factura' "
         . " onclick='js_href(\"../include/sql.php?code=1&variable1=_VAR_TABLA1_&sql=$sql_update \" )' >desconciliar</a> ";
     
@@ -407,7 +412,7 @@ $msg_tabla_vacia="No hay albaranes cargados a obra en esta factura";
 
  <div class="right2_50" style="background-color: lightgreen" >
 
- <?php            // ----- div VALES PDTE CONCILIAR tabla.php   -----
+ <?php            // ----- div VALES #PDTE_CONCILIAR tabla.php   -----
 
 //$num_vales=Dfirst("COUNT(ID_VALE)","VALES", "ID_FRA_PROV=$id_fra_prov") ;               // ANULADO POR ESTAR REPETIDO (juand, 16-5-2019)
 
@@ -427,28 +432,33 @@ $add_link_html= "<a class='btn btn-warning btn-xs noprint' href='#' "
  
  
  
- $tabla_expandida  =  0  ;  // provisionalmente lo quitamos, resulta engorroso y confuso
+$tabla_expandida  =  0  ;  // provisionalmente lo quitamos, resulta engorroso y confuso
     
-$sql="SELECT ID_VALE,FECHA, ID_OBRA, NOMBRE_OBRA, REF,importe,path_archivo as pdf  FROM Vales_view "
+$sql="SELECT ID_VALE,FECHA, ID_OBRA,NOMBRE_OBRA,  REF,importe,path_archivo as pdf  FROM Vales_view "
         . " WHERE ID_PROVEEDORES=$id_proveedor AND ISNULL(ID_FRA_PROV) AND $where_c_coste AND FECHA>='2017-01-01' ORDER BY FECHA DESC  ";
 $col_sel="ID_VALE";
+
+$selects["ID_OBRA"]=["ID_OBRA","NOMBRE_OBRA","OBRAS","","../obras/obras_ficha.php?id_obra={ID_OBRA}",""," AND $where_c_coste "] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+
+$tabla_sumatorias["importe"]=0 ;
+
 //echo $sql;
-$result=$Conn->query($sql );
-$sql_T="SELECT '' as a2,'' as a3,'Total',SUM(importe) as importe  FROM Vales_view "
-        . " WHERE ID_PROVEEDORES=$id_proveedor AND ISNULL(ID_FRA_PROV) AND $where_c_coste AND FECHA>='2017-01-01'  ";
+//$result=$Conn->query($sql );
+//$sql_T="SELECT '' as a2,'' as a3,'Total',SUM(importe) as importe  FROM Vales_view "
+//        . " WHERE ID_PROVEEDORES=$id_proveedor AND ISNULL(ID_FRA_PROV) AND $where_c_coste AND FECHA>='2017-01-01'  ";
 //$result_T=$Conn->query($sql_T );
-$importe_pdte_conc=dfirst('SUM(importe)', "Vales_view","ID_PROVEEDORES=$id_proveedor AND ISNULL(ID_FRA_PROV) AND $where_c_coste AND FECHA>='2017-01-01'") ;
+$importe_pdte_conc=Dfirst('SUM(importe)', "Vales_view","ID_PROVEEDORES=$id_proveedor AND ISNULL(ID_FRA_PROV) AND $where_c_coste AND FECHA>='2017-01-01'") ;
 
 
-
+$updates=['REF', 'Observaciones']  ;
 
 $formats["FECHA"]='fecha';
 $formats["importe"]='moneda';
 $formats["pdf"]='pdf_50';
 
 
-$links["FECHA"] = ["albaran_proveedor.php?id_vale=", "ID_VALE", "ver Albarán", "formato_sub"] ;
-$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA", 'ver Obra', 'formato_sub'] ;
+//$links["FECHA"] = ["albaran_proveedor.php?id_vale=", "ID_VALE", "ver Albarán", "formato_sub"] ;
+//$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA", 'ver Obra', 'formato_sub'] ;
 
 $aligns["importe"] = "right" ;
 $aligns["Pdte_conciliar"] = "right" ;
@@ -457,9 +467,6 @@ $aligns["Pdte_conciliar"] = "right" ;
 //$onclick_VAR_TABLA1_="ID_VALE" ;           // paso de variables para dar instrucciones al boton 'add' para añadir un detalle a la udo
 //$onclick_VAR_TABLA2_="" ;     // idem
 
- $sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov'  WHERE  ID_VALE=_VAR_SQL1_ ; " ;
-
-  $sql_update=encrypt2($sql_update) ;
   
   
 $tabla_update="VALES" ;
@@ -467,11 +474,14 @@ $id_update="ID_VALE" ;
 $actions_row=[];
 $actions_row["id"]="ID_VALE"; 
 $actions_row["delete_link"]="1";
+
+$sql_update="UPDATE `VALES` SET `ID_FRA_PROV` = '$id_fra_prov'  WHERE  ID_VALE=_VAR_SQL1_ ; " ;
+$sql_update=encrypt2($sql_update) ;
 $actions_row["onclick1_link"]="<br><a class='btn btn-warning btn-xs' target='_blank' title='concilia el ALBARAN  a la factura' onclick='js_href(\"../include/sql.php?code=1&var_sql1=_VAR_ID_&sql=$sql_update \" )' >conciliar</a> ";
   
-$num_vales_sin_conc= $result->num_rows;
+//$num_vales_sin_conc= $result->num_rows;
 
- $titulo="<span>Albaranes sin conciliar  ($num_vales_sin_conc <i class='fas fa-tags'></i>) <br><small>Alb. sin conciliar:  ".cc_format($importe_pdte_conc,"moneda")."</small></span>" ; 
+ $titulo="<span>Albaranes sin conciliar  (_NUM_ <i class='fas fa-tags'></i>) <br><small>Alb. sin conciliar:  ".cc_format($importe_pdte_conc,"moneda")."</small></span>" ; 
 
  $msg_tabla_vacia="No hay Albaranes sin conciliar de este proveedor";
 

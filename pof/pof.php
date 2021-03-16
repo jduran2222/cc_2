@@ -4,7 +4,7 @@ require_once("../include/session.php");
 $where_c_coste = " id_c_coste={$_SESSION['id_c_coste']} ";
 $id_c_coste = $_SESSION['id_c_coste'];
 
-$titulo_pagina="POF " . Dfirst("CONCAT(NUMERO,'-',NOMBRE_POF)","POF_lista", "ID_POF={$_GET["id_pof"]} AND $where_c_coste"  ) ;
+$titulo_pagina="Pof " . Dfirst("CONCAT(NUMERO,'-',NOMBRE_POF)","POF_lista", "ID_POF={$_GET["id_pof"]} AND $where_c_coste"  ) ;
 $titulo = $titulo_pagina;
 
 //INICIO

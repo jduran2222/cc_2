@@ -230,14 +230,14 @@ $titulo="Personal de Obra (_NUM_". cc_format( "solo_icon", "icon_usuarios") ." )
 $msg_tabla_vacia="No hay personal";
 
 
-$add_link_html= "<div >Añadir Personal:<select id='id_personal' style='width: 50%;' > "
-               . "<option value='0' >Selecciona personal...</option>" 
+$add_link_html= "<div class='noprint' style='font-size:small;color:grey;border: 1px solid grey; '  >Añadir horas: <select id='id_personal' style='width: 50%;font-size:small;color:grey;' > "
+               . "<option value='0'  >Selecciona personal...</option>" 
               . DOptions_sql("SELECT ID_PERSONAL,CONCAT(NOMBRE,'       (',DNI,')') FROM PERSONAL WHERE BAJA=0 AND $where_c_coste ORDER BY NOMBRE ")
               .  "</select>"
               . "<input type='text' id='horas' size='1' value='8' style='text-align:right;' /> horas  <input type='text' id='observaciones_mo' size='10' value='' placeholder='Observaciones'  />"
               . " <a class='btn btn-warning btn-xs' href='#'  onclick='add_parte_personal( $id_parte );'><i class='fas fa-user-plus'></i> Añadir</a>" 
                 ."<a class='btn btn-link btn-xs' href='#' onclick=\"window.open('../personal/personal_ficha.php?id_personal='+document.getElementById('id_personal').value ) \"   "
-               ." title='Ver la ficha del empleado' >ver Personal</a>     "
+               ." title='Ver la ficha del empleado' ><i class='fas fa-search'></i> ver Personal</a>     "
                ."<a class='btn btn-link btn-xs' href='../personal/personal_anadir.php' target='_blank' ><i class='fas fa-plus-circle'></i> Nuevo Personal</a>"
                 ."    </div>" ;
         
@@ -250,8 +250,9 @@ $tabla_expandida=0;$tabla_footer='<br>' ;
 <div  style="background-color:Khaki;float:left;width:100%;padding:0 20px;" >
      
 <?php 
+//$tabla_expandida=true;
 
-require("../include/tabla_ajax.php");
+require("../include/tabla_ajax.php");   // #PERSONAL
 //require("../include/tabla.php"); echo $TABLE ; ?>
  
     
@@ -467,7 +468,7 @@ $tabla_expandida=0;$tabla_footer='<br>' ;
 
 // boton para poder ROTAR 90º la foto
 $href_270="../documentos/doc_rotar_ajax.php?grados=270&id_documento=_VAR_TABLA1_" ;
-$actions_row["onclick1_link"]="<a class='btn btn-link' href=# onclick=\"js_href( '$href_270'  )\"   title='rotar la foto -90º'><i class='fas fa-undo'></i></a> " ;   // acción de rotar
+$actions_row["onclick1_link"]="<a class='btn btn-link noprint transparente' href=# onclick=\"js_href( '$href_270'  )\"   title='rotar la foto -90º'><i class='fas fa-undo'></i></a> " ;   // acción de rotar
 $onclick_VAR_TABLA1_="id_documento" ;  // variable a pasar
 
 

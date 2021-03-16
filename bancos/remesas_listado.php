@@ -83,11 +83,11 @@ $grupo=isset($_POST["grupo"])?$_POST["grupo"] : 'listado' ;
 
  switch ($grupo) {
     case "listado":
-     $sql="SELECT id_remesa,activa,tipo_remesa,f_vto,remesa,Observaciones,path_logo,Banco,importe,ingreso,num_pagos,firmado_TOOLTIP,firmado,firmada, cobrada "
+     $sql="SELECT id_remesa,activa,tipo_remesa,f_vto,remesa,remesa_nominas,Observaciones,path_logo,Banco,importe,ingreso,num_pagos,firmado_TOOLTIP,firmado,firmada, cobrada "
             . "  FROM Remesas_View WHERE remesa LIKE '%$filtro%' AND $conc  AND $cobradas AND $tipo_remesa AND $where_c_coste  ORDER BY f_vto,id_remesa DESC LIMIT $limite" ;
 
 
-     $sql_T="SELECT '' AS A1 ,'' AS A11 ,'Suma:' AS A12 ,'' AS A41,'' AS A427 , '' AS A2,SUM(importe) as importe,SUM(ingreso) as ingreso,'' AS B,'' AS C,'' as d,'' as f FROM Remesas_View WHERE remesa LIKE '%$filtro%' AND $conc  AND $cobradas AND $tipo_remesa AND $where_c_coste  " ;
+//     $sql_T="SELECT '' AS A1 ,'' AS A11 ,'Suma:' AS A12 ,'' AS A41,'' AS A427 , '' AS A2,SUM(importe) as importe,SUM(ingreso) as ingreso,'' AS B,'' AS C,'' as d,'' as f FROM Remesas_View WHERE remesa LIKE '%$filtro%' AND $conc  AND $cobradas AND $tipo_remesa AND $where_c_coste  " ;
     break;
    case "meses":
 //     $sql="SELECT  DATE_FORMAT(f_vto, '%Y-%m') as mes,SUM(importe) as importe, SUM(importe*conc) as importe_conc,  SUM(ingreso) as ingreso ,  SUM(ingreso*conc) as ingreso_conc FROM Pagos_View WHERE tipo_pago='P' AND (filtro LIKE '%$filtro%') AND $conc AND $where_c_coste  GROUP BY mes " ;
@@ -101,22 +101,26 @@ $grupo=isset($_POST["grupo"])?$_POST["grupo"] : 'listado' ;
 
 echo   "<a class='btn btn-link btn-lg' href='../bancos/remesa_anadir.php' target='_blank' ><i class='fas fa-plus-circle'></i> Añadir Remesa</a>" ;
     
+$tabla_sumatorias["importe"]=0;
+$tabla_sumatorias["ingreso"]=0;
+
 //echo $sql ;
-$result=$Conn->query($sql) ;
-$result_T=$Conn->query($sql_T) ;
+//$result=$Conn->query($sql) ;
+//$result_T=$Conn->query($sql_T) ;
 
 //$links["f_vto"] = ["../bancos/remesa_ficha.php?id_remesa=", "id_remesa"] ;
 //$links["observaciones"] = ["../bancos/pago_ficha.php?id_pago=", "id_pago"] ;
 $links["remesa"] = ["../bancos/remesa_ficha.php?id_remesa=", "id_remesa", "ver remesa completa", "formato_sub"] ;
 //$links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
 
- $updates=['', 'activa','Observaciones']  ;
+ $updates=['remesa_nominas', 'activa','Observaciones', 'remesa']  ;
   $tabla_update="Remesas" ;
   $id_update="id_remesa" ;
     $actions_row=[];
     $actions_row["id"]="id_remesa";
     $actions_row["delete_link"]="1";
 
+$formats["remesa_nominas"]="boolean" ;
 
 $formats["importe"] = "moneda" ;
 $formats["importe_conc"] = "moneda" ;
@@ -136,7 +140,7 @@ $tooltips["activa"] = "Indica si la Remesa está activa y pueden añadirse pagos
 //$tooltips["Banco_Neg"] = "Indica el banco o línea de descuento donde está negociada" ;
 
 
-$titulo="REMESAS";
+$titulo="REMESAS  (_NUM_)";
 $msg_tabla_vacia="No hay.";
 ?>
 <?php require("../include/tabla_ajax.php"); echo $TABLE ;?>

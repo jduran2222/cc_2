@@ -7,8 +7,8 @@ $id_c_coste = $_SESSION['id_c_coste'];
 $titulo = 'Debug logs';
 
 //INICIO
-include_once('../templates/_inc_privado1_header.php');
-include_once('../templates/_inc_privado2_navbar.php');
+//include_once('../templates/_inc_privado1_header.php');
+//include_once('../templates/_inc_privado2_navbar.php');
 
 ?>
 
@@ -37,4 +37,4 @@ echo logs() ;
 <?php 
 
 //FIN
-include_once('../templates/_inc_privado3_footer.php');
+//include_once('../templates/_inc_privado3_footer.php');

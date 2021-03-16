@@ -704,7 +704,7 @@ echo "</pre>" ;
                                
                                
                                
-                              // pintamos el encabezado
+                              // pintamos el encabezado 
                               $TABLE .= "<th $class_hide_ids[$clave] $style_th_color   >"
                                       . "<span style='cursor:pointer;' onclick=\"sortTable($c,'$idtabla',$c_sel)\" title='$tooltip_txt' >{$etiqueta_txt}</span>$div_tooltip_html</th>";                  
                               $c++ ;
@@ -1163,8 +1163,16 @@ echo "</pre>" ;
                                       $where_c_coste_txt = $no_where_c_coste ? "" : " AND $where_c_coste " ;
                                       $otro_where .= $where_c_coste_txt ;  
                                       $campo_mostrado=isset($selects[$clave][8]) ? $selects[$clave][8] : $campo_texto ;   // solo sirve pintar un valor diferente al de búsqueda
-                                      $link_nuevo_target_blank = preg_match("/^javascript/i", $link_nuevo) ? '' : "target='_blank'" ;
+                                      $link_nuevo_target_blank = preg_match("/^javascript/i", $link_nuevo) ? '' : "target='_blank'" ;  //si no es javascript hacemos target blank
 
+                                      // sustitución de {clave}
+                                      if (like($link_nuevo,"%{%}%"))
+                                      {  foreach ($rst as $clave2 => $valor2){ $link_nuevo= str_replace( "{".$clave2."}", $valor2, $link_nuevo) ; } ;                                     
+                                      }    
+                                      if (like($link_ver,"%{%}%"))
+                                      {  foreach ($rst as $clave2 => $valor2){ $link_ver= str_replace( "{".$clave2."}", $valor2, $link_ver) ; };                                        
+                                      }    
+                                      
                                       // **PROVISIONAL*** a todos las busquedas de SELECT les añado el $where_id_c_coste
                                       $valor_txt_sel= ($valor<>"") ?  Dfirst($campo_mostrado,$tabla_select,"$campo_ID='$valor' $where_c_coste_txt ") : ""  ;   //evitamos un error en Dfirst si $valor es NULL              
                                       $valor_txt_sel= $valor_txt_sel ?  $valor_txt_sel : "";   // quitamos el valor 0
@@ -1175,8 +1183,9 @@ echo "</pre>" ;
 
                                       //debug
     //                                  pre($rs);
+                                      $valor_id_campo=isset($rst[$id_campo])? $rst[$id_campo] : "" ;
 
-                                      $add_link_select_ver = $link_ver ? "<a href='{$link_ver}{$rst[$id_campo]}&_m=$_m' target='_blank'>$valor_txt_sel</a>" : "$valor_txt_sel" ;
+                                      $add_link_select_ver = $link_ver ? "<a id='a_select_$cont_TD'  href='{$link_ver}$valor_id_campo&_m=$_m' target='_blank'>$valor_txt_sel</a>" : "$valor_txt_sel" ;
 
                                       if ($is_updates[$clave])   // INCOHERENCIA, está dentro de un if ($is_updates[$clave]) ?? (lo mantengo por precaución, juand feb21)
                                       {
@@ -1194,13 +1203,13 @@ echo "</pre>" ;
                                               // HREF, link  a ejecutar tras la actualización del campo
                                               $select_href  = isset($selects[$clave]['href']) ? $selects[$clave]['href'] : " " ; //por defecto un ESPACIO para evitar errores en el GET
                                               // DEBUG MAY20
-                                              $cadena_select_enc= encrypt2( "href=$select_href&cadena_link_encode=$cadena_link_encode&tabla_select=$tabla_select&campo_ID=$campo_ID&campo_texto=$campo_texto&select_id=select_$cont_TD&filtro=") ;
+                                              $cadena_select_enc= encrypt2( "idtabla=$idtabla&href=$select_href&cadena_link_encode=$cadena_link_encode&tabla_select=$tabla_select&campo_ID=$campo_ID&campo_texto=$campo_texto&select_id=select_$cont_TD&filtro=") ;
 
 
                                               // sistema showInt   
                                               // PONEMOS EL INPUT
                                               $add_link_select_cambiar="<INPUT class='noprint' style='font-size: 70% ;font-style: italic ;' id='input_$cont_TD' size='7'  "
-                                                      . "  onkeyup=\"tabla_update_select_showHint('$cadena_select_enc','$campo_texto','$valor_txt_sel','p$cont_TD','$otro_where' ,this.value)\" placeholder='buscar...' value=''  >" ;
+                                                      . "  onkeyup=\"tabla_update_select_showHint('$cadena_select_enc','$campo_texto','$valor_txt_sel','$cont_TD','$otro_where' ,this.value)\" placeholder='buscar...' value=''  >" ;
                                               // LUPA busca todos, intruduce tres espacios en el INPUT
                                               $add_link_select_cambiar.= "<span class='btn btn-xs btn-link noprint transparente'  " 
                                                       . " onclick=\" $('#input_$cont_TD').val($('#input_$cont_TD').val()+'   ')  ; $('#input_$cont_TD').keyup()   \"   "
@@ -1216,7 +1225,7 @@ echo "</pre>" ;
                                                                       . "var input_id = document.getElementById('input_$cont_TD');"
                                                                       . "input_id.addEventListener('keyup', function(event) {"
                                                                       . "      event.preventDefault();if (event.keyCode === 13) "
-                                                                      . " {tabla_update_select_showHint_ENTER('p$cont_TD');  }});"
+                                                                      . " {tabla_update_select_showHint_ENTER('$cont_TD');  }});"
                                                                       . "</script>" ;
 
                                                $add_link_select_cambiar_div_sugerir= "<div class='sugerir' id='sugerir_$cont_TD'></div>" ;
@@ -1245,8 +1254,10 @@ echo "</pre>" ;
                                       }
                                       //  IMPRESION DE CAMPO $SELECT[]
                         //              pintamos el TD_html
+                                      $button_toggle_menu="<button class='btn btn-xs btn-link noprint transparente' onclick=\" $('#menu_span_$cont_TD').toggle('fast') ; \"><i class='fas fa-ellipsis-h'></i></button> " ;
 
-                                      $TD_html = "$span_sort <span id='p_span_$cont_TD'>$add_link_select_ver $add_link_select_cambiar $add_link_select $add_link_select_valor_null $add_link_select_cambiar_div_sugerir</span>"
+                                      $TD_html = "$span_sort $add_link_select_ver $button_toggle_menu  <span id='menu_span_$cont_TD' style='display:none;'> $add_link_select_cambiar $add_link_select $add_link_select_valor_null "
+                                                             . "$add_link_select_cambiar_div_sugerir</span>"
                                                    . "<div id='p$cont_TD'></div>" ;
 
 
@@ -1580,7 +1591,7 @@ $json_rows_chart.=" ] " ;         // FIN del JSON_ROWS_CHART
 if ($tabla_ajax)
 {   
 $tabla_tiempo= $_SESSION["admin_debug"]? "<span class='transparente small noprint ' > (".number_format(microtime(true)-$time0,3)." s)</span>" :"" ;
-$refresh_ajax= isset($javascript_cargar)?  "$tabla_tiempo <button type='button' class='btn btn-tool btn-sm noprint'  onclick=\" $javascript_cargar \" title='Refrescar tabla'> <i class='fas fa-redo'></i></button>"  : ""  ;
+$refresh_ajax= isset($javascript_cargar)?  "$tabla_tiempo <button type='button' id='refresh_$idtabla' class='btn btn-tool btn-sm noprint'  onclick=\" $javascript_cargar \" title='Refrescar tabla'> <i class='fas fa-redo'></i></button>"  : ""  ;
 }
 else
 {

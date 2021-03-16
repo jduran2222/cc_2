@@ -176,12 +176,13 @@ require("../menu/LRU_registro.php"); require("../include/widget_documentos.php")
 
 
 
-///////////////  ULTIMAS FACTURAS DE PROVEEDOR  
+///////////////  ULTIMAS #FACTURAS DE PROVEEDOR  
 //
 //
 //
 //$sql="SELECT id_pago,f_vto,PROVEEDOR,id_proveedor,observaciones,importe,ingreso FROM Pagos_View WHERE  id_cta_banco=$id_cta_banco AND conc=0 AND importe='$importe' AND ingreso='$ingreso') AND $where_c_coste ";
-$sql="SELECT ID_FRA_PROV,ID_PROVEEDORES,ID_OBRA,FECHA,N_FRA,NOMBRE_OBRA,IMPORTE_IVA,firmado,conc,pagada,cobrada,path_archivo as pdf,grupo,Observaciones "
+$sql="SELECT ID_FRA_PROV,ID_PROVEEDORES,ID_OBRA,FECHA,N_FRA,NOMBRE_OBRA,IMPORTE_IVA,firmado,conc,pagada,cobrada,path_archivo as pdf"
+        . ",IF(id_fra_prov_abono<>0,'abono','') AS Abono, id_fra_prov_abono,  grupo,Observaciones "
         . " FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC, fecha_creacion DESC LIMIT 20 " ;
 //$sql_T="SELECT '' as a, '' as aa, '' as aaa, SUM(IMPORTE_IVA) as IMPORTE_IVA,'' as a1, '' as aa1, '' as aaa1   FROM Fras_Prov_View WHERE ID_PROVEEDORES=$id_proveedor AND $where_c_coste ORDER BY FECHA  DESC LIMIT 20 " ;
 
@@ -209,6 +210,7 @@ $etiquetas["conc"]='cargada';
 
 
 $links["N_FRA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV", "ver factura", "formato_sub"] ;
+$links["Abono"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "id_fra_prov_abono", "ver factura", "formato_sub_vacio"] ;
 $links["FECHA"] = ["../proveedores/factura_proveedor.php?id_fra_prov=", "ID_FRA_PROV", "ver factura", "formato_sub"] ;
 $links["NOMBRE_OBRA"]=["../obras/obras_ficha.php?id_obra=", "ID_OBRA"] ;
 //$links["PROVEEDOR"]=["../proveedores/proveedores_ficha.php?id_proveedor=", "ID_PROVEEDORES"] ;

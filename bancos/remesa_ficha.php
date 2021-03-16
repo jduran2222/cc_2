@@ -134,7 +134,7 @@ if ($tipo_remesa=="P")
 //echo $sql;
 //$result_T=$Conn->query($sql_T );
 
-$selects["id_remesa"]=["id_remesa","remesa","Remesas_listado","../bancos/remesa_anadir.php","../bancos/remesa_ficha.php?id_remesa=","id_remesa"," AND activa=1 AND firmada=0 "] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+$selects["id_remesa"]=["id_remesa","remesa","Remesas_listado","../bancos/remesa_anadir.php?id_pago={id_pago}","../bancos/remesa_ficha.php?id_remesa={id_remesa}",""," AND activa=1 AND firmada=0 "] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 $selects["id_remesa"]["valor_null"]=0;
 $selects["id_remesa"]["valor_null_texto"]='sin remesa';
 

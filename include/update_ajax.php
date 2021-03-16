@@ -36,6 +36,7 @@ else
     $field=$_GET["field"]  ;
     $nuevo_valor=rawurldecode($_GET["nuevo_valor"] ) ;
     $tipo_dato =   isset($_GET["tipo_dato"]) ? $_GET["tipo_dato"]  : "" ;
+//    $campo_texto =   isset($_GET["campo_texto"]) ? $_GET["campo_texto"]  : "" ;
 
     logs($_GET["nuevo_valor"])  ;
     logs('tipo dato:'.$tipo_dato)  ;
@@ -141,20 +142,19 @@ else
 
      if ($Conn->query($sql)) // tras el UPDATE si este no da fallos, consulto el nuevo valor almacenado para confirmar que coincide con lo Update
       { 
+          
+                 $valor_bd=Dfirst( "`$field`"  , "`$tabla`", $wherecond) ;              // metemos las comillas invertidas para compatibilidad con campos que usan espacios en el nombre: 'Estudios_de_Obra'
+                 if ( round($nuevo_valor,14)==$valor_bd)    // compruebo el valor enviado a la BBDD y el devuelto en la consulta
+                 { 
+                        echo $valor_bd ;            // DEVUELVO VALOR DE BBDD  .Si coinciden, todo ok,     devuelvo el valor leyendolo de la BD tras el UPDATE 
+                 }
+                 else
+                  {   // NO COINCIDEN EL VALOR ENVIADO CON EL CONSULTADO (Acortamiento de campo, cambio de character especial, erroes en puntos decimales...)
+                       $id_log_db= logs_db( "ERROR en UPDATE_AJAX.PHP. valor de BBDD $nuevo_valor diferente a $valor_bd ,SQL:  $sql" , 'cc_error');
+                       echo $_SESSION["admin"] ? "ERROR en UPDATE_AJAX.PHP. valor de BBDD $nuevo_valor diferente a $valor_bd ,id_log_db: $id_log_d, SQL:  $sql" : "ERROR en UPDATE_AJAX.PHP  valor de BBDD $nuevo_valor diferente a $valor_bd  avise administrador. Número incidencia: $id_log_db" ;
 
-             $valor_bd=Dfirst( "`$field`"  , "`$tabla`", $wherecond) ;              // metemos las comillas invertidas para compatibilidad con campos que usan espacios en el nombre: 'Estudios_de_Obra'
-        //     $valor_bd=Dfirst( $field  , $tabla, $wherecond) ;              // metemos las comillas invertidas para compatibilidad con campos que usan espacios en el nombre: 'Estudios_de_Obra'
-             if ( round($nuevo_valor,14)==$valor_bd)    // compruebo el valor enviado a la BBDD y el devuelto en la consulta
-             {   echo $valor_bd ;            // DEVUELVO VALOR DE BBDD  .Si coinciden, todo ok,     devuelvo el valor leyendolo de la BD tras el UPDATE 
-             }
-             else
-              {                             // NO COINCIDEN EL VALOR ENVIADO CON EL CONSULTADO (Acortamiento de campo, cambio de character especial, erroes en puntos decimales...)
-               //echo "___ERROR___" ;        //mando mensaje de ERROR, el valor de la BD tras el UPDATE no es el esperado
-//               echo "ERROR en valor de BBDD $nuevo_valor diferente a $valor_bd ,\n SQL: $sql" ;
-               $id_log_db= logs_db( "ERROR en UPDATE_AJAX.PHP. valor de BBDD $nuevo_valor diferente a $valor_bd ,SQL:  $sql" , 'cc_error');
-               echo $_SESSION["admin"] ? "ERROR en UPDATE_AJAX.PHP. valor de BBDD $nuevo_valor diferente a $valor_bd ,id_log_db: $id_log_d, SQL:  $sql" : "ERROR en UPDATE_AJAX.PHP  valor de BBDD $nuevo_valor diferente a $valor_bd  avise administrador. Número incidencia: $id_log_db" ;
-
-              }	
+                  }	
+            
 
       }  
        else
