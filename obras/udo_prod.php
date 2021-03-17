@@ -56,12 +56,20 @@ $boton_recalcular= "<button class='btn-warning'  onclick=eval_coste($id_udo); ti
  
 $id_obra=$rs["ID_OBRA"];
 
+$sql_insert_subobra = "INSERT INTO SubObras ( ID_OBRA,SUBOBRA ,`user` )  VALUES ('$id_obra'  ,  '_VAR_SQL1_'  ,'{$_SESSION["user"]}'  ) " ;
+$sql_insert_subobra .=  "  _PUNTO_Y_COMA_   UPDATE `Udos` SET ID_SUBOBRA=LAST_INSERT_ID()  WHERE  ID_UDO='_VAR_SQL2_'  "  ;
+
+$sql_insert_subobra=encrypt2($sql_insert_subobra) ;
+$href_anadir_subobra = "javascript:js_href( '../include/sql.php?code=1&sql=$sql_insert_subobra&var_sql2={ID_UDO}&var_sql1=_VAR_HREF1_',0, '', 'PROMPT_Nombre de Subobra nueva?', '' , 'subobra nueva', ''  ) ;";
+
+$selects["ID_SUBOBRA"] = ["ID_SUBOBRA", "SUBOBRA", "Subobra_View", $href_anadir_subobra, "../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "AND ID_OBRA=$id_obra"];   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+
+
+//$selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
+
 
 $href_anadir_capitulo="javascript:js_href( '../obras/add_capitulo_ajax.php?id_obra=$id_obra&id_udo=$id_udo&capitulo=_VAR_HREF1_',1, '', 'PROMPT_Nombre de Capítulo nuevo?', '' , 'capitulo nuevo', ''  ) ;" ;
 
-$selects["ID_SUBOBRA"]=["ID_SUBOBRA","SUBOBRA","Subobra_View","../obras/subobra_anadir.php?id_obra=$id_obra","../obras/subobra_ficha.php?id_subobra=","ID_SUBOBRA","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
-//$selects["ID_CAPITULO"]=["ID_CAPITULO","CAPITULO","Capitulos_View","../obras/add_capitulo_ajax.php?no_ajax=1&id_obra=$id_obra&id_udo=$id_udo" 
-//        ,"../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=","ID_CAPITULO","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 $selects["ID_CAPITULO"]=["ID_CAPITULO","CAPITULO","Capitulos_View",$href_anadir_capitulo 
         ,"../include/ficha_general.php?url_enc=".encrypt2("tabla=Capitulos&id_update=ID_CAPITULO")."&id_valor=","ID_CAPITULO","AND ID_OBRA=$id_obra"] ;   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO
 

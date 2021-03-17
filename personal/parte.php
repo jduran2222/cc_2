@@ -198,12 +198,10 @@ $actions_row = [];
 $actions_row["id"] = "id";
 $actions_row["delete_link"] = "1";
 
-$sql_insert_subobra = "INSERT INTO SubObras ( ID_OBRA,SUBOBRA ,`user` )  VALUES ('$id_obra'  ,  '_VAR_SQL1_'  ,'{$_SESSION["user"]}'  ) "
-                    . " _PUNTO_Y_COMA_ " ;
-$sql_insert_subobra .=  "UPDATE `PARTES_PERSONAL` SET ID_SUBOBRA=LAST_INSERT_ID()  WHERE  id='_VAR_SQL2_'  "  ;
+$sql_insert_subobra = "INSERT INTO SubObras ( ID_OBRA,SUBOBRA ,`user` )  VALUES ('$id_obra'  ,  '_VAR_SQL1_'  ,'{$_SESSION["user"]}'  ) " ;
+$sql_insert_subobra .=  "  _PUNTO_Y_COMA_   UPDATE `PARTES_PERSONAL` SET ID_SUBOBRA=LAST_INSERT_ID()  WHERE  id='_VAR_SQL2_'  "  ;
 
 $sql_insert_subobra=encrypt2($sql_insert_subobra) ;
-//$href_anadir_subobra="../include/sql.php?code=1&sql=$sql_insert_subobra&var_sql1=_VAR_HREF1_";
 $href_anadir_subobra = "javascript:js_href( '../include/sql.php?code=1&sql=$sql_insert_subobra&var_sql2={id}&var_sql1=_VAR_HREF1_',0, '', 'PROMPT_Nombre de Subobra nueva?', '' , 'subobra nueva', ''  ) ;";
 
 $selects["ID_SUBOBRA"] = ["ID_SUBOBRA", "SUBOBRA", "Subobra_View", $href_anadir_subobra, "../obras/subobra_ficha.php?id_subobra=", "ID_SUBOBRA", "AND ID_OBRA=$id_obra"];   // datos para clave foránea Y PARA AÑADIR PROVEEDOR NUEVO

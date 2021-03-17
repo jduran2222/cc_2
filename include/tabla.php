@@ -999,8 +999,10 @@ echo "</pre>" ;
 
                    //fabricamos un span que no se pinta pero que permitirá ordenar la tabla     
                     $is_numero =    is_format_numero(  isset($formats[$clave]) ? $formats[$clave] :  cc_formato_auto($clave) ) ;                    
-                    $span_sort= $is_numero ?  "<span style='opacity : 0 ; font-size: 0px ;' >"
-                                    .str_pad(number_format(10000000000000+$valor,3,".",""),20," ", STR_PAD_LEFT)."</span>"   : "<span style='opacity : 0 ; font-size: 0px ;'>".$valor."</span>" ;
+//                    $span_sort= $is_numero ?  "<span style='opacity : 0 ; font-size: 0px ;' >"
+//                                    .str_pad(number_format(10000000000000+$valor,3,".",""),20," ", STR_PAD_LEFT)."</span>"   : "<span style='opacity : 0 ; font-size: 0px ;'>".$valor."</span>" ;
+                    $span_sort= $is_numero ?  "<span style='display:none' >"
+                                    .str_pad(number_format(10000000000000+$valor,3,".",""),20," ", STR_PAD_LEFT)."</span>"   : "<span style='display:none;'>".$valor."</span>" ;
 
 
                     // formamos la cadena_link si es campo UPDATE EDITABLE y si está definida $table_update para hacer los update via javascript

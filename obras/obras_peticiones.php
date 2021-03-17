@@ -90,14 +90,18 @@ $where .= ($activa=='') ? '' : " AND activa=$activa"  ;
 
 
 
-$result=$Conn->query(   $sql="SELECT ID_POF,activa,NUMERO as Num,NOMBRE_POF,importe_estimado "
+ $sql="SELECT ID_POF,activa,NUMERO as Num,NOMBRE_POF,importe_estimado, importe_estimado/$importe  AS p_obra"
             . ", Prov_lista AS Prov_TOOLTIP, Env_lista AS Env_TOOLTIP, Resp_lista AS Re_TOOLTIP "
             . ", Proveedores as Prov,Enviados as Env,Respondidos as Re,Observaciones, Subcontratos "
-            . " FROM POF_lista WHERE ID_OBRA=$id_obra AND $where ORDER BY numero " );
-$result_T=$Conn->query(   $sql_T="SELECT COUNT(ID_POF) as Num,'Suma' ,sum(importe_estimado) as importe,'' as aa4,'' as aa3,'' as aa2,'' as aa1 "
-              . "FROM POF_lista WHERE ID_OBRA=$id_obra AND $where  " );
-$result_T2=$Conn->query(   $sql_T2="SELECT '' as aa,'Porcentaje' as ppp,sum(importe_estimado)/$importe as porcentaje,'' as aa4,'' as aa3,'' as aa2,'' as aa1 "
-              . "FROM POF_lista WHERE ID_OBRA=$id_obra AND $where  " );
+            . " FROM POF_lista WHERE ID_OBRA=$id_obra AND $where ORDER BY numero " ;
+ 
+$tabla_sumatorias["importe_estimado"]=0;
+$tabla_sumatorias["p_obra"]=0;
+ 
+//$result_T=$Conn->query(   $sql_T="SELECT COUNT(ID_POF) as Num,'Suma' ,sum(importe_estimado) as importe,'' as aa4,'' as aa3,'' as aa2,'' as aa1 "
+//              . "FROM POF_lista WHERE ID_OBRA=$id_obra AND $where  " );
+//$result_T2=$Conn->query(   $sql_T2="SELECT '' as aa,'Porcentaje' as ppp,sum(importe_estimado)/$importe as porcentaje,'' as aa4,'' as aa3,'' as aa2,'' as aa1 "
+//              . "FROM POF_lista WHERE ID_OBRA=$id_obra AND $where  " );
 
 //echo $sql;
 
@@ -112,8 +116,9 @@ $tooltips["Env"] = "Proveedores a los que se ha enviado peticion de oferta" ;
 $tooltips["Re"] = "Proveedores que han respondido y presupuestado la POF" ;
 //$tooltips["Term"] = "Peticion de oferta terminada" ;
 $formats["activa"]="boolean" ;
+//$formats["Observaciones"]="textarea_20_20" ;
 
-$updates=['activa','Observaciones','NUMERO']  ;
+$updates=['activa','','NUMERO']  ;
 $tabla_update="PETICION DE OFERTAS" ;
 $id_update="ID_POF" ;
 $actions_row=[];

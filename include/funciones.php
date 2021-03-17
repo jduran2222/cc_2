@@ -48,7 +48,6 @@ function desglose_mensual( $patron )
     $return='';
     foreach ($a_meses as $n => $mes)
     {
-//       $return.= ", SUM($c_importe*(MONTH($c_fecha)=($n+1))) AS $prefijo_mes{$mes}$anno_txt " ;
        $return .= str_replace('{m}', $n+1 , str_replace('{mes}', $mes , $patron) ) ;  //sustituimos MES y M
     }
 
@@ -212,8 +211,6 @@ function cc_row_html($rs,$html)
     //$html = str_replace($localizador, $valor, $html)  ;          // sustituyo cada posible localizador del HTML por su valor en la base de datos
     $html = preg_replace($localizador, $valor, $html)  ;          // sustituyo cada posible localizador del HTML por su valor en la base de datos
 
-    //$html= str_replace('@@CIUDAD@@', 'Málaga', $html)  ;
-    //$html= str_replace('@@FECHA_LARGA@@', '26 de Febrero de 2.019', $html)  ;
     } 
   
   return  $html ;
@@ -1243,10 +1240,11 @@ function cc_format($valor , $format="" , &$format_style="", $clave="")     ///, 
 //     }  
   elseif (substr($format,0,12)=="textarealert")                 // 
      {  
-        $tooltip_txt_alert= str_replace("\n","\\n", $valor) ;  
+        $tooltip_txt_title= str_replace("<br>","\n", $valor) ;  
+        $tooltip_txt_alert= str_replace("\n","\\n", $tooltip_txt_title) ;  
 //        $tooltip_txt="<i class='fas fa-info-circle btn-link' style='opacity:0.3' onclick=\"alert('$tooltip_txt_alert')\" title='$valor'></i>" ;
 //        $tooltip_span="<div class='btn-link' style='border-bottom:2px dotted ;cursor: help;' onclick=\"alert('$tooltip_txt_alert')\" title='$valor'>" ; // QUITO EL PUNTEADO
-        $tooltip_span="<div class='btn-link' style='cursor: help;' onclick=\"alert('$tooltip_txt_alert')\" title='$valor'>" ;
+        $tooltip_span="<div class='btn-link' style='cursor: help;' onclick=\"alert('$tooltip_txt_alert')\" title='$tooltip_txt_title'>" ;
         
         // calculamos la longitud TEXTAREA_XXX o por defecto la hacemos 10
         $len= (substr($format,0,9)=="textarea_") ? substr($format,9) : 10 ;
@@ -1528,7 +1526,6 @@ switch ($format) {
                         setlocale(LC_TIME, "es_ES");
                         $fecha=date_create($valor);          //primero de mes de la fecha0
                         $mes_txt=ucwords(utf8_encode(strftime( '%B-%Y' , $fecha->getTimestamp() ))) ;
-//                        if ($valor<>"") $valor = "<span style='opacity : 0 ; font-size: 0px ;'>".date_format($fecha,"Y-m")."</span>"." ".date_format($fecha,"F-Y");
                         if ($valor<>"") $valor = "<span style='opacity : 0 ; font-size: 0px ;'>".date_format($fecha,"Y-m")."-01"."</span>"." ".$mes_txt;
 
                         $format_style=" style='text-align:left;' " ;
@@ -1537,7 +1534,6 @@ switch ($format) {
                         setlocale(LC_TIME, "es_ES");
                         $fecha=date_create($valor);          //primero de mes de la fecha0
                         $mes_txt=ucwords(utf8_encode(strftime( '%B-%Y' , $fecha->getTimestamp() ))) ;
-//                        if ($valor<>"") $valor = "<span style='opacity : 0 ; font-size: 0px ;'>".date_format($fecha,"Y-m")."</span>"." ".date_format($fecha,"F-Y");
                         if ($valor<>"") $valor = $mes_txt;
 
 //                        $format_style=" style='text-align:left;' " ;

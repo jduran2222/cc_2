@@ -434,6 +434,14 @@ $titulo_sin_html= strip_tags($titulo)   ;
               $campo_mostrado=isset($selects[$clave][8]) ? $selects[$clave][8] : $campo_texto ;   // solo sirve pintar un valor diferente al de búsqueda
 
               $link_nuevo_target_blank = preg_match("/^javascript/i", $link_nuevo) ? '' : "target='_blank'" ;
+              
+              // sustitución de {clave}
+              if (like($link_nuevo,"%{%}%"))
+              {  foreach ($rs as $clave2 => $valor2){ $link_nuevo= str_replace( "{".$clave2."}", $valor2, $link_nuevo) ; } ;                                     
+              }    
+              if (like($link_ver,"%{%}%"))
+              {  foreach ($rs as $clave2 => $valor2){ $link_ver= str_replace( "{".$clave2."}", $valor2, $link_ver) ; };                                        
+              }    
              
               // calculamos el nombre del ID_ corespondiente, por ej. PROVEEDOR o NOMBRE_OBRA
 //              $valor_txt_sel= ($valor<>"") ?  Dfirst($campo_texto,$tabla_select,"$campo_ID=$valor") : ""  ;   //evitamos un error en Dfirst si $valor es NULL     

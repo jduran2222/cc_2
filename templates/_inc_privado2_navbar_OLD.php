@@ -2,9 +2,11 @@
 
 if(!$modal_ajax)
 {        
+
 //incluimos códigos y datos de cálculo y consultas para el menú superior
 include_once('../templates/_inc_privado2_1_topbar.php');
 include_once('../include/funciones_js.php');
+
 ?>
 
   <!-- Navbar -->
@@ -17,12 +19,18 @@ include_once('../include/funciones_js.php');
           <i class="fas fa-bars"></i>
         </a>
       </li>
-    </ul>
-
-
-    <ul class="navbar-nav ml-auto">
-
-<!--       <li class="nav-item d-inline-block p-1 border-left">
+      <li class="nav-item d-sm-inline-block">
+        <a href="#" class="px-1 px-sm-2 btn btn-link" title="Busqueda global" onclick="busqueda_global();">
+          <i class="fas fa-search"></i>
+          <span class="d-none d-sm-inline">Búsqueda</span>
+        </a>
+      </li>
+      <li class="nav-item d-inline-block">
+        <a href="#" class="px-1 px-sm-2 btn btn-link" title="Imprimir" onclick="window.print();">
+          <i class="fas fa-print"></i>
+        </a>
+      </li>
+      <li class="nav-item d-inline-block p-1 border-left">
         <a href="#" class="p-1 px-1 px-sm-2 btn btn-success btn-xs" title="Refrescar" onclick='javascript:window.location.reload();'>
           <i class="fas fa-redo"></i>
           <span class="d-none d-sm-inline">Refrescar</span>
@@ -33,11 +41,82 @@ include_once('../include/funciones_js.php');
           <i class="far fa-window-close"></i>
           <span class="d-none d-sm-inline">Cerrar</span>
         </a>
-      </li> -->
+      </li>
 
-      <!-- Grupo 1 -->
+      <?php 
+      //Para revisar elementos en caso de ser administrador:
+        $htmlAdmin = '';
+      if ($admin) {
+        $htmlAdmin .= '
+      <li class="nav-item d-inline-block border-left">
+        <a href="../debug/debug_logs.php" class="px-1 px-sm-2 btn btn-link" target="_blank" title="Abrir debugger">
+            <i class="fab fa-dyalog"></i>
+            <span class="d-none d-sm-inline"><span class="d-none">D</span></span>
+        </a>
+      </li>
+      <li class="nav-item d-inline-block">
+        <a href="../debug/debug_reset.php" target="_blank" title="Realizar reset" class="px-1 px-sm-2 btn btn-link ">
+            <i class="fas fa-registered"></i>
+            <span class="d-none d-sm-inline"><span class="d-none">R</span></span>
+        </a>
+      </li>';
+      }
+      if ($admin OR $_SESSION["admin_debug"]) {
+         $htmlAdmin .= '
+      <li class="nav-item d-inline-block"  style="border:none;color:silver" >
+        Tiempo: <br><input style="border:none;color:silver"  type="text" id="tiempo_total" size="3">
+      </li>
+        ';
+        echo $htmlAdmin;
+      }
+      ?>
 
       <li class="nav-item d-inline-block border-left">
+                       <!-- button with a dropdown -->
+                  <div class="btn-group">
+                    <button type="button" class="nav-item d-inline-block btn btn-link  dropdown-toggle" data-toggle="dropdown" data-offset="-52">
+                      <i class="fas fa-building"></i>
+                    <span class="d-none d-sm-inline"> <?php echo (ucwords($_SESSION["empresa"])); ?> </span>/
+                    <i class="far fa-user"></i>
+                    <span class="d-none d-sm-inline"><?php echo (ucwords($_SESSION["user"])); ?>
+                  
+                <?php 
+                    if ($admin) {echo  "<sup class='bg-info small px-0 px-sm-1'>". (   isset($_SESSION['android']) ?  (  ( !empty($_SESSION['android'])) ? 'admin-android' :'admin-pc') :'admin-pc'  )."</sup>"; }
+                ?>
+                   </span></button>
+                    <div class="dropdown-menu" role="menu">
+                       
+                      <a href="../configuracion/empresa_ficha.php"  class="dropdown-item" title='Ficha de la empresa'><i class="fas fa-building"></i> Mi empresa</a>
+                      <a href="<?php echo "../include/ficha_general.php?url_enc=".encrypt2("tabla=Licencias&id_update=id_licencia&no_update=1&id_valor=".$_SESSION["id_licencia"]); ?>"  title='Licencia activa'  class="dropdown-item"><i class='fas fa-key'></i> Licencia</a>
+                      <a href="../menu/pagina_empresas.php"  title='Cambia a otras empresas a las que el usuario pertenece' target='_blank' class="dropdown-item"><i class='fas fa-exchange-alt'></i> Cambiar empresa</a>
+                     <div class="dropdown-divider"></div>
+                      <a href="../configuracion/usuario_ficha.php"  class="dropdown-item" title='Ficha del Usuario'><i class="far fa-user"></i> Mi usuario</a>
+                      <a href="../registro/cerrar_sesion.php"  title='Cierra la sesión actual' class="dropdown-item"><i class='fas fa-power-off'></i> Cerrar sesión</a>
+                    </div>
+                  </div>
+      </li>
+      
+      
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item d-inline-block border-left">
+        <a id="btn_empresa" href="../agenda/eventos.php" class="px-1 px-sm-2 btn btn-link" title="Registro de Actividad de la empresa">
+          <i class='fas fa-chart-line'></i>
+          <span class="d-none d-sm-inline">Actividad</span> 
+        </a>
+      </li>
+      <li class="nav-item d-inline-block">
+        <a id="btn_empresa" href="../agenda/tareas.php" target="_blank" class="px-1 px-sm-2 btn btn-link" title="Tareas">
+          <i class="fab fa-tumblr"></i>
+          <span class="d-none d-sm-inline"><span class="d-none">T</span>areas</span> 
+          <?php 
+            echo "<sup class='small px-0 px-sm-1'>". badge($tareas,'info') . badge($tareas_new,'danger') ."</sup>"  ;
+          ?> 
+        </a>
+      </li>
+      <li class="nav-item d-inline-block">
         <a id="btn_empresa" href="../agenda/portafirmas.php" class="px-1 px-sm-2 btn btn-link" title="Realizar firma" target='_blank'>
           <i class="fas fa-pen-nib"></i>
           <span class="d-none d-sm-inline">PortaFirmas</span> 
@@ -46,112 +125,16 @@ include_once('../include/funciones_js.php');
           ?> 
         </a>
       </li>
-
-      <li class="nav-item d-inline-block">
-        <a id="btn_empresa" href="../agenda/tareas.php" target="_blank" class="px-1 px-sm-2 btn btn-link" title="Tareas">
-          <i class="fa fa-server"></i>
-          <span class="d-none d-sm-inline">Tareas</span> 
-          <?php 
-            echo "<sup class='small px-0 px-sm-1'>". badge($tareas,'info') . badge($tareas_new,'danger') ."</sup>"  ;
-          ?> 
-        </a>
-      </li>
-
-      <li class="nav-item d-inline-block">
-        <a id="btn_empresa" href="../agenda/eventos.php" class="px-1 px-sm-2 btn btn-link" title="Registro de Actividad de la empresa">
-          <i class='fas fa-chart-line'></i>
-          <span class="d-none d-sm-inline">Actividad</span> 
-        </a>
-      </li>
-
-      <!-- Grupo 2 -->
-
-      <li class="nav-item d-inline-block border-left">
-        <a href="#" class="px-1 px-sm-2 btn btn-link" title="Imprimir" onclick="window.print();">
-          <i class="fas fa-print"></i>
-          <span class="d-none d-sm-inline">Imprimir</span> 
-        </a>
-      </li>
-
-      <li class="nav-item d-sm-inline-block">
-        <a href="#" class="px-1 px-sm-2 btn btn-link" title="Busqueda global" onclick="busqueda_global();">
-          <i class="fas fa-search"></i>
-          <span class="d-none d-sm-inline">Buscar</span>
-        </a>
-      </li>
-
       <li class="nav-item d-inline-block">
         <a id="btn_empresa" href="../chat/chat_index.php" class="px-1 px-sm-2 btn btn-link" title="Abrir Chat" target='_blank'>
-          <i class="fa fa-comments"></i>
-          <span class="d-none d-sm-inline">Soporte | Ayuda</span> 
+          <i class="far fa-comments"></i>
+          <span class="d-none d-sm-inline">Chat</span> 
           <?php 
             echo "<sup class='small px-0 px-sm-1'>".$badge_txt."</sup>";
           ?> 
         </a>
       </li>
-
-      <!-- Grupo 3 -->
-      <?php 
-      //Para revisar elementos en caso de ser administrador:
-        $htmlAdmin = '';
-        $admin=1;
-      if ($admin) {
-        $htmlAdmin .= '
-      <li class="nav-item d-inline-block border-left">
-        <a href="../debug/debug_logs.php" class="px-1 px-sm-2 btn btn-link" target="_blank" title="Abrir debugger">
-            <i class="fab fa-dyalog"></i>
-            <span class="d-none d-sm-inline">Debugger</span> 
-        </a>
-      </li>
-      <li class="nav-item d-inline-block">
-        <a href="../debug/debug_reset.php" target="_blank" title="Realizar reset" class="px-1 px-sm-2 btn btn-link ">
-            <i class="fas fa-registered"></i>
-            <span class="d-none d-sm-inline">Reset</span> 
-        </a>
-      </li>';
-      }
-      if ($admin OR $_SESSION["admin_debug"]) {
-         $htmlAdmin .= '
-      <li class="nav-item d-inline-block"  style="border:none;color:silver; margin-top:6px;" >
-        <span class="d-none d-sm-inline">
-        Tiempo: 
-        </span>
-        <input style="border:none;color:silver"  type="text" id="tiempo_total" size="3">
-      </li>
-        ';
-        echo $htmlAdmin;
-      }
-      ?>
-      <!-- Grupo 4 -->
-
-
-      <li class="nav-item d-inline-block border-left" style='overflow: hide;'>
-        <!-- button with a dropdown -->
-        <div class="btn-group">
-          <button type="button" class="nav-item d-inline-block btn btn-link  dropdown-toggle" data-toggle="dropdown" data-offset="-52">
-            <i class="fas fa-building"></i>
-          <span class="d-none d-sm-inline"> <?php echo (ucwords($_SESSION["empresa"])); ?> </span>/
-          <i class="far fa-user"></i>
-          <span class="d-none d-sm-inline"><?php echo (ucwords($_SESSION["user"])); ?>
-          <?php 
-          if ($admin) {echo  "<sup class='bg-info small px-0 px-sm-1'>". (   isset($_SESSION['android']) ?  (  ( !empty($_SESSION['android'])) ? 'admin-android' :'admin-pc') :'admin-pc'  )."</sup>"; }
-          ?>
-          </span></button>
-          <div class="dropdown-menu" role="menu">
-             
-            <a href="../configuracion/empresa_ficha.php"  class="dropdown-item" title='Ficha de la empresa'><i class="fas fa-building"></i> Mi empresa</a>
-            <a href="<?php echo "../include/ficha_general.php?url_enc=".encrypt2("tabla=Licencias&id_update=id_licencia&no_update=1&id_valor=".$_SESSION["id_licencia"]); ?>"  title='Licencia activa'  class="dropdown-item"><i class='fas fa-key'></i> Licencia</a>
-            <a href="../menu/pagina_empresas.php"  title='Cambia a otras empresas a las que el usuario pertenece' target='_blank' class="dropdown-item"><i class='fas fa-exchange-alt'></i> Cambiar empresa</a>
-           <div class="dropdown-divider"></div>
-            <a href="../configuracion/usuario_ficha.php"  class="dropdown-item" title='Ficha del Usuario'><i class="far fa-user"></i> Mi usuario</a>
-            <a href="../registro/cerrar_sesion.php"  title='Cierra la sesión actual' class="dropdown-item"><i class='fas fa-power-off'></i> Cerrar sesión</a>
-          </div>
-        </div>
-      </li>
     </ul>
-
-
-
   </nav>
   <!-- /.navbar -->
 
@@ -447,29 +430,12 @@ include_once('../include/funciones_js.php');
                   <i class="fas fa-angle-left right"></i>
                 </p>
               </a>
-
               <ul class="nav nav-treeview small">
-                <!-- DOCUMENTOS -->
-                <li class="nav-item"> 
-                  <a href="../documentos/documentos.php" class="nav-link">
-                    <i class="far fa-file-alt nav-icon"></i> 
-                    <p>Documentos</p>
-                    <span class="badge badge-info right"><?php echo $num_documentos; ?></span>                    
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="../documentos/documentos.php?_m=<?php echo $_m; ?>&clasificar=1" title='Documentación que se ha subido a la plataforma y aún no ha sido tramitada o archivada en su lugar. P. ej. la foto de albarán enviado opr movil desde la propia obra. '>
-                    <i class="far fa-file-alt nav-icon"></i>
-                    <p>Docs. pdtes. Clasificar
-                    <span class='num_fras_prov_NC badge badge-danger right'><?php echo $num_documentos_pdte_clasif; ?></span>
-                    </p>
-                   </a>
-                </li>
-
                 <!-- USUARIOS -->
                 <li class="nav-item has-treeview">
                   <a href="#" class="nav-link">
                     <i class="far fa-user nav-icon"></i>
+
                     <p>
                       Usuarios
                       <i class="right fas fa-angle-left"></i>
@@ -477,9 +443,9 @@ include_once('../include/funciones_js.php');
                   </a>
                   <ul class="nav nav-treeview small">
                     <li class="nav-item">
-                      <a class="nav-link" href="../configuracion/usuario_ficha.php" >
-                        <i class="fa fa-user-cog nav-icon"></i> 
-                        <p>Mi Usuario <?php echo " ({$_SESSION["user"]})"; ?></p>
+                      <a href="../configuracion/usuario_ficha.php" class="nav-link">
+                        <i class="fa fa-user-cog nav-icon"></i>
+                        <p>Usuario actual</p>
                       </a>
                     </li>
                     <li class="nav-item">
@@ -502,136 +468,23 @@ include_once('../include/funciones_js.php');
                     </li>
                   </ul>
                 </li>
-
-                <li class="nav-item">
-                  <a class="nav-link" href="../configuracion/empresa_ficha.php">
-                    <i class="fas fa-building nav-icon"></i>
-                    <p>Mi Empresa <?php echo " ({$_SESSION["empresa"]})"; ?></p>
-                   </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="../menu/menu_app.php">
-                    <i class="fa fa-list nav-icon"></i>
-                    <p>MENU APP</p>
-                   </a>
-                </li>
+                <?php
+                    $htmlAgregadoAdmin = '';
+                    if ($_SESSION["admin"]) {
+                        $htmlAgregadoAdmin .= '<!-- AdminLTE -->';
+                        $htmlAgregadoAdmin .= '<li class="nav-item">';
+                        $htmlAgregadoAdmin .= '  <a href="../adminlte/" class="nav-link" target="_blank">';
+                        $htmlAgregadoAdmin .= '    <i class="fa fa-code nav-icon"></i>';
+                        $htmlAgregadoAdmin .= '    <p>Admin LTE(solo admin)</p>';
+                        $htmlAgregadoAdmin .= '  </a>';
+                        $htmlAgregadoAdmin .= '</li>';
+                    }
+                    echo $htmlAgregadoAdmin;
+                ?>
               </ul>
+
             </li>
 
-            <?php if ($_SESSION["admin"]) { ?>
-
-
-            <li class="nav-item has-treeview">
-              <a href="#" class="nav-link">
-                <i class="fa fa-user-secret nav-icon"></i>
-                <p>
-                  Solo ADMIN
-                  <i class="fas fa-angle-left right"></i>
-                </p>
-              </a>
-
-              <ul class="nav nav-treeview small">
-                <li class="nav-item"> 
-                  <a href="../adminlte/" class="nav-link" target="_blank">
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Admin LTE</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_general.php?_m=<?php echo $_m; ?>&url_enc=<?php echo encrypt2("tabla=w_Accesos&where=id_c_coste='$id_c_coste'&order_by=fecha_creacion DESC LIMIT 500") ?>"> 
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Accesos empresa</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_general.php?_m=<?php echo $_m; ?>&url_enc=<?php echo encrypt2("tabla=w_Accesos&where=id_c_coste='$id_c_coste' AND resultado LIKE '%Error%'&order_by=fecha_creacion DESC LIMIT 500") ?>" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Accesos empresa con Error</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_general.php?_m=<?php echo $_m; ?>&tabla=w_Accesos&where=1&order_by=fecha_creacion DESC LIMIT 500" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Accesos Global</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_general.php?_m=<?php echo $_m; ?>&tabla=<?php echo encrypt2('w_Accesos'); ?>&where= resultado LIKE '%Erro%'&order_by=fecha_creacion DESC LIMIT 500" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Accesos Global con Error</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_debug.php" >
-                    <i class="fa fa-code nav-icon"></i>   
-                    <p>Tabla DEBUG</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../configuracion/debug_ppal.php" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Debug_ppal</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../debug/debug_vars.php" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Debug_vars</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../debug/debug.php" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Debug</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../pruebas/phpinfo.php" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Php_info()</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_debug.php?url_enc=<?php echo encrypt2("sql=SELECT * FROM Usuarios WHERE 1=1 ORDER BY id_usuario&link=../configuracion/usuario_ficha.php?id_usuario=&link_campo=usuario&link_campo_id=id_usuario") ?>" >
-                    <i class="fas fa-globe-europe nav-icon"></i> 
-                    <p>Usuarios Global</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_debug.php?url_enc=<?php echo encrypt2("sql=SELECT * FROM Empresas_View_ext ORDER BY ultimo_acceso DESC LIMIT 50&link=../configuracion/empresa_ficha.php?id_empresa=&link_campo=C_Coste_Texto&link_campo_id=id_c_coste") ?>" >
-                    <i class="fas fa-globe-europe nav-icon"></i> 
-                    <p>Empresas Global</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_debug.php?url_enc=<?php echo encrypt2("sql=SELECT * FROM tipos_licencia &tabla_update=tipos_licencia&id_update=id") ?>" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Tipos de licencias</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../configuracion/config_variables.php" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Configuración Variables</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/tabla_debug.php?url_enc=<?php echo encrypt2("sql=SELECT * FROM logs_db ORDER BY id DESC LIMIT 200") ?>" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Logs_db</p>
-                  </a>
-                </li>
-                <li class="nav-item"> 
-                  <a target="_blank" class="nav-link" href="../include/sign_src/my_sign.php" >
-                    <i class="fa fa-code nav-icon"></i> 
-                    <p>Signature Pad</p>
-                  </a>
-                </li>
-
-              </ul>
-            </li>
-
-            <?php } ?>
 
 
             <!-- <li class="nav-item has-treeview">
@@ -675,16 +528,9 @@ include_once('../include/funciones_js.php');
               </a>
               <ul class="nav nav-treeview small">
                 <li class="nav-item">
-                  <a href="../img/diagrama_construwin.jpg" class="nav-link">
+                  <a href="../img/diagrama_construwin.jpg" target="_blank" class="nav-link">
                     <i class="fa fa-sitemap nav-icon"></i>
                     Diagrama
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="../agenda/procedimientos.php" class="nav-link">
-                    <i class="fas fa-book nav-icon"></i>
-                    <p>Procedimientos</p>
-                    <span class="badge badge-info right"><?php echo $num_procedimientos; ?></span>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -694,15 +540,15 @@ include_once('../include/funciones_js.php');
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="https://foro.construcloud.es" target="_blank" class="nav-link" title="Foro donde consultar dudas con los administradores y otros usuarios, informar de errores, sugerencias..."> 
+                  <a href="https://foro.construcloud.es" target="_blank" class="nav-link"> 
                     <i class="fas fa-users nav-icon"></i>
-                    <p>ConstruCloud Forum</p>
+                    Comunidad ConstruCloud
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="https://wiki.construcloud.es" target="_blank" class="nav-link" title="Wikipedia de ConstruCloud.es donde consultar definiciones, procedimientos, de todas las entidades...">
+                  <a href="https://wiki.construcloud.es" target="_blank" class="nav-link">
                     <i class="fab fa-wikipedia-w nav-icon"></i>
-                    ConstruWIKI
+                    Wiki ConstruCloud
                   </a>
                 </li>
 <!--                <li class="nav-item">
@@ -712,7 +558,6 @@ include_once('../include/funciones_js.php');
                   </a>
                 </li>              -->
               </ul>
-              <br>
             </li>
         </ul>
       </nav>

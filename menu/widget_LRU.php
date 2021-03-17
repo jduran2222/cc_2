@@ -6,9 +6,13 @@
 $id_usuario_LRU = isset($id_usuario_LRU) ? $id_usuario_LRU : $_SESSION["id_usuario"] ;
 $limite_LRU = isset($limite_LRU) ? $limite_LRU : 30 ;
 
-$sql="SELECT id_entidad, tipo_entidad, entidad, MAX(fecha_creacion) AS fecha, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=' "
-        . ",id_entidad) as id_entidad_link FROM LRU_entidad WHERE  id_usuario='$id_usuario_LRU' AND $where_c_coste "
-                          . " GROUP BY tipo_entidad , id_entidad  ORDER BY   fecha DESC LIMIT $limite_LRU";
+$sql= $admin?   "SELECT id_entidad,C_coste_texto, usuario, tipo_entidad, entidad, MAX(fecha_creacion) AS fecha, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=' "
+                          . ",id_entidad) as id_entidad_link FROM LRU_entidad_View  "
+                          . " GROUP BY tipo_entidad , id_entidad  ORDER BY   fecha DESC LIMIT $limite_LRU" 
+                 : "SELECT id_entidad, tipo_entidad, entidad, MAX(fecha_creacion) AS fecha, CONCAT('tipo_entidad=',tipo_entidad,'&id_entidad=' "
+                         . ",id_entidad) as id_entidad_link FROM LRU_entidad WHERE  id_usuario='$id_usuario_LRU' AND $where_c_coste "
+                          . " GROUP BY tipo_entidad , id_entidad  ORDER BY   fecha DESC LIMIT $limite_LRU" ;
+      
 //$result=$Conn->query($sql);
 
 $updates=[] ;
